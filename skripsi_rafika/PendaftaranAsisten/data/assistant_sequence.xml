@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="seq_op_assistant_registration" model="ir.sequence">
+            <field name="name">Assistant Registration Sequence</field>
+            <field name="code">op.assistant.registration</field>
+            <field name="prefix">AST/%(range_year)s/</field>
+            <field name="padding">5</field>
+            <field name="use_date_range" eval="True"/>
+        </record>
+
+    </data>
+</odoo>

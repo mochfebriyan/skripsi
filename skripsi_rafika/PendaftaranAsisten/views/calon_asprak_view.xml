@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_calon_asprak_regist_tree" model="ir.ui.view">
+        <field name="name">registrasi.asprak.tree</field>
+        <field name="model">registrasi.asprak</field>
+        <field name="arch" type="xml">
+            <tree string="Calon Asprak Registration">
+                <field name="id_registrasi"/>
+                <field name="mahasiswa_id"/>
+                <field name="periode_semester_id"/>
+                <field name="state" widget="badge" decoration-success="state == 'lolos'" decoration-danger="state == 'tidak_lolos'" decoration-info="state == 'submitted'"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_calon_asprak_regist_form" model="ir.ui.view">
+        <field name="name">registrasi.asprak.form</field>
+        <field name="model">registrasi.asprak</field>
+        <field name="arch" type="xml">
+            <form string="Calon Asprak Registration">
+                
+                <header>
+                    <button name="action_luluskan" string="Luluskan" type="object" class="oe_highlight" invisible="state != 'submitted'"/>
+                    <button name="action_tolak" string="Tolak" type="object" class="btn-danger" invisible="state != 'submitted'"/>
+                    
+                    <field name="state" widget="statusbar" statusbar_visible="draft,submitted,lolos,tidak_lolos"/>
+                </header>
+                
+                <sheet>
+                    <div class="oe_title">
+                        <label for="id_registrasi" string="Nomor Registrasi"/>
+                        <h1>
+                            <field name="id_registrasi" readonly="1"/>
+                        </h1>
+                    </div>
+                    
+                    <group>
+                        <group string="Data Mahasiswa">
+                            <field name="mahasiswa_id" readonly="state in ['lolos', 'tidak_lolos']"/>
+                            <field name="periode_semester_id" readonly="state in ['lolos', 'tidak_lolos']"/>
+                            <field name="tanggal_pendaftaran" readonly="1"/>
+                        </group>
+                        <group string="Dokumen &amp; Kontak">
+                            <field name="phone_number" readonly="state in ['lolos', 'tidak_lolos']"/>
+                            <field name="berkas_khs" filename="id_registrasi" widget="binary" readonly="state in ['lolos', 'tidak_lolos']"/>
+                        </group>
+                    </group>
+                    
+                    <notebook>
+                        <page string="Mata Kuliah Target">
+                            <field name="detail_ids" readonly="state in ['lolos', 'tidak_lolos']">
+                                <tree editable="bottom" create="false" delete="false">
+                                    <field name="mata_kuliah_target_id" readonly="1" domain="[('is_praktikum_lab', '=', True), ('butuh_asisten', '=', True)]"/>
+                                    </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_calon_asprak_regist" model="ir.actions.act_window">
+        <field name="name">Calon Asprak Registration</field>
+        <field name="res_model">registrasi.asprak</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_calon_asprak_regist_tree"/>
+    </record>
+</odoo>

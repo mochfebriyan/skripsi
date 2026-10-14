@@ -1,0 +1,36 @@
+<odoo>
+    <record id="view_mst_kurikulum_tree" model="ir.ui.view">
+        <field name="name">mst.kurikulum.tree</field>
+        <field name="model">mst_kurikulum</field>
+        <field name="arch" type="xml">
+            <tree string="Master Kurikulum">
+                <field name="id_course_kurikulum"/>
+                <field name="kode_mata_kuliah"/>
+                <field name="nama_mata_kuliah"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_mst_kurikulum_form" model="ir.ui.view">
+        <field name="name">mst.kurikulum.form</field>
+        <field name="model">mst_kurikulum</field>
+        <field name="arch" type="xml">
+            <form string="Master Kurikulum">
+                <sheet>
+                    <group>
+                        <field name="id_course_kurikulum"/>
+                        <field name="kode_mata_kuliah"/>
+                        <field name="nama_mata_kuliah"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_mst_kurikulum" model="ir.actions.act_window">
+        <field name="name">Master Kurikulum</field>
+        <field name="res_model">mst_kurikulum</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_mst_kurikulum_tree"/>
+    </record>
+</odoo>

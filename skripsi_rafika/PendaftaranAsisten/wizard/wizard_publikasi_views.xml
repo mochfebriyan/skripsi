@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_wizard_publikasi_hasil_form" model="ir.ui.view">
+        <field name="name">wizard.publikasi.hasil.form</field>
+        <field name="model">wizard.publikasi.hasil</field>
+        <field name="arch" type="xml">
+            <form string="Konfirmasi Publikasi">
+                <sheet>
+                    <div class="alert alert-warning text-center" role="alert" style="font-size: 14px;">
+                        <strong>Perhatian!</strong><br/>
+                        Anda akan mempublikasikan hasil seleksi untuk periode ini.<br/>
+                        Sistem akan <b>otomatis</b> mengubah hak akses mahasiswa yang berstatus <i>Lolos</i> menjadi <b>Teaching Assistant</b>.<br/><br/>
+                        Apakah Anda yakin ingin melanjutkan?
+                    </div>
+                    <group invisible="1">
+                        <field name="periode_id"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_konfirmasi_publikasi" string="Ya, Konfirmasi Publikasi" type="object" class="btn btn-primary"/>
+                    <button string="Batal" class="btn btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_wizard_publikasi_hasil" model="ir.actions.act_window">
+        <field name="name">Publikasi Hasil Seleksi</field>
+        <field name="res_model">wizard.publikasi.hasil</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

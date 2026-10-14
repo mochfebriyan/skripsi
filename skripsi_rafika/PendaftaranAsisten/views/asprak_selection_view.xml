@@ -1,0 +1,60 @@
+<odoo>
+    <record id="view_asprak_selection_tree" model="ir.ui.view">
+        <field name="name">asprak.selection.tree</field>
+        <field name="model">asprak.selection</field>
+        <field name="arch" type="xml">
+            <tree string="Asprak Selection">
+                <field name="id_seleksi"/>
+                <field name="tanggal_seleksi"/>
+                <field name="registrasi_calon_asisten_id"/>
+                <field name="dosen_penilai_id"/>
+                <field name="total_nilai"/>
+                <field name="status_seleksi"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_asprak_selection_form" model="ir.ui.view">
+        <field name="name">asprak.selection.form</field>
+        <field name="model">asprak.selection</field>
+        <field name="arch" type="xml">
+            <form string="Asprak Selection">
+                <header>
+                    <button name="action_mulai_penilaian" string="Mulai Penilaian" type="object" class="btn-primary" invisible="status_seleksi != 'menunggu'"/>
+                    <button name="action_luluskan" string="Luluskan" type="object" class="btn-success" invisible="status_seleksi != 'review'"/>
+                    <button name="action_gagalkan" string="Gagalkan" type="object" class="btn-danger" invisible="status_seleksi != 'review'"/>
+                    <field name="status_seleksi" widget="statusbar" statusbar_visible="menunggu,review,passed,failed"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="id_seleksi" readonly="1"/>
+                        <field name="tanggal_seleksi" readonly="1"/>
+                        <field name="registrasi_calon_asisten_id" readonly="1"/>
+                        <field name="dosen_penilai_id" required="1" readonly="status_seleksi in ['passed', 'failed']"/>
+                        <field name="total_nilai" readonly="1"/>
+                    </group>
+                    <notebook>
+                        <page string="Detail Penilaian">
+                            <field name="status_seleksi" invisible="1"/>
+                            
+                            <field name="line_ids" readonly="status_seleksi != 'review'">
+                                <tree editable="bottom">
+                                    <field name="kriteria_penilaian"/>
+                                    <field name="nilai_angka"/>
+                                    <field name="catatan_feedback"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_asprak_selection" model="ir.actions.act_window">
+        <field name="name">Asprak Selection</field>
+        <field name="res_model">asprak.selection</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_asprak_selection_tree"/>
+    </record>
+</odoo>

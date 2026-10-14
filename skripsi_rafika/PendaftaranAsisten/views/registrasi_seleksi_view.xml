@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_calon_asprak_regist_form_seleksi" model="ir.ui.view">
+        <field name="name">registrasi.asprak.form.seleksi</field>
+        <field name="model">registrasi.asprak</field>
+        <field name="arch" type="xml">
+            <form string="Pendaftaran Asisten">
+                <header>
+                    <button name="action_finalize_and_publish" 
+                            type="object" 
+                            string="Finalisasi &amp; Publikasi Hasil" 
+                            class="oe_highlight" 
+                            invisible="is_published"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group string="Data Pendaftar">
+                            <!-- Fields from registrasi.asprak model -->
+                            <field name="mahasiswa_id"/>
+                            <field name="periode_semester_id"/>
+                        </group>
+                        <group string="Hasil Seleksi &amp; SKEP">
+                            <field name="is_published" readonly="1"/>
+                            <field name="hasil_seleksi" invisible="not is_published"/>
+                            <field name="skep_filename" invisible="1"/>
+                            <field name="skep_file" filename="skep_filename" widget="binary"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_calon_asprak_regist_tree_seleksi" model="ir.ui.view">
+        <field name="name">registrasi.asprak.tree.seleksi</field>
+        <field name="model">registrasi.asprak</field>
+        <field name="arch" type="xml">
+            <tree string="Pendaftaran Asisten">
+                <field name="mahasiswa_id"/>
+                <field name="periode_semester_id"/>
+                <field name="hasil_seleksi" optional="show"/>
+                <field name="is_published" widget="boolean_toggle"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_calon_asprak_regist_seleksi" model="ir.actions.act_window">
+        <field name="name">Finalisasi Hasil Seleksi</field>
+        <field name="res_model">registrasi.asprak</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

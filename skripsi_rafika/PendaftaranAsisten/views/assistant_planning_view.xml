@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="seq_assistant_planning" model="ir.sequence">
+            <field name="name">Sequence Perencanaan Kuota Asisten</field>
+            <field name="code">assistant.planning.seq</field>
+            <field name="prefix">PLN/%(year)s/</field>
+            <field name="padding">4</field>
+            <field name="number_increment">1</field>
+            <field name="number_next">1</field>
+        </record>
+
+        <record id="view_assistant_planning_form" model="ir.ui.view">
+            <field name="name">assistant.planning.form</field>
+            <field name="model">assistant.planning</field>
+            <field name="arch" type="xml">
+                <form string="Perencanaan Kuota Asisten Praktikum">
+                    <header>
+                        <button
+                            name="action_set_final"
+                            type="object"
+                            string="Tetapkan (Final)"
+                            class="oe_highlight"
+                            invisible="state != 'draft'"
+                            groups="PendaftaranAsisten.group_asprak_kepala_lab"
+                        />
+                        <field name="state" widget="statusbar" statusbar_visible="draft,final"/>
+                    </header>
+
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+
+                        <group>
+                            <group>
+                                <field 
+                                    name="course_id" 
+                                    domain="[('is_praktikum_lab', '=', True), ('butuh_asisten', '=', True)]"
+                                    options="{'no_create': True}"
+                                />
+                                <field
+                                    name="assistant_quota"
+                                    readonly="state == 'final'"
+                                />
+                            </group>
+                            <group>
+                                <!-- Field Kaprodi dibuat readonly agar dropdown hilang -->
+                                <field
+                                    name="kaprodi_id"
+                                    readonly="1"
+                                    options="{'no_create': True}"
+                                />
+                                <field name="kalab_id"/>
+                            </group>
+                        </group>
+                    </sheet>
+
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_assistant_planning_tree" model="ir.ui.view">
+            <field name="name">assistant.planning.tree</field>
+            <field name="model">assistant.planning</field>
+            <field name="arch" type="xml">
+                <tree string="Perencanaan Kuota Asisten Praktikum">
+                    <field name="name"/>
+                    <field name="course_id"/>
+                    <field name="assistant_quota"/>
+                    <field name="kaprodi_id"/>
+                    <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-success="state == 'final'"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_assistant_planning" model="ir.actions.act_window">
+            <field name="name">Perencanaan Kuota Praktikum</field>
+            <field name="res_model">assistant.planning</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Belum ada data perencanaan kuota. Buat yang baru!
+                </p>
+            </field>
+        </record>
+
+        <menuitem
+            id="menu_assistant_planning"
+            name="Perencanaan Kuota Praktikum"
+            parent="menu_assistant_root"
+            action="action_assistant_planning"
+            sequence="15"
+            groups="PendaftaranAsisten.group_pimpinan,PendaftaranAsisten.group_asprak_kepala_lab"
+        />
+
+        <record id="action_report_assistant_planning" model="ir.actions.report">
+            <field name="name">Cetak Form Pengajuan</field>
+            <field name="model">assistant.planning</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">PendaftaranAsisten.report_assistant_planning_template</field>
+            <field name="report_file">PendaftaranAsisten.report_assistant_planning_template</field>
+            <!-- Nama file print out disesuaikan karena isinya rekap banyak pengajuan -->
+            <field name="print_report_name">'Rekap_Pengajuan_Kuota'</field>
+            <field name="binding_model_id" ref="model_assistant_planning"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <!-- HASIL REWRITE QWEB (TTD DI KANAN BAWAH) -->
+        <template id="report_assistant_planning_template">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2 class="text-center mt-4" style="font-weight: bold; text-align: center;">REKAP PENGAJUAN KUOTA ASISTEN PRAKTIKUM</h2>
+                        <hr/>
+                        
+                        <!-- TABEL (Kolom TTD dihapus, persentase lebar disesuaikan) -->
+                        <table class="table table-sm table-bordered mt-4" style="width: 100%; margin-top: 20px;">
+                            <thead>
+                                <tr style="background-color: #f8f9fa; text-align: center;">
+                                    <th width="5%" style="vertical-align: middle;">No</th>
+                                    <th width="20%" style="vertical-align: middle;">No. Pengajuan</th>
+                                    <th width="40%" style="vertical-align: middle;">Mata Kuliah</th>
+                                    <th width="15%" style="vertical-align: middle;">Kuota Diajukan</th>
+                                    <th width="20%" style="vertical-align: middle;">Kaprodi Pengaju</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="nomor" t-value="1"/>
+                                <t t-foreach="docs" t-as="doc">
+                                    <tr>
+                                        <td style="text-align: center; vertical-align: middle;"><span t-esc="nomor"/></td>
+                                        <td style="vertical-align: middle; text-align: center;"><span t-field="doc.name"/></td>
+                                        <td style="vertical-align: middle;"><span t-field="doc.course_id.display_name"/></td>
+                                        <td style="text-align: center; vertical-align: middle;"><span t-field="doc.assistant_quota"/> Orang</td>
+                                        <td style="vertical-align: middle;"><span t-field="doc.kaprodi_id.name"/></td>
+                                    </tr>
+                                    <t t-set="nomor" t-value="nomor + 1"/>
+                                </t>
+                            </tbody>
+                        </table>
+
+                        <!-- BAGIAN TANDA TANGAN (Kanan Bawah) -->
+                        <div style="float: right; width: 40%; text-align: center; margin-top: 40px; page-break-inside: avoid;">
+                            <!-- Tempat, Tanggal -->
+                            <p style="margin-bottom: 5px;">....................., ....... ........................ 20....</p>
+                            <p>Mengetahui / Menyetujui,<br/><strong>Wakil Dekan Bidang Akademik</strong></p>
+                            <br/><br/><br/><br/>
+                            <p><strong>(............................................................)</strong></p>
+                        </div>
+                        <div style="clear: both;"></div> <!-- Untuk merapikan struktur float -->
+
+                    </div>
+                </t>
+            </t>
+        </template>
+
+    </data>
+</odoo>

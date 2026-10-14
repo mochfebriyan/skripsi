@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        
+        <!-- ================================================================================================ -->
+        <!-- VIEWS untuk OpStudentAssistant -->
+        <!-- ================================================================================================ -->
+        
+        <!-- KANBAN VIEW -->
+        <record id="view_op_student_assistant_kanban" model="ir.ui.view">
+            <field name="name">op.student.assistant.kanban</field>
+            <field name="model">op.student.assistant</field>
+            <field name="arch" type="xml">
+                <kanban class="o_res_partner_kanban">
+                    <field name="id"/>
+                    <field name="name"/>
+                    <field name="state"/>
+                    <field name="assistant_type"/>
+                    <field name="department_id"/>
+                    <field name="faculty_id"/>
+                    <field name="start_date"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_global_click">
+                                <div class="oe_kanban_details">
+                                    <h4><field name="name"/></h4>
+                                    <ul>
+                                        <li><strong>Type:</strong> <field name="assistant_type"/></li>
+                                        <li><strong>Department:</strong> <field name="department_id"/></li>
+                                        <li><strong>Faculty:</strong> <field name="faculty_id"/></li>
+                                        <li><strong>Start:</strong> <field name="start_date"/></li>
+                                        <li><strong>Status:</strong> <field name="state"/></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!-- TREE VIEW -->
+        <record id="view_op_student_assistant_tree" model="ir.ui.view">
+            <field name="name">op.student.assistant.tree</field>
+            <field name="model">op.student.assistant</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <tree string="Student Assistants">
+                    <field name="name"/>
+                    <field name="student_id"/>
+                    <field name="assistant_type"/>
+                    <field name="department_id"/>
+                    <field name="faculty_id"/>
+                    <field name="start_date"/>
+                    <field name="state"/>
+                    <field name="salary_type" optional="hide"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- FORM VIEW -->
+        <record id="view_op_student_assistant_form" model="ir.ui.view">
+            <field name="name">op.student.assistant.form</field>
+            <field name="model">op.student.assistant</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <form string="Student Assistant">
+                    <header>
+                        <button name="action_submit" type="object" string="Submit" 
+                                class="oe_highlight" 
+                                invisible="state != 'draft'"
+                                groups="openeducat_core.group_op_back_office_admin"/>
+                        <button name="action_approve" type="object" string="Approve"
+                                class="oe_highlight"
+                                invisible="state != 'submitted'"
+                                groups="openeducat_core.group_op_back_office_admin"/>
+                        <button name="action_reject" type="object" string="Reject"
+                                invisible="state != 'submitted'"
+                                groups="openeducat_core.group_op_back_office_admin"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box">
+                        </div>
+                        <field name="active" invisible="1"/>
+                        <widget name="web_ribbon" title="Archived" bg_color="bg-danger"
+                                invisible="active == True"/>
+                        <h2>
+                            <field name="name"/>
+                        </h2>
+                        <notebook colspan="4">
+                            <!-- TAB: INFORMASI DASAR -->
+                            <page name="basic_info" string="Basic Information">
+                                <group>
+                                    <group>
+                                        <field name="student_id" required="1"/>
+                                        <field name="employee_id"/>
+                                        <field name="assistant_type" required="1"/>
+                                        <field name="department_id" required="1"/>
+                                    </group>
+                                    <group>
+                                        <field name="faculty_id" required="1"/>
+                                        <field name="course_id"/>
+                                        <field name="start_date" required="1"/>
+                                        <field name="end_date"/>
+                                    </group>
+                                </group>
+                            </page>
+
+                            <!-- TAB: JAM KERJA & GAJI -->
+                            <page name="workload" string="Workload &amp; Compensation">
+                                <group>
+                                    <group>
+                                        <field name="hours_per_week"/>
+                                        <field name="salary_type"/>
+                                        <field name="hourly_rate" invisible="salary_type != 'hourly'"/>
+                                        <field name="monthly_salary" invisible="salary_type != 'monthly'"/>
+                                    </group>
+                                    <group>
+                                        <field name="allocation_budget"/>
+                                    </group>
+                                </group>
+                                <separator string="Catatan"/>
+                                <field name="notes" nolabel="1" placeholder="Catatan tambahan untuk asisten"/>
+                            </page>
+
+                            <!-- TAB: REFERENSI -->
+                            <page name="references" string="References">
+                                <group>
+                                    <field name="application_id"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!-- SEARCH VIEW -->
+        <record id="view_op_student_assistant_search" model="ir.ui.view">
+            <field name="name">op.student.assistant.search</field>
+            <field name="model">op.student.assistant</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <search string="Student Assistant">
+                    <field name="name"/>
+                    <field name="student_id"/>
+                    <field name="assistant_type"/>
+                    <field name="department_id"/>
+                    <field name="faculty_id"/>
+                    <newline/>
+                    <filter name="active_assistants" string="Active Assistants" 
+                            domain="[('state', 'in', ['approved', 'active'])]"/>
+                    <filter name="draft" string="Draft" domain="[('state', '=', 'draft')]"/>
+                    <filter name="submitted" string="Submitted" domain="[('state', '=', 'submitted')]"/>
+                    <filter name="approved" string="Approved" domain="[('state', '=', 'approved')]"/>
+                    <separator/>
+                    <group expand="0" string="Group By...">
+                        <filter name="group_by_type" string="Type" domain="[]" 
+                                context="{'group_by': 'assistant_type'}"/>
+                        <filter name="group_by_department" string="Department" domain="[]"
+                                context="{'group_by': 'department_id'}"/>
+                        <filter name="group_by_faculty" string="Faculty" domain="[]"
+                                context="{'group_by': 'faculty_id'}"/>
+                        <filter name="group_by_state" string="Status" domain="[]"
+                                context="{'group_by': 'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- ACTION WINDOW -->
+        <record model="ir.actions.act_window" id="act_open_op_student_assistant_view">
+            <field name="name">Student Assistants</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">op.student.assistant</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="search_view_id" ref="view_op_student_assistant_search"/>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+    </data>
+
+    <!-- ============================================================== -->
+    <!-- REVISI 12: Inject allocation_status ke view op.student bawaan  -->
+    <!-- ============================================================== -->
+
+    <!-- TREE VIEW INHERITANCE -->
+    <record id="view_op_student_tree_inherit_active_asisten" model="ir.ui.view">
+        <field name="name">op.student.tree.inherit.active.asisten</field>
+        <field name="model">op.student</field>
+        <field name="inherit_id" ref="openeducat_core.view_op_student_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree/field[last()]" position="after">
+                <field
+                    name="allocation_status"
+                    string="Status Alokasi"
+                    widget="badge"
+                    decoration-success="allocation_status == 'allocated'"
+                    decoration-muted="allocation_status == 'unallocated'"
+                />
+            </xpath>
+        </field>
+    </record>
+
+    <!-- FORM VIEW INHERITANCE -->
+    <record id="view_op_student_form_inherit_active_asisten" model="ir.ui.view">
+        <field name="name">op.student.form.inherit.active.asisten</field>
+        <field name="model">op.student</field>
+        <field name="inherit_id" ref="openeducat_core.view_op_student_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form//header" position="inside">
+                <field
+                    name="allocation_status"
+                    string="Status Alokasi"
+                    widget="badge"
+                    decoration-success="allocation_status == 'allocated'"
+                    decoration-muted="allocation_status == 'unallocated'"
+                    readonly="1"
+                    nolabel="1"
+                />
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

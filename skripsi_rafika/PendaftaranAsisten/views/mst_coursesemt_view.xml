@@ -1,0 +1,44 @@
+<odoo>
+    <record id="view_mst_coursesemt_tree" model="ir.ui.view">
+        <field name="name">mst.coursesemt.tree</field>
+        <field name="model">mst_coursesemt</field>
+        <field name="arch" type="xml">
+            <tree string="Master Course Semester">
+                <field name="course_identifier"/>
+                <field name="kode_matkul"/>
+                <field name="nama_matkul"/>
+                <field name="jumlah_sks"/>
+                <field name="is_praktikum_lab"/>
+                <field name="semester"/>
+                <field name="butuh_asisten"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_mst_coursesemt_form" model="ir.ui.view">
+        <field name="name">mst.coursesemt.form</field>
+        <field name="model">mst_coursesemt</field>
+        <field name="arch" type="xml">
+            <form string="Master Course Semester">
+                <sheet>
+                    <group>
+                        <field name="course_identifier" readonly="1"/>
+                        <field name="kode_matkul"/>
+                        <field name="nama_matkul"/>
+                        <field name="jumlah_sks"/>
+                        <field name="is_praktikum_lab"/>
+                        <field name="semester"/>
+                        <field name="butuh_asisten"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_mst_coursesemt" model="ir.actions.act_window">
+        <field name="name">Master Course Semester</field>
+        <field name="res_model">mst_coursesemt</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_mst_coursesemt_tree"/>
+    </record>
+</odoo>

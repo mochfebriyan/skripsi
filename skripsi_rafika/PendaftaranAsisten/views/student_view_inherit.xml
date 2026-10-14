@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        
+        <!-- ================================================================================================ -->
+        <!-- INHERIT op.student UNTUK MENAMBAHKAN INFORMASI ASSISTANTSHIP -->
+        <!-- ================================================================================================ -->
+        
+        <!-- INHERIT FORM VIEW -->
+        <record id="view_op_student_form_inherit_assistant" model="ir.ui.view">
+            <field name="name">op.student.form.inherit.assistant</field>
+            <field name="model">op.student</field>
+            <field name="inherit_id" ref="openeducat_core.view_op_student_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook" position="inside">
+                    <page name="assistant_info" string="Assistant Information">
+                        <group>
+                            <group>
+                                <field name="is_assistant" readonly="1"/>
+                                <field name="assistant_count" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="assistant_id" readonly="1"/>
+                            </group>
+                        </group>
+                        <button name="%(act_open_op_student_assistant_view)d" 
+                                type="action" 
+                                string="View Assistant Records"
+                                class="oe_highlight"
+                                invisible="not is_assistant"/>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- INHERIT TREE VIEW (OPTIONAL) -->
+        <record id="view_op_student_tree_inherit_assistant" model="ir.ui.view">
+            <field name="name">op.student.tree.inherit.assistant</field>
+            <field name="model">op.student</field>
+            <field name="inherit_id" ref="openeducat_core.view_op_student_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="inside">
+                    <field name="is_assistant" optional="hide"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

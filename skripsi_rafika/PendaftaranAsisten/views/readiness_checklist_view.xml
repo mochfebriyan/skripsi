@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_lab_readiness_checklist_form" model="ir.ui.view">
+        <field name="name">lab.readiness.checklist.form</field>
+        <field name="model">lab.readiness.checklist</field>
+        <field name="arch" type="xml">
+            <form string="Checklist Kesiapan Ruangan">
+                <sheet>
+                    <group>
+                        <group string="Informasi Pemeriksaan">
+                            <field name="facility_id"/>
+                            <field name="check_date"/>
+                            <field name="laboran_id" readonly="1"/>
+                        </group>
+                        <group string="Hasil Pengecekan">
+                            <field name="physical_status"/>
+                            <field name="software_status"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Catatan Tambahan">
+                            <field name="notes" placeholder="Tuliskan catatan kerusakan atau keterangan tambahan di sini..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_lab_readiness_checklist_tree" model="ir.ui.view">
+        <field name="name">lab.readiness.checklist.tree</field>
+        <field name="model">lab.readiness.checklist</field>
+        <field name="arch" type="xml">
+            <tree string="Checklist Kesiapan Ruangan" default_order="check_date desc">
+                <field name="facility_id"/>
+                <field name="check_date"/>
+                <field name="laboran_id"/>
+                <field name="physical_status" widget="badge" decoration-success="physical_status == 'baik'" decoration-danger="physical_status == 'rusak'"/>
+                <field name="software_status" widget="badge" decoration-success="software_status == 'tersedia'" decoration-warning="software_status == 'perlu_bantuan'"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_lab_readiness_checklist" model="ir.actions.act_window">
+        <field name="name">Checklist Kesiapan Ruangan</field>
+        <field name="res_model">lab.readiness.checklist</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

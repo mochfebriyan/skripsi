@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <menuitem id="menu_assistant_root" name="Manajemen Asisten Lab" sequence="10" 
+                  groups="openeducat_core.group_op_back_office_admin,PendaftaranAsisten.group_asprak_laboran,PendaftaranAsisten.group_asprak_kepala_lab,PendaftaranAsisten.group_pimpinan"/>
+
+        <menuitem id="menu_process_root" name="Proses &amp; Seleksi" parent="menu_assistant_root" sequence="20"/>
+        
+        <menuitem id="menu_calon_asprak" name="Data Pendaftar (Seleksi Berkas)" parent="menu_process_root" action="action_calon_asprak_regist" sequence="10"/>
+        
+        <menuitem id="menu_asprak_selection_backend" name="Seleksi Akhir (Kelulusan)" parent="menu_process_root" action="action_asprak_selection_backend" sequence="20"/>
+        
+        <!-- <menuitem id="menu_asprak_allocation" name="Alokasi Jadwal Praktikum" parent="menu_process_root" action="action_asprak_allocation" sequence="30"/>-->
+
+        <menuitem id="menu_sarpras_checklist_backend" name="Checklist Sarana Prasarana" parent="menu_process_root" action="action_sarpras_checklist_backend" sequence="40"/>
+
+        <menuitem id="menu_configuration_root" name="Konfigurasi" parent="menu_assistant_root" sequence="100"/>
+        
+        <menuitem id="menu_mst_periodesemt" name="Manajemen Pengumuman Rekrutmen" parent="menu_configuration_root" action="action_mst_periodesemt" sequence="10"/>
+
+        <menuitem id="menu_mst_dosen" name="Master Dosen" parent="menu_configuration_root" action="action_mst_dosen" sequence="20"/>
+        <menuitem id="menu_mst_coursesemt" name="Master Mata Kuliah" parent="menu_configuration_root" action="action_mst_coursesemt" sequence="30"/>
+        <menuitem id="menu_mst_kodekelas" name="Master Kelas" parent="menu_configuration_root" action="action_mst_kodekelas" sequence="40"/>
+        
+        <menuitem id="menu_kelola_akses_users" name="Kelola Hak Akses" parent="menu_configuration_root" action="action_kelola_akses_users" sequence="50"/>
+
+        <record id="action_mst_periodesemt" model="ir.actions.act_window">
+            <field name="name">Kelola Manajemen Rekrutmen</field>
+            <field name="res_model">mst_periodesemt</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">Belum ada data periode. Buat yang baru!</p>
+            </field>
+        </record>
+
+        <record id="action_asprak_selection_backend" model="ir.actions.act_window">
+            <field name="name">Kelola Seleksi Akhir (Kelulusan)</field>
+            <field name="res_model">asprak.selection</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">Belum ada data seleksi akhir.</p>
+            </field>
+        </record>
+
+        <record id="action_sarpras_checklist_backend" model="ir.actions.act_window">
+            <field name="name">Checklist Sarana Prasarana</field>
+            <field name="res_model">sarpras.checklist</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">Belum ada data checklist sarana prasarana.</p>
+            </field>
+        </record>
+
+        <record id="action_kelola_akses_users" model="ir.actions.act_window">
+            <field name="name">Kelola Hak Akses</field>
+            <field name="res_model">res.users</field>
+            <field name="view_mode">list,form</field>
+            <field name="context">{'search_default_no_share': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">Kelola hak akses pengguna sistem.</p>
+            </field>
+        </record>
+
+        <record id="action_url_hasil_seleksi_ta" model="ir.actions.act_url">
+            <field name="name">Hasil Seleksi Saya</field>
+            <field name="url">/my/hasil-seleksi</field>
+            <field name="target">self</field>
+        </record>
+
+        <record id="action_jadwal_mengajar_ta" model="ir.actions.act_window">
+            <field name="name">Jadwal Mengajar Saya</field>
+            <field name="res_model">jadwal.praktikum</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('asisten_ids.user_id', '=', uid)]</field>
+            <field name="context">{'search_default_group_hari': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">Belum ada jadwal mengajar.</p>
+                <p>Silakan klaim jadwal Anda melalui portal website terlebih dahulu.</p>
+            </field>
+        </record>
+
+        <menuitem id="menu_ta_root"
+                  name="Asisten Praktikum"
+                  web_icon="base,static/description/icon.png"
+                  groups="PendaftaranAsisten.group_asisten_praktikum"
+                  sequence="10"/>
+
+        <menuitem id="menu_ta_jadwal_mengajar"
+                  name="Jadwal Mengajar Saya"
+                  parent="menu_ta_root"
+                  action="action_jadwal_mengajar_ta"
+                  groups="PendaftaranAsisten.group_asisten_praktikum"
+                  sequence="1"/>
+
+        <menuitem id="menu_ta_hasil_seleksi"
+                  name="Pengumuman &amp; SKEP"
+                  parent="menu_ta_root"
+                  action="action_url_hasil_seleksi_ta"
+                  groups="PendaftaranAsisten.group_asisten_praktikum"
+                  sequence="2"/>
+
+    </data>
+</odoo>

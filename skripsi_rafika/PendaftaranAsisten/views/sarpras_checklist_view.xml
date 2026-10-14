@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="view_sarpras_checklist_tree" model="ir.ui.view">
+            <field name="name">sarpras.checklist.tree</field>
+            <field name="model">sarpras.checklist</field>
+            <field name="arch" type="xml">
+                <tree string="Checklist Sarana &amp; Prasarana"
+                      decoration-danger="state == 'issue'"
+                      decoration-success="state == 'ready'">
+                    <field name="name"/>
+                    <field name="laboran_id"/>
+                    <field name="kelas_id"/>
+                    <field name="check_date"/>
+                    <field name="kondisi_fisik"/>
+                    <field name="kesiapan_software"/>
+                    <field name="state"
+                           widget="badge"
+                           decoration-danger="state == 'issue'"
+                           decoration-success="state == 'ready'"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_sarpras_checklist_form" model="ir.ui.view">
+            <field name="name">sarpras.checklist.form</field>
+            <field name="model">sarpras.checklist</field>
+            <field name="arch" type="xml">
+                <form string="Checklist Kesiapan Sarana &amp; Prasarana">
+                    <header>
+                        <field name="state"
+                               widget="statusbar"
+                               statusbar_visible="ready,issue"
+                               options="{'clickable': '0'}"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name"
+                                       placeholder="Nama Laporan (cth: Checklist Lab - 17 Mei 2026)"
+                                       class="o_field_char"/>
+                            </h1>
+                        </div>
+
+                        <div class="alert alert-danger" role="alert"
+                             invisible="state != 'issue'">
+                            <strong>⚠ Perhatian:</strong> Terdapat kendala yang memerlukan tindak lanjut segera.
+                        </div>
+                        <div class="alert alert-success" role="alert"
+                             invisible="state != 'ready'">
+                            <strong>✔ Status:</strong> Sarana &amp; Prasarana dalam kondisi siap pakai.
+                        </div>
+
+                        <group string="Informasi Pengecekan">
+                            <group>
+                                <field name="laboran_id" readonly="1"/>
+                                <field name="kelas_id"/>
+                                <field name="check_date" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="state" readonly="1"/>
+                            </group>
+                        </group>
+
+                        <group string="Checklist Kondisi">
+                            <group>
+                                <field name="kondisi_fisik" required="1"/>
+                                <field name="catatan_kerusakan"
+                                       invisible="kondisi_fisik != 'rusak'"
+                                       required="kondisi_fisik == 'rusak'"
+                                       placeholder="Deskripsikan kerusakan secara detail..."/>
+                            </group>
+                            <group>
+                                <field name="kesiapan_software" required="1"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_sarpras_checklist_search" model="ir.ui.view">
+            <field name="name">sarpras.checklist.search</field>
+            <field name="model">sarpras.checklist</field>
+            <field name="arch" type="xml">
+                <search string="Cari Checklist">
+                    <field name="name"/>
+                    <field name="laboran_id"/>
+                    <field name="kelas_id"/>
+                    <filter string="Ada Kendala" name="filter_issue"
+                            domain="[('state','=','issue')]"/>
+                    <filter string="Siap" name="filter_ready"
+                            domain="[('state','=','ready')]"/>
+                    <group expand="0" string="Kelompokkan berdasarkan">
+                        <filter string="Laboran" name="group_laboran"
+                                context="{'group_by':'laboran_id'}"/>
+                        <filter string="Status" name="group_state"
+                                context="{'group_by':'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_report_sarpras_checklist" model="ir.actions.report">
+            <field name="name">Cetak Laporan Checklist</field>
+            <field name="model">sarpras.checklist</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">PendaftaranAsisten.report_sarpras_template</field>
+            <field name="report_file">PendaftaranAsisten.report_sarpras_template</field>
+            <field name="binding_model_id" ref="model_sarpras_checklist"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <template id="report_sarpras_template">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <h2 class="text-center">Laporan Checklist Sarana &amp; Prasarana</h2>
+                            <br/>
+                            <div class="row">
+                                <div class="col-6">
+                                    <p><strong>Nama Laporan:</strong> <span t-field="o.name"/></p>
+                                    <p><strong>Laboran:</strong> <span t-field="o.laboran_id.name"/></p>
+                                </div>
+                                <div class="col-6">
+                                    <p><strong>Waktu:</strong> <span t-field="o.check_date"/></p>
+                                    <p><strong>Status:</strong> <span t-field="o.state"/></p>
+                                </div>
+                            </div>
+                            <table class="table table-bordered mt-4">
+                                <thead>
+                                    <tr>
+                                        <th>Kategori</th>
+                                        <th>Keterangan</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Kondisi Fisik</td>
+                                        <td><span t-field="o.kondisi_fisik"/></td>
+                                    </tr>
+                                    <tr t-if="o.kondisi_fisik == 'rusak'">
+                                        <td>Detail Kerusakan</td>
+                                        <td><span t-field="o.catatan_kerusakan"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Kesiapan Software</td>
+                                        <td><span t-field="o.kesiapan_software"/></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

@@ -1,0 +1,39 @@
+<!-- e:\SKRIPSIAPP\openeducat_erp\PendaftaranAsisten\views\student_reference_view.xml -->
+<odoo>
+    <record id="view_op_student_reference_tree" model="ir.ui.view">
+        <field name="name">op.student.reference.tree</field>
+        <field name="model">op.student</field>
+        <field name="arch" type="xml">
+            <tree string="Student Reference">
+                <field name="student_identifier"/>
+                <field name="nim"/>
+                <field name="name"/>
+                <field name="program_studi_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_op_student_reference_form" model="ir.ui.view">
+        <field name="name">op.student.reference.form</field>
+        <field name="model">op.student</field>
+        <field name="arch" type="xml">
+            <form string="Student Reference">
+                <sheet>
+                    <group>
+                        <field name="student_identifier"/>
+                        <field name="nim"/>
+                        <field name="name"/>
+                        <field name="program_studi_id"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_op_student_reference" model="ir.actions.act_window">
+        <field name="name">Student Reference</field>
+        <field name="res_model">op.student</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_op_student_reference_tree"/>
+    </record>
+</odoo>

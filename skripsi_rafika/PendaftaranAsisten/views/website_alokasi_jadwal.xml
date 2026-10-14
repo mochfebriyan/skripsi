@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="website_alokasi_jadwal" name="Alokasi Jadwal Asisten">
+        <t t-call="website.layout">
+            <div id="wrap">
+                <div class="container mt-5 mb-5">
+                    <h2 class="text-center mb-4">Pemilihan Jadwal Praktikum</h2>
+
+                    <t t-if="error_msg">
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <i class="fa fa-exclamation-triangle mr-2"></i>
+                            <t t-esc="error_msg"/>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </t>
+                    <t t-elif="success_msg">
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <i class="fa fa-check-circle mr-2"></i>
+                            <t t-esc="success_msg"/>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </t>
+
+                    <div class="row">
+                        <t t-foreach="jadwal_list" t-as="jadwal">
+                            <div class="col-md-6 col-lg-4 mb-4">
+                                <div class="card shadow-sm h-100">
+                                    <div class="card-header bg-primary text-white">
+                                        <h5 class="card-title mb-0">
+                                            <t t-esc="jadwal.mata_kuliah_id.nama_matkul"/>
+                                        </h5>
+                                    </div>
+                                    <div class="card-body d-flex flex-column">
+
+                                        <p class="mb-1 d-flex align-items-center">
+                                            <i class="fa fa-user mr-2 flex-shrink-0"></i>
+                                            <strong class="mr-1">Dosen:</strong>
+                                            <span><t t-esc="jadwal.dosen_id.nama_dosen"/></span>
+                                        </p>
+                                        <p class="mb-1 d-flex align-items-center">
+                                            <i class="fa fa-map-marker mr-2 flex-shrink-0"></i>
+                                            <strong class="mr-1">Kelas/Ruang:</strong>
+                                            <span><t t-esc="jadwal.kode_kelas_id.nama_kelas"/></span>
+                                        </p>
+                                        <p class="mb-1 d-flex align-items-center">
+                                            <i class="fa fa-calendar mr-2 flex-shrink-0"></i>
+                                            <strong class="mr-1">Hari:</strong>
+                                            <span><t t-esc="jadwal.hari.capitalize()"/></span>
+                                        </p>
+                                        <p class="mb-3 d-flex align-items-center">
+                                            <i class="fa fa-clock-o mr-2 flex-shrink-0"></i>
+                                            <strong class="mr-1">Waktu:</strong>
+                                            <span>
+                                                <span t-esc="jadwal.jam_mulai"/>
+                                                -
+                                                <span t-esc="jadwal.jam_selesai"/>
+                                            </span>
+                                        </p>
+
+                                        <div class="d-flex justify-content-between align-items-center border-top pt-3 mt-auto">
+                                            <small class="text-muted">
+                                                Kuota: <t t-esc="len(jadwal.asisten_ids)"/> / <t t-esc="jadwal.kuota_asisten"/>
+                                            </small>
+
+                                            <t t-if="student.id in jadwal.asisten_ids.ids">
+                                                <span class="badge badge-success p-2">
+                                                    <i class="fa fa-check mr-1"></i> Terpilih
+                                                </span>
+                                            </t>
+                                            <t t-elif="len(jadwal.asisten_ids) &gt;= jadwal.kuota_asisten">
+                                                <span class="badge badge-danger p-2">
+                                                    <i class="fa fa-ban mr-1"></i> Kuota Penuh
+                                                </span>
+                                            </t>
+                                            <t t-else="">
+                                                <button type="button" class="btn btn-sm btn-info text-white fw-bold" data-bs-toggle="modal" t-attf-data-bs-target="#modalPertemuan#{jadwal.id}">Alokasikan</button>
+
+                                                <!-- Modal Pilih Pertemuan -->
+                                                <div class="modal fade" t-attf-id="modalPertemuan#{jadwal.id}" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered">
+                                                        <div class="modal-content">
+                                                            <form method="post" action="/my/alokasi-jadwal/submit">
+                                                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                                                <input type="hidden" name="jadwal_id" t-att-value="jadwal.id"/>
+
+                                                                <div class="modal-header bg-primary text-white">
+                                                                    <h5 class="modal-title" id="modalLabel">Pilih Pertemuan - <t t-esc="jadwal.mata_kuliah_id.nama_matkul"/></h5>
+                                                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+
+                                                                <div class="modal-body text-start">
+                                                                    <div class="mb-3">
+                                                                        <label for="pertemuan_ke" class="form-label fw-semibold text-dark">Pertemuan Ke</label>
+                                                                        <select name="pertemuan_ke" class="form-select" required="1">
+                                                                            <option value="" disabled="1" selected="1">-- Pilih Pertemuan --</option>
+                                                                            <t t-foreach="14" t-as="i">
+                                                                                <option t-att-value="i + 1">Pertemuan <t t-esc="i + 1"/></option>
+                                                                            </t>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                                                    <button type="submit" class="btn btn-primary"><i class="fa fa-save mr-1"/> Simpan Alokasi</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </t>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+
+                    <t t-if="not jadwal_list">
+                        <div class="alert alert-info text-center mt-4">
+                            Belum ada jadwal praktikum yang dibuka oleh Laboran saat ini.
+                        </div>
+                    </t>
+
+                    <div class="text-center mt-4">
+                        <a href="/my/home" class="btn btn-secondary">Kembali ke Portal</a>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

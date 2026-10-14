@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="form_pendaftaran_asprak" name="Form Pendaftaran Asisten">
+        <t t-call="website.layout">
+            <div id="wrap">
+                <div class="container mt-4 mb-4">
+                    <h3>Form Pendaftaran Asisten Praktikum</h3>
+                    
+                    <t t-if="not periode">
+                        <div class="alert alert-warning mt-3" role="alert">
+                            Mohon maaf, periode rekrutmen asisten saat ini sedang ditutup atau tidak aktif.
+                        </div>
+                    </t>
+                    
+                    <t t-if="periode">
+                        <form action="/pendaftaran-asisten/submit" method="post" 
+                              enctype="multipart/form-data" class="mt-4">
+                            <input type="hidden" name="csrf_token" 
+                                   t-att-value="request.csrf_token()"/>
+                            <input type="hidden" name="periode_id" 
+                                   t-att-value="periode.id"/>
+                            
+                            <div class="form-group mb-3">
+                                <label class="control-label fw-bold">Nama Mahasiswa</label>
+                                <input type="text" class="form-control bg-light" 
+                                       t-att-value="student.name if student else ''" 
+                                       readonly="readonly"/>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label class="control-label fw-bold">Periode Rekrutmen</label>
+                                <input type="text" class="form-control bg-light" 
+                                       t-att-value="periode.display_name" 
+                                       readonly="readonly"/>
+                            </div>
+
+                            <!-- ✅ TAMBAH: Field Mata Kuliah (bisa pilih >1) -->
+                            <div class="form-group mb-3">
+                                <label class="control-label fw-bold">
+                                    Mata Kuliah Target 
+                                    <span class="text-danger">*</span>
+                                    <small class="text-muted fw-normal">(bisa pilih lebih dari 1)</small>
+                                </label>
+                                <select class="form-select" 
+                                        name="matkul_ids" 
+                                        multiple="multiple" 
+                                        size="6"
+                                        required="required"
+                                        style="min-height: 150px;">
+                                    <t t-foreach="master_courses" t-as="mk">
+                                        <option t-att-value="mk.id">
+                                            [<t t-esc="mk.kode_matkul"/>] 
+                                            <t t-esc="mk.nama_matkul"/>
+                                        </option>
+                                    </t>
+                                </select>
+                                <small class="text-muted">
+                                    Tahan Ctrl (Windows) atau Cmd (Mac) untuk pilih lebih dari 1
+                                </small>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label class="control-label fw-bold">
+                                    Upload KHS (Maks 2MB) 
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <input type="file" class="form-control" 
+                                       name="berkas_khs" 
+                                       accept=".pdf,.jpg,.jpeg,.png" 
+                                       required="required"/>
+                            </div>
+
+                            <div class="form-group mt-4 pt-2 border-top">
+                                <button type="submit" name="action" value="draft" 
+                                        class="btn btn-secondary me-2">
+                                    Save as Draft
+                                </button>
+                                <button type="submit" name="action" value="submit" 
+                                        class="btn btn-primary">
+                                    Submit Pendaftaran
+                                </button>
+                            </div>
+                        </form>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- template sukses tidak berubah -->
+    <template id="website_form_success" name="Pendaftaran Berhasil">
+        <t t-call="website.layout">
+            <div id="wrap">
+                <div class="container mt-5 mb-5 text-center">
+                    <div class="alert alert-success d-inline-block p-4 shadow-sm">
+                        <h4 class="alert-heading mb-3">Pendaftaran Berhasil Disubmit!</h4>
+                        <p>Data pendaftaran asisten praktikum Anda telah kami terima.</p>
+                        <a href="/my/home" class="btn btn-success mt-3">Kembali ke Portal</a>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

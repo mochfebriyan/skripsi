@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="website_status_seleksi" name="Status Seleksi">
+        <t t-call="website.layout">
+            <div id="wrap" class="o_portal_wrap">
+                <div class="container mt-4 mb-5">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8">
+                            <div class="card shadow-sm border-0 mt-3">
+                                <div class="card-header bg-primary text-white text-center py-3">
+                                    <h3 class="mb-0">Pengumuman Hasil Seleksi</h3>
+                                </div>
+                                <div class="card-body p-5 text-center">
+                                    <h5 class="mb-4">Nomor Registrasi: <strong class="text-primary"><t t-esc="pendaftaran.id_registrasi if pendaftaran else '-'"/></strong></h5>
+                                    
+                                    <t t-if="status == 'lolos'">
+                                        <div class="alert alert-success text-center">
+                                            <h5>🎉 Selamat! Anda Dinyatakan Lolos Seleksi</h5>
+                                            <p>Silakan pilih jadwal praktikum Anda dan unduh dokumen SKEP Rektor untuk langkah selanjutnya.</p>
+                                            
+                                            <div class="d-flex justify-content-center mt-3" style="gap: 15px;">
+                                                <a href="/my/alokasi-jadwal" class="btn btn-warning mt-2">
+                                                    <i class="fa fa-calendar-plus-o"></i> Pilih Jadwal Praktikum
+                                                </a>
+
+                                                <t t-if="skep_file">
+                                                    <a t-attf-href="/download/skep-rektor/{{ pendaftaran.id }}" class="btn btn-success mt-2">
+                                                        <i class="fa fa-download"></i> Unduh SKEP Rektor
+                                                    </a>
+                                                </t>
+                                                <t t-else="">
+                                                    <button class="btn btn-secondary mt-2" disabled="disabled">
+                                                        <i class="fa fa-clock-o"></i> Dokumen SKEP sedang dalam proses pengesahan
+                                                    </button>
+                                                </t>
+                                            </div>
+                                        </div>
+                                    </t>
+
+                                    <t t-elif="status == 'tidak_lolos'">
+                                        <div class="alert alert-danger text-center">
+                                            <h5>Mohon Maaf, Anda Belum Lolos</h5>
+                                            <p>Tetap semangat dan jangan berkecil hati. Cobalah lagi di periode berikutnya!</p>
+                                        </div>
+                                    </t>
+
+                                    <t t-else="">
+                                        <div class="alert alert-info py-4 text-center" role="alert">
+                                            <h4 class="alert-heading">Sedang Dalam Proses Seleksi</h4>
+                                            <p class="mb-0">Berkas Anda sedang ditinjau oleh Laboran. Silakan cek halaman ini secara berkala untuk mengetahui hasil akhirnya.</p>
+                                        </div>
+                                    </t>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

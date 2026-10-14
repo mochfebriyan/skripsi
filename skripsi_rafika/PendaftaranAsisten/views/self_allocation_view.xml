@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_asprak_self_allocation_form" model="ir.ui.view">
+        <field name="name">asprak.self.allocation.form</field>
+        <field name="model">asprak.self.allocation</field>
+        <field name="arch" type="xml">
+            <form string="Alokasi Jadwal Asisten">
+                <header>
+                    <button name="action_confirm" type="object" string="Alokasikan" invisible="state != 'draft'" confirm="Apakah Anda yakin? Jadwal yang dipilih bersifat permanen dan tidak dapat diubah." class="oe_highlight"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,locked"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="asisten_id" readonly="1"/>
+                            <field name="course_id" readonly="state == 'locked'"/>
+                        </group>
+                        <group>
+                            <field name="timetable_id" readonly="state == 'locked'"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_asprak_self_allocation_tree" model="ir.ui.view">
+        <field name="name">asprak.self.allocation.tree</field>
+        <field name="model">asprak.self.allocation</field>
+        <field name="arch" type="xml">
+            <tree string="Alokasi Jadwal Asisten">
+                <field name="asisten_id"/>
+                <field name="course_id"/>
+                <field name="timetable_id"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_asprak_self_allocation" model="ir.actions.act_window">
+        <field name="name">Pemilihan Jadwal Asisten</field>
+        <field name="res_model">asprak.self.allocation</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>
