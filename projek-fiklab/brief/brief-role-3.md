@@ -196,7 +196,7 @@ Jangan menjanjikan kenaikan skor.
 ## Status draf Bab I
 
 - [Latar Belakang](../pendahuluan/draft/pendahuluan-role-3.md): 7 paragraf, beserta daftar pustaka. Sisa placeholder: dasar resmi ISO 17025, data wawancara KaLab, dan metode (usulan Water-Scrum-Fall).
-- Identifikasi Masalah, Batasan, Tujuan dan Manfaat: struktur sudah disepakati (bagian di atas), prosa belum ditulis.
+- 1.2 Identifikasi Masalah, 1.3 Batasan Masalah, 1.4 Tujuan dan Manfaat: draf sudah ditulis di file yang sama. Placeholder: nama fase POB (*Execute*), uji coba semester berjalan, dan metode.
 - Jadwal Kegiatan: belum.
 
 ## Referensi yang sudah diverifikasi

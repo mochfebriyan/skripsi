@@ -20,6 +20,45 @@ Oleh karena itu, penelitian ini mengembangkan modul Odoo yang mencatat pelaksana
 
 Penelitian ini merupakan bagian dari proyek LabFIK Compliance, yang dikerjakan oleh beberapa kelompok dan masing-masing memegang sebagian indikator Instrumen Monev. Kelompok penulis mencakup indikator Pengelolaan 4, Persiapan 15–17, dan Proses 18. Penugasan asisten dan laboran serta perencanaan dan kesiapan sesi dibahas pada penelitian yang terpisah. Penelitian ini sendiri membahas pencatatan pelaksanaan sesi untuk Proses 18 dan *dashboard* skor kelima indikator tersebut. Pengembangan dilakukan dengan metode **[KONFIRMASI: metode pengembangan]**. Melalui penelitian ini, setiap sesi praktikum di LabFIK diharapkan memiliki rekaman yang sah dan dapat diverifikasi, sehingga KaLab dapat memantau skor indikator sepanjang semester, bukan hanya menjelang monev.
 
+## 1.2 Identifikasi Masalah
+
+Berdasarkan latar belakang yang telah diuraikan, masalah yang diidentifikasi dalam penelitian ini adalah sebagai berikut:
+
+1. Pencatatan pelaksanaan sesi praktikum hanya berupa laporan asisten melalui Google Form, sedangkan rencana pertemuan tidak memuat hari dan jam pelaksanaan. Akibatnya, sesi pada kelas tanpa asisten tidak tercatat, dan sesi yang direncanakan tidak dapat dipasangkan dengan pelaksanaannya.
+2. Rekaman pelaksanaan yang ada belum memenuhi syarat bukti indikator Proses 18. Rekaman diisi setelah sesi berlangsung, tidak mencatat presensi laboran maupun rincian kegiatan dalam *log book*, dan tidak merekam perubahan jadwal serta sesi pengganti. Akibatnya, keterlaksanaan sesi tidak dapat diverifikasi.
+3. Persentase dan skor indikator dihitung secara manual menjelang monev dan tidak dapat ditelusuri sampai ke sesi asalnya. Akibatnya, KaLab tidak dapat mengetahui dan menindaklanjuti kelas yang tertinggal selama semester berjalan.
+
+## 1.3 Batasan Masalah
+
+Agar penelitian ini lebih terarah, ruang lingkup masalah dibatasi sebagai berikut:
+
+1. Penelitian dilakukan di LabFIK UPN "Veteran" Jakarta dan mencakup sesi praktikum terjadwal pada delapan ruang laboratorium. Peminjaman laboratorium untuk kegiatan di luar praktikum tidak dibahas.
+2. Penelitian berfokus pada fase *Execute* dalam Prosedur Operasional Baku (POB) Manajemen Praktikum FIK **[KONFIRMASI: nama fase pada dokumen POB]**, yaitu pencatatan sesi sejak pelaksanaan hingga penutupan periode monev. Rekrutmen dan penugasan asisten, penjadwalan, pemeriksaan kesiapan sarana, serta perhitungan honor asisten dibahas pada penelitian terpisah dalam proyek LabFIK Compliance.
+3. Pencatatan pelaksanaan dibangun untuk indikator Proses 18. *Dashboard* menampilkan skor indikator Pengelolaan 4, Persiapan 15, 16, 17, dan Proses 18. Data dan aturan penilaian keempat indikator selain Proses 18 berasal dari modul penelitian lain dalam proyek yang sama. Indikator lain pada Instrumen Monev tidak dicakup.
+4. Sistem berfungsi sebagai alat pencatatan, pembuktian, dan pemantauan, sehingga tidak menjamin terpenuhinya indikator dan tidak menggantikan verifikasi oleh asesor monev. Ambang penilaian yang belum ditetapkan oleh instrumen, seperti toleransi keterlambatan dan durasi minimal sesi, mengikuti ketetapan KaLab.
+5. Pengembangan menggunakan Odoo *Community Edition* versi 17.0 dengan modul OpenEduCat, melanjutkan modul yang dibangun oleh Anandar (2026). Penelitian ini tidak membandingkan Odoo dengan *platform* lain.
+6. Data uji berasal dari rekaman pelaksanaan praktikum periode 2025/2026 Ganjil dan Genap yang telah dianonimkan **[KONFIRMASI: apakah ada uji coba pada semester berjalan]**.
+7. Pengembangan menggunakan metode **[KONFIRMASI: Water-Scrum-Fall]**. Pengujian dilakukan dengan *black box testing* dan *User Acceptance Testing* (UAT), dengan responden KaLab, laboran/PLP, dosen pengampu, dan asisten praktikum.
+
+## 1.4 Tujuan dan Manfaat
+
+Berdasarkan identifikasi masalah di atas, tujuan penelitian ini adalah sebagai berikut:
+
+1. Membangun fitur pencatatan pelaksanaan sesi praktikum yang terhubung ke sesi yang direncanakan, termasuk pengajuan perubahan jadwal dan sesi pengganti yang terhubung ke sesi asalnya.
+2. Menghasilkan rekaman pelaksanaan yang memenuhi syarat bukti indikator Proses 18. Rekaman tersebut dicatat pada saat sesi berlangsung, memuat identitas personel, mencakup presensi praktikan, asisten, laboran, dan dosen beserta *log book*, serta menyimpan riwayat perubahannya.
+3. Membangun perhitungan skor indikator Proses 18 secara otomatis beserta *dashboard* skor kelima indikator yang dapat ditelusuri sampai ke sesi yang belum memenuhi dan alasannya.
+4. Menguji modul melalui *black box testing* dan UAT, serta membandingkan skor Proses 18 hasil perhitungan sistem dengan hasil perhitungan manual pada data periode 2025/2026 Genap.
+
+Penelitian ini diharapkan memberikan manfaat sebagai berikut:
+
+1. Manfaat Praktis
+   - a. Bagi LabFIK UPNVJ: menyediakan rekaman pelaksanaan sesi yang siap diverifikasi saat monev, memungkinkan KaLab memantau kelas yang tertinggal sepanjang semester, serta mengurangi rekapitulasi manual menjelang monev.
+   - b. Bagi asisten praktikum, laboran, dan dosen: pencatatan sesi cukup dilakukan satu kali pada saat sesi berlangsung, menggantikan pengisian form dan rekap yang terpisah.
+2. Manfaat Akademis
+   - a. Bagi proyek LabFIK Compliance dan penelitian selanjutnya: mekanisme perhitungan skor dapat diperluas ke indikator lain pada Instrumen Monev tanpa mengubah rancangan dasarnya.
+   - b. Bagi komunitas akademik: menjadi referensi penerapan Odoo untuk pembuktian mutu laboratorium yang bersumber dari rekaman operasional.
+   - c. Bagi penulis: menerapkan pengetahuan perkuliahan dalam kustomisasi dan pewarisan (*inheritance*) modul pada *framework* Odoo.
+
 ## Daftar Pustaka
 
 Anandar, R. (2026) *Pengembangan Modul Perencanaan Asisten Praktikum Berbasis Odoo OpenEduCat (Studi Kasus: Laboratorium Fakultas Ilmu Komputer UPN "Veteran" Jakarta)*. Skripsi. Jakarta: UPN "Veteran" Jakarta. Tersedia di: http://repository.upnvj.ac.id/51635/.
