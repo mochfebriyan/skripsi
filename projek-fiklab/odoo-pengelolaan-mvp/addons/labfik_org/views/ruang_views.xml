@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_ruang_tree" model="ir.ui.view">
+        <field name="name">labfik.ruang.tree</field>
+        <field name="model">labfik.ruang</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="kode"/>
+                <field name="name"/>
+                <field name="lokasi"/>
+                <field name="is_virtual"/>
+                <field name="active" column_invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_ruang" model="ir.actions.act_window">
+        <field name="name">Ruang dan lokasi</field>
+        <field name="res_model">labfik.ruang</field>
+        <field name="view_mode">tree</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Tambahkan ruang laboratorium</p>
+            <p>Ruang dipakai sebagai lokasi penggunaan dan distribusi SOP. Tambahkan juga lokasi daring seperti Portal LabFIK.</p>
+        </field>
+    </record>
+</odoo>

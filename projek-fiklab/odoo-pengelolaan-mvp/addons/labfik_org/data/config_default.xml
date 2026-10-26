@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- Nilai awal ambang (PRD §8.3). Usulan penulis; dapat diubah KaLab di menu Pengaturan. -->
+    <record id="param_nama_lab" model="ir.config_parameter">
+        <field name="key">labfik.nama_lab</field>
+        <field name="value">Laboratorium Fakultas Ilmu Komputer UPN "Veteran" Jakarta</field>
+    </record>
+    <record id="param_siklus_tinjau" model="ir.config_parameter">
+        <field name="key">labfik.siklus_tinjau_bulan</field>
+        <field name="value">12</field>
+    </record>
+    <record id="param_pengingat_hari" model="ir.config_parameter">
+        <field name="key">labfik.pengingat_hari</field>
+        <field name="value">30</field>
+    </record>
+    <record id="param_p1_k3" model="ir.config_parameter">
+        <field name="key">labfik.p1_k3_min_realisasi</field>
+        <field name="value">1</field>
+    </record>
+    <record id="param_p3_k3" model="ir.config_parameter">
+        <field name="key">labfik.p3_k3_min_rapat</field>
+        <field name="value">1</field>
+    </record>
+    <record id="param_k4" model="ir.config_parameter">
+        <field name="key">labfik.k4_min_per_tahun</field>
+        <field name="value">1</field>
+    </record>
+</odoo>

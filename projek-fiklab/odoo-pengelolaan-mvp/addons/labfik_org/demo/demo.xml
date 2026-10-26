@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Data contoh FIKTIF. Lihat models/demo.py. Login contoh: kalab, laboran, asisten, penilai (kata sandi = login). -->
+    <function model="labfik.demo" name="_muat_demo"/>
+</odoo>

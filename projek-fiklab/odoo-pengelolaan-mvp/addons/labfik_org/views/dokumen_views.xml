@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ================================================================ Daftar induk dokumen -->
+    <record id="view_dokumen_tree" model="ir.ui.view">
+        <field name="name">labfik.dokumen.tree</field>
+        <field name="model">labfik.dokumen</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="kode"/>
+                <field name="name"/>
+                <field name="jenis"/>
+                <field name="kategori"/>
+                <field name="ruang_ids" widget="many2many_tags"/>
+                <field name="revisi_berlaku"/>
+                <field name="tanggal_tinjau"/>
+                <field name="pemilik_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_dokumen_form" model="ir.ui.view">
+        <field name="name">labfik.dokumen.form</field>
+        <field name="model">labfik.dokumen</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_versi_baru" type="object" string="Buat versi baru" class="oe_highlight"
+                            groups="labfik_org.group_labfik_laboran"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" placeholder="Judul dokumen"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="kode" placeholder="SOP-PRA-001"/>
+                            <field name="jenis"/>
+                            <field name="kategori"/>
+                            <field name="pemilik_id"/>
+                        </group>
+                        <group>
+                            <field name="versi_berlaku_id"/>
+                            <field name="tanggal_tinjau"/>
+                            <field name="ruang_ids" widget="many2many_tags"/>
+                            <field name="active" invisible="1"/>
+                        </group>
+                    </group>
+                    <group string="Dasar kebutuhan">
+                        <field name="dasar_kebutuhan" nolabel="1" colspan="2"
+                               placeholder="Kegiatan atau risiko yang membuat dokumen ini diperlukan"/>
+                    </group>
+                    <p class="text-muted">
+                        Kerangka SOP baku dapat diunduh di
+                        <a href="/labfik_org/static/src/kerangka_sop.docx" target="_blank">kerangka_sop.docx</a>.
+                    </p>
+                    <notebook>
+                        <page string="Riwayat versi" name="versi">
+                            <field name="versi_ids" readonly="1">
+                                <tree decoration-success="state == 'berlaku'" decoration-muted="state == 'dicabut'">
+                                    <field name="revisi"/>
+                                    <field name="state" widget="badge"/>
+                                    <field name="tanggal_sah"/>
+                                    <field name="tanggal_tinjau"/>
+                                    <field name="ringkasan"/>
+                                    <field name="file" filename="file_name" widget="binary"/>
+                                    <field name="file_name" column_invisible="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Wajib pada periode" name="wajib">
+                            <field name="wajib_ids" readonly="1">
+                                <tree>
+                                    <field name="periode_id"/>
+                                    <field name="catatan"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_dokumen_search" model="ir.ui.view">
+        <field name="name">labfik.dokumen.search</field>
+        <field name="model">labfik.dokumen</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="kode"/>
+                <field name="name"/>
+                <field name="ruang_ids"/>
+                <filter name="sop" string="SOP/IK" domain="[('jenis', 'in', ('sop', 'ik'))]"/>
+                <filter name="belum_berlaku" string="Belum ada versi berlaku" domain="[('versi_berlaku_id', '=', False)]"/>
+                <group expand="0" string="Kelompokkan">
+                    <filter name="group_jenis" string="Jenis" context="{'group_by': 'jenis'}"/>
+                    <filter name="group_kategori" string="Kategori" context="{'group_by': 'kategori'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_dokumen" model="ir.actions.act_window">
+        <field name="name">Daftar induk dokumen</field>
+        <field name="res_model">labfik.dokumen</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_sop': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Daftarkan SOP dan instruksi kerja</p>
+            <p>Daftar induk memuat kode, judul, kategori, dasar kebutuhan, dan lokasi penggunaan setiap dokumen.</p>
+        </field>
+    </record>
+
+    <!-- ================================================================ Versi dokumen -->
+    <record id="view_versi_tree" model="ir.ui.view">
+        <field name="name">labfik.dokumen.versi.tree</field>
+        <field name="model">labfik.dokumen.versi</field>
+        <field name="arch" type="xml">
+            <tree decoration-danger="perlu_ditinjau" decoration-muted="state == 'dicabut'">
+                <field name="kode"/>
+                <field name="judul"/>
+                <field name="kategori"/>
+                <field name="revisi"/>
+                <field name="state" widget="badge" decoration-success="state == 'berlaku'"
+                       decoration-warning="state == 'diajukan'" decoration-info="state == 'draf'"/>
+                <field name="tanggal_sah"/>
+                <field name="tanggal_tinjau"/>
+                <field name="perlu_ditinjau" column_invisible="1"/>
+                <field name="file" filename="file_name" widget="binary"/>
+                <field name="file_name" column_invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_versi_form" model="ir.ui.view">
+        <field name="name">labfik.dokumen.versi.form</field>
+        <field name="model">labfik.dokumen.versi</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_ajukan" type="object" string="Ajukan" class="oe_highlight"
+                            invisible="state != 'draf'" groups="labfik_org.group_labfik_laboran"/>
+                    <button name="action_sahkan" type="object" string="Sahkan" class="oe_highlight"
+                            invisible="state != 'diajukan'" groups="labfik_org.group_labfik_kalab"/>
+                    <button name="action_tolak" type="object" string="Tolak"
+                            invisible="state != 'diajukan'" groups="labfik_org.group_labfik_kalab"/>
+                    <button name="action_tinjau_tanpa_perubahan" type="object" string="Tinjau ulang: masih sesuai"
+                            invisible="state != 'berlaku' or jenis in ('sk', 'rencana')"
+                            groups="labfik_org.group_labfik_kalab"/>
+                    <button name="action_cabut" type="object" string="Cabut"
+                            invisible="state != 'berlaku' or jenis in ('sk', 'rencana')"
+                            groups="labfik_org.group_labfik_kalab"
+                            confirm="Versi ini tidak lagi berlaku setelah dicabut. Lanjutkan?"/>
+                    <field name="jenis" invisible="1"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draf,diajukan,berlaku"/>
+                </header>
+                <sheet>
+                    <div class="alert alert-danger" role="alert" invisible="not perlu_ditinjau">
+                        Versi ini sudah lewat tanggal tinjau ulang.
+                    </div>
+                    <div class="alert alert-warning" role="alert" invisible="state != 'draf' or not alasan_tolak">
+                        Ditolak: <field name="alasan_tolak" class="oe_inline"/>
+                    </div>
+                    <div class="oe_title">
+                        <field name="display_name" invisible="1"/>
+                        <label for="dokumen_id"/>
+                        <h1><field name="dokumen_id" readonly="state != 'draf' or id" options="{'no_create': True}"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="revisi" readonly="state != 'draf'"/>
+                            <field name="file" filename="file_name" readonly="state != 'draf'"/>
+                            <field name="file_name" invisible="1"/>
+                            <field name="ringkasan" readonly="state != 'draf'"/>
+                        </group>
+                        <group>
+                            <field name="tanggal_sah"/>
+                            <field name="tanggal_tinjau" readonly="state != 'berlaku'"/>
+                            <field name="pengesah_id"/>
+                            <field name="disahkan_oleh_id"/>
+                            <field name="perlu_ditinjau" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook invisible="state not in ('berlaku', 'dicabut')">
+                        <page string="Distribusi" name="distribusi">
+                            <div class="alert alert-warning" role="alert" invisible="not lokasi_belum_ids">
+                                Belum didistribusikan ke: <field name="lokasi_belum_ids" widget="many2many_tags" class="oe_inline"/>
+                            </div>
+                            <field name="distribusi_ids" readonly="state != 'berlaku'">
+                                <tree editable="bottom">
+                                    <field name="ruang_id"/>
+                                    <field name="tanggal"/>
+                                    <field name="petugas_id"/>
+                                    <field name="catatan"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Sosialisasi" name="sosialisasi">
+                            <field name="sosialisasi_ids" readonly="state != 'berlaku'">
+                                <tree>
+                                    <field name="tanggal"/>
+                                    <field name="metode"/>
+                                    <field name="jumlah_peserta"/>
+                                    <field name="catatan"/>
+                                </tree>
+                                <form>
+                                    <group>
+                                        <group>
+                                            <field name="tanggal"/>
+                                            <field name="metode"/>
+                                        </group>
+                                        <group>
+                                            <field name="bukti" filename="bukti_name"/>
+                                            <field name="bukti_name" invisible="1"/>
+                                        </group>
+                                    </group>
+                                    <field name="peserta_ids" widget="many2many_tags"/>
+                                    <field name="catatan" placeholder="Catatan"/>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_versi_search" model="ir.ui.view">
+        <field name="name">labfik.dokumen.versi.search</field>
+        <field name="model">labfik.dokumen.versi</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="kode"/>
+                <field name="judul"/>
+                <field name="ruang_ids" string="Ruang"/>
+                <filter name="berlaku" string="Berlaku" domain="[('state', '=', 'berlaku')]"/>
+                <filter name="diajukan" string="Menunggu pengesahan" domain="[('state', '=', 'diajukan')]"/>
+                <filter name="draf" string="Draf" domain="[('state', '=', 'draf')]"/>
+                <group expand="0" string="Kelompokkan">
+                    <filter name="group_kategori" string="Kategori" context="{'group_by': 'kategori'}"/>
+                    <filter name="group_state" string="Status" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_versi_berlaku" model="ir.actions.act_window">
+        <field name="name">Dokumen berlaku</field>
+        <field name="res_model">labfik.dokumen.versi</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('state', '=', 'berlaku'), ('jenis', 'in', ('sop', 'ik', 'formulir'))]</field>
+        <field name="context">{'create': False}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Belum ada dokumen yang berlaku</p>
+            <p>Dokumen muncul di sini setelah disahkan Kepala Laboratorium. Cari per ruang lewat kolom pencarian.</p>
+        </field>
+    </record>
+
+    <record id="action_versi" model="ir.actions.act_window">
+        <field name="name">Semua versi</field>
+        <field name="res_model">labfik.dokumen.versi</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Unggah draf dokumen</p>
+            <p>Alur: draf → diajukan → disahkan (berlaku). Versi lama otomatis dicabut saat revisi baru disahkan.</p>
+        </field>
+    </record>
+
+    <record id="action_versi_diajukan" model="ir.actions.act_window">
+        <field name="name">Menunggu pengesahan</field>
+        <field name="res_model">labfik.dokumen.versi</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('state', '=', 'diajukan')]</field>
+        <field name="context">{'create': False}</field>
+    </record>
+
+    <!-- ================================================================ Distribusi dan sosialisasi -->
+    <record id="view_distribusi_tree" model="ir.ui.view">
+        <field name="name">labfik.dokumen.distribusi.tree</field>
+        <field name="model">labfik.dokumen.distribusi</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="versi_id" options="{'no_create': True}"/>
+                <field name="ruang_id"/>
+                <field name="tanggal"/>
+                <field name="petugas_id"/>
+                <field name="catatan"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_distribusi" model="ir.actions.act_window">
+        <field name="name">Distribusi</field>
+        <field name="res_model">labfik.dokumen.distribusi</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <record id="view_sosialisasi_tree" model="ir.ui.view">
+        <field name="name">labfik.dokumen.sosialisasi.tree</field>
+        <field name="model">labfik.dokumen.sosialisasi</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="tanggal"/>
+                <field name="versi_id"/>
+                <field name="metode"/>
+                <field name="jumlah_peserta"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_sosialisasi_form" model="ir.ui.view">
+        <field name="name">labfik.dokumen.sosialisasi.form</field>
+        <field name="model">labfik.dokumen.sosialisasi</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="versi_id" options="{'no_create': True}"/>
+                            <field name="tanggal"/>
+                            <field name="metode"/>
+                        </group>
+                        <group>
+                            <field name="bukti" filename="bukti_name"/>
+                            <field name="bukti_name" invisible="1"/>
+                        </group>
+                    </group>
+                    <group string="Peserta">
+                        <field name="peserta_ids" widget="many2many_tags" nolabel="1" colspan="2"/>
+                    </group>
+                    <field name="catatan" placeholder="Catatan"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_sosialisasi" model="ir.actions.act_window">
+        <field name="name">Sosialisasi</field>
+        <field name="res_model">labfik.dokumen.sosialisasi</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

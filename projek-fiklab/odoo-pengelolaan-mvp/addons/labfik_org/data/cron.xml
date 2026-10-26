@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="cron_sinkron_akses" model="ir.cron">
+        <field name="name">LabFIK: sinkronkan hak akses dari jabatan</field>
+        <field name="model_id" ref="model_labfik_personel"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_sinkron_akses()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="cron_pengingat_tinjau" model="ir.cron">
+        <field name="name">LabFIK: pengingat tinjau ulang dokumen</field>
+        <field name="model_id" ref="model_labfik_dokumen_versi"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_pengingat_tinjau()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="active" eval="True"/>
+    </record>
+</odoo>

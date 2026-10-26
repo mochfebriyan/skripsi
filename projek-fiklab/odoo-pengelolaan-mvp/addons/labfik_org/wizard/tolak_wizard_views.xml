@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_tolak_wizard_form" model="ir.ui.view">
+        <field name="name">labfik.tolak.wizard.form</field>
+        <field name="model">labfik.tolak.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Tolak pengajuan">
+                <field name="res_model" invisible="1"/>
+                <field name="res_id" invisible="1"/>
+                <p>Pengajuan akan dikembalikan ke draf. Tuliskan apa yang perlu diperbaiki.</p>
+                <field name="alasan" placeholder="Alasan penolakan" required="1"/>
+                <footer>
+                    <button name="action_tolak" type="object" string="Tolak" class="btn-danger"/>
+                    <button string="Batal" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

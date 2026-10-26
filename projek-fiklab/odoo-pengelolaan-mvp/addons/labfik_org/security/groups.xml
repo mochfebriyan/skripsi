@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="module_category_labfik" model="ir.module.category">
+        <field name="name">LabFIK</field>
+        <field name="description">Hak akses modul LabFIK Organization Management</field>
+        <field name="sequence">20</field>
+    </record>
+
+    <record id="group_labfik_pengguna" model="res.groups">
+        <field name="name">Pengguna Lab</field>
+        <field name="category_id" ref="module_category_labfik"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="comment">Asisten dan dosen: membaca dokumen yang berlaku, menjadi peserta rapat dan sosialisasi.</field>
+    </record>
+
+    <record id="group_labfik_laboran" model="res.groups">
+        <field name="name">Laboran</field>
+        <field name="category_id" ref="module_category_labfik"/>
+        <field name="implied_ids" eval="[(4, ref('group_labfik_pengguna'))]"/>
+        <field name="comment">Menyusun draf SOP, mencatat distribusi dan sosialisasi, melaporkan realisasi.</field>
+    </record>
+
+    <record id="group_labfik_penilai" model="res.groups">
+        <field name="name">Penilai</field>
+        <field name="category_id" ref="module_category_labfik"/>
+        <field name="implied_ids" eval="[(4, ref('group_labfik_pengguna'))]"/>
+        <field name="comment">GKM atau asesor monev: membaca seluruh bukti dan mengisi skor akhir.</field>
+    </record>
+
+    <record id="group_labfik_kalab" model="res.groups">
+        <field name="name">Kepala Laboratorium</field>
+        <field name="category_id" ref="module_category_labfik"/>
+        <field name="implied_ids" eval="[(4, ref('group_labfik_laboran'))]"/>
+        <field name="comment">Mengesahkan SOP dan rencana kerja, menetapkan SK dan daftar SOP wajib.</field>
+    </record>
+
+    <record id="group_labfik_admin" model="res.groups">
+        <field name="name">Admin LabFIK</field>
+        <field name="category_id" ref="module_category_labfik"/>
+        <field name="implied_ids" eval="[(4, ref('group_labfik_kalab')), (4, ref('group_labfik_penilai'))]"/>
+        <field name="comment">Pengelola sistem: semua hak, termasuk menghapus data.</field>
+    </record>
+
+    <record id="base.user_admin" model="res.users">
+        <field name="groups_id" eval="[(4, ref('group_labfik_admin'))]"/>
+    </record>
+</odoo>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_sk_tree" model="ir.ui.view">
+        <field name="name">labfik.sk.tree</field>
+        <field name="model">labfik.sk</field>
+        <field name="arch" type="xml">
+            <tree decoration-muted="state == 'dicabut'" decoration-success="state == 'berlaku'">
+                <field name="name"/>
+                <field name="perihal"/>
+                <field name="tanggal"/>
+                <field name="tanggal_mulai"/>
+                <field name="tanggal_selesai"/>
+                <field name="jumlah_personel"/>
+                <field name="state" widget="badge" decoration-success="state == 'berlaku'"
+                       decoration-info="state == 'draf'"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_sk_form" model="ir.ui.view">
+        <field name="name">labfik.sk.form</field>
+        <field name="model">labfik.sk</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_berlakukan" type="object" string="Berlakukan SK" class="oe_highlight"
+                            invisible="state != 'draf'" groups="labfik_org.group_labfik_kalab"/>
+                    <button name="action_cabut" type="object" string="Cabut SK" invisible="state != 'berlaku'"
+                            groups="labfik_org.group_labfik_kalab"
+                            confirm="Mencabut SK akan mencabut hak akses yang berasal dari SK ini. Lanjutkan?"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" readonly="state != 'draf'" placeholder="Nomor SK"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="perihal" readonly="state != 'draf'"/>
+                            <field name="tanggal" readonly="state != 'draf'"/>
+                            <field name="pengesah_id" readonly="state != 'draf'"
+                                   options="{'no_create': True}"/>
+                        </group>
+                        <group>
+                            <field name="tanggal_mulai" readonly="state != 'draf'"/>
+                            <field name="tanggal_selesai" readonly="state != 'draf'"/>
+                            <field name="lampiran_file" filename="lampiran_filename" readonly="state != 'draf'"/>
+                            <field name="lampiran_filename" invisible="1"/>
+                            <field name="lampiran_versi_id" invisible="not lampiran_versi_id"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Personel dan jabatan" name="lines">
+                            <field name="line_ids" readonly="state != 'draf'">
+                                <tree editable="bottom">
+                                    <field name="sk_state" column_invisible="1"/>
+                                    <field name="personel_id"/>
+                                    <field name="jabatan_id"/>
+                                    <field name="tanggal_mulai"/>
+                                    <field name="tanggal_selesai"/>
+                                    <field name="is_aktif"/>
+                                    <field name="catatan"/>
+                                    <button name="action_akhiri" type="object" string="Akhiri hari ini" icon="fa-stop-circle-o"
+                                            invisible="sk_state != 'berlaku' or not is_aktif"
+                                            groups="labfik_org.group_labfik_kalab"
+                                            confirm="Penetapan ini diakhiri per hari ini dan hak aksesnya dicabut. Lanjutkan?"/>
+                                </tree>
+                            </field>
+                            <p class="text-muted" invisible="state == 'draf'">
+                                SK sudah berlaku: penetapan hanya dapat diakhiri lewat tombol "Akhiri hari ini".
+                                Untuk perubahan struktur, buat SK baru.
+                            </p>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_sk" model="ir.actions.act_window">
+        <field name="name">SK penetapan</field>
+        <field name="res_model">labfik.sk</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Catat SK penetapan pengelola lab</p>
+            <p>Isi daftar personel dan jabatannya, unggah file SK bertanda tangan, lalu tekan "Berlakukan SK".
+               Hak akses pemangku jabatan diperbarui otomatis.</p>
+        </field>
+    </record>
+</odoo>

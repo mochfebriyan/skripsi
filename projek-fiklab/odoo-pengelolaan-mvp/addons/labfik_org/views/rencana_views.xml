@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_rencana_tree" model="ir.ui.view">
+        <field name="name">labfik.rencana.tree</field>
+        <field name="model">labfik.rencana</field>
+        <field name="arch" type="xml">
+            <tree decoration-muted="state in ('diganti', 'selesai')">
+                <field name="name"/>
+                <field name="jenis"/>
+                <field name="periode_id"/>
+                <field name="jumlah_item"/>
+                <field name="total_anggaran"/>
+                <field name="tanggal_sah"/>
+                <field name="state" widget="badge" decoration-success="state == 'disahkan'"
+                       decoration-warning="state == 'diajukan'" decoration-info="state == 'draf'"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_rencana_form" model="ir.ui.view">
+        <field name="name">labfik.rencana.form</field>
+        <field name="model">labfik.rencana</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_ajukan" type="object" string="Ajukan" class="oe_highlight"
+                            invisible="state != 'draf'" groups="labfik_org.group_labfik_kalab"/>
+                    <button name="action_sahkan" type="object" string="Sahkan" class="oe_highlight"
+                            invisible="state != 'diajukan'" groups="labfik_org.group_labfik_kalab"/>
+                    <button name="action_tolak" type="object" string="Tolak"
+                            invisible="state != 'diajukan'" groups="labfik_org.group_labfik_kalab"/>
+                    <button name="action_buat_revisi" type="object" string="Buat revisi"
+                            invisible="state != 'disahkan'" groups="labfik_org.group_labfik_kalab"/>
+                    <button name="action_selesai" type="object" string="Tandai selesai"
+                            invisible="state != 'disahkan'" groups="labfik_org.group_labfik_kalab"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draf,diajukan,disahkan,selesai"/>
+                </header>
+                <sheet>
+                    <div class="alert alert-info" role="alert" invisible="state != 'diajukan'">
+                        Langkah berikutnya: cetak rencana (⚙ Cetak › Rencana kerja), mintakan tanda tangan,
+                        unggah PDF bertanda tangan, lalu tekan Sahkan.
+                    </div>
+                    <div class="alert alert-warning" role="alert" invisible="state != 'draf' or not alasan_tolak">
+                        Ditolak: <field name="alasan_tolak" class="oe_inline"/>
+                    </div>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" readonly="state != 'draf'"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="jenis" readonly="state != 'draf'"/>
+                            <field name="periode_id" readonly="state != 'draf'"/>
+                            <field name="pemilik_id" readonly="state != 'draf'"/>
+                            <field name="rencana_asal_id" invisible="not rencana_asal_id"/>
+                        </group>
+                        <group>
+                            <field name="pengesah_id" readonly="state not in ('draf', 'diajukan')"/>
+                            <field name="lampiran_file" filename="lampiran_filename"
+                                   readonly="state not in ('draf', 'diajukan')"/>
+                            <field name="lampiran_filename" invisible="1"/>
+                            <field name="tanggal_sah"/>
+                            <field name="disahkan_oleh_id" invisible="not disahkan_oleh_id"/>
+                            <field name="total_anggaran"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Item rencana" name="item">
+                            <field name="item_ids" readonly="state != 'draf'">
+                                <tree decoration-warning="not is_lengkap">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="sasaran"/>
+                                    <field name="kpi_id"/>
+                                    <field name="target"/>
+                                    <field name="pic_id"/>
+                                    <field name="tanggal_mulai"/>
+                                    <field name="tanggal_selesai"/>
+                                    <field name="anggaran" sum="Total"/>
+                                    <field name="renstra_ids" widget="many2many_tags"/>
+                                    <field name="is_lengkap"/>
+                                </tree>
+                                <form>
+                                    <group>
+                                        <group>
+                                            <field name="sasaran"/>
+                                            <field name="kpi_id"/>
+                                            <field name="target"/>
+                                            <field name="pic_id"/>
+                                        </group>
+                                        <group>
+                                            <field name="tanggal_mulai"/>
+                                            <field name="tanggal_selesai"/>
+                                            <field name="anggaran" invisible="tanpa_anggaran"/>
+                                            <field name="tanpa_anggaran"/>
+                                        </group>
+                                    </group>
+                                    <group string="Keterkaitan Renstra">
+                                        <field name="renstra_ids" widget="many2many_tags"/>
+                                        <field name="renstra_teks"/>
+                                    </group>
+                                    <field name="realisasi_ids" readonly="1">
+                                        <tree>
+                                            <field name="semester_id"/>
+                                            <field name="tanggal"/>
+                                            <field name="capaian"/>
+                                            <field name="berbukti"/>
+                                        </tree>
+                                    </field>
+                                </form>
+                            </field>
+                        </page>
+                        <page string="Latar belakang dan arah" name="narasi">
+                            <field name="narasi" readonly="state != 'draf'"/>
+                        </page>
+                        <page string="Tinjauan" name="tinjauan" invisible="state in ('draf', 'diajukan')">
+                            <field name="tinjauan_ids" readonly="1">
+                                <tree>
+                                    <field name="tanggal"/>
+                                    <field name="ringkasan"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_rencana" model="ir.actions.act_window">
+        <field name="name">Rencana kerja</field>
+        <field name="res_model">labfik.rencana</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Susun rencana kerja tahunan</p>
+            <p>Isi item rencana (sasaran, KPI, target, PIC, jadwal, anggaran, keterkaitan Renstra),
+               ajukan, cetak, mintakan tanda tangan, unggah PDF, lalu sahkan.</p>
+        </field>
+    </record>
+
+    <!-- ================================================================ Realisasi -->
+    <record id="view_realisasi_tree" model="ir.ui.view">
+        <field name="name">labfik.rencana.realisasi.tree</field>
+        <field name="model">labfik.rencana.realisasi</field>
+        <field name="arch" type="xml">
+            <tree decoration-warning="not berbukti">
+                <field name="tanggal"/>
+                <field name="rencana_id"/>
+                <field name="item_id"/>
+                <field name="semester_id"/>
+                <field name="capaian"/>
+                <field name="anggaran_terpakai" sum="Total"/>
+                <field name="berbukti"/>
+                <field name="pelapor_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_realisasi_form" model="ir.ui.view">
+        <field name="name">labfik.rencana.realisasi.form</field>
+        <field name="model">labfik.rencana.realisasi</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="item_id" options="{'no_create': True}"
+                                   domain="[('rencana_id.state', 'in', ('disahkan', 'selesai'))]"/>
+                            <field name="rencana_id"/>
+                            <field name="periode_id" invisible="1"/>
+                            <field name="semester_id" options="{'no_create': True}"/>
+                            <field name="tanggal"/>
+                        </group>
+                        <group>
+                            <field name="capaian" placeholder="Contoh: 7 dari 10 SOP"/>
+                            <field name="anggaran_terpakai"/>
+                            <field name="bukti" filename="bukti_name"/>
+                            <field name="bukti_name" invisible="1"/>
+                            <field name="pelapor_id"/>
+                        </group>
+                    </group>
+                    <field name="catatan" placeholder="Catatan"/>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_realisasi" model="ir.actions.act_window">
+        <field name="name">Realisasi</field>
+        <field name="res_model">labfik.rencana.realisasi</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Laporkan realisasi rencana kerja</p>
+            <p>Lampirkan bukti. Realisasi tanpa bukti tidak dihitung untuk Pengelolaan 1 K3.</p>
+        </field>
+    </record>
+
+    <!-- ================================================================ Tinjauan -->
+    <record id="view_tinjauan_tree" model="ir.ui.view">
+        <field name="name">labfik.rencana.tinjauan.tree</field>
+        <field name="model">labfik.rencana.tinjauan</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="tanggal"/>
+                <field name="rencana_id"/>
+                <field name="ringkasan"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_tinjauan_form" model="ir.ui.view">
+        <field name="name">labfik.rencana.tinjauan.form</field>
+        <field name="model">labfik.rencana.tinjauan</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="rencana_id" options="{'no_create': True}"/>
+                            <field name="tanggal"/>
+                        </group>
+                        <group>
+                            <field name="peserta_ids" widget="many2many_tags"/>
+                        </group>
+                    </group>
+                    <group string="Ringkasan capaian">
+                        <field name="ringkasan" nolabel="1" colspan="2"/>
+                    </group>
+                    <separator string="Keputusan perbaikan"/>
+                    <field name="keputusan_ids">
+                        <tree editable="bottom">
+                            <field name="uraian"/>
+                            <field name="item_berikut_id" options="{'no_create': True}"/>
+                        </tree>
+                    </field>
+                    <p class="text-muted">Tautkan keputusan ke item pada rencana periode berikutnya (bukti Pengelolaan 1 K4).</p>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_tinjauan" model="ir.actions.act_window">
+        <field name="name">Tinjauan rencana</field>
+        <field name="res_model">labfik.rencana.tinjauan</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

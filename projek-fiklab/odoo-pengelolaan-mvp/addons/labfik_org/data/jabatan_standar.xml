@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- Kewenangan standar: kolom matriks kewenangan (Pengelolaan 3 Bukti 4) -->
+    <record id="kewenangan_sahkan_sop" model="labfik.kewenangan">
+        <field name="sequence">10</field>
+        <field name="name">Mengesahkan SOP/IK</field>
+    </record>
+    <record id="kewenangan_sahkan_rencana" model="labfik.kewenangan">
+        <field name="sequence">20</field>
+        <field name="name">Mengesahkan rencana kerja</field>
+    </record>
+    <record id="kewenangan_tetapkan_wajib" model="labfik.kewenangan">
+        <field name="sequence">30</field>
+        <field name="name">Menetapkan daftar SOP wajib</field>
+    </record>
+    <record id="kewenangan_susun_sop" model="labfik.kewenangan">
+        <field name="sequence">40</field>
+        <field name="name">Menyusun dan mengajukan SOP/IK</field>
+    </record>
+    <record id="kewenangan_distribusi" model="labfik.kewenangan">
+        <field name="sequence">50</field>
+        <field name="name">Mencatat distribusi dan sosialisasi dokumen</field>
+    </record>
+    <record id="kewenangan_realisasi" model="labfik.kewenangan">
+        <field name="sequence">60</field>
+        <field name="name">Melaporkan realisasi rencana kerja</field>
+    </record>
+    <record id="kewenangan_k3" model="labfik.kewenangan">
+        <field name="sequence">70</field>
+        <field name="name">Menghentikan kegiatan yang tidak aman</field>
+    </record>
+    <record id="kewenangan_dampingi" model="labfik.kewenangan">
+        <field name="sequence">80</field>
+        <field name="name">Mendampingi praktikum</field>
+    </record>
+
+    <!-- Jabatan standar (FR-E2). Uraian tugas sengaja kosong: wajib dilengkapi lab. -->
+    <record id="jabatan_kalab" model="labfik.jabatan">
+        <field name="sequence">10</field>
+        <field name="name">Kepala Laboratorium</field>
+        <field name="is_puncak" eval="True"/>
+        <field name="group_ids" eval="[(6, 0, [ref('group_labfik_kalab')])]"/>
+    </record>
+    <record id="jabatan_laboran" model="labfik.jabatan">
+        <field name="sequence">20</field>
+        <field name="name">Laboran/PLP</field>
+        <field name="atasan_id" ref="jabatan_kalab"/>
+        <field name="group_ids" eval="[(6, 0, [ref('group_labfik_laboran')])]"/>
+    </record>
+    <record id="jabatan_k3" model="labfik.jabatan">
+        <field name="sequence">30</field>
+        <field name="name">Petugas K3</field>
+        <field name="atasan_id" ref="jabatan_kalab"/>
+        <field name="group_ids" eval="[(6, 0, [ref('group_labfik_pengguna')])]"/>
+    </record>
+    <record id="jabatan_dosen" model="labfik.jabatan">
+        <field name="sequence">40</field>
+        <field name="name">Dosen Pengampu Praktikum</field>
+        <field name="atasan_id" ref="jabatan_kalab"/>
+        <field name="group_ids" eval="[(6, 0, [ref('group_labfik_pengguna')])]"/>
+    </record>
+    <record id="jabatan_asisten" model="labfik.jabatan">
+        <field name="sequence">50</field>
+        <field name="name">Asisten Praktikum</field>
+        <field name="atasan_id" ref="jabatan_laboran"/>
+        <field name="group_ids" eval="[(6, 0, [ref('group_labfik_pengguna')])]"/>
+    </record>
+</odoo>

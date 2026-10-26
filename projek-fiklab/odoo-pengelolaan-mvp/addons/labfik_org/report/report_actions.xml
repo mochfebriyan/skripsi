@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_rencana_kerja" model="ir.actions.report">
+        <field name="name">Rencana kerja</field>
+        <field name="model">labfik.rencana</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">labfik_org.report_rencana_kerja</field>
+        <field name="report_file">labfik_org.report_rencana_kerja</field>
+        <field name="print_report_name">'Rencana Kerja - %s' % object.name</field>
+        <field name="binding_model_id" ref="model_labfik_rencana"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="action_report_laporan_pelaksanaan" model="ir.actions.report">
+        <field name="name">Laporan pelaksanaan</field>
+        <field name="model">labfik.rencana</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">labfik_org.report_laporan_pelaksanaan</field>
+        <field name="report_file">labfik_org.report_laporan_pelaksanaan</field>
+        <field name="print_report_name">'Laporan Pelaksanaan - %s' % object.name</field>
+        <field name="binding_model_id" ref="model_labfik_rencana"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="action_report_bagan_organisasi" model="ir.actions.report">
+        <field name="name">Bagan organisasi</field>
+        <field name="model">labfik.sk</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">labfik_org.report_bagan_organisasi</field>
+        <field name="report_file">labfik_org.report_bagan_organisasi</field>
+        <field name="print_report_name">'Bagan Organisasi - %s' % object.name</field>
+        <field name="binding_model_id" ref="model_labfik_sk"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="action_report_matriks_kewenangan" model="ir.actions.report">
+        <field name="name">Matriks kewenangan</field>
+        <field name="model">labfik.sk</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">labfik_org.report_matriks_kewenangan</field>
+        <field name="report_file">labfik_org.report_matriks_kewenangan</field>
+        <field name="print_report_name">'Matriks Kewenangan - %s' % object.name</field>
+        <field name="binding_model_id" ref="model_labfik_sk"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_periode_tree" model="ir.ui.view">
+        <field name="name">labfik.periode.tree</field>
+        <field name="model">labfik.periode</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="jenis"/>
+                <field name="tanggal_mulai"/>
+                <field name="tanggal_selesai"/>
+                <field name="jumlah_wajib"/>
+                <field name="wajib_terkunci" widget="boolean_toggle" readonly="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_periode_form" model="ir.ui.view">
+        <field name="name">labfik.periode.form</field>
+        <field name="model">labfik.periode</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_buka_status" type="object" string="Lihat status monev" class="oe_highlight"
+                            groups="labfik_org.group_labfik_laboran,labfik_org.group_labfik_penilai"/>
+                    <button name="action_kunci_wajib" type="object" string="Kunci daftar SOP wajib"
+                            invisible="wajib_terkunci" groups="labfik_org.group_labfik_kalab"
+                            confirm="Setelah dikunci, daftar SOP wajib periode ini tidak dapat diubah. Lanjutkan?"/>
+                    <button name="action_buka_kunci_wajib" type="object" string="Buka kunci"
+                            invisible="not wajib_terkunci" groups="labfik_org.group_labfik_admin"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" placeholder="2026/2027"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="jenis"/>
+                            <field name="tanggal_mulai"/>
+                            <field name="tanggal_selesai"/>
+                        </group>
+                        <group>
+                            <field name="wajib_terkunci"/>
+                            <field name="tanggal_kunci" invisible="not wajib_terkunci"/>
+                            <field name="active" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Semester" name="semester">
+                            <field name="semester_ids">
+                                <tree editable="bottom">
+                                    <field name="name"/>
+                                    <field name="tanggal_mulai"/>
+                                    <field name="tanggal_selesai"/>
+                                </tree>
+                            </field>
+                            <p class="text-muted">Semester Ganjil dan Genap dibuat otomatis saat periode disimpan; sesuaikan tanggalnya bila perlu.</p>
+                        </page>
+                        <page string="Daftar SOP wajib" name="wajib">
+                            <p class="text-muted">Pembagi skor Pengelolaan 2. Tetapkan sebelum monev, lalu kunci.</p>
+                            <field name="wajib_ids" readonly="wajib_terkunci">
+                                <tree editable="bottom">
+                                    <field name="dokumen_id" options="{'no_create': True}"/>
+                                    <field name="versi_berlaku_id"/>
+                                    <field name="catatan"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_periode" model="ir.actions.act_window">
+        <field name="name">Periode</field>
+        <field name="res_model">labfik.periode</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Buat periode tahun akademik pertama</p>
+            <p>Periode menjadi dasar daftar SOP wajib, rencana kerja, rapat, dan status monev.</p>
+        </field>
+    </record>
+</odoo>

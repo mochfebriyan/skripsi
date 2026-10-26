@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_kpi_tree" model="ir.ui.view">
+        <field name="name">labfik.kpi.tree</field>
+        <field name="model">labfik.kpi</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="kode"/>
+                <field name="name"/>
+                <field name="satuan"/>
+                <field name="sumber_data"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_kpi_form" model="ir.ui.view">
+        <field name="name">labfik.kpi.form</field>
+        <field name="model">labfik.kpi</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="kode"/>
+                            <field name="name"/>
+                            <field name="satuan"/>
+                        </group>
+                        <group>
+                            <field name="pembilang"/>
+                            <field name="penyebut"/>
+                            <field name="sumber_data"/>
+                            <field name="active" invisible="1"/>
+                        </group>
+                    </group>
+                    <group string="Definisi">
+                        <field name="definisi" nolabel="1" colspan="2"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_kpi" model="ir.actions.act_window">
+        <field name="name">KPI</field>
+        <field name="res_model">labfik.kpi</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Definisikan KPI laboratorium</p>
+            <p>KPI dipakai pada item rencana kerja (Pengelolaan 1 Bukti 4).</p>
+        </field>
+    </record>
+
+    <record id="view_renstra_tree" model="ir.ui.view">
+        <field name="name">labfik.renstra.sasaran.tree</field>
+        <field name="model">labfik.renstra.sasaran</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="tingkat"/>
+                <field name="kode"/>
+                <field name="name"/>
+                <field name="dokumen_sumber"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_renstra" model="ir.actions.act_window">
+        <field name="name">Sasaran Renstra</field>
+        <field name="res_model">labfik.renstra.sasaran</field>
+        <field name="view_mode">tree</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Masukkan sasaran Renstra UPNVJ, FIK, atau prodi</p>
+            <p>Dipakai untuk matriks keterkaitan Renstra pada rencana kerja.</p>
+        </field>
+    </record>
+</odoo>
