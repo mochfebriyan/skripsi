@@ -1,0 +1,567 @@
+<mxfile host="app.diagrams.net">
+  <diagram id="pkg" name="Package per Instrumen">
+    <mxGraphModel dx="1918" dy="825" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="3400" pageHeight="2400" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="mod_org" parent="1" style="swimlane;html=1;whiteSpace=wrap;container=1;collapsible=0;recursiveResize=0;startSize=40;fontSize=20;fontStyle=1;rounded=1;arcSize=2;fillColor=#F5F0FF;strokeColor=#9673A6;swimlaneFillColor=#F5F0FF;" value="Organization Management" vertex="1">
+          <mxGeometry height="1072" width="1020" x="40" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="pkg_03" parent="mod_org" style="shape=folder;tabWidth=110;tabHeight=18;tabPosition=left;html=1;whiteSpace=wrap;container=1;collapsible=0;recursiveResize=0;verticalAlign=top;align=left;spacingLeft=8;spacingTop=20;fontSize=12;fillColor=#FFFFFF;strokeColor=#333333;" value="&lt;b&gt;PKG-03&lt;/b&gt; · Pengelolaan 3 (struktur organisasi)&lt;br&gt;&lt;font style=&quot;font-size:10px&quot; color=&quot;#666666&quot;&gt;PIC analisis: Febriyan&lt;/font&gt;" vertex="1">
+          <mxGeometry height="256" width="300" x="30" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="e_03_0" parent="pkg_03" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="«T» SK Penetapan Pengelola (anak: personel–jabatan)" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="64" as="geometry" />
+        </mxCell>
+        <mxCell id="e_03_1" parent="pkg_03" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="«T» Rapat Koordinasi" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="e_03_2" parent="pkg_03" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="«T» Evaluasi Struktur" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="136" as="geometry" />
+        </mxCell>
+        <mxCell id="e_03_3" parent="pkg_03" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#D5E8D4;strokeColor=#82B366;" value="«R» Bagan Organisasi" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="172" as="geometry" />
+        </mxCell>
+        <mxCell id="e_03_4" parent="pkg_03" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#D5E8D4;strokeColor=#82B366;" value="«R» Matriks Kewenangan" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="208" as="geometry" />
+        </mxCell>
+        <mxCell id="pkg_01" parent="mod_org" style="shape=folder;tabWidth=110;tabHeight=18;tabPosition=left;html=1;whiteSpace=wrap;container=1;collapsible=0;recursiveResize=0;verticalAlign=top;align=left;spacingLeft=8;spacingTop=20;fontSize=12;fillColor=#FFFFFF;strokeColor=#333333;" value="&lt;b&gt;PKG-01&lt;/b&gt; · Pengelolaan 1 (rencana kerja tahunan)&lt;br&gt;&lt;font style=&quot;font-size:10px&quot; color=&quot;#666666&quot;&gt;PIC analisis: Febriyan&lt;/font&gt;" vertex="1">
+          <mxGeometry height="256" width="300" x="360" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="e_01_0" parent="pkg_01" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="«T» Rencana Kerja (anak: item rencana)" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="64" as="geometry" />
+        </mxCell>
+        <mxCell id="e_01_1" parent="pkg_01" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="«T» Realisasi Rencana Kerja" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="e_01_2" parent="pkg_01" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="«T» Tinjauan Rencana Kerja" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="136" as="geometry" />
+        </mxCell>
+        <mxCell id="e_01_3" parent="pkg_01" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#FFF2CC;strokeColor=#D6B656;" value="«M» Sasaran Renstra" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="172" as="geometry" />
+        </mxCell>
+        <mxCell id="e_01_4" parent="pkg_01" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#D5E8D4;strokeColor=#82B366;" value="«R» Dokumen Rencana Kerja" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="208" as="geometry" />
+        </mxCell>
+        <mxCell id="pkg_13" parent="mod_org" style="shape=folder;tabWidth=110;tabHeight=18;tabPosition=left;html=1;whiteSpace=wrap;container=1;collapsible=0;recursiveResize=0;verticalAlign=top;align=left;spacingLeft=8;spacingTop=20;fontSize=12;fillColor=#FFFFFF;strokeColor=#333333;" value="&lt;b&gt;PKG-13&lt;/b&gt; · Pengembangan 13 (rencana pengembangan)&lt;br&gt;&lt;font style=&quot;font-size:10px&quot; color=&quot;#666666&quot;&gt;PIC analisis: Herrens&lt;/font&gt;" vertex="1">
+          <mxGeometry height="220" width="300" x="690" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="e_13_0" parent="pkg_13" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="«T» Rencana Pengembangan (anak: item per aspek)" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="64" as="geometry" />
+        </mxCell>
+        <mxCell id="e_13_1" parent="pkg_13" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="«T» Realisasi Rencana Pengembangan" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="e_13_2" parent="pkg_13" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="«T» Tinjauan Rencana Pengembangan" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="136" as="geometry" />
+        </mxCell>
+        <mxCell id="e_13_3" parent="pkg_13" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#D5E8D4;strokeColor=#82B366;" value="«R» Dokumen Rencana Pengembangan" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="172" as="geometry" />
+        </mxCell>
+        <mxCell id="pkg_02" parent="mod_org" style="shape=folder;tabWidth=110;tabHeight=18;tabPosition=left;html=1;whiteSpace=wrap;container=1;collapsible=0;recursiveResize=0;verticalAlign=top;align=left;spacingLeft=8;spacingTop=20;fontSize=12;fillColor=#FFFFFF;strokeColor=#333333;" value="&lt;b&gt;PKG-02&lt;/b&gt; · Pengelolaan 2 (SOP dan IK)&lt;br&gt;&lt;font style=&quot;font-size:10px&quot; color=&quot;#666666&quot;&gt;PIC analisis: Febriyan&lt;/font&gt;" vertex="1">
+          <mxGeometry height="220" width="300" x="30" y="356" as="geometry" />
+        </mxCell>
+        <mxCell id="e_02_0" parent="pkg_02" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="«T» Versi SOP" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="64" as="geometry" />
+        </mxCell>
+        <mxCell id="e_02_1" parent="pkg_02" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="«T» Distribusi SOP" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="e_02_2" parent="pkg_02" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="«T» Sosialisasi SOP (anak: peserta)" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="136" as="geometry" />
+        </mxCell>
+        <mxCell id="e_02_3" parent="pkg_02" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#D5E8D4;strokeColor=#82B366;" value="«R» Daftar SOP Tidak Memenuhi" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="172" as="geometry" />
+        </mxCell>
+        <mxCell id="pkg_10" parent="mod_org" style="shape=folder;tabWidth=110;tabHeight=18;tabPosition=left;html=1;whiteSpace=wrap;container=1;collapsible=0;recursiveResize=0;verticalAlign=top;align=left;spacingLeft=8;spacingTop=20;fontSize=12;fillColor=#FFFFFF;strokeColor=#333333;" value="&lt;b&gt;PKG-10&lt;/b&gt; · Pengelolaan 10 (otorisasi personel)&lt;br&gt;&lt;font style=&quot;font-size:10px&quot; color=&quot;#666666&quot;&gt;PIC analisis: Zahir&lt;/font&gt;" vertex="1">
+          <mxGeometry height="292" width="300" x="360" y="356" as="geometry" />
+        </mxCell>
+        <mxCell id="e_10_0" parent="pkg_10" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="«T» Asesmen Keterampilan Personel" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="64" as="geometry" />
+        </mxCell>
+        <mxCell id="e_10_1" parent="pkg_10" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="«T» Otorisasi Personel" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="e_10_2" parent="pkg_10" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="«T» Evaluasi Ulang Otorisasi" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="136" as="geometry" />
+        </mxCell>
+        <mxCell id="e_10_3" parent="pkg_10" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#FFF2CC;strokeColor=#D6B656;" value="«M» Tugas/Alat Berkewenangan Khusus" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="172" as="geometry" />
+        </mxCell>
+        <mxCell id="e_10_4" parent="pkg_10" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#FFF2CC;strokeColor=#D6B656;" value="«M» Jenis/Level Otorisasi" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="208" as="geometry" />
+        </mxCell>
+        <mxCell id="e_10_5" parent="pkg_10" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#D5E8D4;strokeColor=#82B366;" value="«R» Daftar Operator Sah" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="244" as="geometry" />
+        </mxCell>
+        <mxCell id="pkg_14" parent="mod_org" style="shape=folder;tabWidth=110;tabHeight=18;tabPosition=left;html=1;whiteSpace=wrap;container=1;collapsible=0;recursiveResize=0;verticalAlign=top;align=left;spacingLeft=8;spacingTop=20;fontSize=12;fillColor=#FFFFFF;strokeColor=#333333;" value="&lt;b&gt;PKG-14&lt;/b&gt; · Pengembangan 14 (pelatihan PLP/laboran)&lt;br&gt;&lt;font style=&quot;font-size:10px&quot; color=&quot;#666666&quot;&gt;PIC analisis: Herrens&lt;/font&gt;" vertex="1">
+          <mxGeometry height="184" width="300" x="690" y="356" as="geometry" />
+        </mxCell>
+        <mxCell id="e_14_0" parent="pkg_14" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="«T» Rencana Pelatihan (anak: kebutuhan kompetensi)" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="64" as="geometry" />
+        </mxCell>
+        <mxCell id="e_14_1" parent="pkg_14" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="«T» Realisasi Pelatihan" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="e_14_2" parent="pkg_14" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="«T» Evaluasi Efektivitas Pelatihan" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="136" as="geometry" />
+        </mxCell>
+        <mxCell id="mod_pra" parent="1" style="swimlane;html=1;whiteSpace=wrap;container=1;collapsible=0;recursiveResize=0;startSize=40;fontSize=20;fontStyle=1;rounded=1;arcSize=2;fillColor=#EEF6FF;strokeColor=#6C8EBF;swimlaneFillColor=#EEF6FF;" value="Practicum Management" vertex="1">
+          <mxGeometry height="1072" width="1020" x="1100" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="pkg_04" parent="mod_pra" style="shape=folder;tabWidth=110;tabHeight=18;tabPosition=left;html=1;whiteSpace=wrap;container=1;collapsible=0;recursiveResize=0;verticalAlign=top;align=left;spacingLeft=8;spacingTop=20;fontSize=12;fillColor=#FFFFFF;strokeColor=#333333;" value="&lt;b&gt;PKG-04&lt;/b&gt; · Pengelolaan 4 (penugasan petugas)&lt;br&gt;&lt;font style=&quot;font-size:10px&quot; color=&quot;#666666&quot;&gt;PIC analisis: Zahir&lt;/font&gt;" vertex="1">
+          <mxGeometry height="292" width="300" x="30" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="e_04_0" parent="pkg_04" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="«T» Seleksi Kompetensi Petugas" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="64" as="geometry" />
+        </mxCell>
+        <mxCell id="e_04_1" parent="pkg_04" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#D6B656;strokeWidth=2;" value="«T» Penugasan Petugas (?)" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="e_04_2" parent="pkg_04" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="«T» Komitmen Petugas Praktikum" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="136" as="geometry" />
+        </mxCell>
+        <mxCell id="e_04_3" parent="pkg_04" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#D5E8D4;strokeColor=#82B366;" value="«R» Daftar Sesi dan Petugas" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="172" as="geometry" />
+        </mxCell>
+        <mxCell id="e_04_4" parent="pkg_04" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#D5E8D4;strokeColor=#82B366;" value="«R» Surat Tugas" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="208" as="geometry" />
+        </mxCell>
+        <mxCell id="e_04_5" parent="pkg_04" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#D5E8D4;strokeColor=#82B366;" value="«R» Matriks Kompetensi" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="244" as="geometry" />
+        </mxCell>
+        <mxCell id="pkg_15" parent="mod_pra" style="shape=folder;tabWidth=110;tabHeight=18;tabPosition=left;html=1;whiteSpace=wrap;container=1;collapsible=0;recursiveResize=0;verticalAlign=top;align=left;spacingLeft=8;spacingTop=20;fontSize=12;fillColor=#FFFFFF;strokeColor=#333333;" value="&lt;b&gt;PKG-15&lt;/b&gt; · Persiapan 15 (jadwal dan modul)&lt;br&gt;&lt;font style=&quot;font-size:10px&quot; color=&quot;#666666&quot;&gt;PIC analisis: Herrens&lt;/font&gt;" vertex="1">
+          <mxGeometry height="220" width="300" x="360" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="e_15_0" parent="pkg_15" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="«T» Rencana Pemakaian Lab" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="64" as="geometry" />
+        </mxCell>
+        <mxCell id="e_15_1" parent="pkg_15" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="«T» Versi Modul Praktikum" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="e_15_2" parent="pkg_15" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#D5E8D4;strokeColor=#82B366;dashed=1;" value="«R» Jadwal Terpadu (+)" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="136" as="geometry" />
+        </mxCell>
+        <mxCell id="e_15_3" parent="pkg_15" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#D5E8D4;strokeColor=#82B366;" value="«R» Rekaman Konflik Jadwal" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="172" as="geometry" />
+        </mxCell>
+        <mxCell id="pkg_16" parent="mod_pra" style="shape=folder;tabWidth=110;tabHeight=18;tabPosition=left;html=1;whiteSpace=wrap;container=1;collapsible=0;recursiveResize=0;verticalAlign=top;align=left;spacingLeft=8;spacingTop=20;fontSize=12;fillColor=#FFFFFF;strokeColor=#333333;" value="&lt;b&gt;PKG-16&lt;/b&gt; · Persiapan 16 (kesiapan alat dan software)&lt;br&gt;&lt;font style=&quot;font-size:10px&quot; color=&quot;#666666&quot;&gt;PIC analisis: Zahir&lt;/font&gt;" vertex="1">
+          <mxGeometry height="220" width="300" x="690" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="e_16_0" parent="pkg_16" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="«T» Checklist Kesiapan Sesi" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="64" as="geometry" />
+        </mxCell>
+        <mxCell id="e_16_1" parent="pkg_16" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="«T» Uji Fungsi Alat/Software" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="e_16_2" parent="pkg_16" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="«T» Keputusan Siap/Tunda Sesi" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="136" as="geometry" />
+        </mxCell>
+        <mxCell id="e_16_3" parent="pkg_16" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#FFF2CC;strokeColor=#D6B656;" value="«M» Software dan Lisensi" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="172" as="geometry" />
+        </mxCell>
+        <mxCell id="pkg_18" parent="mod_pra" style="shape=folder;tabWidth=110;tabHeight=18;tabPosition=left;html=1;whiteSpace=wrap;container=1;collapsible=0;recursiveResize=0;verticalAlign=top;align=left;spacingLeft=8;spacingTop=20;fontSize=12;fillColor=#FFFFFF;strokeColor=#333333;" value="&lt;b&gt;PKG-18&lt;/b&gt; · Proses 18 (sesi terlaksana)&lt;br&gt;&lt;font style=&quot;font-size:10px&quot; color=&quot;#666666&quot;&gt;PIC analisis: Febriyan&lt;/font&gt;" vertex="1">
+          <mxGeometry height="184" width="300" x="30" y="392" as="geometry" />
+        </mxCell>
+        <mxCell id="e_18_0" parent="pkg_18" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="«T» Jurnal Sesi (anak: presensi, log book)" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="64" as="geometry" />
+        </mxCell>
+        <mxCell id="e_18_1" parent="pkg_18" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="«T» Perubahan Sesi" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="e_18_2" parent="pkg_18" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#D5E8D4;strokeColor=#82B366;" value="«R» Daftar Sesi Tidak Memenuhi" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="136" as="geometry" />
+        </mxCell>
+        <mxCell id="pkg_19" parent="mod_pra" style="shape=folder;tabWidth=110;tabHeight=18;tabPosition=left;html=1;whiteSpace=wrap;container=1;collapsible=0;recursiveResize=0;verticalAlign=top;align=left;spacingLeft=8;spacingTop=20;fontSize=12;fillColor=#FFFFFF;strokeColor=#333333;" value="&lt;b&gt;PKG-19&lt;/b&gt; · Evaluasi 19 (penilaian individual)&lt;br&gt;&lt;font style=&quot;font-size:10px&quot; color=&quot;#666666&quot;&gt;PIC analisis: Febriyan&lt;/font&gt;" vertex="1">
+          <mxGeometry height="148" width="300" x="360" y="392" as="geometry" />
+        </mxCell>
+        <mxCell id="e_19_0" parent="pkg_19" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#F5F5F5;strokeColor=#666666;dashed=1;fontStyle=2;" value="«extend» Jurnal Sesi: tautan bukti LeADS" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="64" as="geometry" />
+        </mxCell>
+        <mxCell id="e_19_1" parent="pkg_19" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#D5E8D4;strokeColor=#82B366;dashed=1;" value="«R» Rekap Bukti Penilaian per Kelas (+)" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="pkg_17" parent="mod_pra" style="shape=folder;tabWidth=110;tabHeight=18;tabPosition=left;html=1;whiteSpace=wrap;container=1;collapsible=0;recursiveResize=0;verticalAlign=top;align=left;spacingLeft=8;spacingTop=20;fontSize=12;fillColor=#FFFFFF;strokeColor=#333333;" value="&lt;b&gt;PKG-17&lt;/b&gt; · Persiapan 17 (bahan praktikum)&lt;br&gt;&lt;font style=&quot;font-size:10px&quot; color=&quot;#666666&quot;&gt;PIC analisis: Zahir&lt;/font&gt;" vertex="1">
+          <mxGeometry height="148" width="300" x="690" y="392" as="geometry" />
+        </mxCell>
+        <mxCell id="e_17_0" parent="pkg_17" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="«T» Kebutuhan Bahan per Sesi" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="64" as="geometry" />
+        </mxCell>
+        <mxCell id="e_17_1" parent="pkg_17" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="«T» Penerimaan dan Substitusi Bahan" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="mod_ast" parent="1" style="swimlane;html=1;whiteSpace=wrap;container=1;collapsible=0;recursiveResize=0;startSize=40;fontSize=20;fontStyle=1;rounded=1;arcSize=2;fillColor=#FFF8EC;strokeColor=#D79B00;swimlaneFillColor=#FFF8EC;" value="Asset Management" vertex="1">
+          <mxGeometry height="1072" width="690" x="2160" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="pkg_05" parent="mod_ast" style="shape=folder;tabWidth=110;tabHeight=18;tabPosition=left;html=1;whiteSpace=wrap;container=1;collapsible=0;recursiveResize=0;verticalAlign=top;align=left;spacingLeft=8;spacingTop=20;fontSize=12;fillColor=#FFFFFF;strokeColor=#333333;" value="&lt;b&gt;PKG-05&lt;/b&gt; · Pengelolaan 5 (kalibrasi alat ukur)&lt;br&gt;&lt;font style=&quot;font-size:10px&quot; color=&quot;#666666&quot;&gt;PIC analisis: Wisnu&lt;/font&gt;" vertex="1">
+          <mxGeometry height="184" width="300" x="30" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="e_05_0" parent="pkg_05" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="«T» Program Kalibrasi" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="64" as="geometry" />
+        </mxCell>
+        <mxCell id="e_05_1" parent="pkg_05" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="«T» Kalibrasi Alat (anak: evaluasi hasil, koreksi)" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="e_05_2" parent="pkg_05" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#D5E8D4;strokeColor=#82B366;" value="«R» Laporan Status Kalibrasi Alat" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="136" as="geometry" />
+        </mxCell>
+        <mxCell id="pkg_07" parent="mod_ast" style="shape=folder;tabWidth=110;tabHeight=18;tabPosition=left;html=1;whiteSpace=wrap;container=1;collapsible=0;recursiveResize=0;verticalAlign=top;align=left;spacingLeft=8;spacingTop=20;fontSize=12;fillColor=#FFFFFF;strokeColor=#333333;" value="&lt;b&gt;PKG-07&lt;/b&gt; · Pengelolaan 7 (inventaris alat dan bahan)&lt;br&gt;&lt;font style=&quot;font-size:10px&quot; color=&quot;#666666&quot;&gt;PIC analisis: Wisnu&lt;/font&gt;" vertex="1">
+          <mxGeometry height="256" width="300" x="360" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="e_07_0" parent="pkg_07" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="«T» Kartu Stok Bahan" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="64" as="geometry" />
+        </mxCell>
+        <mxCell id="e_07_1" parent="pkg_07" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="«T» Riwayat Mutasi Alat" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="e_07_2" parent="pkg_07" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="«T» Stock Opname (anak: penyesuaian stok)" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="136" as="geometry" />
+        </mxCell>
+        <mxCell id="e_07_3" parent="pkg_07" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#D5E8D4;strokeColor=#82B366;dashed=1;" value="«R» Daftar Inventaris Alat (+)" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="172" as="geometry" />
+        </mxCell>
+        <mxCell id="e_07_4" parent="pkg_07" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#D5E8D4;strokeColor=#82B366;" value="«R» Laporan Mutasi dan Stock Opname" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="208" as="geometry" />
+        </mxCell>
+        <mxCell id="pkg_08" parent="mod_ast" style="shape=folder;tabWidth=110;tabHeight=18;tabPosition=left;html=1;whiteSpace=wrap;container=1;collapsible=0;recursiveResize=0;verticalAlign=top;align=left;spacingLeft=8;spacingTop=20;fontSize=12;fillColor=#FFFFFF;strokeColor=#333333;" value="&lt;b&gt;PKG-08&lt;/b&gt; · Pengelolaan 8 (kapasitas sesi)&lt;br&gt;&lt;font style=&quot;font-size:10px&quot; color=&quot;#666666&quot;&gt;PIC analisis: Patih&lt;/font&gt;" vertex="1">
+          <mxGeometry height="364" width="300" x="30" y="356" as="geometry" />
+        </mxCell>
+        <mxCell id="e_08_0" parent="pkg_08" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="«T» Analisis Kapasitas" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="64" as="geometry" />
+        </mxCell>
+        <mxCell id="e_08_1" parent="pkg_08" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="«T» Verifikasi Kapasitas Sesi" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="e_08_2" parent="pkg_08" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="«T» Pembagian Kelompok" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="136" as="geometry" />
+        </mxCell>
+        <mxCell id="e_08_3" parent="pkg_08" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="«T» Pengecualian Kapasitas" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="172" as="geometry" />
+        </mxCell>
+        <mxCell id="e_08_4" parent="pkg_08" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#FFF2CC;strokeColor=#D6B656;" value="«M» Profil Kapasitas Lab" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="208" as="geometry" />
+        </mxCell>
+        <mxCell id="e_08_5" parent="pkg_08" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#FFF2CC;strokeColor=#D6B656;" value="«M» Aturan Rasio Supervisi" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="244" as="geometry" />
+        </mxCell>
+        <mxCell id="e_08_6" parent="pkg_08" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#D5E8D4;strokeColor=#82B366;" value="«R» Rekap Kepatuhan Kapasitas" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="e_08_7" parent="pkg_08" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#D5E8D4;strokeColor=#82B366;" value="«R» Daftar Sesi Melebihi Kapasitas" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="316" as="geometry" />
+        </mxCell>
+        <mxCell id="pkg_12" parent="mod_ast" style="shape=folder;tabWidth=110;tabHeight=18;tabPosition=left;html=1;whiteSpace=wrap;container=1;collapsible=0;recursiveResize=0;verticalAlign=top;align=left;spacingLeft=8;spacingTop=20;fontSize=12;fillColor=#FFFFFF;strokeColor=#333333;" value="&lt;b&gt;PKG-12&lt;/b&gt; · Pengelolaan 12 (pemeliharaan preventif)&lt;br&gt;&lt;font style=&quot;font-size:10px&quot; color=&quot;#666666&quot;&gt;PIC analisis: Patih&lt;/font&gt;" vertex="1">
+          <mxGeometry height="364" width="300" x="360" y="356" as="geometry" />
+        </mxCell>
+        <mxCell id="e_12_0" parent="pkg_12" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="«T» Program Pemeliharaan" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="64" as="geometry" />
+        </mxCell>
+        <mxCell id="e_12_1" parent="pkg_12" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="«T» Pelaksanaan Pemeliharaan" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="e_12_2" parent="pkg_12" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="«T» Verifikasi Fungsi" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="136" as="geometry" />
+        </mxCell>
+        <mxCell id="e_12_3" parent="pkg_12" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="«T» Laporan Kerusakan dan Perbaikan" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="172" as="geometry" />
+        </mxCell>
+        <mxCell id="e_12_4" parent="pkg_12" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#FFF2CC;strokeColor=#D6B656;" value="«M» Template Pemeliharaan" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="208" as="geometry" />
+        </mxCell>
+        <mxCell id="e_12_5" parent="pkg_12" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#D5E8D4;strokeColor=#82B366;" value="«R» Rekap Kepatuhan Pemeliharaan" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="244" as="geometry" />
+        </mxCell>
+        <mxCell id="e_12_6" parent="pkg_12" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#D5E8D4;strokeColor=#82B366;" value="«R» Riwayat Pemeliharaan per Alat" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="e_12_7" parent="pkg_12" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#D5E8D4;strokeColor=#82B366;" value="«R» Daftar Pekerjaan Terlambat" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="316" as="geometry" />
+        </mxCell>
+        <mxCell id="mod_saf" parent="1" style="swimlane;html=1;whiteSpace=wrap;container=1;collapsible=0;recursiveResize=0;startSize=40;fontSize=20;fontStyle=1;rounded=1;arcSize=2;fillColor=#FFF0F0;strokeColor=#B85450;swimlaneFillColor=#FFF0F0;" value="Safety Management" vertex="1">
+          <mxGeometry height="1072" width="360" x="2890" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="pkg_11" parent="mod_saf" style="shape=folder;tabWidth=110;tabHeight=18;tabPosition=left;html=1;whiteSpace=wrap;container=1;collapsible=0;recursiveResize=0;verticalAlign=top;align=left;spacingLeft=8;spacingTop=20;fontSize=12;fillColor=#FFFFFF;strokeColor=#333333;" value="&lt;b&gt;PKG-11&lt;/b&gt; · Pengelolaan 11 (penyimpanan bahan)&lt;br&gt;&lt;font style=&quot;font-size:10px&quot; color=&quot;#666666&quot;&gt;PIC analisis: Wisnu&lt;/font&gt;" vertex="1">
+          <mxGeometry height="220" width="300" x="30" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="e_11_0" parent="pkg_11" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="«T» Inspeksi Penyimpanan Bahan (anak: checklist)" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="64" as="geometry" />
+        </mxCell>
+        <mxCell id="e_11_1" parent="pkg_11" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#D6B656;strokeWidth=2;" value="«T» Log Penggunaan dan Penyimpanan Bahan (?)" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="e_11_2" parent="pkg_11" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#FFF2CC;strokeColor=#D6B656;" value="«M» Karakteristik Bahaya Bahan" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="136" as="geometry" />
+        </mxCell>
+        <mxCell id="e_11_3" parent="pkg_11" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#D5E8D4;strokeColor=#82B366;" value="«R» Daftar SDS dan Label Bahan" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="172" as="geometry" />
+        </mxCell>
+        <mxCell id="pkg_06" parent="mod_saf" style="shape=folder;tabWidth=110;tabHeight=18;tabPosition=left;html=1;whiteSpace=wrap;container=1;collapsible=0;recursiveResize=0;verticalAlign=top;align=left;spacingLeft=8;spacingTop=20;fontSize=12;fillColor=#FFFFFF;strokeColor=#333333;" value="&lt;b&gt;PKG-06&lt;/b&gt; · Pengelolaan 6 (sarana keselamatan)&lt;br&gt;&lt;font style=&quot;font-size:10px&quot; color=&quot;#666666&quot;&gt;PIC analisis: Wisnu&lt;/font&gt;" vertex="1">
+          <mxGeometry height="256" width="300" x="30" y="320" as="geometry" />
+        </mxCell>
+        <mxCell id="e_06_0" parent="pkg_06" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="«T» Inspeksi Sarana Keselamatan (anak: checklist)" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="64" as="geometry" />
+        </mxCell>
+        <mxCell id="e_06_1" parent="pkg_06" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="«T» Catatan Perbaikan K3" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="e_06_2" parent="pkg_06" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#FFF2CC;strokeColor=#D6B656;" value="«M» Sarana Keselamatan" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="136" as="geometry" />
+        </mxCell>
+        <mxCell id="e_06_3" parent="pkg_06" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#FFF2CC;strokeColor=#D6B656;" value="«M» Kategori Bahaya / HIRA" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="172" as="geometry" />
+        </mxCell>
+        <mxCell id="e_06_4" parent="pkg_06" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#D5E8D4;strokeColor=#82B366;" value="«R» Daftar Kebutuhan Sarana Keselamatan" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="208" as="geometry" />
+        </mxCell>
+        <mxCell id="pkg_09" parent="mod_saf" style="shape=folder;tabWidth=110;tabHeight=18;tabPosition=left;html=1;whiteSpace=wrap;container=1;collapsible=0;recursiveResize=0;verticalAlign=top;align=left;spacingLeft=8;spacingTop=20;fontSize=12;fillColor=#FFFFFF;strokeColor=#333333;" value="&lt;b&gt;PKG-09&lt;/b&gt; · Pengelolaan 9 (limbah)&lt;br&gt;&lt;font style=&quot;font-size:10px&quot; color=&quot;#666666&quot;&gt;PIC analisis: Patih&lt;/font&gt;" vertex="1">
+          <mxGeometry height="436" width="300" x="30" y="606" as="geometry" />
+        </mxCell>
+        <mxCell id="e_09_0" parent="pkg_09" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#D6B656;strokeWidth=2;" value="«T» Mekanisme Pengelolaan Limbah (?)" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="64" as="geometry" />
+        </mxCell>
+        <mxCell id="e_09_1" parent="pkg_09" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="«T» Pencatatan Limbah" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="e_09_2" parent="pkg_09" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="«T» Serah Terima Limbah" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="136" as="geometry" />
+        </mxCell>
+        <mxCell id="e_09_3" parent="pkg_09" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="«T» Inspeksi Kepatuhan Limbah" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="172" as="geometry" />
+        </mxCell>
+        <mxCell id="e_09_4" parent="pkg_09" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="«T» Evaluasi dan Tindak Lanjut" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="208" as="geometry" />
+        </mxCell>
+        <mxCell id="e_09_5" parent="pkg_09" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#FFF2CC;strokeColor=#D6B656;" value="«M» Kategori Limbah" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="244" as="geometry" />
+        </mxCell>
+        <mxCell id="e_09_6" parent="pkg_09" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#FFF2CC;strokeColor=#D6B656;" value="«M» Sumber Limbah" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="e_09_7" parent="pkg_09" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#FFF2CC;strokeColor=#D6B656;" value="«M» Wadah dan Label" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="316" as="geometry" />
+        </mxCell>
+        <mxCell id="e_09_8" parent="pkg_09" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#D5E8D4;strokeColor=#82B366;" value="«R» Daftar Jenis dan Sumber Limbah" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="352" as="geometry" />
+        </mxCell>
+        <mxCell id="e_09_9" parent="pkg_09" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#D5E8D4;strokeColor=#82B366;" value="«R» Neraca Limbah" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="388" as="geometry" />
+        </mxCell>
+        <mxCell id="mod_core" parent="1" style="swimlane;html=1;whiteSpace=wrap;container=1;collapsible=0;recursiveResize=0;startSize=40;fontSize=20;fontStyle=1;rounded=1;arcSize=2;fillColor=#F2F2F2;strokeColor=#666666;swimlaneFillColor=#F2F2F2;" value="Core — dipakai semua package" vertex="1">
+          <mxGeometry height="360" width="982" x="40" y="1252" as="geometry" />
+        </mxCell>
+        <mxCell id="pkg_00" parent="mod_core" style="shape=folder;tabWidth=110;tabHeight=18;tabPosition=left;html=1;whiteSpace=wrap;container=1;collapsible=0;recursiveResize=0;verticalAlign=top;align=left;spacingLeft=8;spacingTop=20;fontSize=12;fillColor=#FFFFFF;strokeColor=#333333;" value="&lt;b&gt;PKG-00&lt;/b&gt; · Core (master bersama)&lt;br&gt;&lt;font style=&quot;font-size:10px&quot; color=&quot;#666666&quot;&gt;PIC analisis: Disepakati bersama&lt;/font&gt;" vertex="1">
+          <mxGeometry height="260" width="922" x="30" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="e_00_0" parent="pkg_00" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#FFF2CC;strokeColor=#D6B656;" value="«M» Periode" vertex="1">
+          <mxGeometry height="40" width="220" x="12" y="64" as="geometry" />
+        </mxCell>
+        <mxCell id="e_00_1" parent="pkg_00" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#FFF2CC;strokeColor=#D6B656;" value="«M» Mata Kuliah" vertex="1">
+          <mxGeometry height="40" width="220" x="238" y="64" as="geometry" />
+        </mxCell>
+        <mxCell id="e_00_2" parent="pkg_00" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#FFF2CC;strokeColor=#D6B656;" value="«M» Kelas" vertex="1">
+          <mxGeometry height="40" width="220" x="464" y="64" as="geometry" />
+        </mxCell>
+        <mxCell id="e_00_3" parent="pkg_00" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#FFF2CC;strokeColor=#D6B656;" value="«M» Ruang Lab" vertex="1">
+          <mxGeometry height="40" width="220" x="690" y="64" as="geometry" />
+        </mxCell>
+        <mxCell id="e_00_4" parent="pkg_00" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#FFF2CC;strokeColor=#D6B656;" value="«M» Personel&lt;br&gt;&lt;i&gt;dikelola PKG-03&lt;/i&gt;" vertex="1">
+          <mxGeometry height="40" width="220" x="12" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="e_00_5" parent="pkg_00" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#FFF2CC;strokeColor=#D6B656;" value="«M» Jabatan&lt;br&gt;&lt;i&gt;dikelola PKG-03&lt;/i&gt;" vertex="1">
+          <mxGeometry height="40" width="220" x="238" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="e_00_6" parent="pkg_00" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#FFF2CC;strokeColor=#D6B656;" value="«M» Kompetensi&lt;br&gt;&lt;i&gt;dikelola PKG-04&lt;/i&gt;" vertex="1">
+          <mxGeometry height="40" width="220" x="464" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="e_00_7" parent="pkg_00" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#FFF2CC;strokeColor=#D6B656;" value="«M» Mahasiswa" vertex="1">
+          <mxGeometry height="40" width="220" x="690" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="e_00_8" parent="pkg_00" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#FFF2CC;strokeColor=#D6B656;" value="«M» Dokumen Induk&lt;br&gt;&lt;i&gt;dikelola PKG-02&lt;/i&gt;" vertex="1">
+          <mxGeometry height="40" width="220" x="12" y="156" as="geometry" />
+        </mxCell>
+        <mxCell id="e_00_9" parent="pkg_00" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#FFF2CC;strokeColor=#D6B656;" value="«M» KPI&lt;br&gt;&lt;i&gt;dikelola PKG-01&lt;/i&gt;" vertex="1">
+          <mxGeometry height="40" width="220" x="238" y="156" as="geometry" />
+        </mxCell>
+        <mxCell id="e_00_10" parent="pkg_00" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#FFF2CC;strokeColor=#D6B656;" value="«M» Alat&lt;br&gt;&lt;i&gt;dikelola PKG-07&lt;/i&gt;" vertex="1">
+          <mxGeometry height="40" width="220" x="464" y="156" as="geometry" />
+        </mxCell>
+        <mxCell id="e_00_11" parent="pkg_00" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#FFF2CC;strokeColor=#D6B656;" value="«M» Bahan&lt;br&gt;&lt;i&gt;dikelola PKG-07&lt;/i&gt;" vertex="1">
+          <mxGeometry height="40" width="220" x="690" y="156" as="geometry" />
+        </mxCell>
+        <mxCell id="e_00_12" parent="pkg_00" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#FFF2CC;strokeColor=#D6B656;dashed=1;" value="«M» Lokasi Penyimpanan (+)" vertex="1">
+          <mxGeometry height="40" width="220" x="12" y="202" as="geometry" />
+        </mxCell>
+        <mxCell id="e_00_13" parent="pkg_00" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#FFF2CC;strokeColor=#D6B656;dashed=1;" value="«M» Mitra Eksternal (+)" vertex="1">
+          <mxGeometry height="40" width="220" x="238" y="202" as="geometry" />
+        </mxCell>
+        <mxCell id="e_00_14" parent="pkg_00" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#FFF2CC;strokeColor=#D6B656;dashed=1;" value="«M» Indikator Monev (+)" vertex="1">
+          <mxGeometry height="40" width="220" x="464" y="202" as="geometry" />
+        </mxCell>
+        <mxCell id="e_00_15" parent="pkg_00" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="«T» Sesi&lt;br&gt;&lt;i&gt;dibangkitkan PKG-15&lt;/i&gt;" vertex="1">
+          <mxGeometry height="40" width="220" x="690" y="202" as="geometry" />
+        </mxCell>
+        <mxCell id="mod_blm" parent="1" style="swimlane;html=1;whiteSpace=wrap;container=1;collapsible=0;recursiveResize=0;startSize=40;fontSize=20;fontStyle=1;rounded=1;arcSize=2;fillColor=#FAFAFA;strokeColor=#999999;swimlaneFillColor=#FAFAFA;" value="Modul belum ditentukan" vertex="1">
+          <mxGeometry height="536" width="690" x="2160" y="1252" as="geometry" />
+        </mxCell>
+        <mxCell id="pkg_20" parent="mod_blm" style="shape=folder;tabWidth=110;tabHeight=18;tabPosition=left;html=1;whiteSpace=wrap;container=1;collapsible=0;recursiveResize=0;verticalAlign=top;align=left;spacingLeft=8;spacingTop=20;fontSize=12;fillColor=#FFFFFF;strokeColor=#333333;" value="&lt;b&gt;PKG-20&lt;/b&gt; · Evaluasi 20 (kepuasan pengguna)&lt;br&gt;&lt;font style=&quot;font-size:10px&quot; color=&quot;#666666&quot;&gt;PIC analisis: Patih&lt;/font&gt;" vertex="1">
+          <mxGeometry height="436" width="300" x="30" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="e_20_0" parent="pkg_20" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="«T» Rencana Survei" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="64" as="geometry" />
+        </mxCell>
+        <mxCell id="e_20_1" parent="pkg_20" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="«T» Respons Survei (anak: jawaban)" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="e_20_2" parent="pkg_20" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="«T» Keluhan Terbuka" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="136" as="geometry" />
+        </mxCell>
+        <mxCell id="e_20_3" parent="pkg_20" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#D6B656;strokeWidth=2;" value="«T» Analisis Hasil Survei (?)" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="172" as="geometry" />
+        </mxCell>
+        <mxCell id="e_20_4" parent="pkg_20" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="«T» Rencana Tindak Lanjut" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="208" as="geometry" />
+        </mxCell>
+        <mxCell id="e_20_5" parent="pkg_20" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#FFF2CC;strokeColor=#D6B656;" value="«M» Aspek Survei" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="244" as="geometry" />
+        </mxCell>
+        <mxCell id="e_20_6" parent="pkg_20" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#FFF2CC;strokeColor=#D6B656;" value="«M» Instrumen Survei" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="e_20_7" parent="pkg_20" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#FFF2CC;strokeColor=#D6B656;" value="«M» Butir Pertanyaan" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="316" as="geometry" />
+        </mxCell>
+        <mxCell id="e_20_8" parent="pkg_20" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#D5E8D4;strokeColor=#82B366;" value="«R» Rekap Hasil per Aspek" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="352" as="geometry" />
+        </mxCell>
+        <mxCell id="e_20_9" parent="pkg_20" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#D5E8D4;strokeColor=#82B366;" value="«R» Perbandingan Antarperiode" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="388" as="geometry" />
+        </mxCell>
+        <mxCell id="pkg_21" parent="mod_blm" style="shape=folder;tabWidth=110;tabHeight=18;tabPosition=left;html=1;whiteSpace=wrap;container=1;collapsible=0;recursiveResize=0;verticalAlign=top;align=left;spacingLeft=8;spacingTop=20;fontSize=12;fillColor=#FFFFFF;strokeColor=#333333;" value="&lt;b&gt;PKG-21&lt;/b&gt; · Evaluasi 21 (kinerja pemeliharaan)&lt;br&gt;&lt;font style=&quot;font-size:10px&quot; color=&quot;#666666&quot;&gt;PIC analisis: Herrens&lt;/font&gt;" vertex="1">
+          <mxGeometry height="220" width="300" x="360" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="e_21_0" parent="pkg_21" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#D6B656;strokeWidth=2;" value="«T» Rekap Kinerja Pemeliharaan (?)" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="64" as="geometry" />
+        </mxCell>
+        <mxCell id="e_21_1" parent="pkg_21" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="«T» Analisis dan Tindak Lanjut Pemeliharaan" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="e_21_2" parent="pkg_21" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="«T» Tinjauan Dampak Perbaikan" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="136" as="geometry" />
+        </mxCell>
+        <mxCell id="e_21_3" parent="pkg_21" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#D5E8D4;strokeColor=#82B366;" value="«R» Laporan Kinerja Pemeliharaan" vertex="1">
+          <mxGeometry height="30" width="276" x="12" y="172" as="geometry" />
+        </mxCell>
+        <mxCell id="req_14_04" edge="1" parent="1" source="pkg_14" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;jumpStyle=arc;jumpSize=8;endArrow=open;endSize=12;strokeWidth=2.5;strokeColor=#C0392B;" target="pkg_04" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="req_04_15" edge="1" parent="1" source="pkg_04" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;jumpStyle=arc;jumpSize=8;endArrow=open;endSize=12;strokeWidth=2.5;strokeColor=#C0392B;" target="pkg_15" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="req_08_15" edge="1" parent="1" source="pkg_08" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;jumpStyle=arc;jumpSize=8;endArrow=open;endSize=12;strokeWidth=2.5;strokeColor=#C0392B;" target="pkg_15" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="req_16_15" edge="1" parent="1" source="pkg_16" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;jumpStyle=arc;jumpSize=8;endArrow=open;endSize=12;strokeWidth=2.5;strokeColor=#C0392B;" target="pkg_15" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="req_17_15" edge="1" parent="1" source="pkg_17" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;jumpStyle=arc;jumpSize=8;endArrow=open;endSize=12;strokeWidth=2.5;strokeColor=#C0392B;" target="pkg_15" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="req_17_07" edge="1" parent="1" source="pkg_17" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;jumpStyle=arc;jumpSize=8;endArrow=open;endSize=12;strokeWidth=2.5;strokeColor=#C0392B;" target="pkg_07" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="req_18_15" edge="1" parent="1" source="pkg_18" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;jumpStyle=arc;jumpSize=8;endArrow=open;endSize=12;strokeWidth=2.5;strokeColor=#C0392B;" target="pkg_15" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="req_19_18" edge="1" parent="1" source="pkg_19" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;jumpStyle=arc;jumpSize=8;endArrow=open;endSize=12;strokeWidth=2.5;strokeColor=#C0392B;" target="pkg_18" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="req_11_07" edge="1" parent="1" source="pkg_11" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;jumpStyle=arc;jumpSize=8;endArrow=open;endSize=12;strokeWidth=2.5;strokeColor=#C0392B;" target="pkg_07" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="req_21_12" edge="1" parent="1" source="pkg_21" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;jumpStyle=arc;jumpSize=8;endArrow=open;endSize=12;strokeWidth=2.5;strokeColor=#C0392B;" target="pkg_12" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="opt_04_14" edge="1" parent="1" source="pkg_04" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;jumpStyle=arc;jumpSize=8;endArrow=open;endSize=12;strokeWidth=1.5;dashed=1;dashPattern=8 4;strokeColor=#555555;" target="pkg_14" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="opt_07_05" edge="1" parent="1" source="pkg_07" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;jumpStyle=arc;jumpSize=8;endArrow=open;endSize=12;strokeWidth=1.5;dashed=1;dashPattern=8 4;strokeColor=#555555;" target="pkg_05" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="opt_07_12" edge="1" parent="1" source="pkg_07" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;jumpStyle=arc;jumpSize=8;endArrow=open;endSize=12;strokeWidth=1.5;dashed=1;dashPattern=8 4;strokeColor=#555555;" target="pkg_12" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="opt_08_04" edge="1" parent="1" source="pkg_08" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;jumpStyle=arc;jumpSize=8;endArrow=open;endSize=12;strokeWidth=1.5;dashed=1;dashPattern=8 4;strokeColor=#555555;" target="pkg_04" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="opt_09_02" edge="1" parent="1" source="pkg_09" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;jumpStyle=arc;jumpSize=8;endArrow=open;endSize=12;strokeWidth=1.5;dashed=1;dashPattern=8 4;strokeColor=#555555;" target="pkg_02" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="opt_10_04" edge="1" parent="1" source="pkg_10" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;jumpStyle=arc;jumpSize=8;endArrow=open;endSize=12;strokeWidth=1.5;dashed=1;dashPattern=8 4;strokeColor=#555555;" target="pkg_04" value="">
+          <mxGeometry relative="1" x="0.0982" as="geometry">
+            <Array as="points">
+              <mxPoint x="915" y="700" />
+              <mxPoint x="915" y="336" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="opt_10_14" edge="1" parent="1" source="pkg_10" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;jumpStyle=arc;jumpSize=8;endArrow=open;endSize=12;strokeWidth=1.5;dashed=1;dashPattern=8 4;strokeColor=#555555;" target="pkg_14" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="opt_13_01" edge="1" parent="1" source="pkg_13" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;jumpStyle=arc;jumpSize=8;endArrow=open;endSize=12;strokeWidth=1.5;dashed=1;dashPattern=8 4;strokeColor=#555555;" target="pkg_01" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="opt_16_05" edge="1" parent="1" source="pkg_16" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;jumpStyle=arc;jumpSize=8;endArrow=open;endSize=12;strokeWidth=1.5;dashed=1;dashPattern=8 4;strokeColor=#555555;" target="pkg_05" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="opt_18_04" edge="1" parent="1" source="pkg_18" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;jumpStyle=arc;jumpSize=8;endArrow=open;endSize=12;strokeWidth=1.5;dashed=1;dashPattern=8 4;strokeColor=#555555;" target="pkg_04" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="title" parent="1" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;" value="&lt;b style=&quot;font-size:28px&quot;&gt;Pemetaan Package per Instrumen Monev LabFIK&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:14px&quot;&gt;Hierarki: Modul → Package (1 package = 1 instrumen) → Entitas (nama saja, tanpa atribut) · Draf 28 Oktober 2026 · Sumber: Instrumen Monev v1.1, tab Analysis&lt;/span&gt;" vertex="1">
+          <mxGeometry height="80" width="2400" x="40" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="legend" parent="1" style="swimlane;html=1;startSize=30;fontStyle=1;fontSize=14;fillColor=#FFFFFF;container=1;collapsible=0;rounded=1;arcSize=4;" value="Legenda" vertex="1">
+          <mxGeometry height="520" width="420" x="2890" y="1252" as="geometry" />
+        </mxCell>
+        <mxCell id="lg_0" parent="legend" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="«T» Transaksi: kejadian berulang, bertanggal/berstatus" vertex="1">
+          <mxGeometry height="30" width="388" x="16" y="44" as="geometry" />
+        </mxCell>
+        <mxCell id="lg_1" parent="legend" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#FFF2CC;strokeColor=#D6B656;" value="«M» Master: data acuan" vertex="1">
+          <mxGeometry height="30" width="388" x="16" y="84" as="geometry" />
+        </mxCell>
+        <mxCell id="lg_2" parent="legend" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#D5E8D4;strokeColor=#82B366;" value="«R» Report: hasil olahan, tidak diinput" vertex="1">
+          <mxGeometry height="30" width="388" x="16" y="124" as="geometry" />
+        </mxCell>
+        <mxCell id="lg_3" parent="legend" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#FFF2CC;strokeColor=#D6B656;dashed=1;" value="Garis putus: tambahan usulan (+), tidak ada di sheet" vertex="1">
+          <mxGeometry height="30" width="388" x="16" y="164" as="geometry" />
+        </mxCell>
+        <mxCell id="lg_4" parent="legend" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#DAE8FC;strokeColor=#D6B656;strokeWidth=2;" value="Tepi kuning tebal: isi sheet yang diusulkan diubah (?)" vertex="1">
+          <mxGeometry height="30" width="388" x="16" y="204" as="geometry" />
+        </mxCell>
+        <mxCell id="lg_5" parent="legend" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=6;fillColor=#F5F5F5;strokeColor=#666666;dashed=1;fontStyle=2;" value="«extend»: menambah kolom ke entitas package lain" vertex="1">
+          <mxGeometry height="30" width="388" x="16" y="244" as="geometry" />
+        </mxCell>
+        <mxCell id="lge_0" edge="1" parent="legend" style="rounded=1;html=1;jumpStyle=arc;jumpSize=8;endArrow=open;endSize=12;strokeWidth=2.5;strokeColor=#C0392B;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="16" y="309" as="sourcePoint" />
+            <mxPoint x="120" y="309" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lgt_0" parent="legend" style="text;html=1;align=left;verticalAlign=middle;fontSize=12;" value="Dependensi &lt;b&gt;wajib&lt;/b&gt;" vertex="1">
+          <mxGeometry height="28" width="270" x="130" y="295" as="geometry" />
+        </mxCell>
+        <mxCell id="lge_1" edge="1" parent="legend" style="rounded=1;html=1;jumpStyle=arc;jumpSize=8;endArrow=open;endSize=12;strokeWidth=1.5;dashed=1;dashPattern=8 4;strokeColor=#555555;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="16" y="345" as="sourcePoint" />
+            <mxPoint x="120" y="345" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lgt_1" parent="legend" style="text;html=1;align=left;verticalAlign=middle;fontSize=12;" value="Dependensi &lt;b&gt;opsional&lt;/b&gt;" vertex="1">
+          <mxGeometry height="28" width="270" x="130" y="331" as="geometry" />
+        </mxCell>
+        <mxCell id="lg_note" parent="legend" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;fontSize=11;" value="Arah panah: package pemakai → package penyedia entitas [T]/[R].&lt;br&gt;Semua package meng-&lt;i&gt;import&lt;/i&gt; &lt;b&gt;PKG-00 Core&lt;/b&gt;; panah ke Core tidak digambar.&lt;br&gt;PKG-03 dan PKG-07 adalah hulu lewat master Core yang mereka kelola." vertex="1">
+          <mxGeometry height="90" width="388" x="16" y="374" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
