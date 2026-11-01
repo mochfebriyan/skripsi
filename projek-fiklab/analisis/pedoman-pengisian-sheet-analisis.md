@@ -2,7 +2,7 @@
 
 26 Oktober 2026 · Draf oleh Febriyan, untuk dibahas bersama Zahir dan Herrens (dan kelompok lain yang memakai sheet yang sama)
 
-Sheet: **Instrumen Monev Laboratorium UPNVJ 2026 – Pembagian PIC dan Modul** (tab *Analysis*)
+Sheet: **Instrumen Monev Laboratorium UPNVJ 2026 v1.1 – PIC dan Data** (tab *Analysis*). Salinannya ada di [docs/](../docs/).
 
 ## 1. Tujuan
 
@@ -13,7 +13,7 @@ Dosen meminta kita **menganalisis dulu** modul, data, dan dependensi antarinstru
 
 Kedua hal itu hanya bisa dibandingkan kalau **semua orang mengisi dengan cara dan istilah yang sama**. Pedoman ini mengatur caranya.
 
-Kolom **PIC - Skripsi** di sheet adalah **PIC analisis**, bukan pembagian role skripsi. Role baru dibahas setelah analisis selesai.
+Kolom **PIC - Skripsi** di sheet adalah **PIC analisis**, bukan pembagian skripsi. Setelah analisis, pembagian kerja dilakukan **per modul**, dan PIC analisis suatu baris bisa berbeda dari pemegang modulnya. Pemegang modul tercatat di [brief-seluruh-projek.md](../brief/brief-seluruh-projek.md#modul-dan-pemegangnya).
 
 ## 2. Alur analisis per indikator
 
@@ -33,7 +33,7 @@ Target → Aturan memenuhi → Luaran (bukti dukung) → Transaksi → Master �
 | 6. Dependensi | Data apa yang harus datang dari indikator lain atau sistem lain? | Analisis kita |
 | 7. Kompleksitas | Seberapa berat dibangun? | Hitungan di bagian 6 |
 
-Contoh lengkap: [analisis Proses 18](analisis-data-proses-18.md) dan [analisis Pengelolaan 1–3](analisis-data-pengelolaan-1-3.md).
+Contoh lengkap: [analisis Pengelolaan 1–3](analisis-data-pengelolaan-1-3.md) dan [analisis Pengembangan 13](analisis-data-pengembangan-13.md). Analisis awal Proses 18 tersimpan di riwayat git (`git show 62e50ce:projek-fiklab/analisis/analisis-data-proses-18.md`).
 
 ## 3. Kolom yang diisi
 
@@ -97,7 +97,7 @@ Pakai nama di kolom **Nama baku**. Kalau master yang kamu butuhkan belum ada di 
 | KPI | Definisi indikator kinerja lab | — |
 | Sasaran Renstra | Sasaran Renstra UPNVJ/UPPS/prodi | — |
 | Kompetensi | Jenis kompetensi/sertifikasi yang disyaratkan | Skill |
-| Indikator Monev | Registri 64 indikator: aspek, nomor, bunyi, jenis skor | — |
+| Indikator Monev | Registri indikator proyek (21, PKG-01–21): aspek, nomor, bunyi, jenis skor | — |
 
 Daftar ini **draf** dan akan bertambah. Yang penting, setiap master hanya punya satu nama.
 
@@ -107,11 +107,13 @@ Daftar ini **draf** dan akan bertambah. Yang penting, setiap master hanya punya 
 
 Kalau sebuah indikator tidak cocok dengan keempatnya, tulis usulan di Catatan dan bahas bersama. Jangan langsung membuat modul baru.
 
+**Pembaruan (28 Okt – 1 Nov 2026):** untuk kelompok Febriyan, Zahir, dan Herrens, modul sudah diklasifikasi ulang menjadi **Tata Kelola & Dokumen**, **SDM & Kompetensi**, dan **Pelaksanaan Praktikum**, ditambah **Core** untuk master bersama. Asset Management dan Safety Management tetap. Rinciannya ada di [pemetaan-package-instrumen.md](pemetaan-package-instrumen.md#2-hierarki-modul).
+
 ### 4d. Menyebut indikator
 
-Nomor di instrumen **tidak unik**: ada tiga baris "Pengelolaan 10" dan dua baris "Evaluasi 19". Selalu tulis **aspek + nomor + kata kunci**:
+Penomoran di sheet tidak rapi. Nomor dipakai ganda (tiga baris "Pengelolaan 10", dua baris "Evaluasi 19"), sebagian baris tanpa aspek, dan sebagian berkode Q/E. Sejak 1 November 2026 proyek memakai **21 indikator**, satu per package, dan **nomor PKG menjadi identitas resmi** (lihat [pemetaan](pemetaan-package-instrumen.md#3-ringkasan-package)). Selalu tulis **PKG + aspek + nomor + kata kunci**:
 
-- ✅ `Pengelolaan 10 (otorisasi)`, `Evaluasi 19 (penilaian individual)`
+- ✅ `PKG-10 Pengelolaan 10 (otorisasi)`, `PKG-19 Evaluasi 19 (penilaian individual)`
 - ❌ `ID 10`, `target 19`
 
 ## 5. Level cakupan

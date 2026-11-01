@@ -4,6 +4,11 @@
 
 **Revisi 2:** modul diklasifikasi ulang (bagian 2). Asset Management dan Safety Management sudah ditetapkan untuk kelompok lain, sehingga klasifikasi ulang hanya menyangkut package milik kelompok kita (Febriyan, Zahir, Herrens). PKG-21 masuk Asset Management, dan PKG-20 diusulkan masuk Pelaksanaan Praktikum.
 
+**Revisi 3 (1 November 2026):**
+- Pemegang modul ditetapkan: **Febriyan** = Tata Kelola & Dokumen (PKG-01, 02, 03, 13), **Zahir** = SDM & Kompetensi (PKG-04, 10, 14), **Herrens** = Pelaksanaan Praktikum (PKG-15–20).
+- Proyek mencakup **21 indikator** dengan aturan **1 package = 1 indikator**. Nomor PKG menjadi identitas resmi, karena penomoran di sheet tidak rapi.
+- Kolom "PIC analisis" di tabel dan label di `.drawio` tetap mencatat siapa yang **menganalisis** baris tersebut, bukan pemegang modulnya.
+
 Sumber: **Instrumen Monev Laboratorium UPNVJ 2026 v1.1 – PIC dan Data** (tab *Analysis*), kolom *Entity Table* dan *Master Data*. Konvensi penamaan mengikuti [pedoman pengisian sheet analisis](pedoman-pengisian-sheet-analisis.md).
 
 ---
@@ -70,9 +75,9 @@ Dasar yang dipakai:
 | Modul | Pemegang | Package | Objek utama |
 |---|---|---|---|
 | **Core** | Disepakati dua kelompok | PKG-00 | Master bersama dan Sesi |
-| **Tata Kelola & Dokumen** | Kelompok kita | 01 rencana kerja · 02 SOP · 03 struktur · 13 rencana pengembangan | Rencana, dokumen, organisasi |
-| **SDM & Kompetensi** | Kelompok kita | 04 penugasan petugas · 10 otorisasi · 14 pelatihan | Personel dan kompetensinya |
-| **Pelaksanaan Praktikum** | Kelompok kita | 15 jadwal & modul · 16 kesiapan alat · 17 bahan praktikum · 18 sesi terlaksana · 19 penilaian · 20 kepuasan pengguna | Sesi dan kelas |
+| **Tata Kelola & Dokumen** | **Febriyan** (ditetapkan 1 Nov 2026) | 01 rencana kerja · 02 SOP · 03 struktur · 13 rencana pengembangan | Rencana, dokumen, organisasi |
+| **SDM & Kompetensi** | **Zahir** (ditetapkan 1 Nov 2026) | 04 penugasan petugas · 10 otorisasi · 14 pelatihan | Personel dan kompetensinya |
+| **Pelaksanaan Praktikum** | **Herrens** (ditetapkan 1 Nov 2026) | 15 jadwal & modul · 16 kesiapan alat · 17 bahan praktikum · 18 sesi terlaksana · 19 penilaian · 20 kepuasan pengguna | Sesi dan kelas |
 | Asset Management | Kelompok lain (sudah ditetapkan) | 05 · 07 · 08 · 12 · 21 | Alat dan bahan |
 | Safety Management | Kelompok lain (sudah ditetapkan) | 06 · 09 · 11 | Bahaya dan keselamatan |
 
@@ -96,7 +101,7 @@ Alternatifnya Tata Kelola & Dokumen, karena keluhan dan Rencana Tindak Lanjut be
 
 Rencana Tindak Lanjut di PKG-20 tetap kandidat entitas bersama "Tindak Lanjut" (bagian 7). Kalau nanti E08 diambil, entitas itu bisa dipindah ke Tata Kelola.
 
-PIC analisis awal PKG-20 adalah Patih (kelompok lain). **Perpindahan ini perlu dikonfirmasi ke Patih dan Pak Widi.**
+PIC analisis awal PKG-20 adalah Patih (kelompok lain). **Status: ditetapkan masuk Pelaksanaan Praktikum (1 Nov 2026).**
 
 ### 2e. Beban per modul (kelompok kita)
 
@@ -147,14 +152,14 @@ T, M, dan R hanya menghitung entitas **milik** package, bukan yang di-*import*.
 | PKG-10 | Pengelolaan 10 (otorisasi personel) | Zahir | **SDM** (dari Organization) | 3 | 2 | 1 | opsional 04, 14 |
 | PKG-11 | Pengelolaan 11 (penyimpanan bahan) | Wisnu | Safety *(kel. lain)* | 2 | 1 | 1 | 07 |
 | PKG-12 | Pengelolaan 12 (pemeliharaan preventif alat) | Patih | Asset *(kel. lain)* | 4 | 1 | 3 | — |
-| PKG-13 | Pengembangan 13 (rencana pengembangan lab) | Herrens | Tata Kelola | 3 | 0 | 1 | opsional 01 |
+| PKG-13 | Pengembangan 13 (rencana pengembangan lab) | Herrens (pemegang: Febriyan) | Tata Kelola | 3 | 0 | 1 | opsional 01 |
 | PKG-14 | Pengembangan 14 (pelatihan PLP/laboran) | Herrens | **SDM** (dari Organization) | 3 | 0 | 0 | 04 |
 | PKG-15 | Persiapan 15 (jadwal dan modul) | Herrens | Praktikum | 2 | 0 | 2 | — |
 | PKG-16 | Persiapan 16 (kesiapan alat dan *software*) | Zahir | Praktikum | 3 | 1 | 0 | 15 · opsional 05 |
 | PKG-17 | Persiapan 17 (bahan praktikum) | Zahir | Praktikum | 2 | 0 | 0 | 07, 15 |
 | PKG-18 | Proses 18 (sesi terlaksana) | Febriyan | Praktikum | 2 | 0 | 1 | 15 · opsional 04 |
 | PKG-19 | Evaluasi 19 (penilaian individual praktikan) | Febriyan | Praktikum | 0 | 0 | 1 | 18 |
-| PKG-20 | Evaluasi 20 (kepuasan pengguna) | Patih (awal) | **Praktikum** (usulan, dari *belum ada*) | 5 | 3 | 2 | — |
+| PKG-20 | Evaluasi 20 (kepuasan pengguna) | Patih (awal) | **Praktikum** (dari *belum ada*) | 5 | 3 | 2 | — |
 | PKG-21 | Evaluasi 21 (kinerja pemeliharaan) | Herrens | **Asset** *(kel. lain)*, dari *belum ada* | 3 | 0 | 1 | 12 |
 
 Nomor PKG sengaja disamakan dengan nomor instrumen. Nomor di sheet tidak unik, jadi **kata kunci di dalam kurung wajib ikut disebut**. Contoh: PKG-08 adalah Pengelolaan 8 (**kapasitas sesi**), bukan Pengelolaan 8 (pemeliharaan ruang).
@@ -282,7 +287,7 @@ Isinya master yang dipakai **lebih dari satu package**. Kolom **Dikelola oleh** 
 | Bahan [M] | Bahan habis pakai atau reagen | **PKG-07** | 07, 11, 17 | Belum ada |
 | Lokasi Penyimpanan [M] (+) | Lokasi selain ruang: lemari, rak khusus, kulkas, TPS limbah | Core | 07, 09, 11 | Belum ada |
 | Mitra Eksternal [M] (+) | Pihak luar: vendor kalibrasi, teknisi/vendor servis, pengelola limbah berizin | Core | 05, 09, 12 | `res.partner` (bawaan Odoo) |
-| Indikator Monev [M] (+) | Registri 64 indikator: aspek, nomor, kata kunci, jenis skor | Core | Semua package, dan *dashboard* | Belum ada |
+| Indikator Monev [M] (+) | Registri indikator proyek (21, PKG-01–21): aspek, nomor, kata kunci, jenis skor | Core | Semua package, dan *dashboard* | Belum ada |
 | **Sesi [T]** | Satu sesi praktikum bertanggal. Satu-satunya **transaksi** di Core | Dibangkitkan oleh **PKG-15** | 04, 08, 15, 16, 17, 18, 19 | `op.session` (OpenEduCat, sudah dipakai modul Rafika) |
 
 **Kenapa Sesi ditaruh di Core, padahal transaksi?** Di sheet, Sesi diklaim tiga instrumen sekaligus: ID 4 ("Sesi"), ID 15 ("Jadwal"), dan ID 18 ("Sesi Praktikum"). Padahal sesi yang dimaksud ketiganya sama, dan ada enam package yang membutuhkannya. Kalau Sesi masuk ke salah satu package, package lain jadi bergantung penuh pada pemiliknya. Usulannya: Sesi menjadi entitas bersama yang meng-*inherit* `op.session`. PKG-15 membangkitkan dan memublikasikannya, PKG-04 menempelkan petugas, dan PKG-18 mencatat pelaksanaannya.
@@ -346,13 +351,13 @@ Package diurutkan per modul. Package milik kelompok lain tetap dicantumkan karen
 | | |
 |---|---|
 | Target | Rencana pengembangan didasarkan pada analisis kesenjangan kebutuhan tridharma, kompetensi, sarana, dan layanan |
-| PIC · Modul | Herrens · Tata Kelola & Dokumen |
+| PIC · Modul | Herrens (analisis awal), dipegang Febriyan · Tata Kelola & Dokumen |
 | Milik package | [T] Rencana Pengembangan (anak: item rencana per aspek)<br>[T] Realisasi Rencana Pengembangan<br>[T] Tinjauan Rencana Pengembangan<br>[R] Dokumen Rencana Pengembangan |
 | Master lokal | — |
 | Import Core | Periode, Personel, Jabatan |
 | Import package lain | Opsional PKG-01 (*roadmap*) |
 | Dipakai oleh | — |
-| Catatan | (?) "Master aspek pengembangan" hanya berisi 4 nilai tetap, jadi cukup pilihan tetap. Polanya **sama persis** dengan PKG-01 (rencana, realisasi, tinjauan). Kandidat memakai satu model generik yang dibedakan jenisnya |
+| Catatan | (?) "Master aspek pengembangan" hanya berisi 4 nilai tetap, jadi cukup pilihan tetap. Polanya **sama persis** dengan PKG-01 (rencana, realisasi, tinjauan). Kandidat memakai satu model generik yang dibedakan jenisnya. Rincian ada di [analisis Pengembangan 13](analisis-data-pengembangan-13.md) |
 
 ### Modul SDM & Kompetensi (kelompok kita)
 
@@ -447,7 +452,7 @@ Package diurutkan per modul. Package milik kelompok lain tetap dicantumkan karen
 | Import Core | Sesi, Periode, Mata Kuliah, Kelas, Ruang Lab, Personel, Jabatan, Mahasiswa (opsional) |
 | Import package lain | PKG-15 (Sesi rencana, **wajib**) · opsional PKG-04 (penugasan untuk dicocokkan dengan presensi) |
 | Dipakai oleh | PKG-19 |
-| Catatan | Sesi ditulis di sheet sebagai milik ID 18, tetapi dipindah ke Core (lihat bagian 5). Rincian ada di [analisis Proses 18](analisis-data-proses-18.md) |
+| Catatan | Sesi ditulis di sheet sebagai milik ID 18, tetapi dipindah ke Core (lihat bagian 5). Analisis awal (Febriyan) ada di riwayat git: `git show 62e50ce:projek-fiklab/analisis/analisis-data-proses-18.md` |
 
 #### PKG-19 · Evaluasi 19 (penilaian individual praktikan)
 
@@ -467,7 +472,7 @@ Package diurutkan per modul. Package milik kelompok lain tetap dicantumkan karen
 | | |
 |---|---|
 | Target | Kepuasan pengguna lab diukur, dianalisis, dan dipakai untuk perbaikan layanan |
-| PIC · Modul | Patih (PIC analisis awal) · **Pelaksanaan Praktikum** (usulan, lihat bagian 2d) |
+| PIC · Modul | Patih (PIC analisis awal), dipegang Herrens · **Pelaksanaan Praktikum** (lihat bagian 2d) |
 | Milik package | [T] Rencana Survei<br>[T] Respons Survei (anak: jawaban per butir)<br>[T] Keluhan Terbuka<br>[T] Analisis Hasil Survei (?)<br>[T] Rencana Tindak Lanjut<br>[R] Rekap Hasil per Aspek<br>[R] Perbandingan Antarperiode |
 | Master lokal | [M] Aspek Survei<br>[M] Instrumen Survei<br>[M] Butir Pertanyaan |
 | Import Core | Ruang Lab, Mata Kuliah, Kelas, Periode (+) |
@@ -619,7 +624,7 @@ Nama di sheet dan nama baku yang dipakai di dokumen ini:
 
 ## 9. Instrumen yang belum dipetakan
 
-43 dari 64 baris belum punya entitas di sheet. Kolom terakhir **hanya dugaan awal**, yaitu ke package mana instrumen itu paling mungkin menempel kalau nanti diambil. Tujuannya membantu memperkirakan cakupan, bukan pembagian kerja.
+Baris sheet berikut berada **di luar 21 indikator proyek**, dan belum punya entitas di sheet. Kolom terakhir **hanya dugaan awal**, yaitu ke package mana instrumen itu paling mungkin menempel kalau nanti diambil. Tujuannya membantu memperkirakan cakupan, bukan pembagian kerja.
 
 | Aspek | Instrumen | Kandidat menempel ke |
 |---|---|---|
@@ -715,11 +720,12 @@ Saran penyajian ke dosen:
 - [ ] **Semua kelompok:** apakah daftar master Core dan pengelolanya disetujui? Yang paling mendesak: Personel/Jabatan (PKG-03) dan Alat/Bahan (PKG-07).
 - [ ] **Zahir:** apakah Penugasan Petugas [T] menggantikan "Petugas (Master/Transaksi)"? Apakah Seleksi Kompetensi (ID 4) dan Asesmen Keterampilan (ID 10) digabung?
 - [ ] **Wisnu:** apakah Log Penggunaan Bahan (ID 11) digabung ke Kartu Stok Bahan (ID 7)? Apakah Kategori Bahaya dibuat satu untuk ID 6, 9, dan 11?
-- [ ] **Patih:** apakah "Mekanisme pengelolaan limbah" dipindah menjadi dokumen SOP di PKG-02? Apakah PKG-20 (kepuasan) boleh pindah ke Pelaksanaan Praktikum milik kelompok kita?
-- [ ] **Herrens:** apakah ID 1 dan 13 memakai pola Rencana generik yang sama? Apakah "Jadwal" (ID 15) disetujui menjadi Sesi + report Jadwal Terpadu?
+- [ ] **Patih:** apakah "Mekanisme pengelolaan limbah" dipindah menjadi dokumen SOP di PKG-02? ~~Apakah PKG-20 (kepuasan) boleh pindah ke Pelaksanaan Praktikum?~~ Ya, ditetapkan 1 Nov 2026.
+- [x] ~~**Herrens:** apakah ID 1 dan 13 memakai pola Rencana generik yang sama?~~ Keduanya sekarang dipegang Febriyan, jadi keputusannya ada di modul Tata Kelola & Dokumen.
+- [ ] **Herrens:** apakah "Jadwal" (ID 15) disetujui menjadi Sesi + report Jadwal Terpadu?
 - [ ] **Dosen:** apakah "modul" dimaksudkan sebagai addon Odoo, atau cukup pengelompokan logis (bagian 2a)?
-- [ ] **Dosen:** apakah kelompok kita memakai 3 modul (Tata Kelola, SDM, Praktikum) atau tetap 2 modul (bagian 2g)?
-- [ ] **Dosen:** apakah satu skripsi akan memegang satu modul utuh?
+- [x] ~~**Dosen:** apakah kelompok kita memakai 3 modul (Tata Kelola, SDM, Praktikum) atau tetap 2 modul (bagian 2g)?~~ 3 modul; Tata Kelola & Dokumen berdiri sendiri (1 Nov 2026).
+- [x] ~~**Dosen:** apakah satu skripsi akan memegang satu modul utuh?~~ Ya. Febriyan memegang Tata Kelola & Dokumen (1 Nov 2026).
 - [ ] **Kelompok Aset/Safety:** apakah interface di bagian 4 disetujui, terutama Sesi (08→15) dan stok bahan (17→07)?
 - [ ] **Dosen:** apakah tambahan bertanda (+), yaitu Lokasi Penyimpanan, Mitra Eksternal, dan Indikator Monev, boleh masuk Core?
 - [ ] **Dosen:** apakah format per package (milik, *import*, dipakai oleh) sudah sesuai yang dimaksud?
