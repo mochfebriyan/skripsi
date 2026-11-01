@@ -190,4 +190,5 @@ Hal yang terlihat dari peta dependensi:
 | [pemetaan-package-instrumen.md](../analisis/pemetaan-package-instrumen.md) + `.drawio` | Modul, package, Core, dependensi | Bersama |
 | [analisis-data-pengelolaan-1-3.md](../analisis/analisis-data-pengelolaan-1-3.md), [analisis-data-pengembangan-13.md](../analisis/analisis-data-pengembangan-13.md) | Analisis package Tata Kelola & Dokumen | Febriyan |
 | [prd/](../prd/) | PRD dan spesifikasi teknis MVP Pengelolaan 1–3 | Febriyan |
+| [pendahuluan/reference/](../pendahuluan/reference/) | Rujukan Bab 1: Bab 1 skripsi Rafika dan daftar judul skripsi UPNVJ yang terkait proyek | Rujukan |
 | [docs/](../docs/) | Instrumen (xlsx), SNI ISO/IEC 17025:2017, Pedoman TA FIK 2025, daftar dosen FIK | Rujukan |
