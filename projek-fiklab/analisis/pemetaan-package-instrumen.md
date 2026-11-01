@@ -357,7 +357,7 @@ Package diurutkan per modul. Package milik kelompok lain tetap dicantumkan karen
 | Import Core | Periode, Personel, Jabatan |
 | Import package lain | Opsional PKG-01 (*roadmap*) |
 | Dipakai oleh | — |
-| Catatan | (?) "Master aspek pengembangan" hanya berisi 4 nilai tetap, jadi cukup pilihan tetap. Polanya **sama persis** dengan PKG-01 (rencana, realisasi, tinjauan). Kandidat memakai satu model generik yang dibedakan jenisnya. Rincian ada di [analisis Pengembangan 13](analisis-data-pengembangan-13.md) |
+| Catatan | (?) "Master aspek pengembangan" hanya berisi 4 nilai tetap, jadi cukup pilihan tetap. Polanya **sama persis** dengan PKG-01 (rencana, realisasi, tinjauan). Kandidat memakai satu model generik yang dibedakan jenisnya. Rincian ada di [analisis Pengembangan 13](https://github.com/mochfebriyan/skripsi/blob/febriyan-skripsi/projek-fiklab/analisis/analisis-data-pengembangan-13.md) (branch `febriyan-skripsi`) |
 
 ### Modul SDM & Kompetensi (kelompok kita)
 

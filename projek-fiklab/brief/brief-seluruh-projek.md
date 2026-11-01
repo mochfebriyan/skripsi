@@ -2,7 +2,7 @@
 
 1 November 2026 · Febriyan · Menggantikan versi 26 Oktober 2026. Pembagian "Role 1–3" dan scope "8 indikator siklus mutu praktikum" di versi itu **sudah tidak berlaku**.
 
-Dokumen ini menjelaskan proyek secara keseluruhan. Scope skripsi Febriyan ada di [brief-tata-kelola-dokumen.md](brief-tata-kelola-dokumen.md).
+Dokumen ini menjelaskan proyek secara keseluruhan. Brief dan analisis per modul disimpan di branch pemegangnya. Untuk Tata Kelola & Dokumen: [brief-tata-kelola-dokumen.md](https://github.com/mochfebriyan/skripsi/blob/febriyan-skripsi/projek-fiklab/brief/brief-tata-kelola-dokumen.md) di branch `febriyan-skripsi`.
 
 ## Ringkasan
 
@@ -13,8 +13,7 @@ Dokumen ini menjelaskan proyek secara keseluruhan. Scope skripsi Febriyan ada di
 - **Kelompok kita:** Febriyan (Tata Kelola & Dokumen), Zahir (SDM & Kompetensi), Herrens (Pelaksanaan Praktikum). Kelompok lain yang sudah tercatat: Wisnu dan Patih (Asset Management dan Safety Management).
 - **Status (1 Nov 2026):**
   - Analisis per instrumen dan pemetaan package sudah ada.
-  - Modul Tata Kelola & Dokumen sudah punya MVP untuk Pengelolaan 1–3.
-  - Modul lain belum mulai dibangun.
+  - Belum ada modul yang dibangun.
 
 ## Urgensi
 
@@ -99,15 +98,13 @@ Usulannya **1 modul fungsional = 1 addon**, supaya `depends` di manifest sama de
 
 ```
 labfik_core                  master bersama + Sesi
- ├─ labfik_org               Tata Kelola & Dokumen (Febriyan; MVP sudah ada)
+ ├─ labfik_org               Tata Kelola & Dokumen
  ├─ labfik_sdm               SDM & Kompetensi
  └─ labfik_praktikum         Pelaksanaan Praktikum (depends: sdm)
       └─ labfik_praktikum_aset   jembatan ke addon kelompok Aset
 ```
 
-**Belum diputuskan:** MVP `labfik_org` saat ini mendefinisikan sendiri master Personel, Jabatan, Periode, dan Ruang. Pilihannya ada dua:
-- master itu dipindah ke `labfik_core`, atau
-- `labfik_org` sekaligus berperan sebagai core yang menjadi `depends` modul lain.
+**Belum diputuskan:** master bersama (Personel, Jabatan, Periode, Ruang) ditempatkan di addon `labfik_core` tersendiri, atau di `labfik_org` yang lalu menjadi `depends` modul lain.
 
 ## Master bersama (Core) dan dependensi kunci
 
@@ -150,7 +147,6 @@ Hal yang terlihat dari peta dependensi:
 | Kode | Isi | Status |
 |---|---|---|
 | [`skripsi_rafika/`](../../skripsi_rafika/README.md) | Modul `PendaftaranAsisten` (Rafika Anandar, 2026) di atas OpenEduCat, Odoo 17. Memakai `op.session` untuk sesi bertanggal dan master `mst_*` (dosen, MK, kelas, periode), `lab.master.ruangan` | **Acuan saja**, tidak di-*extend* dan tidak diubah |
-| [`projek-fiklab/odoo-pengelolaan-mvp/`](https://github.com/mochfebriyan/skripsi/tree/febriyan-skripsi/projek-fiklab/odoo-pengelolaan-mvp) (branch `febriyan-skripsi`) | Addon `labfik_org` (Febriyan): Pengelolaan 1–3, Odoo 17 Community + Docker, berdiri sendiri tanpa OpenEduCat | MVP, 87 unit test lulus, belum UAT |
 
 ## Keputusan yang sudah diambil
 
@@ -175,7 +171,7 @@ Hal yang terlihat dari peta dependensi:
 - [ ] Apakah semua kelompok memakai satu server Odoo?
 
 **Untuk kelompok**
-- [ ] Model master Personel memakai opsi yang mana: `hr.employee`, model sendiri (`labfik.personel`, sudah ada di MVP), atau model Rafika?
+- [ ] Model master Personel memakai opsi yang mana: `hr.employee`, model sendiri, atau model Rafika?
 - [ ] Apakah master bersama tinggal di `labfik_org` atau dipisah ke `labfik_core`?
 - [ ] Apakah Sesi masuk Core dan dibangkitkan PKG-15?
 - [ ] Apakah Persiapan 17 (bahan) dinyatakan N/A untuk lab FIK, atau dicakup terbatas (lab IoT, 3D printer)?
@@ -185,10 +181,8 @@ Hal yang terlihat dari peta dependensi:
 | Dokumen | Isi | Milik |
 |---|---|---|
 | [brief-seluruh-projek.md](brief-seluruh-projek.md) | Dokumen ini | Bersama |
-| [brief-tata-kelola-dokumen.md](brief-tata-kelola-dokumen.md) | Scope skripsi Febriyan | Febriyan |
 | [pedoman-pengisian-sheet-analisis.md](../analisis/pedoman-pengisian-sheet-analisis.md) | Cara mengisi sheet analisis, nama master baku, rumus kompleksitas | Bersama |
 | [pemetaan-package-instrumen.md](../analisis/pemetaan-package-instrumen.md) + `.drawio` | Modul, package, Core, dependensi | Bersama |
-| [analisis-data-pengelolaan-1-3.md](../analisis/analisis-data-pengelolaan-1-3.md), [analisis-data-pengembangan-13.md](../analisis/analisis-data-pengembangan-13.md) | Analisis package Tata Kelola & Dokumen | Febriyan |
-| [prd/](../prd/) | PRD dan spesifikasi teknis MVP Pengelolaan 1–3 | Febriyan |
+| Brief dan analisis modul Tata Kelola & Dokumen ([brief](https://github.com/mochfebriyan/skripsi/blob/febriyan-skripsi/projek-fiklab/brief/brief-tata-kelola-dokumen.md), [analisis P1–3](https://github.com/mochfebriyan/skripsi/blob/febriyan-skripsi/projek-fiklab/analisis/analisis-data-pengelolaan-1-3.md), [analisis Pengembangan 13](https://github.com/mochfebriyan/skripsi/blob/febriyan-skripsi/projek-fiklab/analisis/analisis-data-pengembangan-13.md)) | Scope, kebutuhan, dan analisis data modul Febriyan | Febriyan (branch `febriyan-skripsi`) |
 | [pendahuluan/reference/](../pendahuluan/reference/) | Rujukan Bab 1: Bab 1 skripsi Rafika dan daftar judul skripsi UPNVJ yang terkait proyek | Rujukan |
 | [docs/](../docs/) | Instrumen (xlsx), SNI ISO/IEC 17025:2017, Pedoman TA FIK 2025, daftar dosen FIK | Rujukan |
