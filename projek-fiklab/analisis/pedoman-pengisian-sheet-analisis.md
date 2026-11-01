@@ -33,7 +33,7 @@ Target → Aturan memenuhi → Luaran (bukti dukung) → Transaksi → Master �
 | 6. Dependensi | Data apa yang harus datang dari indikator lain atau sistem lain? | Analisis kita |
 | 7. Kompleksitas | Seberapa berat dibangun? | Hitungan di bagian 6 |
 
-Contoh lengkap: [analisis Pengelolaan 1–3](analisis-data-pengelolaan-1-3.md) dan [analisis Pengembangan 13](analisis-data-pengembangan-13.md). Analisis awal Proses 18 tersimpan di riwayat git (`git show 62e50ce:projek-fiklab/analisis/analisis-data-proses-18.md`).
+Contoh lengkap: [analisis Pengelolaan 1–3](https://github.com/mochfebriyan/skripsi/blob/febriyan-skripsi/projek-fiklab/analisis/analisis-data-pengelolaan-1-3.md) dan [analisis Pengembangan 13](https://github.com/mochfebriyan/skripsi/blob/febriyan-skripsi/projek-fiklab/analisis/analisis-data-pengembangan-13.md) (branch `febriyan-skripsi`). Analisis awal Proses 18 tersimpan di riwayat git (`git show 62e50ce:projek-fiklab/analisis/analisis-data-proses-18.md`).
 
 ## 3. Kolom yang diisi
 

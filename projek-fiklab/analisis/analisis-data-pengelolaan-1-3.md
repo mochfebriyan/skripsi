@@ -6,7 +6,7 @@ Package keempat di modul ini, Pengembangan 13, dianalisis di [analisis-data-peng
 
 Alur analisis mengikuti [pedoman pengisian sheet](pedoman-pengisian-sheet-analisis.md): **target → aturan memenuhi → luaran (bukti dukung) → data transaksi (*fact*) → master data (*dimension*) → dependensi**. Cakupannya sengaja dibatasi ke MVP. Hanya data yang bisa **dicatat oleh sistem sendiri** yang menjadi syarat wajib. Data yang bergantung pada pihak lain diberi jalan pengganti.
 
-Kondisi saat ini: per 26 Oktober 2026, KaLab menyampaikan secara lisan bahwa FIKLAB **belum punya** SK pengelola, SOP yang disahkan, maupun rencana kerja (PRD keputusan D5). Pernyataan ini masih harus dicatat sebagai hasil wawancara (nama, jabatan, tanggal) sebelum dikutip **[KONFIRMASI]**.
+Kondisi saat ini: per 26 Oktober 2026, KaLab menyampaikan secara lisan bahwa FIKLAB **belum punya** SK pengelola, SOP yang disahkan, maupun rencana kerja. Pernyataan ini masih harus dicatat sebagai hasil wawancara (nama, jabatan, tanggal) sebelum dikutip **[KONFIRMASI]**.
 
 ---
 
@@ -300,6 +300,6 @@ Catatan pembacaan:
 - [ ] Apakah ada rapat koordinasi rutin? Apakah ada notulennya?
 
 **Untuk kelompok (Zahir, Herrens)**
-- [ ] Master personel memakai opsi yang mana (lihat tabel opsi di Pengelolaan 3)? MVP memakai model sendiri, `labfik.personel` (PRD keputusan D2), dan menawarkannya sebagai kontrak.
+- [ ] Master personel memakai opsi yang mana (lihat tabel opsi di Pengelolaan 3)? Opsi yang dipilih menjadi kontrak bersama untuk semua modul.
 - [ ] Apakah Zahir (pemegang SDM & Kompetensi) ingin memakai pola "paket dokumen + bukti per kriteria" untuk Pengembangan 14?
-- [x] ~~Odoo *Community* atau *Enterprise*?~~ Community (PRD keputusan D1), sehingga aplikasi *Documents* tidak tersedia.
+- [x] ~~Odoo *Community* atau *Enterprise*?~~ Community (keputusan 26 Okt 2026), sehingga aplikasi *Documents* tidak tersedia.

@@ -25,15 +25,13 @@ Modul ini juga mengelola master bersama **Personel, Jabatan, Dokumen Induk, dan 
 |---|---|
 | `projek-fiklab/brief/` | Dua brief di atas |
 | `projek-fiklab/analisis/` | Pedoman pengisian sheet dan pemetaan package (keduanya **bersama kelompok**), serta analisis Pengelolaan 1–3 dan Pengembangan 13 (milik Febriyan) |
-| `projek-fiklab/prd/` | PRD v0.3 dan spesifikasi teknis MVP Pengelolaan 1–3. Pengembangan 13 belum masuk PRD |
-| `projek-fiklab/odoo-pengelolaan-mvp/` | Addon Odoo 17 Community `labfik_org` (MVP Pengelolaan 1–3) + Docker. Cara menjalankan ada di README-nya |
 | `projek-fiklab/docs/` | Rujukan: Instrumen Monev xlsx (tab *Analysis*), SNI ISO/IEC 17025:2017, Pedoman TA FIK 2025, daftar dosen FIK |
 | `projek-fiklab/pendahuluan/reference/` | Rujukan Bab 1: Bab 1 skripsi Rafika, daftar judul skripsi terkait. Draf pendahuluan lama sudah dihapus |
 | `skripsi_rafika/` | Kode skripsi Rafika Anandar (2026), modul `PendaftaranAsisten` di atas OpenEduCat. **Hanya acuan; jangan diubah** |
 
 ## Urutan sumber kebenaran
 
-Instrumen Monev (xlsx) dan ISO/IEC 17025 → brief → analisis → PRD/spesifikasi → kode.
+Instrumen Monev (xlsx) dan ISO/IEC 17025 → brief → analisis → rancangan → kode. Saat ini belum ada rancangan teknis maupun kode untuk modul ini; MVP dan PRD lama sengaja dihapus agar rancangan tidak bias ke contoh itu. Jangan menghidupkannya kembali dari riwayat git kecuali diminta.
 
 Bila ada yang bertentangan, ikuti sumber yang lebih kiri, lalu sebutkan konfliknya ke Febriyan.
 

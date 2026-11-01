@@ -96,7 +96,7 @@ Riwayat perubahan memakai `mail.thread` + `tracking`.
 
 | Master | Dipakai untuk | Sumber | Bila belum tersedia |
 |---|---|---|---|
-| Periode | Masa berlaku rencana (tahunan atau multi-tahun) | Master periode (`labfik.periode` di MVP) | Rentang tanggal diinput di rencana |
+| Periode | Masa berlaku rencana (tahunan atau multi-tahun) | Master Periode (Core) | Rentang tanggal diinput di rencana |
 | Personel | PIC item, pengesah, pelapor, peserta tinjauan | Master bersama dari Pengelolaan 3 | `res.users` |
 | Jabatan | Pengesah sah (KaLab/Dekan) | Master bersama dari Pengelolaan 3 | Pengguna di grup KaLab |
 | KPI | Indikator manfaat (opsional) | Master KPI dari Pengelolaan 1 | Indikator manfaat ditulis sebagai teks |
@@ -111,7 +111,7 @@ Tidak ada master baru.
 | Butuh | Dari | Sifat | Bila tidak ada |
 |---|---|---|---|
 | Personel dan jabatan | Pengelolaan 3 (modul sendiri) | Wajib | `res.users` + grup keamanan |
-| Register dokumen untuk PDF bertanda tangan | Pengelolaan 2 (modul sendiri) | Wajib untuk K1 | — (sudah ada di MVP) |
+| Register dokumen untuk PDF bertanda tangan | Pengelolaan 2 (modul sendiri) | Wajib untuk K1 | — (dibangun di modul yang sama) |
 | Kebutuhan kurikulum/CPMK, riset, PkM | Eksternal (prodi, LPPM) | Wajib sebagai isi aspek tridharma | Diringkas manual + lampiran dokumen sumber |
 | Data biaya | Eksternal (keuangan fakultas) | Wajib untuk K2 | Biaya diinput manual per item |
 | Gap kompetensi | SDM (matriks kompetensi PKG-04, rencana pelatihan PKG-14) | Opsional | Diisi manual |

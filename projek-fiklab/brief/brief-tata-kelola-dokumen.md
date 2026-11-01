@@ -4,7 +4,7 @@
 
 ## Ringkasan
 
-- **Modul:** Tata Kelola & Dokumen, dibangun sebagai addon Odoo `labfik_org`.
+- **Modul:** Tata Kelola & Dokumen (rencana nama addon Odoo: `labfik_org`, lihat [brief-seluruh-projek.md](brief-seluruh-projek.md#rencana-addon-odoo)).
 - **Indikator:** 4 dari 21 indikator proyek. Di proyek ini 1 package = 1 indikator, dan nomor PKG menjadi identitasnya.
   - PKG-01 Pengelolaan 1 (rencana kerja tahunan)
   - PKG-02 Pengelolaan 2 (SOP dan IK)
@@ -17,24 +17,21 @@
 
   Personel dan Jabatan dipakai hampir semua package lain, termasuk milik kelompok lain. Karena itu modul ini berada **paling hulu** di proyek.
 - **Benang merah:** lab membuktikan bahwa ia punya **struktur, aturan, dan rencana** yang disahkan, dijalankan, dan dievaluasi. Bukti kegiatan direkam saat terjadi, bukan dikumpulkan menjelang monev.
-- **Status:**
-  - Pengelolaan 1–3: MVP sudah jalan, 87 unit test lulus, belum UAT.
-  - Pengembangan 13: baru dianalisis, belum dibangun.
+- **Status:** keempat package sudah dianalisis, tetapi belum ada rancangan teknis maupun kode. Rancangan dimulai dari analisis, bukan dari prototipe sebelumnya.
 - **Usulan judul (draf, perlu persetujuan Pak Widi):** Kustomisasi Modul Odoo untuk Tata Kelola dan Pengendalian Dokumen Laboratorium Berbasis Instrumen Monev (Studi Kasus: Laboratorium FIK UPN "Veteran" Jakarta)
 
 ## Indikator yang dipegang
 
-| Package | Bunyi singkat | PJ | Jenis skor · unit | Level cakupan | Acuan | Status |
-|---|---|---|---|---|---|---|
-| **PKG-01** Pengelolaan 1 | Rencana kerja tahunan memuat sasaran, KPI, target, anggaran, dan penanggung jawab | KaLab; Dekanat | Kriteria K1–K4 · 1 paket dokumen dan rekaman | Semi-otomatis | Pedoman Diklatfung PLP 2022, Standar SPMI UPNVJ 2025 | MVP ✅ |
-| **PKG-02** Pengelolaan 2 | Seluruh SOP dan IK yang diperlukan tersedia, disahkan, mutakhir, dan dapat diakses pengguna | KaLab; PLP/laboran | Persentase · 1 SOP wajib | Otomatis | ISO/IEC 17025 8.3 | MVP ✅ |
-| **PKG-03** Pengelolaan 3 | Struktur organisasi, tugas, tanggung jawab, wewenang, dan pengganti petugas ditetapkan dan dijalankan | Dekan; KaLab | Kriteria K1–K4 · 1 paket dokumen dan rekaman | Semi-otomatis | ISO/IEC 17025 5 (5.5–5.6) | MVP ✅ |
-| **PKG-13** Pengembangan 13 | Rencana pengembangan lab didasarkan pada analisis kesenjangan kebutuhan tridharma, kompetensi, sarana, dan layanan | KaLab; Dekanat | Kriteria K1–K4 · 1 paket dokumen dan rekaman | Semi-otomatis | Pedoman Diklatfung PLP 2022, Standar SPMI UPNVJ 2025 | Analisis saja |
+| Package | Bunyi singkat | PJ | Jenis skor · unit | Level cakupan | Acuan |
+|---|---|---|---|---|---|
+| **PKG-01** Pengelolaan 1 | Rencana kerja tahunan memuat sasaran, KPI, target, anggaran, dan penanggung jawab | KaLab; Dekanat | Kriteria K1–K4 · 1 paket dokumen dan rekaman | Semi-otomatis | Pedoman Diklatfung PLP 2022, Standar SPMI UPNVJ 2025 |
+| **PKG-02** Pengelolaan 2 | Seluruh SOP dan IK yang diperlukan tersedia, disahkan, mutakhir, dan dapat diakses pengguna | KaLab; PLP/laboran | Persentase · 1 SOP wajib | Otomatis | ISO/IEC 17025 8.3 |
+| **PKG-03** Pengelolaan 3 | Struktur organisasi, tugas, tanggung jawab, wewenang, dan pengganti petugas ditetapkan dan dijalankan | Dekan; KaLab | Kriteria K1–K4 · 1 paket dokumen dan rekaman | Semi-otomatis | ISO/IEC 17025 5 (5.5–5.6) |
+| **PKG-13** Pengembangan 13 | Rencana pengembangan lab didasarkan pada analisis kesenjangan kebutuhan tridharma, kompetensi, sarana, dan layanan | KaLab; Dekanat | Kriteria K1–K4 · 1 paket dokumen dan rekaman | Semi-otomatis | Pedoman Diklatfung PLP 2022, Standar SPMI UPNVJ 2025 |
 
 Rincian kriteria, aturan memenuhi, entitas, dan dependensi ada di:
 - [analisis-data-pengelolaan-1-3.md](../analisis/analisis-data-pengelolaan-1-3.md)
 - [analisis-data-pengembangan-13.md](../analisis/analisis-data-pengembangan-13.md)
-- [PRD v0.3](../prd/prd-mvp-pengelolaan-1-3.md), untuk Pengelolaan 1–3
 
 Baris lain dengan nomor yang sama **bukan** scope modul ini. Contohnya Pengelolaan 10 (KPI dipantau), Pengelolaan 10 (legalitas), dan Pengelolaan 13 (dokumen mutu dikendalikan). Baris-baris ini memang menempel ke komponen modul ini, jadi dicatat sebagai **kandidat perluasan** (lihat [Batasan masalah](#batasan-masalah-usulan)).
 
@@ -58,32 +55,30 @@ PKG-01 Roadmap / rencana strategis ◀──(keterkaitan, opsional)── PKG-13
 PKG-01 Master KPI ──▶ dipakai juga PKG-21 (kelompok Aset)
 ```
 
-## Lingkup fitur dan status
+## Lingkup kebutuhan
 
-| Area | Fitur | Status |
-|---|---|---|
-| Mulai dari nol | *Checklist* mulai, jabatan standar, kerangka SOP, impor personel CSV | ✅ MVP |
-| Struktur (PKG-03) | Personel, jabatan (tugas, kewenangan, atasan, pengganti), SK penetapan berperiode, sinkronisasi jabatan ke hak akses, rapat koordinasi, evaluasi struktur, cetak bagan organisasi dan matriks kewenangan | ✅ MVP |
-| Dokumen (PKG-02) | Daftar induk, daftar SOP wajib per periode (bisa dikunci), versi dengan pengesahan dan penolakan, distribusi per ruang, sosialisasi, pengingat tinjau ulang, skor persentase | ✅ MVP |
-| Rencana kerja (PKG-01) | Rencana dan item (sasaran, KPI, target, PIC, jadwal, anggaran, Renstra), cetak baku, PDF bertanda tangan, revisi, realisasi per semester, tinjauan | ✅ MVP |
-| Status monev | Skor Pengelolaan 2, tangga K1–K4 Pengelolaan 1 dan 3 dengan tautan bukti, skor akhir oleh penilai, *snapshot* periode | ✅ MVP |
-| Rencana pengembangan (PKG-13) | Analisis gap per aspek (tridharma, kompetensi, sarana, layanan), item program dengan prioritas risiko/manfaat, biaya, target, PIC, jadwal; realisasi; tinjauan dengan pengukuran manfaat; cetak dokumen; tangga K1–K4 di halaman status | ❌ Belum. Perlu PRD v0.4 |
-| Integrasi | Modul jembatan ke master Rafika (`mst_dosen`, `op.student.assistant`); *hook* realisasi KPI otomatis dari modul lain | ❌ Ditunda |
+Kebutuhan berikut diturunkan dari bukti dukung dan kriteria di instrumen, lewat analisis. Rancangan teknisnya (model, layar, alur persetujuan) **belum dibuat**.
 
-Cara menjalankan MVP dan hasil validasinya ada di [odoo-pengelolaan-mvp/README.md](https://github.com/mochfebriyan/skripsi/tree/febriyan-skripsi/projek-fiklab/odoo-pengelolaan-mvp).
+| Area | Yang harus bisa dibuktikan sistem |
+|---|---|
+| Struktur (PKG-03) | Personel dan jabatan (tugas, kewenangan, atasan, pengganti); penetapan pengelola (SK) berperiode; rapat koordinasi; evaluasi struktur; bagan organisasi dan matriks kewenangan sebagai laporan |
+| Dokumen (PKG-02) | Daftar induk SOP/IK beserta dasar kebutuhan dan lokasi penggunaan; versi dengan pengesahan; distribusi ke titik penggunaan; sosialisasi; tinjau ulang; persentase SOP wajib yang memenuhi |
+| Rencana kerja (PKG-01) | Rencana (strategis dan tahunan) dengan item: sasaran, KPI, target, PIC, jadwal, anggaran, keterkaitan Renstra; pengesahan; realisasi; tinjauan |
+| Rencana pengembangan (PKG-13) | Analisis gap per aspek (tridharma, kompetensi, sarana, layanan); program dengan prioritas risiko/manfaat, biaya, target, PIC, jadwal; realisasi; tinjauan dengan pengukuran manfaat |
+| Status monev | Skor persentase Pengelolaan 2; untuk Pengelolaan 1, 3, dan Pengembangan 13, kriteria K1–K4 yang sudah berbukti beserta tautan ke rekamannya |
+| Integrasi (ditunda) | Penautan ke master modul Rafika; pengambilan data gap dan realisasi KPI dari modul lain |
 
 ## Kontrak dengan modul lain
 
 **Yang disediakan modul ini:**
 
-| Master / data | Model di MVP | Dipakai oleh | Catatan |
-|---|---|---|---|
-| Personel | `labfik.personel` | 01, 02, 03, 04, 06, 07, 10, 13, 14, 15, 18, 21 | Jenis: dosen, tendik, mahasiswa (asisten), eksternal. NIP/NIM unik dan hanya terlihat oleh Admin/KaLab. Kandidat jembatan ke master Rafika |
-| Jabatan | `labfik.jabatan` | 01, 02, 03, 04, 13, 14, 18 | Belum punya field **syarat kompetensi minimum**, padahal dibutuhkan PKG-04 dan PKG-14. Perlu disepakati dengan Zahir (SDM) |
-| Hak akses dari jabatan | Sinkronisasi SK → `res.groups` | Semua modul | Modul lain cukup memakai grup LabFIK (KaLab, Laboran, Pengguna, Penilai) |
-| Dokumen Induk + versi | `labfik.dokumen`, `labfik.dokumen.versi` | 02, 03, 09 (SOP limbah); kandidat Persiapan 15 (versi modul) | Pola versi sama dengan "modul berversi" di Persiapan 15 |
-| KPI | `labfik.kpi` | 01, 21 | — |
-| Periode, Ruang | `labfik.periode`, `labfik.ruang` | Banyak package | Di pemetaan, keduanya milik Core. **Perlu diputuskan** apakah dipindah ke `labfik_core` |
+| Master / data | Dipakai oleh | Catatan |
+|---|---|---|
+| Personel | 01, 02, 03, 04, 06, 07, 10, 13, 14, 15, 18, 21 | Mencakup dosen, laboran/PLP, asisten (mahasiswa), petugas K3, pihak eksternal. NIP/NIM adalah data pribadi. Opsi modelnya ada di analisis Pengelolaan 3 |
+| Jabatan | 01, 02, 03, 04, 13, 14, 18 | Termasuk **syarat kompetensi minimum** yang dibutuhkan PKG-04 dan PKG-14. Perlu disepakati dengan Zahir (SDM) |
+| Wewenang dari jabatan | Semua modul | Siapa yang boleh mengesahkan atau menyetujui sebaiknya mengikuti jabatan aktif, bukan diatur terpisah per modul |
+| Dokumen Induk + versi | 02, 03, 09 (SOP limbah); kandidat Persiapan 15 (versi modul) | Pola versi sama dengan "modul berversi" di Persiapan 15 |
+| KPI | 01, 21 | — |
 
 **Yang dipakai modul ini dari modul lain (semuanya opsional, ada jalan pengganti):**
 
@@ -121,19 +116,21 @@ Ketentuan penting:
 
 | Masalah (1.2) | Tujuan (1.4) | Fitur |
 |---|---|---|
-| M1. LabFIK belum punya SK pengelola, SOP yang disahkan, rencana kerja, maupun rencana pengembangan, sehingga kriteria pertama keempat indikator tidak terpenuhi | T1. Alur yang menuntun lab menyusun dan mengesahkan struktur, SOP, rencana kerja, dan rencana pengembangan dari nol | *Checklist* mulai, SK, versi dokumen, rencana |
-| M2. Kriteria "dijalankan" dan "dievaluasi" hanya bisa dibuktikan dengan rekaman kegiatan, dan rekaman itu belum ada | T2. Rekaman realisasi, rapat koordinasi, tinjauan, dan evaluasi yang tertaut ke dokumen asalnya | Realisasi, rapat, tinjauan, evaluasi struktur |
-| M3. Belum ada pengendalian dokumen (versi berlaku, pengesah berwenang, distribusi, tinjau ulang), sehingga SOP tidak bisa dibuktikan mutakhir dan tersedia | T3. Register dokumen berversi dengan hak sahkan yang mengikuti jabatan | Register dokumen, sinkronisasi jabatan → akses |
-| M4. Status indikator dihitung manual dan tidak tertelusur ke buktinya | T4. Halaman status monev: skor Pengelolaan 2 otomatis, tangga K1–K4 dengan tautan bukti, *snapshot* periode | Status kepatuhan |
+| M1. LabFIK belum punya SK pengelola, SOP yang disahkan, rencana kerja, maupun rencana pengembangan, sehingga kriteria pertama keempat indikator tidak terpenuhi **[KONFIRMASI lewat wawancara]** | T1. Sistem yang menuntun lab menyusun dan mengesahkan struktur, SOP, rencana kerja, dan rencana pengembangan | Penetapan struktur, versi dokumen, rencana |
+| M2. Kriteria "dijalankan" dan "dievaluasi" hanya bisa dibuktikan dengan rekaman kegiatan, dan rekaman itu belum ada | T2. Rekaman realisasi, rapat koordinasi, tinjauan, dan evaluasi yang tertaut ke dokumen asalnya | Realisasi, rapat, tinjauan, evaluasi |
+| M3. Belum ada pengendalian dokumen (versi berlaku, pengesah berwenang, distribusi, tinjau ulang), sehingga SOP tidak bisa dibuktikan mutakhir dan tersedia | T3. Pengendalian dokumen berversi dengan pengesah yang mengikuti jabatan | Register dokumen |
+| M4. Status indikator dihitung manual dan tidak tertelusur ke buktinya | T4. Status monev: skor Pengelolaan 2 dihitung sistem, kriteria K1–K4 tertaut ke buktinya | Status monev |
 
-**Metode:** belum diputuskan. Kandidat yang pernah diusulkan untuk kelompok adalah Water-Scrum-Fall. Tahapan pengembangan di PRD bersifat bertahap per kelompok fitur.
+Kolom "Fitur" masih tingkat kebutuhan. Rinciannya ditetapkan saat rancangan (Bab II).
 
-**Evaluasi:** mengikuti tujuan O1–O6 di PRD:
-- unit test dan *black box* per kebutuhan fungsional;
-- kecocokan status dengan *test oracle* dataset skenario;
+**Metode:** belum diputuskan. Kandidat yang pernah diusulkan untuk kelompok adalah Water-Scrum-Fall.
+
+**Evaluasi (usulan):**
+- *black box* per kebutuhan;
+- kecocokan status yang dihitung sistem dengan hitungan manual pada skenario uji;
 - UAT dengan KaLab, laboran, dan asisten;
-- SUS ≥ 70 (pembanding: Anandar 2026 = 81,88);
-- minimal satu dokumen nyata melewati alur sampai *berlaku*.
+- SUS (pembanding: Anandar 2026 = 81,88);
+- minimal satu dokumen nyata melewati alur sampai disahkan.
 
 ## Referensi yang sudah diverifikasi dan relevan
 
@@ -154,11 +151,11 @@ Ketentuan penting:
 
 | Risiko | Mitigasi |
 |---|---|
-| Dinilai "sekadar CRUD" | Bingkai kontribusinya sebagai **keterlacakan butir instrumen → kebutuhan → bukti → status**. Matriks keterlacakan di PRD Lampiran A menjadi buktinya |
-| Model Personel/Jabatan tidak disepakati kelompok, lalu tiap modul membuat versinya sendiri | `labfik.personel` dan `labfik.jabatan` ditawarkan sebagai kontrak; sepakati sebelum modul lain mulai |
+| Dinilai "sekadar CRUD" | Bingkai kontribusinya sebagai **keterlacakan butir instrumen → kebutuhan → bukti → status**, dan tunjukkan lewat matriks keterlacakan |
+| Model Personel/Jabatan tidak disepakati kelompok, lalu tiap modul membuat versinya sendiri | Sepakati model Personel dan Jabatan sebagai kontrak bersama sebelum modul lain mulai |
 | Data gap Pengembangan 13 bergantung pada modul lain yang belum jadi | Semua aspek gap bisa diisi manual dulu; tautan otomatis menyusul |
 | KaLab satu-satunya pengesah | Jabatan pengganti dipakai sebagai cadangan (ditunda); dicatat sebagai keterbatasan |
-| Tidak ada dokumen nyata yang disusun selama pilot | Target O6: susun 1 SOP nyata dan 1 draf struktur bersama laboran |
+| Tidak ada dokumen nyata yang disusun selama pilot | Targetkan minimal 1 SOP nyata dan 1 draf struktur, disusun bersama laboran |
 | Tumpang tindih dengan baris tanpa PIC (Pengelolaan 10 KPI, Pengelolaan 13 dokumen mutu) | Nyatakan di batasan; komponen boleh dipakai ulang |
 | Klaim kondisi saat ini tanpa bukti | Wawancara KaLab terdokumentasi (nama, jabatan, tanggal) sebagai lampiran |
 
@@ -166,7 +163,7 @@ Ketentuan penting:
 
 **Untuk Pak Widi**
 - [ ] Apakah judul di atas disetujui?
-- [ ] Apakah skor akhir indikator kriteria berurutan boleh ditetapkan penilai, sementara sistem hanya menunjukkan "lengkap secara data" (PRD D8)?
+- [ ] Apakah skor akhir indikator kriteria berurutan boleh ditetapkan penilai, sementara sistem hanya menunjukkan "lengkap secara data"?
 - [ ] Apakah roadmap Pengelolaan 1 (Bukti 1) dan roadmap Pengembangan 13 (Bukti 3) boleh satu dokumen?
 
 **Untuk KaLab (wawancara, wajib sebagai lampiran)**
@@ -178,15 +175,15 @@ Ketentuan penting:
 - [ ] Apakah pernah ada analisis kebutuhan, renstra, atau roadmap lab? Data kebutuhan kurikulum/CPMK, riset, dan PkM didapat dari mana?
 
 **Untuk kelompok (Zahir, Herrens)**
-- [ ] Apakah model `labfik.personel` dan `labfik.jabatan` disepakati sebagai master bersama?
-- [ ] Apakah master bersama dipisah ke `labfik_core`?
+- [ ] Model Personel memakai opsi yang mana (`hr.employee`, model sendiri, atau model Rafika)? Lihat tabel opsi di analisis Pengelolaan 3.
+- [ ] Apakah master bersama ditempatkan di addon Core sendiri (`labfik_core`) atau di addon Tata Kelola?
 - [ ] Field syarat kompetensi minimum di Jabatan: dikelola di Tata Kelola atau di SDM?
 - [ ] Apakah gap kompetensi Pengembangan 13 dipakai sebagai masukan Pengembangan 14?
 
 ## Langkah berikutnya
 
-1. Konfirmasi judul dan keputusan D8 ke Pak Widi.
+1. Konfirmasi judul dan aturan skor penilai ke Pak Widi.
 2. Wawancara KaLab untuk keempat indikator, didokumentasikan sebagai lampiran.
 3. Sepakati kontrak master (Personel, Jabatan, Periode, Ruang, Core) dengan Zahir dan Herrens.
-4. PRD v0.4: tambahkan kebutuhan Pengembangan 13 (dari [analisisnya](../analisis/analisis-data-pengembangan-13.md)), lalu bangun di `labfik_org` di atas model rencana generik.
+4. Susun kebutuhan dan rancangan (Bab II) untuk keempat package dari analisis.
 5. Tulis ulang Bab I mengikuti scope ini.
