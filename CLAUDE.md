@@ -26,7 +26,8 @@ Modul ini juga mengelola master bersama **Personel, Jabatan, Dokumen Induk, dan 
 | `projek-fiklab/brief/` | Dua brief di atas |
 | `projek-fiklab/analisis/` | Pedoman pengisian sheet dan pemetaan package (keduanya **bersama kelompok**), serta analisis Pengelolaan 1–3 dan Pengembangan 13 (milik Febriyan) |
 | `projek-fiklab/docs/` | Rujukan: Instrumen Monev xlsx (tab *Analysis*), SNI ISO/IEC 17025:2017, Pedoman TA FIK 2025, daftar dosen FIK |
-| `projek-fiklab/pendahuluan/reference/` | Rujukan Bab 1: Bab 1 skripsi Rafika, daftar judul skripsi terkait. Draf pendahuluan lama sudah dihapus |
+| `projek-fiklab/pendahuluan/reference/` | Rujukan Bab 1: kumpulan Bab 1 dari judul-judul terkait, daftar judul skripsi terkait |
+| `projek-fiklab/pendahuluan/draft/` | Draf Bab 1 Febriyan (mulai dari latar belakang). Permasalahan awal mengikuti "Permasalahan bersama untuk Bab 1" di brief-seluruh-projek |
 | `skripsi_rafika/` | Kode skripsi Rafika Anandar (2026), modul `PendaftaranAsisten` di atas OpenEduCat. **Hanya acuan; jangan diubah** |
 
 ## Urutan sumber kebenaran

@@ -132,20 +132,13 @@ Kolom "Fitur" masih tingkat kebutuhan. Rinciannya ditetapkan saat rancangan (Bab
 - SUS (pembanding: Anandar 2026 = 81,88);
 - minimal satu dokumen nyata melewati alur sampai disahkan.
 
-## Referensi yang sudah diverifikasi dan relevan
+## Referensi
 
-| Referensi | Dipakai untuk | DOI / tautan |
-|---|---|---|
-| Ismail *et al.* (2026), JIP 12(3) 519–528 | E-SPMI: dokumen dan validasi audit mutu internal | 10.33795/jip.v12i3.9580 |
-| Nurramadhona *et al.* (2025), JIP 12(1) 9–18 | Analisis ketercapaian otomatis + *dashboard* dari penilaian auditor | 10.33795/jip.v12i1.8432 |
-| Tiara (2026), skripsi UPNVJ | Monitoring IKU: realisasi direkam dan ditautkan ke bukti (relevan untuk KPI Pengelolaan 1) | repository.upnvj.ac.id/51983 |
-| Anandar (2026), skripsi UPNVJ | Pendahulu: modul Odoo OpenEduCat di LabFIK, SUS 81,88 | repository.upnvj.ac.id/51635 |
-| Nurrohmah & Wiratama (2022), Ultima InfoSys 13(2) 77–84 | Odoo *open source* dan bisa dikustomisasi | 10.31937/si.v13i2.2802 |
-| Odoo S.A. (2023), *Security in Odoo 17.0* | Grup akses dan *record rule* | odoo.com/documentation/17.0 |
-| BSN (2018), SNI ISO/IEC 17025:2017 | 5 (struktur), 7.5 (rekaman), 8.3 (pengendalian dokumen) | [docs/](../docs/SNI%20ISO-IEC%2017025-2017_ID.md) |
-| UPNVJ (2026), Instrumen Monev Laboratorium v1.1 | Rubrik keempat indikator | Dokumen internal |
+Daftar pustaka yang dipakai dan status verifikasinya ada di [draf latar belakang](../pendahuluan/draft/latar-belakang-tata-kelola.md#daftar-pustaka).
 
-**Masih perlu dicari:** rujukan ≥2022 tentang tata kelola atau pengendalian dokumen laboratorium perguruan tinggi, dan rujukan metode pengembangan.
+Kebijakannya:
+- Utamakan jurnal (2022 ke atas), standar, dan regulasi.
+- Skripsi dibatasi, saat ini hanya Anandar (2026) sebagai rujukan penerapan Odoo di LabFIK.
 
 ## Risiko dan mitigasi
 
