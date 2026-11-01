@@ -1,10 +1,12 @@
 # Analisis Data Indikator Pengelolaan 1, 2, 3 (MVP)
 
-26 Oktober 2026 · Febriyan · Bagian dari proyek LabFIK Compliance · Modul: Organization Management
+26 Oktober 2026 (disunting 1 November 2026) · Febriyan · Bagian dari proyek LabFIK Compliance · Modul: Tata Kelola & Dokumen (di sheet: Organization Management)
 
-Alur analisis sama dengan [analisis Proses 18](analisis-data-proses-18.md): **target → aturan memenuhi → luaran (bukti dukung) → data transaksi (*fact*) → master data (*dimension*) → dependensi**. Cakupannya sengaja dibatasi ke MVP. Hanya data yang bisa **dicatat oleh sistem sendiri** yang menjadi syarat wajib. Data yang bergantung pada pihak lain diberi jalan pengganti.
+Package keempat di modul ini, Pengembangan 13, dianalisis di [analisis-data-pengembangan-13.md](analisis-data-pengembangan-13.md). Scope modul secara utuh ada di [brief-tata-kelola-dokumen.md](../brief/brief-tata-kelola-dokumen.md).
 
-Kondisi saat ini untuk ketiga indikator **belum diketahui**: apakah LabFIK sudah punya rencana kerja, daftar SOP, dan SK struktur, di mana disimpan, dan siapa yang mengesahkan. Semua klaim kondisi saat ini ditandai **[KONFIRMASI]** dan perlu ditanyakan ke KaLab.
+Alur analisis mengikuti [pedoman pengisian sheet](pedoman-pengisian-sheet-analisis.md): **target → aturan memenuhi → luaran (bukti dukung) → data transaksi (*fact*) → master data (*dimension*) → dependensi**. Cakupannya sengaja dibatasi ke MVP. Hanya data yang bisa **dicatat oleh sistem sendiri** yang menjadi syarat wajib. Data yang bergantung pada pihak lain diberi jalan pengganti.
+
+Kondisi saat ini: per 26 Oktober 2026, KaLab menyampaikan secara lisan bahwa FIKLAB **belum punya** SK pengelola, SOP yang disahkan, maupun rencana kerja (PRD keputusan D5). Pernyataan ini masih harus dicatat sebagai hasil wawancara (nama, jabatan, tanggal) sebelum dikutip **[KONFIRMASI]**.
 
 ---
 
@@ -267,23 +269,25 @@ Sistem menampilkan kriteria yang sudah berbukti. Skor akhir ditetapkan penilai (
 
 ---
 
-## Perbandingan kompleksitas (ID milik Febriyan)
+## Perbandingan kompleksitas (modul Tata Kelola & Dokumen)
 
 Dihitung dengan cara yang ada di [pedoman pengisian sheet](pedoman-pengisian-sheet-analisis.md#6-cara-menghitung-kompleksitas). Angkanya **kasar**, hanya untuk membandingkan antarindikator, bukan perkiraan waktu.
 
-| ID | T (fact baru) | M (master baru) | D (dependensi wajib) | E (sistem/dokumen eksternal) | A (alur persetujuan) | Data saat ini | Total |
+| Indikator | T (fact baru) | M (master baru) | D (dependensi wajib) | E (sistem/dokumen eksternal) | A (alur persetujuan) | Data saat ini | Total |
 |---|---|---|---|---|---|---|---|
-| Pengelolaan 1 | 4 | 2 | 1 (ID 3) | 2 (Renstra, anggaran) | 2 (pengesahan, tinjauan) | Belum diketahui (+2) | **13** |
-| Pengelolaan 2 | 3 | 1 | 1 (ID 3) | 0 | 1 (pengesahan versi) | Belum diketahui (+2) | **8** |
-| Pengelolaan 3 | 3 | 2 | 0 | 1 (SK Dekan) | 1 (pengesahan SK) | Belum diketahui (+2) | **9** |
-| Proses 18 | 3 | 1 (laboran) | 1 (sesi rencana, ID 15) | 1 (SIMPEL) | 1 (perubahan sesi) | Sebagian (+1) | **8** |
-| Evaluasi 19 | 0 (atribut di jurnal Proses 18) | 0 | 1 (ID 18) | 2 (LeADS, SIMPEL) | 0 | Ada di sistem lain (+0) | **3** |
+| Pengelolaan 1 | 4 | 2 | 1 (Pengelolaan 3) | 2 (Renstra, anggaran) | 2 (pengesahan, tinjauan) | Belum ada (+2) | **13** |
+| Pengelolaan 2 | 3 | 1 | 1 (Pengelolaan 3) | 0 | 1 (pengesahan versi) | Belum ada (+2) | **8** |
+| Pengelolaan 3 | 3 | 2 | 0 | 1 (SK Dekan) | 1 (pengesahan SK) | Belum ada (+2) | **9** |
+| Pengembangan 13 | 3 (atau 0 bila memakai model rencana Pengelolaan 1) | 0 | 1 (Pengelolaan 3) | 2 (kurikulum/riset/PkM, biaya) | 2 (pengesahan, tinjauan) | Belum diketahui (+2) | **10** (atau **7**) |
 
 Catatan pembacaan:
 - **Pengelolaan 1** paling berat, karena banyak bergantung pada dokumen eksternal (Renstra, anggaran) yang belum tentu ada.
-- **Pengelolaan 3** angkanya sedang, tetapi **bobot keputusannya paling besar**, karena master personel dan jabatan memengaruhi enam indikator lain.
-- **Evaluasi 19** sangat ringan kalau berdiri sendiri. Lebih masuk akal digabung dengan Proses 18 daripada dihitung sebagai beban terpisah.
-- Komponen **"paket dokumen + bukti per kriteria"** (Pengelolaan 1, 3, Pengembangan 13, 14) dan **"pengendalian dokumen berversi"** (Pengelolaan 2, 13) bisa dibangun sekali lalu dipakai bersama. Kalau begitu, total kompleksitas kelompok turun.
+- **Pengelolaan 3** angkanya sedang, tetapi **bobot keputusannya paling besar**, karena master personel dan jabatan dipakai hampir semua package lain di proyek.
+- **Pengembangan 13** turun dari 10 ke 7 bila dibangun di atas model rencana Pengelolaan 1.
+- Di dalam modul ini ada dua komponen yang bisa dibangun sekali lalu dipakai bersama:
+  - **"Paket dokumen + bukti per kriteria"**: Pengelolaan 1, 3, Pengembangan 13.
+  - **"Pengendalian dokumen berversi"**: Pengelolaan 2, juga kandidat untuk Pengelolaan 13 (dokumen mutu, belum ada PIC).
+- Pengembangan 14 (pelatihan) memakai pola kriteria yang sama, tetapi package-nya ada di modul SDM & Kompetensi.
 
 ## Pertanyaan minimum sebelum lanjut
 
@@ -296,6 +300,6 @@ Catatan pembacaan:
 - [ ] Apakah ada rapat koordinasi rutin? Apakah ada notulennya?
 
 **Untuk kelompok (Zahir, Herrens)**
-- [ ] Master personel memakai opsi yang mana (lihat tabel opsi di Pengelolaan 3)?
-- [ ] Apakah komponen "paket dokumen + bukti per kriteria" dibangun bersama untuk Pengelolaan 1, 3, dan Pengembangan 13, 14?
-- [ ] Odoo *Community* atau *Enterprise*? Ini memengaruhi apakah aplikasi *Documents* dan HR bisa dipakai.
+- [ ] Master personel memakai opsi yang mana (lihat tabel opsi di Pengelolaan 3)? MVP memakai model sendiri, `labfik.personel` (PRD keputusan D2), dan menawarkannya sebagai kontrak.
+- [ ] Apakah Zahir (pemegang SDM & Kompetensi) ingin memakai pola "paket dokumen + bukti per kriteria" untuk Pengembangan 14?
+- [x] ~~Odoo *Community* atau *Enterprise*?~~ Community (PRD keputusan D1), sehingga aplikasi *Documents* tidak tersedia.

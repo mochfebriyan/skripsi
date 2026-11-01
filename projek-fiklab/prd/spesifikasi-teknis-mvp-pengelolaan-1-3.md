@@ -203,7 +203,7 @@ Menjalankan test: `docker compose run --rm odoo odoo -d test_db -i labfik_org --
 
 ## 9. Catatan implementasi (26 Oktober 2026)
 
-Kode ada di [`odoo-pengelolaan-mvp/`](../odoo-pengelolaan-mvp/README.md). Penyesuaian terhadap rancangan di atas:
+Kode ada di [`odoo-pengelolaan-mvp/`](https://github.com/mochfebriyan/skripsi/tree/febriyan-skripsi/projek-fiklab/odoo-pengelolaan-mvp). Penyesuaian terhadap rancangan di atas:
 
 | Bagian | Rancangan | Implementasi | Alasan |
 |---|---|---|---|
