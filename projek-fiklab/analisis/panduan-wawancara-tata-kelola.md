@@ -12,7 +12,7 @@ Bagian yang berlaku untuk semua modul ada di [panduan-wawancara-umum.md](panduan
 
 Pertanyaan di file ini disusun mengikuti template di bagian 5 file umum tersebut.
 
-**Untuk wawancara satu sesi, pakai [daftar final 16 pertanyaan](#2-daftar-final-16-pertanyaan-untuk-satu-sesi).** Bagian 3 dan 4 adalah bank lengkap, dipakai sebagai sumber gali lanjut dan untuk sesi lanjutan bila diperlukan.
+**Untuk wawancara satu sesi, pakai [daftar final 16 pertanyaan](#2-daftar-final-16-pertanyaan-untuk-satu-sesi).** Bagian 3 dan 4 adalah bank lengkap, dipakai sebagai sumber gali lanjut dan untuk sesi lanjutan bila diperlukan. **Untuk wawancara PLP/laboran, pakai [daftar laboran](#6-daftar-laboran-17-pertanyaan).**
 
 ---
 
@@ -274,3 +274,53 @@ Hasil wawancara dipakai di Bab II sebagai:
 - **as-is:** 2.1 Observasi;
 - **gap dan aturan:** dasar kebutuhan fungsional;
 - **alur yang sudah divalidasi:** model proses dan rancangan di 2.3.
+
+---
+
+## 6. Daftar laboran: 17 pertanyaan
+
+Daftar ini untuk wawancara **PLP/laboran**, khusus scope modul Tata Kelola & Dokumen. Pertanyaan umum tidak diulang.
+
+Sudut pandangnya adalah **pelaksana harian**: menerima tugas, menjalankan aturan, menggantikan rekan, dan nantinya mengisi sistem. Pengesahan dan keputusan ditanyakan ke KaLab. Ke laboran ditanyakan bagaimana keputusan itu sampai dan dijalankan di lapangan. Kolom **Pembanding** menunjuk nomor pertanyaan KaLab di daftar final (bagian 2), supaya kedua jawaban bisa dibandingkan (triangulasi).
+
+Komposisi: 11 pertanyaan as-is, 4 pertanyaan kendala, dan 2 pertanyaan to-be. Perkiraan waktunya 45–60 menit.
+
+**Catatan pelaksanaan:**
+- **Data pribadi tidak masuk repo.** Narasumber dicatat sebagai "PLP/laboran" beserta tanggal wawancara. Nama ditulis hanya di lampiran proposal, dan hanya dengan izin narasumber.
+- **Tekankan bahwa yang ditanyakan kondisi kerja, bukan penilaian kinerja.** Laboran mungkin enggan menyebut kendala yang menyangkut atasan. Karena itu, ajukan pertanyaan kendala dengan netral, misalnya "apa yang membuat pekerjaan ini sulit", bukan "siapa yang salah".
+- **Sebaiknya laboran diwawancarai terpisah dari KaLab**, supaya jawabannya lebih leluasa **[KONFIRMASI ke Pak Widi]**.
+- Pertanyaan kendala memakai pancingan PIECES yang sama dengan bagian 2.
+
+### Tugas dan struktur (PKG-03)
+
+| No | Kode | Jenis | Pertanyaan | Gali lanjut | Pembanding |
+|---|---|---|---|---|---|
+| 1 | L1 | As-is | Bisa diceritakan tugas Anda sehari-hari di lab? Bagaimana dulu Anda ditugaskan ke lab? | Lewat SK, surat tugas, atau lisan? Ada uraian tugas tertulis? Ada pekerjaan yang Anda kerjakan tetapi tidak tercantum di uraian tugas? | 11 |
+| 2 | L2 | As-is | Siapa yang biasanya memberi Anda tugas atau instruksi kerja, dan lewat apa? | Lisan, grup WA, atau rapat? Kalau ada dua instruksi yang bertentangan, mana yang diikuti? Hasil kerja dilaporkan ke siapa? | 14 |
+| 3 | L3 | As-is | Keputusan apa yang boleh Anda ambil sendiri, dan apa yang harus menunggu persetujuan KaLab? | Contoh terakhir yang harus menunggu persetujuan. Berapa lama menunggunya? | 14 |
+| 4 | L4 | As-is | Kalau Anda berhalangan, siapa yang menggantikan? Pernahkah Anda menggantikan KaLab atau rekan lain? | Bagaimana serah terimanya? Ada pekerjaan yang terbengkalai saat itu? | 12 |
+| 5 | L5 | As-is | Apakah ada rapat atau koordinasi rutin di lab? | Seberapa sering, siapa yang hadir, ada notulen? Apakah keputusan rapat ditindaklanjuti? | 14 |
+| 6 | L6 | Kendala | Apa yang paling menyulitkan dari pembagian tugas dan wewenang di lab saat ini? | Kapan beban kerja paling menumpuk? Ada pekerjaan yang tumpang tindih atau tidak ada yang mengurus? | 14 |
+| 7 | L7 | To-be | Kalau Anda berhalangan dan ada pengganti, informasi apa yang perlu tercatat supaya pengganti bisa langsung bekerja? | Uraian tugas, kewenangan, pekerjaan yang sedang berjalan, kontak? | 12, 13 |
+
+### Aturan dan SOP (PKG-02)
+
+| No | Kode | Jenis | Pertanyaan | Gali lanjut | Pembanding |
+|---|---|---|---|---|---|
+| 8 | L8 | As-is | Aturan atau prosedur apa saja yang Anda pakai sehari-hari, walaupun belum resmi? Tertulis di mana? | Tata tertib, peminjaman, pemakaian alat, kedaruratan? Ditempel di ruang, di Drive, di grup WA? Boleh minta contoh atau fotonya? | 6 |
+| 9 | L9 | As-is | Kalau ada aturan baru, bagaimana Anda mengetahuinya, dan bagaimana Anda menyampaikannya ke asisten dan praktikan? | Ada briefing awal semester? Ada tanda bahwa mereka sudah membaca? Aturan lama ditarik atau masih tertempel? | 7, 8 |
+| 10 | L10 | As-is | Ceritakan kejadian terakhir saat aturan dilanggar atau ada insiden di lab. Apa yang Anda lakukan? | Dilaporkan ke siapa? Ada catatannya? Apakah aturannya diubah setelah itu? | 8 |
+| 11 | L11 | As-is | Pekerjaan apa yang menurut Anda paling perlu prosedur tertulis, karena sering membingungkan atau berisiko? | Urutkan tiga teratas. Kenapa? | 6 |
+| 12 | L12 | Kendala | Apa yang paling menyulitkan dalam menjalankan dan menegakkan aturan lab? | Pancingan PIECES | 10 |
+| 13 | L13 | To-be | Instrumen meminta SOP tersedia di tempat penggunaan dan disosialisasikan. Menurut Anda, cara paling mudah bagi laboran, asisten, dan praktikan untuk menemukan SOP yang berlaku itu seperti apa? | Cetakan di ruang, QR, atau portal? Bukti sosialisasi apa yang realistis dicatat? | 9 |
+
+### Rencana kerja dan pengembangan (PKG-01, PKG-13)
+
+| No | Kode | Jenis | Pertanyaan | Gali lanjut | Pembanding |
+|---|---|---|---|---|---|
+| 14 | L14 | As-is | Apakah Anda terlibat dalam mengusulkan kebutuhan atau kegiatan lab untuk tahun berikutnya? Bagaimana caranya? | Data apa yang Anda siapkan: kondisi alat, jumlah praktikum, stok bahan? Diserahkan ke siapa? Apakah Anda tahu hasilnya? | 2 |
+| 15 | L15 | As-is | Setelah kegiatan atau pembelian berjalan, apakah Anda diminta melaporkannya? Dalam bentuk apa? | Rutin atau hanya saat diminta? Siapa yang membaca laporannya? Apakah menumpuk menjelang monev? | 3 |
+| 16 | L16 | As-is | Dari pekerjaan sehari-hari, kebutuhan apa yang paling sering muncul tetapi belum terpenuhi? | Alat, software, ruang, atau pelatihan untuk laboran sendiri? Pernah diusulkan, dan apa hasilnya? Ada keluhan dosen atau praktikan yang berulang? | 15, 16 |
+| 17 | L17 | Kendala | Apa yang paling menyulitkan saat mengusulkan kebutuhan atau melaporkan kegiatan lab? | Pancingan PIECES. Bila belum muncul: kalau nanti pencatatan lewat sistem, berapa waktu yang realistis tersedia, dan lewat perangkat apa (PC lab atau HP)? | 5, 16 |
+
+Cakupan: M1 (1, 8, 14), M2 (5, 9, 10, 15), M3 (8, 9, 13), kendala PIECES (6, 12, 17). Jawaban laboran dipakai sebagai **pembanding** jawaban KaLab. Bila keduanya berbeda, perbedaannya dicatat sebagai temuan, bukan dipilih salah satu.
