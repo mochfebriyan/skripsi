@@ -94,8 +94,10 @@ Sebaliknya, **gap kompetensi** dari Pengembangan 13 bisa menjadi masukan kebutuh
 ## Batasan masalah (usulan)
 
 1. **Indikator yang dicakup:** Pengelolaan 1, 2, 3, dan Pengembangan 13. Baris lain tidak dicakup, termasuk Pengelolaan 10 (KPI dipantau), Pengelolaan 10 (legalitas), Pengelolaan 13 (dokumen mutu), dan Evaluasi E07/E10 (tinjauan). Namun komponen register dokumen, KPI, dan tinjauan bisa dipakai ulang untuk baris-baris itu.
-2. **Isi dokumen tidak ditulis di Odoo.** SOP dan rencana disusun di Word/Docs. Sistem mengelola versi, pengesahan, distribusi, dan rekaman pelaksanaannya.
-3. **Pengesahan** dibuktikan dengan PDF bertanda tangan yang diunggah dan catatan siapa yang menekan "Sahkan". Tidak ada tanda tangan digital.
+2. **Dua jenis dokumen** (arahan Pak Widi, bimbingan November 2026; menggantikan batasan lama "isi dokumen tidak ditulis di Odoo"):
+   - **Dokumen rutin** yang isinya berganti tiap periode, yaitu rencana kerja tahunan dan sasaran/KPI (PKG-01) serta rencana pengembangan (PKG-13), **diisi lewat sistem lalu diekspor menjadi dokumen PDF** mengikuti format dokumen lab. Penetapan struktur/pengelola per periode (PKG-03) kemungkinan masuk jenis ini **[KONFIRMASI]**.
+   - **Dokumen yang jarang berubah**, yaitu SOP dan IK (PKG-02), tetap disusun di Word/Docs. Sistem hanya mengelola versi, pengesahan, distribusi, sosialisasi, dan tinjau ulang (file diunggah).
+3. **Pengesahan tanpa tanda tangan digital.** Alur untuk dokumen yang dihasilkan sistem: ekspor PDF → ditandatangani manual → PDF bertanda tangan diunggah balik → pejabat berwenang menekan "Sahkan" (tercatat siapa dan kapan). Untuk SOP/IK, PDF bertanda tangan langsung diunggah.
 4. **Skor kriteria berurutan** (Pengelolaan 1, 3, Pengembangan 13): sistem menampilkan kriteria tertinggi yang "lengkap secara data", lalu skor akhir ditetapkan penilai. Skor Pengelolaan 2 dihitung otomatis.
 5. **Tanpa integrasi** dengan sistem kepegawaian, keuangan, SIAKAD, LeADS, atau SIMPEL.
 6. **Platform:** Odoo 17 Community, berdiri sendiri tanpa OpenEduCat. Integrasi dengan modul Rafika lewat modul jembatan menjadi saran pengembangan.
@@ -116,7 +118,7 @@ Ketentuan penting:
 
 | Masalah (1.2) | Tujuan (1.4) | Fitur |
 |---|---|---|
-| M1. LabFIK belum punya SK pengelola, SOP yang disahkan, rencana kerja, maupun rencana pengembangan, sehingga kriteria pertama keempat indikator tidak terpenuhi **[KONFIRMASI lewat wawancara]** | T1. Sistem yang menuntun lab menyusun dan mengesahkan struktur, SOP, rencana kerja, dan rencana pengembangan | Penetapan struktur, versi dokumen, rencana |
+| M1. LabFIK belum punya SK pengelola lab, rencana kerja, maupun rencana pengembangan yang disahkan (Renstra/RKT/IKU masih draf). SOP lab sudah ada sejak 2024, tetapi nomor, tanggal efektif, dan status pengesahannya tidak lengkap. Akibatnya kriteria pertama keempat indikator tidak terpenuhi atau tidak dapat dibuktikan (studi dokumen: [bedah-dokumen-tata-kelola.md](../analisis/bedah-dokumen-tata-kelola.md#2-temuan-as-is-bahan-21-observasi)) **[KONFIRMASI lewat wawancara]** | T1. Sistem yang menuntun lab menyusun dan mengesahkan struktur, SOP, rencana kerja, dan rencana pengembangan | Penetapan struktur, versi dokumen, rencana |
 | M2. Kriteria "dijalankan" dan "dievaluasi" hanya bisa dibuktikan dengan rekaman kegiatan, dan rekaman itu belum ada | T2. Rekaman realisasi, rapat koordinasi, tinjauan, dan evaluasi yang tertaut ke dokumen asalnya | Realisasi, rapat, tinjauan, evaluasi |
 | M3. Belum ada pengendalian dokumen (versi berlaku, pengesah berwenang, distribusi, tinjau ulang), sehingga SOP tidak bisa dibuktikan mutakhir dan tersedia | T3. Pengendalian dokumen berversi dengan pengesah yang mengikuti jabatan | Register dokumen |
 | M4. Status indikator dihitung manual dan tidak tertelusur ke buktinya | T4. Status monev: skor Pengelolaan 2 dihitung sistem, kriteria K1–K4 tertaut ke buktinya | Status monev |
