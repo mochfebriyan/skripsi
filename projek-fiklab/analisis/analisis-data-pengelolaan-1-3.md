@@ -85,7 +85,7 @@ Riwayat perubahan memakai `mail.thread` + `tracking`. Tidak perlu tabel tambahan
 |---|---|---|---|
 | Periode | Masa berlaku rencana | Master periode bersama | Tahun anggaran diinput manual |
 | **KPI** | Definisi, pembilang/penyebut, sumber data, satuan | **Baru** | KPI ditulis langsung di item rencana (tanpa master) |
-| **Sasaran Renstra** | Matriks keterkaitan (UPNVJ/UPPS/prodi) | **Baru**, diisi dari dokumen Renstra | Tautan berupa teks bebas |
+| **Sasaran Renstra** | Matriks keterkaitan (UPNVJ/UPPS/prodi) | **Baru**, diisi dari dokumen Renstra | Tautan berupa teks bebas. **Jalan ini yang dipakai** di cakupan rancangan (brief, 14 November 2026) |
 | Personel | PIC, pengesah, pelapor | **Master bersama dari Pengelolaan 3** | `res.users` |
 | Jabatan | Pengesah sah (KaLab/Dekan) | Master bersama dari Pengelolaan 3 | Peran tetap di grup keamanan |
 
@@ -184,9 +184,9 @@ Kesesuaian isi SOP dengan kegiatan/risiko **tidak** dicek sistem, karena itu pen
 
 ## 7. Ditunda
 
-- Alur persetujuan bertingkat (penyusun → pemeriksa → pengesah). MVP cukup satu pengesah.
+- Alur persetujuan bertingkat (penyusun → pemeriksa → pengesah). Cukup satu pengesah; pemeriksaan menyatu dengan pengesahan (keputusan 14 November 2026, lihat brief).
 - Kuis pemahaman setelah sosialisasi.
-- Pengingat otomatis menjelang tanggal tinjau ulang. Ini mudah dan bisa langsung masuk bila waktu cukup.
+- Pengingat otomatis menjelang tanggal tinjau ulang. Sistem cukup menampilkan penanda "perlu ditinjau"; pengingat menjadi saran pengembangan.
 
 ---
 

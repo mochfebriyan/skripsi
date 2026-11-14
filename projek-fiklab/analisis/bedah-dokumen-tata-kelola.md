@@ -1,8 +1,8 @@
 # Bedah Dokumen Tata Kelola (Studi Dokumen)
 
-13 November 2026 · Febriyan · Bagian dari proyek LabFIK Compliance · Modul: Tata Kelola & Dokumen (PKG-01, 02, 03, 13)
+13 November 2026, diselaraskan dengan cakupan rancangan 14 November 2026 · Febriyan · Bagian dari proyek LabFIK Compliance · Modul: Tata Kelola & Dokumen (PKG-01, 02, 03, 13)
 
-**Status: DRAF.** Semua usulan model dan field masih **[USULAN PENULIS]** sampai disepakati di rancangan (Bab II).
+**Status: DRAF.** Bahan kerja (temuan as-is masuk 2.1 Observasi). Semua usulan model dan field masih **[USULAN PENULIS]** sampai ditetapkan di rancangan (Bab II), dalam batas [cakupan rancangan](../brief/brief-tata-kelola-dokumen.md#cakupan-rancangan) di brief.
 
 ## Tujuan
 
@@ -32,14 +32,14 @@ Hasilnya dipakai di:
 
 | ID | Dokumen | Baris sheet | Sifat | Tanggal / periode | PKG | Jenis di TO-BE |
 |---|---|---|---|---|---|---|
-| D1 | Renstra 2027–2031 dan RKT 2027 Lab Informatika (kode FIK-LI-RENSTRA-RKT-001) | 1 | Draf GPT, belum disahkan | Renstra 2027–2031, RKT 2027 | 01, sebagian 13 | **Rutin**: diisi lewat sistem, diekspor |
-| D2 | Sasaran Kerja dan IKU Lab Informatika (FIK-LI-IKU-001) | 4 | Draf GPT, belum disahkan | 2027 | 01 | **Rutin**: diisi lewat sistem, diekspor |
+| D1 | Renstra 2027–2031 dan RKT 2027 Lab Informatika (kode FIK-LI-RENSTRA-RKT-001) | 1 | Draf GPT, belum disahkan | Renstra 2027–2031, RKT 2027 | 01, sebagian 13 | **Renstra: jarang berubah** (berlaku 5 tahun), diunggah dan disahkan. **RKT: rutin**, diisi lewat sistem, diekspor |
+| D2 | Sasaran Kerja dan IKU Lab Informatika (FIK-LI-IKU-001) | 4 | Draf GPT, belum disahkan | 2027 | 01 | Bukan dokumen tersendiri: definisi indikator masuk master KPI, target per periode masuk item RKT |
 | D3 | Kumpulan POB Lab FIK (pemeliharaan alat, peminjaman ruang, pengajuan layanan server) dan POB K-004 fakultas (peminjaman sarpras kampus) | 6 | **Nyata** | 2023–2024 | 02 | **Jarang berubah**: diunggah, dikendalikan versinya |
 | D4 | Instruksi Kerja Lab Informatika (FIK-LI-IK-001) | 7 | Draf GPT, belum disahkan | Dibuat 20 Okt 2026 | 02 | **Jarang berubah**: diunggah, dikendalikan versinya |
 | D5 | Slide Laboratorium PKKMB FIK | 8 | **Nyata** (bahan presentasi) | 2025 | 03 | Bukan dokumen tata kelola; hanya sumber data jabatan dan ruang |
 | D6 | SK Dekan No. 3258/UN61/KP.04.00/2025 tentang Struktur Organisasi dan Tata Kerja FIK | 9 | **Nyata**, ditetapkan Dekan | September 2025 | 03 | Dokumen eksternal (fakultas): diunggah sebagai dasar. SK pengelola lab tersendiri: **rutin per periode [KONFIRMASI]** |
 
-Pembagian jenis mengikuti keputusan 13 November 2026 (lihat [brief batasan masalah](../brief/brief-tata-kelola-dokumen.md#batasan-masalah-usulan) nomor 2–3).
+Pembagian jenis mengikuti keputusan 13 November 2026 dan 14 November 2026 (lihat [brief batasan masalah](../brief/brief-tata-kelola-dokumen.md#batasan-masalah) nomor 2–3).
 
 **Tidak ada dokumen khusus untuk PKG-13.** Satu-satunya jejak ada di D1: program P8 "Pengembangan fasilitas" (analisis kebutuhan berbasis utilisasi, risiko, kondisi, dan arah kurikulum). Kebutuhan PKG-13 tetap diturunkan dari instrumen lewat [analisis Pengembangan 13](analisis-data-pengembangan-13.md).
 
@@ -78,7 +78,9 @@ Kolom tabel:
 
 ### 3.1 D1: Renstra dan RKT
 
-D1 menggabungkan rencana strategis (multi-tahun) dan rencana kerja tahunan dalam **satu dokumen**. Ini sejalan dengan usulan di brief bahwa keduanya memakai satu model rencana generik yang dibedakan `jenis`-nya.
+D1 menggabungkan rencana strategis (multi-tahun) dan rencana kerja tahunan dalam **satu dokumen**. Di TO-BE keduanya dipisah sesuai sifatnya:
+- **Renstra** berlaku 5 tahun, jadi disusun di luar sistem lalu **diunggah dan disahkan**. Sistem hanya menyimpan kepala dokumen (kode, revisi, periode, pengesahan) dan PDF-nya. Bagian isi Renstra (visi, misi, sasaran, program, baseline) tidak dijadikan field.
+- **RKT** diisi lewat sistem dan diekspor. RKT dan rencana pengembangan (PKG-13) memakai satu model rencana yang dibedakan `jenis`-nya; Renstra adalah rencana `jenis = strategis` yang hanya berisi unggahan.
 
 **Sampul dan lembar pengendalian**
 
@@ -88,11 +90,11 @@ D1 menggabungkan rencana strategis (multi-tahun) dan rencana kerja tahunan dalam
 | Kode dokumen (FIK-LI-RENSTRA-RKT-001) | `kode_dokumen` | mixin kendali | ISO 8.3.2 |
 | Revisi (00) | `revisi` | mixin kendali | ISO 8.3.2 |
 | Periode Renstra (2027–2031) | `periode_mulai`, `periode_selesai` | mixin periode | Instr PKG-01 K1 (masih berlaku) |
-| Periode RKT (2027) | Rencana anak dengan `jenis = tahunan`, `parent_id` → rencana strategis | `labfik.plan` | Instr PKG-01 Bukti 1–2 |
+| Periode RKT (2027) | Rencana `jenis = tahunan` dengan periodenya sendiri | `labfik.plan` | Instr PKG-01 Bukti 2 |
 | Tanggal berlaku | `tanggal_berlaku` | mixin kendali | Instr PKG-01 K1 |
 | Pemilik dokumen | `unit_pemilik` | mixin kendali | ISO 8.3 |
 | Status | `state` | mixin pengesahan | Instr K1 |
-| Disusun / Ditinjau / Disahkan (jabatan, nama, tanggal) | `penyusun_id`, `pemeriksa_id`, `pengesah_id` + tanggal masing-masing | mixin pengesahan | Instr K1, ISO 8.3.2a |
+| Disusun / Ditinjau / Disahkan (jabatan, nama, tanggal) | `penyusun_id`, `pengesah_id` + tanggal masing-masing. Kolom "Ditinjau" tetap ada di kertas, tidak dicatat sistem (pemeriksaan menyatu dengan pengesahan) | mixin pengesahan | Instr K1, ISO 8.3.2a |
 | Tabel riwayat revisi (revisi, tanggal, uraian, disetujui) | Dihasilkan dari rantai revisi | `[R]` | ISO 8.3.2c |
 
 **Isi naratif**
@@ -100,23 +102,23 @@ D1 menggabungkan rencana strategis (multi-tahun) dan rencana kerja tahunan dalam
 | Bagian | Field (usulan) | Model | Dasar |
 |---|---|---|---|
 | Ringkasan eksekutif | `ringkasan` (Html) | `labfik.plan` | Format |
-| Bab I Pendahuluan: latar belakang, tujuan, ruang lingkup, referensi | `latar_belakang`, `tujuan`, `ruang_lingkup`, `referensi` (Html) | `labfik.plan` | Format |
-| Bab II Landasan tata kelola dan profil unit | `landasan` (Html) | `labfik.plan` | Format |
+| Bab I Pendahuluan: latar belakang, tujuan, ruang lingkup | `latar_belakang`, `tujuan`, `ruang_lingkup` (Html) | `labfik.plan` | Format |
+| Bab I Referensi; Bab II Landasan tata kelola dan profil unit | **Tidak diambil.** Teks tetap di template ekspor | — | Format |
 | Bab II 2.2 Daftar ruang dan fungsi | Diambil dari master **Ruang Lab** | `[R]` dari `labfik.ruang` (Core) | Format |
 | Bab III Pendekatan ISO dan PPEPP | Teks tetap di template laporan, tidak diinput | — | Format |
-| Bab IV Visi dan misi | `visi`, `misi` (Html) | `labfik.plan` (jenis strategis) | Instr PKG-01 Bukti 1 (*roadmap*) |
-| Bab X Penutup | `penutup` (Html) | `labfik.plan` | Format |
+| Bab IV Visi dan misi | **Tidak diambil.** Bagian isi Renstra; ada di PDF unggahan | — | Instr PKG-01 Bukti 1 dipenuhi oleh Renstra yang diunggah dan disahkan |
+| Bab X Penutup | **Tidak diambil.** Teks tetap di template ekspor | — | Format |
 
-Bagian naratif diisi sebagai teks berformat (Html). Sistem tidak menilai isinya. Yang dinilai sistem hanya kelengkapan tabel terstruktur di bawah.
+Bagian naratif RKT cukup empat field teks berformat (Html): ringkasan, latar belakang, tujuan, ruang lingkup. Sistem tidak menilai isinya. Yang dinilai sistem hanya kelengkapan tabel terstruktur di bawah.
 
 **Tabel terstruktur**
 
 | Bagian | Field (usulan) | Model | Dasar |
 |---|---|---|---|
-| 2.3 Profil dan baseline (data, nilai awal, sumber/verifikasi, PIC) | `data`, `nilai_awal`, `sumber`, `pic_id` | `labfik.plan.baseline` (anak) | Instr PKG-13 (kondisi saat ini untuk analisis gap). Untuk PKG-01 hanya format |
-| 4.3 Sasaran strategis (kode S1–S9, sasaran, indikator, target akhir periode) | `kode`, `sasaran`, `kpi_id`, `target_akhir` | `labfik.plan.sasaran` (anak, rencana strategis) | Instr PKG-01 Bukti 1, K2 (sasaran, KPI, target) |
-| Bab V Program strategis (P1–P8: kegiatan utama, luaran/bukti, tahapan) | `kode`, `nama`, `kegiatan_utama`, `luaran`, `tahapan` | `labfik.plan.program` (anak, rencana strategis) | Instr PKG-01 Bukti 1 |
-| Bab VI RKT (no, kegiatan, target/indikator, waktu, PIC, bukti objektif) | `kegiatan`, `kpi_id`, `target`, `satuan`, `jadwal_mulai`, `jadwal_selesai`, `pic_id`, `bukti_diharapkan`, `anggaran`, `sasaran_id`, `program_id`, `sasaran_renstra_ids` | `labfik.plan.line` | Instr PKG-01 K2 (sasaran, KPI, target, PIC, jadwal, anggaran, tautan Renstra) |
+| 2.3 Profil dan baseline (data, nilai awal, sumber/verifikasi, PIC) | **Tidak diambil sebagai tabel tersendiri.** Kondisi saat ini untuk PKG-13 dicatat di temuan gap (`kondisi_saat_ini`); nilai awal per indikator di `baseline` item rencana | `labfik.plan.gap`, `labfik.plan.line` | Instr PKG-13 K2 (analisis gap) |
+| 4.3 Sasaran strategis (kode S1–S9, sasaran, indikator, target akhir periode) | **Tidak diambil.** Bagian isi Renstra (PDF unggahan). Item RKT merujuknya lewat teks `rujukan_renstra` | — | Instr PKG-01 K2 (tertaut ke Renstra) dipenuhi lewat rujukan teks |
+| Bab V Program strategis (P1–P8: kegiatan utama, luaran/bukti, tahapan) | **Tidak diambil.** Bagian isi Renstra (PDF unggahan) | — | Instr PKG-01 Bukti 1 |
+| Bab VI RKT (no, kegiatan, target/indikator, waktu, PIC, bukti objektif) | `kegiatan`, `kpi_id`, `target`, `satuan`, `jadwal_mulai`, `jadwal_selesai`, `pic_id`, `bukti_diharapkan`, `anggaran`, `rujukan_renstra` (teks) | `labfik.plan.line` | Instr PKG-01 K2 (sasaran, KPI, target, PIC, jadwal, anggaran, tautan Renstra) |
 | 6.1 Jadwal ringkas per triwulan | Dihasilkan dari `jadwal_mulai`/`jadwal_selesai` | `[R]` | Format |
 | Bab VII Kebutuhan sumber daya dan anggaran (komponen, contoh kebutuhan, dasar prioritas, estimasi) | `komponen_anggaran` (pilihan) di item rencana. Rekap per komponen dihasilkan | `labfik.plan.line` + `[R]` | Instr PKG-01 K2 (anggaran). D1 merekap per komponen, instrumen meminta anggaran per item. **Keduanya bisa dipenuhi** dengan anggaran per item yang dikelompokkan per komponen |
 | 8.1 Definisi indikator (indikator, cara hitung, frekuensi, sumber data) | Diambil dari master **KPI** | `[R]` dari `labfik.kpi` | Instr PKG-01 Bukti 4 |
@@ -124,7 +126,7 @@ Bagian naratif diisi sebagai teks berformat (Html). Sistem tidak menilai isinya.
 | 8.3 Evaluasi dan tindak lanjut (tinjauan triwulan, laporan semester, tinjauan manajemen) | Alur, bukan field. Menjadi dasar `labfik.realisasi` dan `labfik.tinjauan` | — | Instr PKG-01 K3–K4 |
 | Bab IX Dokumen dan rekaman minimum (kode, dokumen, tujuan, pemilik) | Isi awal (*seed*) **Dokumen Induk** | `labfik.document` | Instr PKG-02 Bukti 1 |
 | Lampiran D Format laporan kinerja semester (indikator/program, target, capaian, status, analisis gap, tindak lanjut) | Dihasilkan dari realisasi | `[R]` dari `labfik.realisasi` | Instr PKG-01 Bukti 5 |
-| Lampiran E Matriks Renstra–RKT–ISO–AMI | Dihasilkan dari tautan item rencana | `[R]` | Instr PKG-01 Bukti 3 (matriks keterkaitan Renstra) |
+| Lampiran E Matriks Renstra–RKT–ISO–AMI | Dihasilkan dari `rujukan_renstra` item rencana (daftar item per rujukan) | `[R]` | Instr PKG-01 Bukti 3 (matriks keterkaitan Renstra) |
 | Lampiran F Checklist sebelum pengesahan | Validasi saat tombol "Ajukan" ditekan (field wajib terisi) | Logika di `labfik.plan` | Instr PKG-01 K2 |
 | Lampiran A–C Formulir permohonan, serah-terima, ketidaksesuaian | **Tidak diambil.** Milik modul Praktikum, Aset, dan Safety | — | — |
 
@@ -132,22 +134,21 @@ Bagian naratif diisi sebagai teks berformat (Html). Sistem tidak menilai isinya.
 
 | Bagian | Field (usulan) | Model | Dasar |
 |---|---|---|---|
-| Kepala dokumen (kode FIK-LI-IKU-001, revisi, status, periode 2027) | Sama dengan D1 | mixin kendali, pengesahan, periode | ISO 8.3.2 |
-| 1–3 Tujuan, ruang lingkup, acuan | `tujuan`, `ruang_lingkup`, `referensi` (Html) | `labfik.plan` (jenis **iku**) | Format |
+| Kepala dokumen (kode FIK-LI-IKU-001, revisi, status, periode 2027) | **Tidak diambil.** IKU bukan dokumen tersendiri (lihat keputusan di bawah) | — | — |
+| 1–3 Tujuan, ruang lingkup, acuan | **Tidak diambil** | — | Format |
 | 4 Definisi operasional | Teks tetap di template | — | Format |
 | 5 Tabel IKU: sasaran kerja, IKU/indikator, rumus, target, frekuensi, PIC, bukti/rekaman, acuan ISO | **Definisi** (indikator, rumus, frekuensi, PIC, bukti, acuan ISO) masuk master **KPI**. **Target per periode** masuk item rencana | `labfik.kpi` + `labfik.plan.line` | Instr PKG-01 Bukti 4 (KPI dengan definisi, sumber data, target) |
-| 6 Indikator prioritas per unit lab | `ruang_ids` (opsional) di KPI | `labfik.kpi` | Format. Opsional |
+| 6 Indikator prioritas per unit lab | **Tidak diambil** | — | Format saja, tanpa dasar instrumen |
 | 7 Tata cara pengukuran: baseline, data "belum tersedia" tidak boleh dianggap tercapai | Field `baseline` di item rencana. Status realisasi punya nilai "belum tersedia" | `labfik.plan.line`, `labfik.realisasi` | Instr PKG-01 K3 |
 | 8 Skala status capaian (tercapai, perlu perhatian, tidak tercapai, tidak relevan dengan alasan) | `status_capaian` (pilihan), `alasan_tidak_relevan` | `labfik.realisasi` | Instr PKG-01 K3 |
 | 9 Format rekap capaian triwulanan (kode IKU, target periode, capaian, status, analisis/tindakan, PIC & tenggat) | Field realisasi | `labfik.realisasi` | Instr PKG-01 K3 |
-| 10–11 Persetujuan dan riwayat revisi | Sama dengan D1 | mixin pengesahan | ISO 8.3.2 |
+| 10–11 Persetujuan dan riwayat revisi | Mengikuti pengesahan RKT | — | ISO 8.3.2 |
 
-**Keputusan model [USULAN PENULIS]:** D2 adalah dokumen terpisah dari D1, tetapi isinya beririsan dengan RKT (keduanya punya indikator, target, dan PIC). Usulannya:
-- **Definisi KPI** disimpan sekali di master `labfik.kpi`.
-- **Dokumen IKU** = `labfik.plan` dengan `jenis = iku`. Item rencananya berisi KPI + target periode.
-- **RKT** merujuk KPI yang sama lewat `kpi_id`.
+**Keputusan model [USULAN PENULIS]:** isi D2 beririsan dengan RKT (keduanya punya indikator, target, dan PIC), jadi D2 tidak dijadikan dokumen tersendiri:
+- **Definisi KPI** disimpan sekali di master `labfik.kpi` (memenuhi PKG-01 Bukti 4).
+- **Target per periode** ada di item RKT, yang merujuk KPI lewat `kpi_id`.
 
-Alternatifnya, IKU digabung sebagai bagian RKT (satu dokumen). Mana yang dipakai **[KONFIRMASI]** ke Pak Widi, sekalian dengan pertanyaan "roadmap Pengelolaan 1 dan 13 satu dokumen atau tidak".
+Instrumen tidak meminta dokumen IKU terpisah, jadi keputusan ini tidak mengurangi bukti.
 
 ### 3.3 D3: SOP/POB (nyata)
 
@@ -238,7 +239,7 @@ D6 adalah dokumen fakultas, bukan dokumen lab. Perannya dua:
 | Ditetapkan di, tanggal | `tanggal_sah` | mixin pengesahan | Instr PKG-03 K1 |
 | Penandatangan (Dekan) | `pengesah_id` | mixin pengesahan | Instr PKG-03 K1 (PJ: Dekan) |
 | Tembusan | `tembusan` (teks) | `labfik.assignment` | Format |
-| Lampiran I: bagan struktur (garis instruksi dan garis koordinasi) | Dihasilkan dari Jabatan → `atasan_id` (instruksi) dan `koordinasi_ids` (koordinasi) | `[R]` Bagan organisasi | Instr PKG-03 Bukti 2 |
+| Lampiran I: bagan struktur (garis instruksi dan garis koordinasi) | Dihasilkan dari Jabatan → `atasan_id` (garis instruksi), sebagai daftar hierarki. Garis koordinasi tidak dicatat | `[R]` Bagan organisasi | Instr PKG-03 Bukti 2 |
 | Lampiran II: tugas pokok dan fungsi per jabatan (daftar berhuruf a, b, c, …) | `labfik.jabatan.tugas` (anak: urutan, uraian) | `labfik.jabatan` | Instr PKG-03 Bukti 3, K2 |
 
 **Isi D6 yang langsung relevan**
@@ -246,7 +247,7 @@ D6 adalah dokumen fakultas, bukan dokumen lab. Perannya dua:
 | Isi | Dipakai sebagai | Model | Dasar |
 |---|---|---|---|
 | Rincian tugas Kepala Laboratorium (a–k) | Isi awal tugas jabatan "Kepala Laboratorium". Sumber: D6 | `labfik.jabatan.tugas` | Instr PKG-03 Bukti 3 |
-| Garis pelaporan: KaLab melapor tiap semester ke Ketua Jurusan; KaLab di bawah Dekan pada bagan | `atasan_id` dan `koordinasi_ids` pada jabatan KaLab. Jabatan fakultas (Dekan, Ketua Jurusan) dicatat sebagai jabatan **eksternal** (`is_eksternal`) | `labfik.jabatan` | Instr PKG-03 K2 (alur pelaporan), ISO 5.5 (posisi lab dalam organisasi induk) |
+| Garis pelaporan: KaLab melapor tiap semester ke Ketua Jurusan; KaLab di bawah Dekan pada bagan | `atasan_id` pada jabatan KaLab. Jabatan fakultas (Dekan, Ketua Jurusan) dicatat sebagai jabatan **eksternal** (`is_eksternal`) | `labfik.jabatan` | Instr PKG-03 K2 (alur pelaporan), ISO 5.5 (posisi lab dalam organisasi induk) |
 | Tugas a–b KaLab ("merencanakan kegiatan…", "menyusun rencana operasional dan pengembangan") | Dasar wewenang KaLab sebagai **penyusun** rencana PKG-01 dan PKG-13 | `labfik.jabatan.wewenang` | Instr PKG-01, PKG-13 |
 | Tugas j KaLab ("melaporkan kegiatan sekurang-kurangnya setiap semester") | Dasar frekuensi laporan realisasi semesteran | Pengaturan periode lapor | Instr PKG-01 K3 |
 
@@ -254,7 +255,7 @@ D6 adalah dokumen fakultas, bukan dokumen lab. Perannya dua:
 
 | Field (usulan) | Model | Dasar |
 |---|---|---|
-| `wewenang_ids` (wewenang × jenis dokumen/tindakan: menyusun, memeriksa, mengesahkan) | `labfik.jabatan` | Instr PKG-03 Bukti 4 (matriks kewenangan) |
+| `wewenang_ids` (wewenang × jenis dokumen/tindakan: menyusun, mengesahkan) | `labfik.jabatan` | Instr PKG-03 Bukti 4 (matriks kewenangan) |
 | `pengganti_id` (jabatan pengganti saat berhalangan) | `labfik.jabatan` | Instr PKG-03 K2 (pengganti petugas) |
 | `syarat_kompetensi` | `labfik.jabatan` | Dipakai PKG-04/14. Pengelolanya disepakati dengan Zahir **[KONFIRMASI]** |
 | Rapat koordinasi (tanggal, peserta, agenda, keputusan, notulen) | `labfik.meeting` | Instr PKG-03 K3, Bukti 5 |
@@ -264,17 +265,17 @@ D6 adalah dokumen fakultas, bukan dokumen lab. Perannya dua:
 
 ## 4. Pola berulang → inheritance
 
-> **Catatan 13 November 2026:** bagian 4 dan 5 adalah usulan awal. Rancangan final mengikuti alur Wazlawick (proses bisnis → use case → SSD → conceptual model → design class diagram) dan ada di [design-class-tata-kelola.md](../rancangan/design-class-tata-kelola.md). Perbedaan utamanya: ada model log pengesahan, status *kedaluwarsa*, hook `_setelah_disahkan()`, dan field tinjau ulang dipindah ke versi dokumen.
+> Bagian 4 dan 5 adalah **usulan awal** dari studi dokumen. Rancangan final ditetapkan lewat alur Wazlawick (proses bisnis → use case → SSD → conceptual model → design class diagram).
 
 Blok yang sama muncul berkali-kali di dokumen sumber:
 
 | Blok | Muncul di | Jadi |
 |---|---|---|
 | Kode, revisi, tanggal berlaku, unit pemilik, periode tinjauan | D1, D2, D3, D4 | `labfik.controlled.mixin` |
-| Disusun / Diperiksa / Disahkan (jabatan, nama, tanggal) + status draf → disahkan | D1, D2, D3, D4, D6 | `labfik.approval.mixin` |
+| Disusun / Disahkan (jabatan, nama, tanggal) + status draf → disahkan. Kolom "Diperiksa" hanya di kertas | D1, D2, D3, D4, D6 | `labfik.approval.mixin` |
 | Riwayat revisi (revisi, tanggal, uraian, pengesahan) | D1, D2, D4 | `revisi_dari_id` di tiap model + laporan `[R]` |
 | Periode berlaku (2027, 2027–2031, masa SK) | D1, D2, D6 | `labfik.period.mixin` |
-| PIC + bukti objektif + tanggal | D1 (RKT), D2 (IKU), instrumen (rapat, sosialisasi, realisasi) | `labfik.evidence.mixin` |
+| PIC + bukti objektif + tanggal | D1 (RKT), D2 (tabel IKU), instrumen (rapat, sosialisasi, realisasi) | `labfik.evidence.mixin` |
 | Status kriteria berurutan K1–K4 | Instrumen PKG-01, 03, 13 | `labfik.criteria.mixin` |
 
 ### 4.1 Mixin yang diusulkan [USULAN PENULIS]
@@ -284,7 +285,7 @@ Semua mixin adalah `models.AbstractModel` (tidak membuat tabel sendiri). Model k
 | Mixin | Field | Method | Dipakai oleh |
 |---|---|---|---|
 | `labfik.controlled.mixin` | `kode_dokumen`, `revisi`, `tanggal_berlaku`, `unit_pemilik`, `periode_tinjau_bulan`, `tanggal_tinjau_berikutnya` (compute), `is_perlu_tinjau` (compute) | `_compute_tanggal_tinjau()` | `labfik.document.version`, `labfik.plan`, `labfik.assignment` |
-| `labfik.approval.mixin` (turunan `mail.thread`, `mail.activity.mixin`) | `state` (draf, diajukan, diperiksa, disahkan, dicabut/diganti), `penyusun_id`, `pemeriksa_id`, `pengesah_id`, `tanggal_ajukan`, `tanggal_periksa`, `tanggal_sah`, `file_ttd` | `action_ajukan()`, `action_periksa()`, `action_sahkan()` (memeriksa wewenang jabatan dan keberadaan `file_ttd`), `action_cabut()`, `_cek_kelengkapan()` (di-*override* per model) | `labfik.document.version`, `labfik.plan`, `labfik.assignment` |
+| `labfik.approval.mixin` (turunan `mail.thread`, `mail.activity.mixin`) | `state` (draf, diajukan, disahkan, diganti, dicabut, kedaluwarsa), `penyusun_id`, `pengesah_id`, `tanggal_ajukan`, `tanggal_sah`, `file_ttd` | `action_ajukan()`, `action_kembalikan()`, `action_sahkan()` (memeriksa wewenang jabatan dan keberadaan `file_ttd`), `action_cabut()`, `_cek_kelengkapan()` (di-*override* per model) | `labfik.document.version`, `labfik.plan`, `labfik.assignment` |
 | `labfik.period.mixin` | `periode_id` (Periode, Core), `tanggal_mulai`, `tanggal_selesai`, `is_berlaku` (compute) | `_compute_is_berlaku()` | `labfik.plan`, `labfik.assignment`, `labfik.tinjauan` |
 | `labfik.evidence.mixin` | `tanggal`, `pelapor_id`, `bukti_ids` (lampiran), `keterangan` | — | `labfik.realisasi`, `labfik.tinjauan`, `labfik.meeting`, `labfik.org.evaluation`, distribusi, sosialisasi, tinjau ulang dokumen |
 | `labfik.criteria.mixin` | `kriteria_tertinggi` (compute, 0–4), `status_k1`–`status_k4` (compute) | `_cek_k1()`–`_cek_k4()` (abstrak, di-*override* tiap model) | `labfik.plan` (PKG-01, 13), `labfik.assignment` (PKG-03) |
@@ -299,15 +300,11 @@ Semua mixin adalah `models.AbstractModel` (tidak membuat tabel sendiri). Model k
 | **Ekstensi model yang sudah ada** (*classical*) | `_inherit = 'hr.employee'` tanpa `_name` baru | Bila Personel memakai opsi `hr.employee`/`hr.job` **[KONFIRMASI kelompok]** |
 | **Delegasi** | `_inherits = {'res.partner': 'partner_id'}` | Bila Personel dibuat sebagai model sendiri yang tetap memakai data kontak `res.partner` **[KONFIRMASI kelompok]** |
 
-### 4.3 Satu atau tiga tahap pengesahan
+### 4.3 Satu tahap pengesahan
 
-Semua dokumen sumber memakai tiga tahap: **disusun → diperiksa → disahkan**. Analisis PKG-02 sebelumnya menunda persetujuan bertingkat ("MVP cukup satu pengesah").
+Semua dokumen sumber memakai tiga kolom tanda tangan: **disusun → diperiksa → disahkan**.
 
-Usulan:
-- Mixin menyimpan ketiga peran, supaya hasil ekspor sesuai format dokumen lab.
-- Tahap "diperiksa" boleh dilewati (opsional per jenis dokumen), sehingga alur minimal tetap draf → diajukan → disahkan.
-
-**[KONFIRMASI]** Apakah tahap pemeriksa (Wakil Dekan/unit mutu/GKM) memang dijalankan di FIK?
+Keputusan (14 November 2026): sistem hanya mencatat **disusun** dan **disahkan**. Pejabat yang mengesahkan dianggap sudah memeriksa isi dokumen, dan catatan pengesahan menjadi buktinya. Kolom "Diperiksa" tetap ada di blok tanda tangan dokumen cetak, tetapi tidak dicatat sebagai tahap atau field. Pejabat penanda tangan (mis. Dekan) tidak memakai sistem; KaLab mencatat pengesahannya.
 
 ---
 
@@ -320,10 +317,9 @@ Tabel ini menggabungkan hasil bedah dengan entitas di [analisis Pengelolaan 1–
 | Model | Label | Nama baku | Field inti | Mixin | PKG | Dari dokumen |
 |---|---|---|---|---|---|---|
 | `labfik.personel` | [M] | Personel | nama, jenis (dosen, laboran/PLP, teknisi, asisten, petugas K3, eksternal), user, unit/prodi | — | 03 (dipakai semua) | D5 (jenis teknisi). **Opsi model belum diputuskan** |
-| `labfik.jabatan` | [M] | Jabatan | nama, kode, `unit` (lab FIK, prodi Informatika, prodi SI, fakultas), `is_eksternal`, `atasan_id`, `koordinasi_ids`, `pengganti_id`, `syarat_kompetensi`, `dasar_dokumen_id`. Anak: **tugas** (urutan, uraian), **wewenang** (tindakan × jenis dokumen) | — | 03 | D5 (KaLab per prodi), D6 (tugas a–k, garis instruksi/koordinasi, format daftar berhuruf) |
+| `labfik.jabatan` | [M] | Jabatan | nama, kode, `unit` (lab FIK, prodi Informatika, prodi SI, fakultas), `is_eksternal`, `atasan_id`, `pengganti_id`, `syarat_kompetensi`, `dasar_dokumen_id`. Anak: **tugas** (urutan, uraian), **wewenang** (tindakan × jenis dokumen) | — | 03 | D5 (KaLab per prodi), D6 (tugas a–k, garis instruksi, format daftar berhuruf) |
 | `labfik.document` | [M] | Dokumen Induk | kode, judul, `jenis`, `kategori`, `asal` (lab/fakultas/universitas), `dasar_kebutuhan`, `is_wajib`, `lokasi_penggunaan_ids`, `dokumen_terkait_ids`, `rekaman_dihasilkan`, `versi_berlaku_id` (compute) | — | 02 | D3 (keterkaitan, pencatatan, POB fakultas), D1 Bab IX (isi awal) |
-| `labfik.kpi` | [M] | KPI | kode, nama, sasaran kerja, rumus (pembilang, penyebut), satuan, frekuensi, PIC (jabatan), sumber data/bukti, acuan ISO, `ruang_ids` (opsional) | — | 01 (dipakai 13, 21) | D2 Bagian 5 |
-| `labfik.sasaran.renstra` | [M] | Sasaran Renstra | kode, uraian, tingkat (UPNVJ/UPPS/prodi) | — | 01 | Tidak ada di dokumen. Dari instrumen |
+| `labfik.kpi` | [M] | KPI | kode, nama, sasaran kerja, rumus (pembilang, penyebut), satuan, frekuensi, PIC (jabatan), sumber data/bukti, acuan ISO | — | 01 (dipakai 13, 21) | D2 Bagian 5 |
 | `labfik.ruang` | [M] | Ruang Lab | kode, nama, fungsi, kapasitas | — | Core | D1 2.2, D5 |
 | `labfik.periode` | [M] | Periode | nama, jenis (tahun anggaran, semester, multi-tahun), mulai, selesai | — | Core | D1, D2 |
 
@@ -335,11 +331,8 @@ Tabel ini menggabungkan hasil bedah dengan entitas di [analisis Pengelolaan 1–
 | `labfik.document.distribution` | [T] | versi, lokasi, tanggal, petugas | evidence | 02 S4 | Instrumen |
 | `labfik.document.socialization` | [T] | versi, tanggal, metode; anak: peserta | evidence | 02 S5 | Instrumen |
 | `labfik.document.review` | [T] | versi, peninjau, `hasil` (tetap berlaku / perlu revisi), catatan. Bila *tetap berlaku*, `tanggal_tinjau_berikutnya` pada versi dihitung ulang dari tanggal tinjauan ini | evidence | 02 S3 | Instrumen, D4 (periode tinjauan) |
-| `labfik.plan` | [T] | `jenis` (strategis, tahunan, iku, pengembangan), `parent_id`, narasi (Html: ringkasan, latar belakang, tujuan, ruang lingkup, referensi, landasan, visi, misi, penutup), `revisi_dari_id`. Anak: baseline, sasaran, program, item, temuan gap | controlled, approval, period, criteria | 01 K1–K2, 13 K1–K2 | D1, D2 |
-| `labfik.plan.baseline` | [T] anak | data, nilai awal, sumber, PIC | — | 13 (kondisi saat ini), 01 (format) | D1 2.3 |
-| `labfik.plan.sasaran` | [T] anak | kode, sasaran, `kpi_id`, target akhir | — | 01 Bukti 1 | D1 4.3 |
-| `labfik.plan.program` | [T] anak | kode, nama, kegiatan utama, luaran, tahapan | — | 01 Bukti 1 | D1 Bab V |
-| `labfik.plan.line` | [T] anak | kegiatan, `kpi_id`, `baseline`, `target`, `satuan`, jadwal mulai/selesai, `pic_id`, `bukti_diharapkan`, `anggaran`, `komponen_anggaran`, `sasaran_id`, `program_id`, `sasaran_renstra_ids`. Khusus pengembangan: `gap_ids`, `nilai_risiko`, `nilai_manfaat`, `prioritas` | — | 01 K2, 13 K2 | D1 Bab VI–VII, D2 Bagian 5 |
+| `labfik.plan` | [T] | `jenis` (strategis, tahunan, pengembangan), narasi (Html: ringkasan, latar belakang, tujuan, ruang lingkup), `revisi_dari_id`. Jenis strategis (Renstra) hanya berisi kepala dokumen dan PDF unggahan. Anak: item, temuan gap | controlled, approval, period, criteria | 01 K1–K2, 13 K1–K2 | D1, D2 |
+| `labfik.plan.line` | [T] anak | kegiatan, `kpi_id`, `baseline`, `target`, `satuan`, jadwal mulai/selesai, `pic_id`, `bukti_diharapkan`, `anggaran`, `komponen_anggaran`, `rujukan_renstra` (teks). Khusus pengembangan: `gap_ids`, `nilai_risiko`, `nilai_manfaat`, `prioritas` | — | 01 K2, 13 K2 | D1 Bab VI–VII, D2 Bagian 5 |
 | `labfik.plan.gap` | [T] anak | aspek (tridharma, kompetensi, sarana, layanan), kondisi saat ini, kebutuhan/standar, sumber data, uraian gap, lampiran | — | 13 K2 | Tidak ada di dokumen. Dari instrumen |
 | `labfik.realisasi` | [T] | `line_id`, periode lapor (triwulan/semester), capaian aktual, anggaran terpakai, `status_capaian` (tercapai, perlu perhatian, tidak tercapai, belum tersedia, tidak relevan), `alasan_tidak_relevan`, analisis/tindakan, PIC tindak lanjut, tenggat | evidence | 01 K3, 13 K3 | D2 Bagian 7–9, D1 Lampiran D |
 | `labfik.tinjauan` | [T] | `plan_id`, peserta, ringkasan capaian, keputusan, `rencana_berikut_id`. Anak (pengembangan): ukuran manfaat (indikator, nilai sebelum, nilai sesudah, sumber) | evidence, period | 01 K4, 13 K4 | D1 8.3 (tinjauan manajemen tahunan) |
@@ -351,12 +344,13 @@ Tabel ini menggabungkan hasil bedah dengan entitas di [analisis Pengelolaan 1–
 
 | Perubahan | Alasan | Sumber |
 |---|---|---|
-| `labfik.plan` mendapat `jenis = iku` dan tabel anak `sasaran`, `program`, `baseline` | D1 dan D2 punya bagian terstruktur yang belum ada di analisis | D1, D2 |
-| Field narasi (Html) di rencana | Dokumen rutin sekarang diekspor dari sistem, jadi narasinya harus disimpan di sistem | Keputusan 13 Nov 2026 |
+| Renstra = rencana `jenis = strategis` berisi unggahan saja; RKT merujuknya lewat teks | Renstra berlaku 5 tahun, cukup diunggah dan disahkan. Analisis Pengelolaan 1 sudah menyediakan jalan pengganti "tautan berupa teks bebas" | Keputusan 14 Nov 2026 |
+| Isi D2 (IKU) dibagi ke master KPI dan item RKT | Instrumen tidak meminta dokumen IKU terpisah | D2 |
+| Empat field narasi (Html) di rencana | Dokumen rutin diekspor dari sistem, jadi narasi minimalnya disimpan di sistem | Keputusan 13 Nov 2026 |
 | Status realisasi bertambah "belum tersedia" dan "tidak relevan (dengan alasan)" | Cegah data kosong dianggap tercapai | D2 Bagian 7–8 |
-| Jabatan mendapat `unit`, `is_eksternal`, `koordinasi_ids`, dan anak `tugas` serta `wewenang` | Ada dua KaLab per prodi. Jabatan fakultas perlu dirujuk sebagai atasan. Format tugas mengikuti SK | D5, D6 |
+| Jabatan mendapat `unit`, `is_eksternal`, dan anak `tugas` serta `wewenang` | Ada dua KaLab per prodi. Jabatan fakultas perlu dirujuk sebagai atasan. Format tugas mengikuti SK | D5, D6 |
 | Dokumen Induk mendapat `asal`, `dokumen_terkait_ids`, `rekaman_dihasilkan` | POB saling merujuk. Dokumen fakultas ikut dikendalikan | D3 |
-| Pengesahan menyimpan tiga peran (penyusun, pemeriksa, pengesah) | Semua dokumen sumber memakai tiga tahap | D1–D4, D6 |
+| Pengesahan menyimpan dua peran (penyusun, pengesah) + pencatat | Kolom "Diperiksa" di dokumen sumber tidak dijadikan tahap (keputusan 14 Nov 2026) | D1–D4, D6 |
 | Wewenang mengesahkan diatur per jenis dokumen | Pengesah berbeda antar-POB | D3 (A3) |
 
 ---
@@ -367,19 +361,18 @@ Semua laporan dihasilkan sebagai QWeb report (PDF) dari data T dan M. Tidak ada 
 
 | Laporan | Isi | Dihasilkan dari | Meniru format | PKG / bukti |
 |---|---|---|---|---|
-| **Dokumen Renstra dan RKT** | Sampul, lembar pengendalian, narasi, sasaran, program, RKT, jadwal triwulan, anggaran per komponen, definisi KPI, riwayat revisi | `labfik.plan` (strategis + anak tahunan) | D1 | 01 Bukti 1–2 |
-| **Dokumen Sasaran Kerja dan IKU** | Lembar pengendalian, tabel IKU, skala status, persetujuan | `labfik.plan` (iku) + `labfik.kpi` | D2 | 01 Bukti 4 |
+| **Dokumen RKT** | Sampul, lembar pengendalian, narasi, tabel RKT, jadwal triwulan, anggaran per komponen, definisi KPI, riwayat revisi | `labfik.plan` (tahunan) + `labfik.kpi` | D1 Bab VI–VIII | 01 Bukti 2, 4 |
 | **Dokumen Rencana Pengembangan** | Analisis gap per aspek, program dengan prioritas, biaya, target, PIC, jadwal | `labfik.plan` (pengembangan) | D1 (struktur umum) | 13 Bukti 1–4 |
 | **Laporan capaian triwulan/semester** | Target, capaian, status, analisis, tindak lanjut | `labfik.realisasi` | D2 Bagian 9, D1 Lampiran D | 01 Bukti 5, 13 Bukti 5 |
-| **Matriks keterkaitan Renstra** | Sasaran Renstra × item RKT × acuan ISO | `labfik.plan.line` | D1 Lampiran E | 01 Bukti 3 |
+| **Matriks keterkaitan Renstra** | Rujukan Renstra × item RKT | `labfik.plan.line` | D1 Lampiran E | 01 Bukti 3 |
 | **SK Penetapan Pengelola Lab** | Format SK + Lampiran I (bagan) + Lampiran II (tugas per jabatan) | `labfik.assignment` + `labfik.jabatan` | D6 | 03 Bukti 1–3 |
-| **Bagan organisasi** | Garis instruksi dan koordinasi | `labfik.jabatan` | D6 Lampiran I | 03 Bukti 2 |
+| **Bagan organisasi** | Garis instruksi (daftar hierarki) | `labfik.jabatan` | D6 Lampiran I | 03 Bukti 2 |
 | **Matriks kewenangan** | Jabatan × wewenang | `labfik.jabatan` | Instrumen | 03 Bukti 4 |
 | **Daftar Induk Dokumen** | Kode, judul, jenis, revisi berlaku, tanggal berlaku, pemilik, tinjau berikutnya, lokasi | `labfik.document` + versi | D1 Bab IX (kolom), ISO 8.3 | 02 Bukti 1 |
 | **Riwayat revisi** | Revisi, tanggal, bagian diubah, uraian, pengesah | Rantai `revisi_dari_id` | D1, D2, D4 | 02 Bukti 3 |
 | **Status monev** | Persentase SOP wajib yang memenuhi (PKG-02); kriteria tertinggi K1–K4 beserta tautan bukti (PKG-01, 03, 13) | Semua model di atas | Instrumen | Semua |
 
-**Alur ekspor dan pengesahan** (batasan 3 di brief): isi form → *Ajukan* → (opsional) *Periksa* → **ekspor PDF** → tanda tangan manual → unggah `file_ttd` → *Sahkan*. Tombol *Sahkan* hanya aktif bila `file_ttd` ada dan pengguna memegang jabatan yang berwenang untuk jenis dokumen itu.
+**Alur ekspor dan pengesahan** (batasan 3 di brief): isi form → *Ajukan* → **ekspor PDF** → tanda tangan manual (KaLab atau Dekan, di luar sistem) → unggah `file_ttd` → KaLab menekan *Sahkan* atau *Kembalikan*. Tombol *Sahkan* hanya aktif bila `file_ttd` ada, dan pengesah yang dicatat harus memegang jabatan yang berwenang untuk jenis dokumen itu. Renstra dan SOP/IK melewati alur yang sama tanpa langkah ekspor.
 
 ---
 
@@ -393,22 +386,24 @@ Semua laporan dihasilkan sebagai QWeb report (PDF) dari data T dan M. Tidak ada 
 | Instruksi pengujian/kalibrasi, ketertelusuran metrologi | D4 Bagian 7 | Bukan scope modul ini; relevansinya untuk lab komputer pun terbatas |
 | Tugas jabatan fakultas selain KaLab (Senat, Dekan, Wakil Dekan, dan lainnya) | D6 Lampiran II | Cukup dicatat sebagai jabatan eksternal tanpa rincian tugas |
 | Hak/kewajiban pengguna, tautan layanan | D5 | Isi tata tertib (dokumen tersendiri) dan layanan modul lain |
+| Isi Renstra: visi, misi, sasaran strategis, program, baseline | D1 Bab II–V | Renstra berlaku 5 tahun, cukup diunggah dan disahkan (keputusan 14 Nov 2026) |
+| Dokumen IKU tersendiri, indikator prioritas per unit | D2 | Definisi masuk master KPI, target masuk item RKT; instrumen tidak meminta dokumen terpisah |
+| Tahap "Diperiksa" | D1–D4, D6 | Pemeriksaan menyatu dengan pengesahan (keputusan 14 Nov 2026) |
+| Garis koordinasi antarjabatan | D6 Lampiran I | Bagan cukup garis instruksi; koordinasi dibuktikan lewat rapat koordinasi |
 
 ---
 
 ## 8. Pertanyaan terbuka
 
 **Untuk Pak Widi**
-- [ ] IKU (D2) dokumen terpisah dari RKT, atau bagian dari RKT? (3.2)
-- [ ] Renstra dan RKT satu dokumen seperti D1? Ini sekaligus menjawab pertanyaan lama "roadmap PKG-01 dan PKG-13 satu dokumen atau tidak".
+- [ ] Renstra yang diunggah boleh dipakai sebagai roadmap PKG-01 sekaligus PKG-13? (Sama dengan pertanyaan di brief.)
 - [ ] Sistem melayani **satu lab FIK** atau **per lab prodi** (Informatika, SI)? Draf D1–D4 hanya untuk Lab Informatika. (A11)
-- [ ] Apakah tahap "diperiksa" (Wakil Dekan/unit mutu/GKM) dijalankan? (4.3)
 - [ ] SK penetapan pengelola lab (PKG-03) termasuk dokumen rutin yang diisi lewat sistem dan diekspor?
 
 **Untuk KaLab/laboran (wawancara)**
 - [ ] Apakah POB 2024 di D3 sudah ditandatangani? Mengapa nomor dan tanggal efektifnya kosong? (A2)
 - [ ] Apakah ada daftar SOP lain selain yang ada di D3? (A4)
-- [ ] Siapa yang berwenang mengesahkan POB lab: KaLab atau Dekan? (A3)
+- [ ] Dokumen mana yang disahkan KaLab dan mana yang ditandatangani Dekan? (A3)
 - [ ] Bagaimana pembagian tugas kedua KaLab? Siapa pengganti bila KaLab atau laboran berhalangan? (A8, A9)
 
 **Untuk kelompok (Zahir, Herrens)**
