@@ -276,7 +276,7 @@ Bahan untuk Langkah 10. Semua **[USULAN PENULIS]**.
 | Rekaman "satu per Sesi" yang harus dibuat **sebelum** atau **sesudah** jam Sesi (cek waktu terhadap Sesi, satu rekaman per Sesi, ruang dan kelas ikut Sesi) | Pemeriksaan Kesiapan (16), Jurnal Sesi (18) | Mixin kecil `labfik.praktikum.sesi.mixin` (`sesi_id` unik, field *related*, `_cek_waktu_terhadap_sesi()` {hook}) |
 | Rekaman kegiatan bertanggal dengan pelapor dan bukti | Pemeriksaan Kesiapan, Jurnal Sesi, Evaluasi Survei | `labfik.evidence.mixin` (Core) |
 | Dokumen berversi tanpa pengesahan | Versi Modul (15) | `labfik.controlled.mixin` (Core), tanpa `labfik.approval.mixin` |
-| Penetapan oleh pejabat berwenang | Penetapan Jadwal (15), penetapan Survei (20) | `labfik.approval.mixin` (Core) atau status sederhana; diputuskan di Langkah 10 |
+| Penetapan oleh pejabat berwenang | Penetapan Jadwal (15), penetapan Survei (20) | Jadwal: `labfik.approval.mixin` (Core), karena jadwal harus ditandatangani (keputusan 14 Nov 2026). Survei: status sederhana + cek wewenang (brief, Kontrak Core) |
 | Persetujuan sederhana (diajukan → disetujui/ditolak) | Rencana Pemakaian Lab (15), Perubahan Sesi (18) | Satu pola status bersama di modul |
 | Indikator kriteria berurutan | Evaluasi Survei (20) | `labfik.criteria.mixin` (Core) |
 | Persentase sesi memenuhi | 15, 16, 17, 18 (19 pendekatan) | Satu cara hitung bersama (*compute* atau *report*); diputuskan di Langkah 10 |

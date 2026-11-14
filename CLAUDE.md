@@ -223,7 +223,7 @@ Dirancang di modul Tata Kelola (design class diagram di tag `rancangan-tatkel-v1
 
 | Model / mixin | Isi | Pakai untuk |
 |---|---|---|
-| Personel = `hr.employee` (Odoo CE `hr`, LGPL-3) diperluas dengan `_inherit` | Semua orang yang punya peran di lab (dosen, laboran/PLP, teknisi, asisten, petugas K3, eksternal) | Semua rujukan ke orang (PIC, peserta, petugas). Cara mencatat asisten (mahasiswa) dan pihak eksternal sebagai `hr.employee` masih **[KONFIRMASI kelompok]** |
+| Personel = `hr.employee` (Odoo CE `hr`, LGPL-3) diperluas dengan `_inherit` | Semua orang yang punya peran di lab (dosen, laboran/PLP, teknisi, asisten, petugas K3, eksternal) | Semua rujukan ke orang (PIC, peserta, petugas). Asisten (mahasiswa) dicatat sebagai `hr.employee` dengan Jabatan Asisten Praktikum (keputusan Herrens, 14 November 2026). Cara mencatat pihak eksternal masih **[KONFIRMASI kelompok]** |
 | Jabatan = `hr.job` diperluas (+ `labfik.jabatan.tugas`, `labfik.jabatan.wewenang`) | Jabatan, unit, atasan, pengganti, wewenang per jenis dokumen, syarat kompetensi | Siapa berwenang melakukan apa. `cari_pemegang_berwenang(tindakan, jenis)` |
 | `labfik.ruang`, `labfik.periode` | Master Core | Lokasi dan periode |
 | `labfik.mata.kuliah`, `labfik.kelas` (nama model [USULAN PENULIS]) | Master Core: MK praktikum; kelas per MK per periode (dosen kelas, jumlah mahasiswa) | Identitas sesi, modul, penugasan, survei (keputusan Herrens, 14 November 2026) |

@@ -117,11 +117,58 @@ Yang **tidak dirancang** tercantum di batasan masalah.
 |---|---|---|---|
 | Periode, Ruang Lab, Mata Kuliah, Kelas, Personel, Jabatan | Core | Wajib | — |
 | `labfik.criteria.mixin` | Core | Wajib (PKG-20) | — |
-| `labfik.controlled.mixin` (kode, revisi) | Core | Opsional (Versi Modul) | Nomor versi sebagai field biasa |
+| `labfik.controlled.mixin` (kode, revisi) | Core | Wajib (Versi Modul) | — |
+| `labfik.approval.mixin` + `labfik.approval.log` | Core | Wajib (Penetapan Jadwal; jadwal harus ditandatangani) | — |
+| `labfik.evidence.mixin` | Core | Wajib (Pemeriksaan Kesiapan, Jurnal Sesi, Evaluasi Survei) | — |
 | Addon `survey` | Odoo 17 CE (LGPL-3) | Wajib (PKG-20, keputusan 14 Nov 2026) | Google Form + impor |
 | Penugasan petugas per sesi | PKG-04 (SDM) | Opsional | Presensi petugas tanpa pencocokan |
 | Status kalibrasi alat | PKG-05 (kelompok Aset) | Opsional | Dianggap tidak berlaku untuk lab komputer |
 | Kartu stok bahan | PKG-07 (kelompok Aset) | Opsional | Jumlah tersedia dicatat saat pemeriksaan |
+
+### Kontrak Core (Langkah 3)
+
+14 November 2026 · Herrens. Aturan CLAUDE.md Langkah 3: pakai master dan *mixin* yang sudah dirancang di Tata Kelola (tag `rancangan-tatkel-v1`, dengan penyesuaian CLAUDE.md bagian 6: Personel = `hr.employee`, Jabatan = `hr.job`, pengesahan tanpa tahap pemeriksaan). Bila butuh perubahan, **diusulkan ke pemiliknya**, tidak dibuat versi sendiri. Nama field di bawah masih **[USULAN PENULIS]**, ditetapkan di Langkah 10.
+
+**a. Yang dipakai apa adanya**
+
+| Model / *mixin* Core | Dipakai untuk | PKG |
+|---|---|---|
+| Personel (`hr.employee` diperluas) | Dosen, laboran, teknisi, asisten: pengisi jurnal, petugas hadir, pemeriksa kesiapan, penyusun modul, penyetuju, PIC RTL. **Praktikan tidak dicatat sebagai Personel** | 15–20 |
+| Jabatan (`hr.job` diperluas) + `cari_pemegang_berwenang(tindakan, jenis)` | Jabatan yang dipakai: Kepala Laboratorium, Laboran/PLP, Teknisi, Dosen, **Asisten Praktikum**. Untuk menentukan siapa boleh mengesahkan jadwal, menyetujui pemakaian lab dan perubahan sesi, menetapkan survei, dan mengisi jurnal | 15, 18, 20 |
+| `labfik.controlled.mixin` (kode, revisi, unit pemilik) | Versi Modul (revisi = nomor versi) | 15 |
+| `labfik.approval.mixin` + `labfik.approval.log` (ajukan → kembalikan / unggah PDF bertanda tangan → sahkan → cabut; cek wewenang; riwayat; hook `_setelah_disahkan()`) | Penetapan Jadwal: **jadwal harus ditandatangani** (keputusan Herrens, 14 Nov 2026). Hook `_setelah_disahkan()` mengisi tanggal publikasi dan menandai Sesi periode itu sebagai terpublikasi | 15 |
+| `labfik.evidence.mixin` (tanggal, pelapor, bukti, keterangan; rekaman tidak dihapus) | Pemeriksaan Kesiapan, Jurnal Sesi, Evaluasi Survei | 16, 18, 20 |
+| `labfik.criteria.mixin` (`status_k1`–`k4`, `kriteria_tertinggi`, `_cek_k1()`–`_cek_k4()` {abstract}) | Perluasan `survey.survey` sebagai paket per periode | 20 |
+
+**b. Yang tidak dipakai, dan alasannya**
+
+| Model / *mixin* | Alasan |
+|---|---|
+| `labfik.approval.mixin` untuk Versi Modul, Survei, Rencana Pemakaian Lab, Perubahan Sesi | Modul cukup diterbitkan (keputusan 14 Nov 2026); survei cukup "ditetapkan"; pemakaian lab dan perubahan sesi cukup disetujui. Ketiganya memakai status sederhana + cek wewenang lewat Jabatan, tanpa berkas bertanda tangan |
+| `labfik.period.mixin` | Tidak ada objek Praktikum yang "kedaluwarsa" berdasarkan periode; cukup `periode_id` biasa |
+| Mahasiswa (Core, di pemetaan) | Praktikum tidak menyimpan data per praktikan (batasan masalah 3) |
+
+**c. Usulan perubahan ke Core (perlu disetujui pemiliknya)**
+
+| Model | Usulan | Untuk | Kepada |
+|---|---|---|---|
+| `labfik.ruang` | Field `kode`, `name`, **`kapasitas`** (Integer). Isi awal 8 ruang: FIKLAB-201, 301–304, 401–403 | PKG-15 C3 (sesuai kapasitas); PKG-08 kelompok Aset juga memakainya | Kelompok (Core bersama) **[KONFIRMASI kelompok]** |
+| `labfik.periode` | Field `name`, `jenis` (semester / tahun anggaran), **`tanggal_mulai`, `tanggal_selesai`** | Batas pembagi PKG-15–19; sesi pengganti harus selesai sebelum periode ditutup (PKG-18) | Kelompok (Core bersama) **[KONFIRMASI kelompok]** |
+| `labfik.jabatan.wewenang` | Tambah pasangan (tindakan, jenis): (`mengesahkan`, `jadwal_praktikum`), (`menyetujui`, `pemakaian_lab`), (`menyetujui`, `perubahan_sesi`), (`menetapkan`, `survei_kepuasan`) | Cek wewenang PKG-15, 18, 20 | Febriyan (pemilik Jabatan) |
+| Personel | Asisten (mahasiswa) dicatat sebagai `hr.employee` dengan Jabatan **Asisten Praktikum** (`hr.job`) — **diputuskan** (Herrens, 14 Nov 2026) dan dicatat di CLAUDE.md bagian 6. Alasannya: asisten perlu jabatan untuk cek wewenang dan syarat kompetensi (SDM), dan jabatan selalu menempel pada Personel. Pihak eksternal masih terbuka | Presensi asisten, pengisi jurnal | Kelompok (diberi tahu) |
+
+**d. Model Core yang diisi modul ini** (keputusan 14 Nov 2026; kontraknya ditulis di sini karena Praktikum yang paling hulu)
+
+| Model | Field (garis besar) | Aturan |
+|---|---|---|
+| `labfik.mata.kuliah` [M] | `kode` «unique», `name`, `prodi`, `semester` | Kode MK sebagai kunci impor (nama MK tidak seragam antarperiode) |
+| `labfik.kelas` [M] | `mata_kuliah_id`, `periode_id`, `name`, `jumlah_mahasiswa`, `dosen_koordinator_id`, `dosen_ids` | Unik per (MK, periode, nama kelas) |
+| `labfik.sesi` [T] | `kelas_id`, `pertemuan_ke`, `tanggal`, `jam_mulai`, `jam_selesai`, `ruang_id`, `state`, `sesi_asal_id` (bila pengganti) | Dibangkitkan hanya oleh PKG-15 (atau sebagai pengganti lewat Perubahan Sesi PKG-18). Satu Sesi asli per (kelas, pertemuan). Nama status ditetapkan di state machine (Langkah 5) |
+
+**e. Aturan pakai bersama untuk Sesi** **[USULAN PENULIS; KONFIRMASI kelompok]**
+- Modul lain (SDM PKG-04, Aset PKG-08) **tidak menambah field** ke `labfik.sesi`. Mereka membuat modelnya sendiri yang merujuk `sesi_id` (misalnya penugasan petugas per sesi), sehingga `labfik_core` tidak bergantung pada modul mana pun.
+- Hanya Praktikum yang mengubah status Sesi.
+- Sesi yang sudah punya jurnal atau penugasan tidak boleh dihapus; perubahan jadwal dilakukan lewat Perubahan Sesi.
 
 **Dampak ke rencana addon:** brief bersama mencatat `labfik_praktikum` bergantung pada `labfik_sdm`, ditambah jembatan `labfik_praktikum_aset` untuk PKG-16/17. Hasil analisis menunjukkan semua kaitan ke SDM dan Aset bersifat opsional. Usulan: `labfik_praktikum` cukup `depends: ['labfik_core', 'survey']`, dan addon jembatan tidak diperlukan **[KONFIRMASI kelompok]**.
 

@@ -172,7 +172,7 @@ Hal yang terlihat dari peta dependensi:
 - [ ] Apakah semua kelompok memakai satu server Odoo?
 
 **Untuk kelompok**
-- [ ] Setuju Personel = `hr.employee` dan Jabatan = `hr.job` yang diperluas di `labfik_core`? Bagaimana asisten (mahasiswa) dan pihak eksternal dicatat?
+- [ ] Setuju Personel = `hr.employee` dan Jabatan = `hr.job` yang diperluas di `labfik_core`? Asisten (mahasiswa) dicatat sebagai `hr.employee` (keputusan Herrens, 14 Nov 2026); pihak eksternal dicatat bagaimana?
 - [ ] Setuju `labfik_core` dipisah dari `labfik_org`?
 - [x] Apakah Sesi masuk Core dan dibangkitkan PKG-15? **Ya** (14 Nov 2026), beserta Mata Kuliah dan Kelas. Lihat tabel keputusan
 - [ ] Apakah Persiapan 17 (bahan) dinyatakan N/A untuk lab FIK, atau dicakup terbatas (lab IoT, 3D printer)?
