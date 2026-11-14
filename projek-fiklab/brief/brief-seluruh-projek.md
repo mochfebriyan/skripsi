@@ -104,7 +104,7 @@ labfik_core                  master bersama + Sesi
       └─ labfik_praktikum_aset   jembatan ke addon kelompok Aset
 ```
 
-**Belum diputuskan:** master bersama (Personel, Jabatan, Periode, Ruang) ditempatkan di addon `labfik_core` tersendiri, atau di `labfik_org` yang lalu menjadi `depends` modul lain.
+**Usulan keputusan (Febriyan, 14 November 2026) [KONFIRMASI kelompok]:** master bersama (Personel, Jabatan, Periode, Ruang) dan mixin bersama ditempatkan di addon **`labfik_core`** tersendiri, terpisah dari `labfik_org`. Personel dan Jabatan meng-*extend* `hr.employee` dan `hr.job` dari Odoo CE `hr` (LGPL-3), mengikuti arahan Pak Widi untuk memperluas addon berlisensi LGPL. Jadi `labfik_core` bergantung pada `hr` dan `mail`, dan modul fungsional cukup bergantung pada `labfik_core`.
 
 ## Master bersama (Core) dan dependensi kunci
 
@@ -171,8 +171,8 @@ Hal yang terlihat dari peta dependensi:
 - [ ] Apakah semua kelompok memakai satu server Odoo?
 
 **Untuk kelompok**
-- [ ] Model master Personel memakai opsi yang mana: `hr.employee`, model sendiri, atau model Rafika?
-- [ ] Apakah master bersama tinggal di `labfik_org` atau dipisah ke `labfik_core`?
+- [ ] Setuju Personel = `hr.employee` dan Jabatan = `hr.job` yang diperluas di `labfik_core`? Bagaimana asisten (mahasiswa) dan pihak eksternal dicatat?
+- [ ] Setuju `labfik_core` dipisah dari `labfik_org`?
 - [ ] Apakah Sesi masuk Core dan dibangkitkan PKG-15?
 - [ ] Apakah Persiapan 17 (bahan) dinyatakan N/A untuk lab FIK, atau dicakup terbatas (lab IoT, 3D printer)?
 
