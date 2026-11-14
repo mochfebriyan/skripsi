@@ -148,6 +148,26 @@ Hal yang menambah kenyamanan atau kedalaman tetapi tidak dibutuhkan untuk membuk
 
 Sebaliknya, **gap kompetensi** dari Pengembangan 13 bisa menjadi masukan kebutuhan pelatihan di Pengembangan 14 (SDM). Hubungan ini opsional dan perlu disepakati.
 
+## Platform dan addon yang diperluas
+
+Arahan Pak Widi: lihat addon yang sudah ada (OCA, CybroAddons, OpenHRMS, EducationalERP, OpenEduCat, dll.) untuk di-*extend*, dengan mengutamakan lisensi **LGPL**.
+
+Modul ini tetap berupa addon sendiri (`labfik_org`). Addon itu bergantung (`depends`) pada addon yang sudah ada dan memperluasnya lewat `_inherit`, tanpa mengubah kode addon lain. Model baru dibuat hanya untuk konsep yang tidak punya padanan.
+
+Hasil survei awal (cabang 17.0, dicek 14 November 2026):
+
+| Addon | Lisensi | Untuk | Keputusan |
+|---|---|---|---|
+| Odoo CE `mail` | LGPL-3 | Riwayat perubahan, aktivitas, notifikasi | **Dipakai** |
+| Odoo CE `hr` (`hr.employee`, `hr.job`, `hr.department`) | LGPL-3 | Personel dan Jabatan | **Kandidat utama untuk di-*extend*.** Asisten (mahasiswa) dan pihak eksternal bukan pegawai, jadi perlu disepakati kelompok **[KONFIRMASI]** |
+| OCA `dms` | LGPL-3 | Penyimpanan berkas, folder, hak akses | **Opsional** untuk penyimpanan PDF. Versi berlaku, pengesahan, distribusi, dan tinjau ulang tetap dibuat sendiri **[USULAN PENULIS]** |
+| OCA `base_tier_validation` | AGPL-3 | Persetujuan bertingkat | **Tidak dipakai** (AGPL; alur bertingkat tidak sesuai pengesahan satu tahap dengan PDF bertanda tangan). Pembanding di studi terkait |
+| OCA `mgmtsystem`, `mgmtsystem_review`, `mgmtsystem_manual`, `document_page_approval` | AGPL-3 | Sistem manajemen ISO, tinjauan manajemen, prosedur | **Tidak dipakai** (AGPL). Pembanding di studi terkait |
+| OpenEduCat `openeducat_core` | LGPL-3 | Data mahasiswa dan dosen | **Tidak dipakai** (batasan masalah 7: berdiri sendiri tanpa OpenEduCat) |
+| Modul KPI OCA (`kpi`, `kpi_dashboard`, `mgmtsystem_objective`) | — | KPI | Tidak tersedia di 17.0; master KPI dibuat sendiri |
+
+CybroAddons dan OpenHRMS belum diperiksa per modul. Lisensinya campuran (sebagian OPL/berbayar) **[VALIDASI]**.
+
 ## Batasan masalah
 
 1. **Indikator yang dicakup:** Pengelolaan 1, 2, 3, dan Pengembangan 13. Baris lain tidak dicakup, termasuk Pengelolaan 10 (KPI dipantau), Pengelolaan 10 (legalitas), Pengelolaan 13 (dokumen mutu), dan Evaluasi E07/E10 (tinjauan). Namun komponen register dokumen, KPI, dan tinjauan bisa dipakai ulang untuk baris-baris itu.
@@ -246,7 +266,8 @@ Kebijakannya:
 - [ ] Data kebutuhan kurikulum/CPMK, riset, dan PkM untuk analisis gap didapat dari mana?
 
 **Untuk kelompok (Zahir, Herrens)**
-- [ ] Model Personel memakai opsi yang mana (`hr.employee`, model sendiri, atau model Rafika)? Lihat tabel opsi di analisis Pengelolaan 3.
+- [ ] Model Personel memakai opsi yang mana (`hr.employee`, model sendiri, atau model Rafika)? Lihat tabel opsi di analisis Pengelolaan 3. Arahan Pak Widi untuk meng-*extend* addon LGPL menguatkan opsi `hr.employee` + `hr.job` (lihat [Platform dan addon yang diperluas](#platform-dan-addon-yang-diperluas)).
+- [ ] Apakah setiap modul juga mensurvei addon LGPL yang bisa di-*extend* untuk modulnya (mis. `hr` untuk SDM)?
 - [ ] Apakah master bersama dan mekanisme pengesahan ditempatkan di addon Core sendiri (`labfik_core`) atau di addon Tata Kelola?
 - [ ] Field syarat kompetensi minimum di Jabatan: dikelola di Tata Kelola atau di SDM?
 - [ ] Apakah gap kompetensi Pengembangan 13 dipakai sebagai masukan Pengembangan 14?
