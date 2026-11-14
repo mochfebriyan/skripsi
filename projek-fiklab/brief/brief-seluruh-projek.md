@@ -201,7 +201,7 @@ Hal lain:
 - [ ] Apakah semua kelompok memakai satu server Odoo?
 
 **Untuk kelompok**
-- [ ] Setuju Personel = `hr.employee` dan Jabatan = `hr.job` yang diperluas di `labfik_core`? (Keputusan Febriyan, 14 November 2026: asisten lab dicatat sebagai `hr.employee` jenis asisten; pihak eksternal tidak dicatat sebagai Personel dan bukan aktor.)
+- [ ] Setuju Personel = `hr.employee` dan Jabatan = `hr.job` yang diperluas di `labfik_core`? (Keputusan Febriyan, 14 November 2026: asisten lab dicatat sebagai `hr.employee` dengan jenis personel *asisten* dan jabatan (`hr.job`) **Asisten Praktikum**; pihak eksternal tidak dicatat sebagai Personel dan bukan aktor.)
 - [ ] Setuju `labfik_core` dipisah dari `labfik_org`?
 - [ ] Apakah Sesi masuk Core dan dibangkitkan PKG-15?
 - [ ] Apakah Persiapan 17 (bahan) dinyatakan N/A untuk lab FIK, atau dicakup terbatas (lab IoT, 3D printer)?
