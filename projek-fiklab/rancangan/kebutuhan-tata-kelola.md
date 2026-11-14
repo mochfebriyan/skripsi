@@ -87,7 +87,7 @@ Tanpa KF-09, status "masih berlaku" pada K1 tetap dihitung dari tanggal periode 
 | KF-13 | Laboran dapat mencatat **sosialisasi** versi berlaku beserta pesertanya | Laboran | `labfik.document.socialization` | S5, Bukti 3 | E | W |
 | KF-14 | Laboran atau KaLab dapat mencatat **tinjau ulang** versi berlaku dengan hasil *tetap berlaku* atau *perlu revisi* | Laboran, KaLab | `labfik.document.review` | S3, ISO 8.3.2b | E | W |
 | KF-15 | Sistem menghitung **tanggal tinjau berikutnya** dari tanggal sah atau tinjau ulang terakhir ditambah siklus tinjau, lalu menandai versi yang lewat tanggal sebagai *perlu ditinjau* | Sistem | `labfik.document.version` | S3 | H | W |
-| KF-16 | KaLab dapat melihat **Daftar Induk Dokumen** dan **riwayat revisi** per dokumen | KaLab | [R] | Bukti 1, 3 | E | W |
+| KF-16 | KaLab dan Laboran dapat melihat **Daftar Induk Dokumen** dan **riwayat revisi** per dokumen | KaLab, Laboran | [R] | Bukti 1, 3 | E | W |
 | KF-17 | Pengguna Lab dapat **mencari dan membaca** SOP/IK versi berlaku. Versi lama dan draf tidak tampil bagi Pengguna Lab | Pengguna Lab | `labfik.document` | "dapat diakses pengguna" (target PKG-02) | E | O |
 | KF-18 | Sistem hanya mengizinkan **satu versi dalam proses** (draf atau diajukan) per Dokumen Induk | Sistem | `labfik.document.version` | ISO 8.3.2c | H | O |
 

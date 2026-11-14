@@ -1,3 +1,7 @@
+"""Use case diagram modul Tata Kelola & Dokumen (langkah 6), 3 halaman.
+
+Pemakaian: python3 -I use_case.py projek-fiklab/rancangan/use-case-tata-kelola.drawio
+"""
 import sys
 from xml.sax.saxutils import escape
 OUT = sys.argv[1]
@@ -14,106 +18,132 @@ ASSOC = "endArrow=none;html=1;strokeColor=#555555;"
 GEN = "endArrow=block;endFill=0;endSize=14;html=1;strokeColor=#333333;"
 NOTE = ("shape=note;whiteSpace=wrap;html=1;size=14;align=left;verticalAlign=top;spacingLeft=6;spacingTop=4;"
         "fontSize=11;fillColor=#FFF2CC;strokeColor=#D6B656;")
+TITLE = "text;html=1;fontSize=18;fontStyle=1;align=left;verticalAlign=middle;"
+
+# nomor: (nama, stereotype, lapis); lapis W = Inti, O = Pelengkap. Lapis tidak dibedakan di diagram, hanya di dokumen
 UC = {
- 1: ("Kelola Personel", "CRUDL"), 2: ("Kelola Jabatan", "CRUDL"), 3: ("Susun SK Penetapan Pengelola", ""),
- 4: ("Catat Rapat Koordinasi", ""), 5: ("Catat Evaluasi Struktur", ""), 6: ("Lihat Laporan Struktur Organisasi", "report"),
- 7: ("Kelola Dokumen Induk", "CRUDL"), 8: ("Unggah Versi Dokumen", ""), 9: ("Catat Distribusi Dokumen", ""),
- 10: ("Catat Sosialisasi Dokumen", ""), 11: ("Tinjau Ulang Dokumen", ""), 12: ("Baca Dokumen Berlaku", ""),
- 13: ("Lihat Laporan Pengendalian Dokumen", "report"), 14: ("Kelola KPI", "CRUDL"), 15: ("Kelola Sasaran Renstra", "CRUDL"),
- 16: ("Susun Rencana", ""), 18: ("Isi Realisasi Rencana", ""), 19: ("Catat Tinjauan Rencana", ""),
- 20: ("Lihat Laporan Rencana", "report"), 21: ("Ajukan Dokumen", ""), 22: ("Tarik Pengajuan Dokumen", ""),
- 23: ("Periksa Dokumen", ""), 24: ("Kembalikan Dokumen", ""), 25: ("Terbitkan Dokumen Resmi", ""),
- 26: ("Unggah Dokumen Bertanda Tangan", ""), 27: ("Sahkan Dokumen", ""), 28: ("Cabut Dokumen", ""),
- 29: ("Lihat Status Monev", "report"), 30: ("Atur Pengaturan Modul", ""),
- 31: ("Kedaluwarsakan Dokumen Berperiode", ""), 32: ("Kirim Pengingat Jadwal", ""),
+    1: ("Ajukan Dokumen", "", "W"), 2: ("Terbitkan Dokumen Resmi", "", "W"),
+    3: ("Unggah Dokumen Bertanda Tangan", "", "W"), 4: ("Kembalikan Dokumen", "", "W"),
+    5: ("Sahkan Dokumen", "", "W"), 6: ("Cabut Dokumen", "", "W"),
+    7: ("Kedaluwarsakan Dokumen Berperiode", "", "O"),
+    8: ("Kelola Personel", "CRUDL", "W"), 9: ("Kelola Jabatan", "CRUDL", "W"),
+    10: ("Susun SK Penetapan Pengelola", "", "W"), 11: ("Catat Rapat Koordinasi", "", "W"),
+    12: ("Catat Evaluasi Struktur", "", "W"), 13: ("Lihat Laporan Struktur Organisasi", "report", "W"),
+    14: ("Kelola Dokumen Induk", "CRUDL", "W"), 15: ("Unggah Versi Dokumen", "", "W"),
+    16: ("Catat Distribusi Dokumen", "", "W"), 17: ("Catat Sosialisasi Dokumen", "", "W"),
+    18: ("Tinjau Ulang Dokumen", "", "W"), 19: ("Baca Dokumen Berlaku", "", "O"),
+    20: ("Lihat Laporan Pengendalian Dokumen", "report", "W"),
+    21: ("Kelola KPI", "CRUDL", "W"), 22: ("Kelola Renstra", "CRUDL", "W"),
+    23: ("Susun Rencana", "", "W"), 24: ("Buat Revisi Rencana", "", "O"),
+    25: ("Isi Realisasi Rencana", "", "W"), 26: ("Catat Tinjauan Rencana", "", "W"),
+    27: ("Lihat Laporan Rencana", "report", "W"), 28: ("Lihat Status Monev", "report", "W"),
 }
+
 
 class Page:
     def __init__(s, n, name):
         s.P, s.name, s.n, s.cells = f"tk-uc{n}-", name, n, []
+
     def v(s, id, val, style, x, y, w, h):
         s.cells.append(f'<mxCell id="{s.P}{id}" value="{esc(val)}" style="{style}" vertex="1" parent="1"><mxGeometry x="{x}" y="{y}" width="{w}" height="{h}" as="geometry"/></mxCell>')
+
     def e(s, id, a, b, style):
         s.cells.append(f'<mxCell id="{s.P}{id}" value="" style="{style}" edge="1" parent="1" source="{s.P}{a}" target="{s.P}{b}"><mxGeometry relative="1" as="geometry"/></mxCell>')
+
     def pkg(s, id, name, x, y, w, ucs, uc_x):
         h = 40 + 70 * len(ucs)
         s.v(id, name, PKG, x, y, w, h)
         for i, n in enumerate(ucs):
-            label, st = UC[n]
+            label, st, lapis = UC[n]
             top = f"<font style='font-size:9px' color='#6C4A87'>«{st}»</font><br>" if st else ""
-            s.v(f"uc{n:02d}", f"{top}<b>UC-{n:02d}</b><br>{label}", ELL, uc_x, y + 34 + 70 * i, 240, 58)
+            s.v(f"uc{n:02d}", f"{top}<b>UC-{n:02d}</b><br>{label}", ELL, uc_x, y + 34 + 70 * i, 250, 58)
         return y + h
+
     def actor(s, id, label, x, y, kind="h"):
         s.v(id, label, {"h": ACT, "a": ACT_ABS, "s": ACT_SYS}[kind], x, y, 30, 60)
+
     def links(s, d):
         for a, ns in d.items():
             for n in ns:
                 s.e(f"a-{a}-{n:02d}", a, f"uc{n:02d}", ASSOC)
+
     def xml(s, w, h):
         return (f'<diagram id="tk-uc{s.n}" name="{esc(s.name)}"><mxGraphModel dx="1600" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" '
                 f'connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="{w}" pageHeight="{h}" math="0" shadow="0"><root>'
                 '<mxCell id="0"/><mxCell id="1" parent="0"/>' + "".join(s.cells) + "</root></mxGraphModel></diagram>")
 
-SRC = ("Diturunkan dari activity A1–A4 dan state machine S1–S2 (rancangan/proses-bisnis-tata-kelola.md) "
-       "dengan aturan Wazlawick 2024 §4.3–4.6, §4.8.2. Rincian: rancangan/use-case-tata-kelola.md · Draf 13 Nov 2026 · Febriyan")
+
+LEGEND = ("<b>Notasi</b> (Wazlawick 2024, §4.2–4.3)<br>"
+          "• Aktor miring ungu = <b>aktor abstrak</b>; panah segitiga kosong = generalisasi (turunan mewarisi use case induk)<br>"
+          "• Aktor abu-abu «system» = pemicu berbasis waktu<br>"
+          "• «CRUDL» = kelola data (buat, lihat, ubah, hapus, daftar) dengan satu pola; «report» = hanya membaca<br>"
+          "• Tanpa «include»/«extend»: setiap use case satu sesi dan berdiri sendiri (§4.3.1, §4.5)")
+SRC = ("Diturunkan dari activity A1–A4 dan state machine S1–S2 (proses-bisnis-tata-kelola.md), "
+       "kebutuhan KF-01–45. Rincian: use-case-tata-kelola.md · Draf 14 Nov 2026 · Febriyan")
+SYS = "Sistem LabFIK Compliance · Modul Tata Kelola & Dokumen"
 pages = []
 
-# ---------- page 1
+# ---------- halaman 1: pengesahan
 p = Page(1, "UC TO-BE (1-3) - Pengesahan Dokumen")
-p.v("sys", "Sistem LabFIK Compliance — Modul Tata Kelola &amp; Dokumen".replace("&amp;", "&"), BOUND, 360, 60, 760, 680)
-p.pkg("p1", "Pengesahan Dokumen (dipakai semua dokumen)", 390, 100, 320, [21, 22, 25, 26, 23, 24, 27, 28], 430)
-p.pkg("p2", "Otomatis (berbasis waktu)", 750, 260, 340, [31, 32], 800)
-p.actor("pny", "Penyusun Dokumen", 225, 190, "a")
-p.actor("pmr", "Pemeriksa", 225, 420, "h")
-p.actor("pgs", "Pengesah Dokumen", 225, 580, "a")
-p.actor("lab", "Laboran/PLP", 60, 140)
-p.actor("kal", "KaLab", 60, 390)
-p.actor("dek", "Dekan", 60, 640)
-p.actor("jdw", "«system»<br>Penjadwal", 1200, 300, "s")
-p.links({"pny": [21, 22, 25, 26], "pmr": [23, 24], "pgs": [24, 27, 28], "jdw": [31, 32]})
-for c, par in [("lab", "pny"), ("kal", "pny"), ("kal", "pgs"), ("dek", "pgs")]:
-    p.e(f"g-{c}-{par}", c, par, GEN)
-p.v("n1", "<b>Cara baca</b><br>• Aktor miring (ungu) = <b>peran abstrak</b>. Panah segitiga kosong = generalisasi: KaLab dan Laboran berperan sebagai Penyusun; KaLab dan Dekan sebagai Pengesah, sesuai wewenang jabatan per jenis dokumen.<br>"
-    "• «system» Penjadwal = pemicu berbasis waktu (Wazlawick §4.3.2).<br>"
-    "• Use case di sini dipakai oleh dokumen dari UC-03 (SK), UC-08 (versi SOP/IK), dan UC-16 (rencana) di halaman 2/3 dan 3/3. "
-    "Tidak memakai «include» karena pengajuan dan pengesahan terjadi di sesi dan hari yang berbeda (§4.5).", NOTE, 40, 770, 620, 120)
-p.v("n2", "<b>Di luar sistem</b> (tugas «manual» di A1): cetak dokumen dan tanda tangan basah. Tanpa tanda tangan digital.<br>"
-    "<b>[KONFIRMASI]</b> Bila Dekan tidak login, UC-27 dilakukan KaLab atas nama Dekan dengan berkas bertanda tangan sebagai bukti.", NOTE, 680, 770, 440, 100)
-p.v("n3", SRC, NOTE, 40, 910, 1080, 46)
-pages.append((p, 1320, 990))
+p.v("title", "Use case TO-BE 1/3 · Pengesahan Dokumen (dipakai semua dokumen) dan hierarki aktor", TITLE, 40, 10, 1100, 36)
+p.v("sys", SYS, BOUND, 400, 60, 760, 560)
+p.pkg("p1", "Pengesahan Dokumen", 430, 100, 340, [1, 2, 3, 4, 5, 6], 475)
+p.pkg("p2", "Otomatis (berbasis waktu)", 800, 100, 330, [7], 840)
+p.actor("pgn", "Pengguna Lab<br>(dosen, asisten)", 90, 90)
+p.actor("pnl", "Pengelola Lab", 260, 200, "a")
+p.actor("lab", "Laboran/PLP", 90, 400)
+p.actor("kal", "KaLab", 260, 420)
+p.actor("jdw", "«system»<br>Penjadwal", 1240, 150, "s")
+p.links({"pnl": [1, 2, 3], "kal": [4, 5, 6], "jdw": [7]})
+p.e("g-pnl-pgn", "pnl", "pgn", GEN)
+p.e("g-lab-pnl", "lab", "pnl", GEN)
+p.e("g-kal-pnl", "kal", "pnl", GEN)
+p.v("n0", LEGEND, NOTE, 40, 650, 600, 105)
+p.v("n1", "<b>Cara baca</b><br>• <i>Pengelola Lab</i> = peran penyusun dokumen: KaLab (rencana, SK, Renstra) atau Laboran (SOP/IK). "
+    "Pengelola Lab juga <i>Pengguna Lab</i>, jadi bisa membaca dokumen berlaku (UC-19).<br>"
+    "• Kembalikan, sahkan, dan cabut hanya oleh <b>KaLab</b>, sebagai pencatat pengesahan.<br>"
+    "• Dokumen yang memakai use case ini dibuat di UC-10 (SK), UC-15 (versi SOP/IK), UC-22 (Renstra), dan UC-23 (rencana).", NOTE, 660, 650, 500, 120)
+p.v("n2", "<b>Bukan aktor</b>: Dekan dan pejabat penanda tangan (tanda tangan di kertas, dicatat sebagai pengesah), "
+    "penilai monev (menerima PDF), dan pihak eksternal. Keputusan 14 Nov 2026.<br>" + SRC, NOTE, 40, 790, 1120, 60)
+pages.append((p, 1360, 880))
 
-# ---------- page 2
-p = Page(2, "UC TO-BE (2-3) - Struktur dan Dokumen")
-p.v("sys", "Sistem LabFIK Compliance — Modul Tata Kelola & Dokumen", BOUND, 300, 60, 860, 600)
-p.pkg("p1", "Struktur Organisasi (PKG-03)", 330, 100, 360, [1, 2, 3, 4, 5, 6], 390)
-p.pkg("p2", "Pengendalian Dokumen (PKG-02)", 760, 100, 370, [7, 8, 9, 10, 11, 13, 12], 825)
-p.actor("adm", "Admin", 150, 110)
+# ---------- halaman 2: struktur + dokumen
+p = Page(2, "UC TO-BE (2-3) - Struktur dan Pengendalian Dokumen")
+p.v("title", "Use case TO-BE 2/3 · Struktur Organisasi (PKG-03) dan Pengendalian Dokumen SOP/IK (PKG-02)", TITLE, 40, 10, 1100, 36)
+p.v("sys", SYS, BOUND, 300, 60, 880, 610)
+p.pkg("p1", "Struktur Organisasi (PKG-03)", 330, 100, 370, [8, 9, 10, 11, 12, 13], 390)
+p.pkg("p2", "Pengendalian Dokumen (PKG-02)", 780, 100, 370, [14, 15, 16, 17, 18, 20, 19], 840)
 p.actor("kal", "KaLab", 150, 330)
-p.actor("lab", "Laboran/PLP", 1250, 220)
-p.actor("pnl", "Penilai Monev", 1250, 420)
-p.actor("pgn", "Pengguna Lab<br>(dosen, asisten, mhs)", 1250, 560)
-p.links({"adm": [1], "kal": [1, 2, 3, 4, 5, 6, 7, 11, 13], "lab": [7, 8, 9, 10, 11, 13], "pnl": [6, 13], "pgn": [12]})
-p.v("n1", "<b>Cara baca</b><br>• «CRUDL» = kelola data (buat, lihat, ubah, hapus/arsipkan, daftar) dengan satu pola standar (Wazlawick §4.3, §6.7).<br>"
-    "• «report» = use case kueri/laporan (hanya membaca).<br>"
-    "• SK (UC-03) dan versi dokumen (UC-08) diajukan dan disahkan lewat halaman 1/3.<br>"
-    "• Login tidak digambar karena bukan use case (§4.3.3).", NOTE, 40, 690, 620, 100)
-p.v("n2", SRC, NOTE, 680, 690, 480, 80)
-pages.append((p, 1400, 830))
+p.actor("pnl", "Pengelola Lab", 1270, 130, "a")
+p.actor("lab", "Laboran/PLP", 1270, 330)
+p.actor("pgn", "Pengguna Lab<br>(dosen, asisten)", 1270, 540)
+p.links({"kal": [8, 9, 10, 11, 12, 13], "pnl": [14, 18, 20], "lab": [15, 16, 17], "pgn": [19]})
+p.e("g-lab-pnl", "lab", "pnl", GEN)
+p.v("n0", LEGEND, NOTE, 40, 700, 600, 105)
+p.v("n1", "<b>Cara baca</b><br>• KaLab juga turunan <i>Pengelola Lab</i> dan <i>Pengguna Lab</i> (halaman 1/3), "
+    "jadi KaLab juga bisa melakukan UC-14, 18, dan 19.<br>"
+    "• SK (UC-10) dan versi dokumen (UC-15) diajukan dan disahkan lewat halaman 1/3.<br>"
+    "• UC-13 memuat bagan organisasi, uraian tugas, dan matriks kewenangan. UC-20 memuat daftar induk, riwayat revisi, "
+    "serta rekaman distribusi, sosialisasi, dan tinjau ulang.", NOTE, 660, 700, 520, 130)
+p.v("n2", SRC, NOTE, 40, 850, 1140, 40)
+pages.append((p, 1400, 920))
 
-# ---------- page 3
-p = Page(3, "UC TO-BE (3-3) - Perencanaan dan Monev")
-p.v("sys", "Sistem LabFIK Compliance — Modul Tata Kelola & Dokumen", BOUND, 300, 60, 860, 540)
-p.pkg("p1", "Perencanaan (PKG-01, PKG-13)", 330, 100, 360, [14, 15, 16, 18, 19, 20], 390)
-p.pkg("p2", "Status Monev &amp; Pengaturan".replace("&amp;", "&"), 760, 100, 370, [30, 29], 825)
-p.actor("adm", "Admin", 150, 160)
-p.actor("kal", "KaLab", 150, 330)
-p.actor("lab", "Laboran/PLP", 1250, 290)
-p.actor("pnl", "Penilai Monev", 1250, 150)
-p.links({"adm": [15], "kal": [14, 15, 16, 18, 19, 20, 29, 30], "lab": [18], "pnl": [20, 29]})
-p.v("n1", "<b>Cara baca</b><br>• UC-16 mencakup semua jenis rencana (strategis, RKT, IKU, pengembangan), analisis gap untuk rencana pengembangan, dan revisi dari rencana yang sudah disahkan.<br>"
-    "• Rencana diajukan dan disahkan lewat halaman 1/3. Kedaluwarsa dan pengingat realisasi dipicu Penjadwal (halaman 1/3).<br>"
-    "• Nomor UC-17 sengaja kosong (revisi rencana digabung ke UC-16).", NOTE, 40, 630, 620, 110)
-p.v("n2", SRC, NOTE, 680, 630, 480, 80)
-pages.append((p, 1400, 780))
+# ---------- halaman 3: perencanaan + monev
+p = Page(3, "UC TO-BE (3-3) - Perencanaan dan Status Monev")
+p.v("title", "Use case TO-BE 3/3 · Perencanaan (PKG-01, PKG-13) dan Status Monev", TITLE, 40, 10, 1100, 36)
+p.v("sys", SYS, BOUND, 300, 60, 880, 610)
+p.pkg("p1", "Perencanaan (PKG-01, PKG-13)", 330, 100, 370, [21, 22, 23, 24, 25, 26, 27], 390)
+p.pkg("p2", "Status Monev", 780, 100, 370, [28], 840)
+p.actor("kal", "KaLab", 150, 300)
+p.actor("pnl", "Pengelola Lab<br>(PIC item)", 1270, 420, "a")
+p.links({"kal": [21, 22, 23, 24, 26, 27, 28], "pnl": [25]})
+p.v("n0", LEGEND, NOTE, 40, 700, 600, 105)
+p.v("n1", "<b>Cara baca</b><br>• UC-23 mencakup rencana tahunan dan rencana pengembangan (temuan gap + item program).<br>"
+    "• Renstra (UC-22) dan rencana (UC-23) diajukan dan disahkan lewat halaman 1/3.<br>"
+    "• UC-25 dilakukan PIC item: Laboran atau KaLab.<br>"
+    "• UC-26 mencakup ukuran manfaat untuk rencana pengembangan.<br>"
+    "• UC-28: persentase PKG-02 dan kriteria tertinggi K1–K4 dengan tautan bukti; hasilnya diserahkan ke penilai sebagai PDF.", NOTE, 660, 700, 520, 140)
+p.v("n2", SRC, NOTE, 40, 860, 1140, 40)
+pages.append((p, 1400, 930))
 
 open(OUT, "w").write('<mxfile host="app.diagrams.net">' + "".join(pg.xml(w, h) for pg, w, h in pages) + "</mxfile>")
