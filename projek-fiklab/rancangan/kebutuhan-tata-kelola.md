@@ -274,4 +274,4 @@ Versi sebelumnya ada di tag `rancangan-tatkel-v1` (13 November 2026, KF-01 s.d. 
 - [ ] SK pengelola disusun lewat sistem lalu diterbitkan (KF-26 menjadi Inti), atau cukup diunggah? **[KONFIRMASI KaLab]**
 - [ ] Dokumen mana yang disahkan KaLab dan mana yang ditandatangani Dekan? Ini isi awal wewenang jabatan (KF-20) **[KONFIRMASI KaLab]**
 - [ ] Periode lapor realisasi per triwulan atau per semester? SK SOTK mewajibkan KaLab melapor tiap semester (A6) **[KONFIRMASI KaLab]**
-- [ ] Bagaimana asisten (mahasiswa) dicatat sebagai `hr.employee` (KF-19)? **[KONFIRMASI kelompok]**
+- [x] Asisten lab dicatat sebagai `hr.employee` jenis asisten (KF-19). Keputusan Febriyan, 14 November 2026

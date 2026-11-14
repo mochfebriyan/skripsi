@@ -267,7 +267,7 @@ Versi sebelumnya ada di tag `rancangan-tatkel-v1` (DCD 1/3–3/3).
 | `labfik.plan` jenis strategis dan IKU | `labfik.renstra` terpisah (unggahan); IKU dihapus | Keputusan 14 Nov 2026 |
 | — | `labfik.org.monev` (layanan status monev), `labfik.tinjauan.manfaat`, `labfik.plan.gap` dirinci | Langkah 7–9 |
 
-**Perubahan kontrak Core yang perlu disampaikan ke kelompok:** `labfik.controlled.mixin` diusulkan dihapus dari daftar mixin Core (CLAUDE.md bagian 6) **[KONFIRMASI kelompok]**. Bila modul lain membutuhkannya, mixin itu bisa ditambahkan kembali tanpa mengubah rancangan ini.
+**Perubahan kontrak Core (keputusan Febriyan, 14 November 2026):** `labfik.controlled.mixin` dihapus dari daftar mixin Core; CLAUDE.md bagian 6 sudah diperbarui. Bila modul lain membutuhkannya, mixin itu bisa diusulkan kembali tanpa mengubah rancangan ini.
 
 ---
 
@@ -285,7 +285,7 @@ Versi sebelumnya ada di tag `rancangan-tatkel-v1` (DCD 1/3–3/3).
 
 ## 10. Isu terbuka
 
-- [ ] `labfik.controlled.mixin` dihapus dari kontrak Core **[KONFIRMASI kelompok]**
-- [ ] Dokumen Induk/Versi (PKG-09) dan KPI (PKG-21) dipakai modul lain? Bila ya, dipindah ke `labfik_core` **[KONFIRMASI kelompok]**
-- [ ] Asisten (mahasiswa) sebagai `hr.employee` **[KONFIRMASI kelompok]** (dari brief)
+- [x] `labfik.controlled.mixin` dihapus dari kontrak Core (keputusan 14 November 2026)
+- [ ] Dokumen Induk/Versi (PKG-09) dan KPI (PKG-21) dipakai modul lain? Bila ya, pakai modul jembatan (mis. `labfik_safety_org`) atau pindahkan ke `labfik_core` **[KONFIRMASI kelompok]**
+- [x] Asisten lab sebagai `hr.employee` jenis asisten (keputusan 14 November 2026)
 - [ ] Tampilan diagram belum dicek di draw.io **[VALIDASI]**

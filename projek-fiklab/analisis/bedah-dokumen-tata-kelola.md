@@ -316,7 +316,7 @@ Tabel ini menggabungkan hasil bedah dengan entitas di [analisis Pengelolaan 1–
 
 | Model | Label | Nama baku | Field inti | Mixin | PKG | Dari dokumen |
 |---|---|---|---|---|---|---|
-| `hr.employee` (diperluas di `labfik_core`) | [M] | Personel | Bawaan `hr`: nama, `user_id`, `job_id`, `parent_id`. Tambahan: jenis (dosen, laboran/PLP, teknisi, asisten, petugas K3), unit/prodi. Pihak eksternal tidak dicatat (keputusan 14 November 2026) | — | 03 (dipakai semua) | D5 (jenis teknisi). Cara mencatat asisten (mahasiswa) sebagai `hr.employee` **[KONFIRMASI kelompok]** |
+| `hr.employee` (diperluas di `labfik_core`) | [M] | Personel | Bawaan `hr`: nama, `user_id`, `job_id`, `parent_id`. Tambahan: jenis (dosen, laboran/PLP, teknisi, asisten, petugas K3), unit/prodi. Pihak eksternal tidak dicatat (keputusan 14 November 2026) | — | 03 (dipakai semua) | D5 (jenis teknisi). Asisten lab (mahasiswa) dicatat sebagai `hr.employee` dengan jenis *asisten* (keputusan Febriyan, 14 November 2026) |
 | `hr.job` (diperluas di `labfik_core`) + `labfik.jabatan.tugas`, `labfik.jabatan.wewenang` | [M] | Jabatan | nama, kode, `unit` (lab FIK, prodi Informatika, prodi SI, fakultas), `is_eksternal`, `atasan_id`, `pengganti_id`, `syarat_kompetensi`, `dasar_dokumen_id`. Anak: **tugas** (urutan, uraian), **wewenang** (tindakan × jenis dokumen) | — | 03 | D5 (KaLab per prodi), D6 (tugas a–k, garis instruksi, format daftar berhuruf) |
 | `labfik.document` | [M] | Dokumen Induk | kode, judul, `jenis`, `kategori`, `asal` (lab/fakultas/universitas), `dasar_kebutuhan`, `is_wajib`, `lokasi_penggunaan_ids`, `dokumen_terkait_ids`, `rekaman_dihasilkan`, `versi_berlaku_id` (compute) | — | 02 | D3 (keterkaitan, pencatatan, POB fakultas), D1 Bab IX (isi awal) |
 | `labfik.kpi` | [M] | KPI | kode, nama, sasaran kerja, rumus (pembilang, penyebut), satuan, frekuensi, PIC (jabatan), sumber data/bukti, acuan ISO | — | 01 (dipakai 13, 21) | D2 Bagian 5 |
@@ -408,5 +408,5 @@ Semua laporan dihasilkan sebagai QWeb report (PDF) dari data T dan M. Tidak ada 
 
 **Untuk kelompok (Zahir, Herrens)**
 - [x] Opsi model Personel: **diputuskan** `hr.employee` dan `hr.job` diperluas di `labfik_core` (14 November 2026). Persetujuan kelompok masih ditunggu. (4.2)
-- [ ] Bagaimana asisten (mahasiswa) dicatat sebagai `hr.employee`? (Pihak eksternal tidak dicatat, keputusan 14 November 2026.)
+- [x] Asisten lab dicatat sebagai `hr.employee` jenis asisten; pihak eksternal tidak dicatat (keputusan 14 November 2026).
 - [ ] Mixin di bagian 4.1 ditempatkan di `labfik_core` supaya bisa dipakai modul lain (misalnya pengesahan rencana pelatihan PKG-14)?

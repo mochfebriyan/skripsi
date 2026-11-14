@@ -252,7 +252,7 @@ Sistem menampilkan kriteria yang sudah berbukti. Skor akhir ditetapkan penilai (
 | Model personel sendiri, ditautkan ke `res.partner`/`res.users`, `op.faculty`, `op.student` | Bisa mencakup dosen, laboran, dan asisten dalam satu tempat | Bagan organisasi harus dibuat sendiri |
 | Pakai yang sudah ada di modul Rafika (`mst_dosen`, `op.student.assistant`, `res.users`) | Paling cepat | Laboran dan petugas K3 belum punya tempat. Tetap tersebar |
 
-**Keputusan (14 November 2026):** opsi pertama. Personel = `hr.employee` dan Jabatan = `hr.job`, keduanya diperluas dengan `_inherit` di addon `labfik_core`. Alasannya: `hr` berlisensi LGPL-3, sudah menyediakan atasan dan jabatan, dan bisa dipakai semua modul. Kekurangannya (asisten adalah mahasiswa, bukan pegawai) masih harus disepakati kelompok **[KONFIRMASI kelompok]**. Pihak eksternal tidak dicatat sebagai Personel.
+**Keputusan (14 November 2026):** opsi pertama. Personel = `hr.employee` dan Jabatan = `hr.job`, keduanya diperluas dengan `_inherit` di addon `labfik_core`. Alasannya: `hr` berlisensi LGPL-3, sudah menyediakan atasan dan jabatan, dan bisa dipakai semua modul. Kekurangannya (asisten adalah mahasiswa, bukan pegawai) diterima: asisten lab tetap dicatat sebagai `hr.employee` dengan jenis *asisten* (keputusan 14 November 2026). Pihak eksternal tidak dicatat sebagai Personel.
 
 ## 6. Dependensi dan jalan pengganti
 
