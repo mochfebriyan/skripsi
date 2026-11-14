@@ -112,13 +112,13 @@ labfik_core                  master bersama + Sesi
 |---|---|---|
 | Personel | **PKG-03** (Tata Kelola) | 01, 02, 03, 04, 06, 07, 10, 13, 14, 15, 18, 21 |
 | Jabatan (tugas, kewenangan, atasan, pengganti, syarat kompetensi) | **PKG-03** (Tata Kelola) | 01, 02, 03, 04, 13, 14, 18 |
-| Dokumen Induk (daftar dokumen terkendali) | **PKG-02** (Tata Kelola) | 02, 03, 09 |
-| KPI | **PKG-01** (Tata Kelola) | 01, 21 |
+| Dokumen Induk (daftar dokumen terkendali) | **PKG-02** (Tata Kelola), model di `labfik_org` | 02, 03, 09 (09 lewat modul jembatan bila butuh relasi) **[KONFIRMASI kelompok]** |
+| KPI | **PKG-01** (Tata Kelola), model di `labfik_org` | 01, 21 (21 lewat modul jembatan bila butuh relasi) **[KONFIRMASI kelompok]** |
 | Kompetensi | PKG-04 (SDM) | 04, 10, 14 |
 | Alat, Bahan | PKG-07 (Aset) | 05, 07, 08, 10, 11, 12, 16, 17, 21 |
 | Periode, Mata Kuliah, Kelas, Ruang Lab, Mahasiswa | Core | Banyak package |
 | Lokasi Penyimpanan, Mitra Eksternal, Indikator Monev | Core (usulan, belum disetujui) | Aset, Safety, *dashboard* |
-| **Sesi** (satu-satunya transaksi di Core, *inherit* `op.session`) | Dibangkitkan PKG-15 | 04, 08, 15, 16, 17, 18, 19 |
+| **Sesi** (satu-satunya transaksi di Core; model sendiri, **tidak** *inherit* `op.session`) | Dibangkitkan PKG-15 | 04, 08, 15, 16, 17, 18, 19 |
 
 Hal yang terlihat dari peta dependensi:
 - **PKG-03 adalah yang paling hulu.** Personel dan Jabatan dipakai hampir semua package, termasuk milik kelompok lain. Modelnya harus disepakati paling awal.
@@ -161,6 +161,7 @@ Hal yang terlihat dari peta dependensi:
 | 1 Nov 2026 | Pemegang modul: Febriyan = **Tata Kelola & Dokumen** (termasuk PKG-13, sebelumnya PIC analisis Herrens), Zahir = **SDM & Kompetensi**, Herrens = **Pelaksanaan Praktikum** |
 | 1 Nov 2026 | PKG-20 (kepuasan pengguna) masuk Pelaksanaan Praktikum |
 | 1 Nov 2026 | Proyek mencakup **21 indikator** dengan aturan 1 package = 1 indikator. Nomor PKG menjadi identitas indikator karena penomoran sheet tidak rapi |
+| 14 Nov 2026 | **Sesi, Mata Kuliah, dan Kelas masuk `labfik_core`** (Herrens). Sesi dibangkitkan PKG-15 dan menjadi model sendiri, tidak mewarisi `op.session`, supaya `labfik_core` tidak bergantung pada OpenEduCat |
 
 ## Pertanyaan terbuka tingkat proyek
 
@@ -171,9 +172,9 @@ Hal yang terlihat dari peta dependensi:
 - [ ] Apakah semua kelompok memakai satu server Odoo?
 
 **Untuk kelompok**
-- [ ] Setuju Personel = `hr.employee` dan Jabatan = `hr.job` yang diperluas di `labfik_core`? Bagaimana asisten (mahasiswa) dan pihak eksternal dicatat?
+- [ ] Setuju Personel = `hr.employee` dan Jabatan = `hr.job` yang diperluas di `labfik_core`? (Keputusan Febriyan, 14 November 2026: asisten lab dicatat sebagai `hr.employee` dengan jenis personel *asisten* dan jabatan (`hr.job`) **Asisten Praktikum**; pihak eksternal tidak dicatat sebagai Personel dan bukan aktor.)
 - [ ] Setuju `labfik_core` dipisah dari `labfik_org`?
-- [ ] Apakah Sesi masuk Core dan dibangkitkan PKG-15?
+- [x] Apakah Sesi masuk Core dan dibangkitkan PKG-15? **Ya** (14 Nov 2026), beserta Mata Kuliah dan Kelas. Lihat tabel keputusan
 - [ ] Apakah Persiapan 17 (bahan) dinyatakan N/A untuk lab FIK, atau dicakup terbatas (lab IoT, 3D printer)?
 
 ## Peta dokumen

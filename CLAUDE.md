@@ -115,8 +115,8 @@ Rancangan tidak boleh dimulai tanpa brief modul dan analisis setiap PKG-nya. Ked
 2. **Laporkan hasilnya** ke pengguna dalam tabel: PKG → analisis ada / sebagian / belum → lokasinya; brief ada / belum.
 3. **Bila ada yang belum ada: berhenti.** Ajak pengguna menyusunnya dulu. Jangan lanjut ke langkah 1–10 dan jangan mengarang isi analisis.
 4. **Cara menyusun** (sebagai diskusi dengan pengguna, satu PKG demi satu PKG):
-   - **Analisis per PKG:** ikuti [pedoman-pengisian-sheet-analisis.md](projek-fiklab/analisis/pedoman-pengisian-sheet-analisis.md) bagian 2: target → aturan "memenuhi" (K1–K4 atau S1–Sn, dengan kolom cek oleh sistem / cek oleh penilai) → luaran (bukti dukung) → data transaksi → master data → dependensi dan jalan pengganti → yang ditunda → pertanyaan untuk narasumber. Sumber utama: bunyi indikator, kriteria, dan bukti dukung di Instrumen xlsx. Contoh format: `analisis-data-pengelolaan-1-3.md` dan `analisis-data-pengembangan-13.md` di tag `rancangan-tatkel-v1`.
-   - **Brief modul:** tiru struktur `brief-tata-kelola-dokumen.md` (tag `rancangan-tatkel-v1`): ringkasan, indikator yang dipegang (PKG, PJ, jenis skor, level cakupan, acuan), pola bersama di dalam modul, lingkup kebutuhan, kontrak dengan modul lain (disediakan / dipakai), batasan masalah, tabel masalah → tujuan → fitur, risiko dan mitigasi, pertanyaan terbuka.
+   - **Analisis per PKG:** ikuti [pedoman-pengisian-sheet-analisis.md](projek-fiklab/analisis/pedoman-pengisian-sheet-analisis.md) bagian 2: target → aturan "memenuhi" (K1–K4 atau S1–Sn, dengan kolom cek oleh sistem / cek oleh penilai) → luaran (bukti dukung) → data transaksi → master data → dependensi dan jalan pengganti → yang ditunda → pertanyaan untuk narasumber. Sumber utama: bunyi indikator, kriteria, dan bukti dukung di Instrumen xlsx. Contoh format: `analisis-data-pengelolaan-1-3.md` dan `analisis-data-pengembangan-13.md` di branch `febriyan-skripsi`.
+   - **Brief modul:** tiru struktur `brief-tata-kelola-dokumen.md` (branch `febriyan-skripsi`): ringkasan, arahan pembimbing dan keputusan, cakupan rancangan (Inti/Pelengkap), indikator yang dipegang (PKG, PJ, jenis skor, level cakupan, acuan), pola bersama di dalam modul, lingkup kebutuhan, kontrak dengan modul lain (disediakan / dipakai), batasan masalah, tabel masalah → tujuan → fitur, risiko dan mitigasi, pertanyaan terbuka.
    - **Tanyakan** hal yang hanya diketahui pengguna: scope yang sudah disetujui pembimbing, kondisi lab yang diketahui, narasumber yang tersedia, dokumen lab yang dimiliki. Yang belum terjawab ditandai **[KONFIRMASI]**; klaim kondisi lab tanpa sumber ditandai dan tidak dikarang.
 5. Setelah brief dan semua analisis ada, lanjut ke langkah 1.
 
@@ -219,20 +219,25 @@ Rancangan tidak boleh dimulai tanpa brief modul dan analisis setiap PKG-nya. Ked
 
 ## 6. Kontrak Core dan model yang sudah ada
 
-Dirancang di modul Tata Kelola (design class diagram di tag `rancangan-tatkel-v1`). Modul lain **memakai**, bukan membuat ulang.
+Sebagian besar dirancang di modul Tata Kelola (design class diagram di branch `febriyan-skripsi`, `projek-fiklab/rancangan/design-class-tata-kelola.md`); Mata Kuliah, Kelas, dan Sesi dari modul Pelaksanaan Praktikum (branch `herrens-skripsi`). Modul lain **memakai**, bukan membuat ulang.
 
 | Model / mixin | Isi | Pakai untuk |
 |---|---|---|
-| Personel = `hr.employee` (Odoo CE `hr`, LGPL-3) diperluas dengan `_inherit` | Semua orang yang punya peran di lab (dosen, laboran/PLP, teknisi, asisten, petugas K3, eksternal) | Semua rujukan ke orang (PIC, peserta, petugas). Cara mencatat asisten (mahasiswa) dan pihak eksternal sebagai `hr.employee` masih **[KONFIRMASI kelompok]** |
+| Personel = `hr.employee` (Odoo CE `hr`, LGPL-3) diperluas dengan `_inherit` | Semua orang internal FIK yang punya peran di lab (dosen, laboran/PLP, teknisi, asisten, petugas K3, pejabat pengesah tanpa akun). Pihak eksternal tidak dicatat dan bukan aktor | Semua rujukan ke orang (PIC, peserta, petugas). Asisten lab (mahasiswa) dicatat sebagai `hr.employee` dengan jenis personel *asisten* dan jabatan (`hr.job`) **Asisten Praktikum** (keputusan Febriyan, 14 November 2026) |
 | Jabatan = `hr.job` diperluas (+ `labfik.jabatan.tugas`, `labfik.jabatan.wewenang`) | Jabatan, unit, atasan, pengganti, wewenang per jenis dokumen, syarat kompetensi | Siapa berwenang melakukan apa. `cari_pemegang_berwenang(tindakan, jenis)` |
 | `labfik.ruang`, `labfik.periode` | Master Core | Lokasi dan periode |
+| `labfik.mata.kuliah`, `labfik.kelas` (nama model [USULAN PENULIS]) | Master Core: MK praktikum; kelas per MK per periode (dosen kelas, jumlah mahasiswa) | Identitas sesi, modul, penugasan, survei (keputusan Herrens, 14 November 2026) |
+| `labfik.sesi` (nama model [USULAN PENULIS]) | Satu-satunya **transaksi** di Core: satu sesi praktikum bertanggal (kelas, pertemuan ke-, tanggal, jam, ruang, status). Model sendiri, **tidak** mewarisi `op.session` (OpenEduCat), supaya `labfik_core` tetap `depends: ['hr', 'mail']` | Dibangkitkan PKG-15; dipakai PKG-04, 08, 16, 17, 18, 19 (keputusan Herrens, 14 November 2026) |
 | `labfik.approval.mixin` + `labfik.approval.log` | Siklus status draf → diajukan → disahkan → diganti/dicabut/kedaluwarsa (tanpa tahap pemeriksaan), cek wewenang, berkas bertanda tangan, riwayat pengesahan, hook `_setelah_disahkan()` | Setiap dokumen yang perlu disahkan (mis. rencana pelatihan PKG-14) |
-| `labfik.controlled.mixin` | Kode, revisi, unit pemilik | Dokumen terkendali |
 | `labfik.period.mixin` | Periode berlaku + penjadwal kedaluwarsa | Dokumen berperiode |
-| `labfik.criteria.mixin` | `status_k1`–`k4`, `kriteria_tertinggi`; `_cek_k1()`–`_cek_k4()` {abstract} | Indikator kriteria berurutan K1–K4 |
+| `labfik.criteria.mixin` | `kriteria_tertinggi` {compute}, `get_kriteria(tanggal_acuan)`; `_cek_k1()`–`_cek_k4()` {abstract} | Indikator kriteria berurutan K1–K4 |
 | `labfik.evidence.mixin` | Tanggal, pelapor, bukti, keterangan | Setiap rekaman kegiatan yang menjadi bukti |
 
-**Nama model yang sudah dipakai Tata Kelola** (jangan dipakai ulang untuk hal lain): `labfik.plan*`, `labfik.document*`, `labfik.assignment*`, `labfik.meeting`, `labfik.org.evaluation`, `labfik.realisasi`, `labfik.tinjauan*`, `labfik.kpi`, `labfik.approval.log`. Untuk modul baru, pakai pola `labfik.<slug>.<objek>`, misalnya `labfik.sdm.kompetensi`.
+**Nama model yang sudah dipakai Tata Kelola** (jangan dipakai ulang untuk hal lain): `labfik.plan*`, `labfik.document*`, `labfik.assignment*`, `labfik.meeting`, `labfik.org.evaluation`, `labfik.realisasi`, `labfik.tinjauan*`, `labfik.kpi`, `labfik.renstra`, `labfik.org.monev`, `labfik.approval.log`, `labfik.jabatan.tugas`, `labfik.jabatan.wewenang`. Untuk modul baru, pakai pola `labfik.<slug>.<objek>`, misalnya `labfik.sdm.kompetensi`.
+
+`labfik.controlled.mixin` (kode, revisi, unit pemilik) dari rancangan lama **tidak dipakai** (keputusan Febriyan, 14 November 2026): kode dan revisi hanya ada di Dokumen Induk/Versi dan SK dengan makna berbeda. Modul yang membutuhkannya mengusulkan ulang ke pemilik Core.
+
+Dokumen Induk, Versi, dan KPI berada di `labfik_org`, bukan Core. Modul lain yang butuh relasi ke model itu memakai **modul jembatan** (mis. `labfik_safety_org`, `depends` ke modulnya dan `labfik_org`) atau mengusulkan pemindahan ke Core.
 
 **Penempatan (keputusan Febriyan, 14 November 2026; [KONFIRMASI kelompok]):** master bersama, perluasan `hr`, dan semua mixin di atas ditempatkan di addon **`labfik_core`** (`depends: ['hr', 'mail']`), terpisah dari `labfik_org`. Setiap modul fungsional cukup `depends: ['labfik_core']`. DCD di tag `rancangan-tatkel-v1` masih memakai model `labfik.personel` dan tahap *diperiksa*; tabel ini yang berlaku.
 
@@ -273,21 +278,24 @@ Dirancang di modul Tata Kelola (design class diagram di tag `rancangan-tatkel-v1
 
 ## 10. Contoh referensi: modul Tata Kelola & Dokumen
 
-Semua di tag `rancangan-tatkel-v1` (rancangan Tata Kelola yang lengkap, dibekukan 14 November 2026). Baca lokal dengan `git fetch --tags` lalu `git show rancangan-tatkel-v1:<path>`. Branch `febriyan-skripsi` sedang menyusun ulang rancangan dengan cakupan yang lebih kecil, jadi isinya belum lengkap; jangan jadikan contoh sampai tabel ini diperbarui.
+Rancangan Tata Kelola versi **sweet spot** (langkah 0–10 lengkap, 14 November 2026) ada di branch `febriyan-skripsi`. Ini contoh referensi yang berlaku. Tag `rancangan-tatkel-v1` adalah versi **lengkap** yang lebih lama; pakai hanya untuk melihat contoh ujung "rancangan lengkap" (bagian 1), bukan sebagai acuan cakupan maupun kontrak Core.
 
-| Langkah | File |
+| Langkah | File (branch `febriyan-skripsi`) |
 |---|---|
-| 0 Analisis per PKG | [analisis-data-pengelolaan-1-3.md](https://github.com/mochfebriyan/skripsi/blob/rancangan-tatkel-v1/projek-fiklab/analisis/analisis-data-pengelolaan-1-3.md), [analisis-data-pengembangan-13.md](https://github.com/mochfebriyan/skripsi/blob/rancangan-tatkel-v1/projek-fiklab/analisis/analisis-data-pengembangan-13.md) |
-| 0 · 1 Brief | [brief-tata-kelola-dokumen.md](https://github.com/mochfebriyan/skripsi/blob/rancangan-tatkel-v1/projek-fiklab/brief/brief-tata-kelola-dokumen.md) |
-| 2 Studi dokumen | [bedah-dokumen-tata-kelola.md](https://github.com/mochfebriyan/skripsi/blob/rancangan-tatkel-v1/projek-fiklab/analisis/bedah-dokumen-tata-kelola.md) |
-| 4 Kebutuhan | [kebutuhan-tata-kelola.md](https://github.com/mochfebriyan/skripsi/blob/rancangan-tatkel-v1/projek-fiklab/rancangan/kebutuhan-tata-kelola.md) |
-| 5 Proses bisnis | [proses-bisnis-tata-kelola.md](https://github.com/mochfebriyan/skripsi/blob/rancangan-tatkel-v1/projek-fiklab/rancangan/proses-bisnis-tata-kelola.md), `activity-state-tata-kelola.drawio` |
-| 6 Use case | [use-case-tata-kelola.md](https://github.com/mochfebriyan/skripsi/blob/rancangan-tatkel-v1/projek-fiklab/rancangan/use-case-tata-kelola.md), `use-case-tata-kelola.drawio` |
-| 7 Expanded use case | [expanded-use-case-tata-kelola.md](https://github.com/mochfebriyan/skripsi/blob/rancangan-tatkel-v1/projek-fiklab/rancangan/expanded-use-case-tata-kelola.md) |
-| 8 SSD | [ssd-tata-kelola.md](https://github.com/mochfebriyan/skripsi/blob/rancangan-tatkel-v1/projek-fiklab/rancangan/ssd-tata-kelola.md), `ssd-tata-kelola.drawio` |
-| 9 Conceptual model | [conceptual-model-tata-kelola.md](https://github.com/mochfebriyan/skripsi/blob/rancangan-tatkel-v1/projek-fiklab/rancangan/conceptual-model-tata-kelola.md), `conceptual-model-tata-kelola.drawio` |
-| 10 Design class diagram | [design-class-tata-kelola.md](https://github.com/mochfebriyan/skripsi/blob/rancangan-tatkel-v1/projek-fiklab/rancangan/design-class-tata-kelola.md), `class-tata-kelola.drawio` |
+| 0 Analisis per PKG | [analisis-data-pengelolaan-1-3.md](https://github.com/mochfebriyan/skripsi/blob/febriyan-skripsi/projek-fiklab/analisis/analisis-data-pengelolaan-1-3.md), [analisis-data-pengembangan-13.md](https://github.com/mochfebriyan/skripsi/blob/febriyan-skripsi/projek-fiklab/analisis/analisis-data-pengembangan-13.md) |
+| 0 · 1 Brief (termasuk cakupan Inti/Pelengkap dan tabel keputusan) | [brief-tata-kelola-dokumen.md](https://github.com/mochfebriyan/skripsi/blob/febriyan-skripsi/projek-fiklab/brief/brief-tata-kelola-dokumen.md) |
+| 2 Studi dokumen | [bedah-dokumen-tata-kelola.md](https://github.com/mochfebriyan/skripsi/blob/febriyan-skripsi/projek-fiklab/analisis/bedah-dokumen-tata-kelola.md) |
+| 4 Kebutuhan | [kebutuhan-tata-kelola.md](https://github.com/mochfebriyan/skripsi/blob/febriyan-skripsi/projek-fiklab/rancangan/kebutuhan-tata-kelola.md) |
+| 5 Proses bisnis | [proses-bisnis-tata-kelola.md](https://github.com/mochfebriyan/skripsi/blob/febriyan-skripsi/projek-fiklab/rancangan/proses-bisnis-tata-kelola.md), `activity-state-tata-kelola.drawio` |
+| 6 Use case | [use-case-tata-kelola.md](https://github.com/mochfebriyan/skripsi/blob/febriyan-skripsi/projek-fiklab/rancangan/use-case-tata-kelola.md), `use-case-tata-kelola.drawio` |
+| 7 Expanded use case | [expanded-use-case-tata-kelola.md](https://github.com/mochfebriyan/skripsi/blob/febriyan-skripsi/projek-fiklab/rancangan/expanded-use-case-tata-kelola.md) |
+| 8 SSD | [ssd-tata-kelola.md](https://github.com/mochfebriyan/skripsi/blob/febriyan-skripsi/projek-fiklab/rancangan/ssd-tata-kelola.md), `ssd-tata-kelola.drawio` |
+| 9 Conceptual model | [conceptual-model-tata-kelola.md](https://github.com/mochfebriyan/skripsi/blob/febriyan-skripsi/projek-fiklab/rancangan/conceptual-model-tata-kelola.md), `conceptual-model-tata-kelola.drawio` |
+| 10 Design class diagram | [design-class-tata-kelola.md](https://github.com/mochfebriyan/skripsi/blob/febriyan-skripsi/projek-fiklab/rancangan/design-class-tata-kelola.md), `class-tata-kelola.drawio` |
+| Skrip pembuat diagram | [tools/drawio/contoh-tata-kelola/](https://github.com/mochfebriyan/skripsi/blob/febriyan-skripsi/projek-fiklab/tools/drawio/contoh-tata-kelola/) |
 | Penjelasan untuk pemula (class diagram, inheritance) | Halaman artifact milik Febriyan; minta tautannya ke Febriyan |
+
+Tampilan visual file `.drawio` di branch itu belum dicek di draw.io saat ditulis; strukturnya lolos `validate.py`.
 
 ## 11. Gaya kerja
 

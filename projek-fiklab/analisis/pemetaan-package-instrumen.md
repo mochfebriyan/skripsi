@@ -288,9 +288,9 @@ Isinya master yang dipakai **lebih dari satu package**. Kolom **Dikelola oleh** 
 | Lokasi Penyimpanan [M] (+) | Lokasi selain ruang: lemari, rak khusus, kulkas, TPS limbah | Core | 07, 09, 11 | Belum ada |
 | Mitra Eksternal [M] (+) | Pihak luar: vendor kalibrasi, teknisi/vendor servis, pengelola limbah berizin | Core | 05, 09, 12 | `res.partner` (bawaan Odoo) |
 | Indikator Monev [M] (+) | Registri indikator proyek (21, PKG-01–21): aspek, nomor, kata kunci, jenis skor | Core | Semua package, dan *dashboard* | Belum ada |
-| **Sesi [T]** | Satu sesi praktikum bertanggal. Satu-satunya **transaksi** di Core | Dibangkitkan oleh **PKG-15** | 04, 08, 15, 16, 17, 18, 19 | `op.session` (OpenEduCat, sudah dipakai modul Rafika) |
+| **Sesi [T]** | Satu sesi praktikum bertanggal. Satu-satunya **transaksi** di Core | Dibangkitkan oleh **PKG-15** | 04, 08, 15, 16, 17, 18, 19 | Model sendiri di `labfik_core` (keputusan 14 Nov 2026). `op.session` milik OpenEduCat (dipakai modul Rafika) hanya acuan |
 
-**Kenapa Sesi ditaruh di Core, padahal transaksi?** Di sheet, Sesi diklaim tiga instrumen sekaligus: ID 4 ("Sesi"), ID 15 ("Jadwal"), dan ID 18 ("Sesi Praktikum"). Padahal sesi yang dimaksud ketiganya sama, dan ada enam package yang membutuhkannya. Kalau Sesi masuk ke salah satu package, package lain jadi bergantung penuh pada pemiliknya. Usulannya: Sesi menjadi entitas bersama yang meng-*inherit* `op.session`. PKG-15 membangkitkan dan memublikasikannya, PKG-04 menempelkan petugas, dan PKG-18 mencatat pelaksanaannya.
+**Kenapa Sesi ditaruh di Core, padahal transaksi?** Di sheet, Sesi diklaim tiga instrumen sekaligus: ID 4 ("Sesi"), ID 15 ("Jadwal"), dan ID 18 ("Sesi Praktikum"). Padahal sesi yang dimaksud ketiganya sama, dan ada enam package yang membutuhkannya. Kalau Sesi masuk ke salah satu package, package lain jadi bergantung penuh pada pemiliknya. **Keputusan (Herrens, 14 November 2026):** Sesi menjadi entitas bersama di `labfik_core`, sebagai model sendiri yang **tidak** meng-*inherit* `op.session`, supaya `labfik_core` tetap hanya bergantung pada `hr` dan `mail`. Mata Kuliah dan Kelas juga di Core. PKG-15 membangkitkan dan memublikasikan Sesi, PKG-04 menempelkan petugas, dan PKG-18 mencatat pelaksanaannya.
 
 ---
 
@@ -344,7 +344,7 @@ Package diurutkan per modul. Package milik kelompok lain tetap dicantumkan karen
 | Import Core | Personel dan Jabatan (keduanya dikelola di sini), Dokumen Induk |
 | Import package lain | — |
 | Dipakai oleh | Tidak ada yang memakai [T]/[R]-nya, tetapi Personel dan Jabatan yang dikelola di sini dipakai 11 package lain lewat Core |
-| Catatan | **Package paling hulu.** Keputusan model Personel (pakai `hr.employee`, model sendiri, atau model Rafika) harus diambil di sini lebih dulu |
+| Catatan | **Package paling hulu.** Model Personel sudah diputuskan: `hr.employee` dan `hr.job` diperluas di `labfik_core` (Febriyan, 14 November 2026, lihat CLAUDE.md bagian 6) |
 
 #### PKG-13 · Pengembangan 13 (rencana pengembangan lab)
 
