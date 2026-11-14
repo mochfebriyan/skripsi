@@ -51,6 +51,7 @@ Baris lain dengan nomor yang sama **bukan** scope modul ini. Contohnya Pengelola
 | 14 Nov 2026 | Febriyan | **Memeriksa dan mengesahkan adalah satu kesatuan.** Pejabat yang mengesahkan dianggap sudah memeriksa isi dokumen; catatan pengesahan menjadi buktinya | Tidak ada tahap pemeriksaan terpisah. Kolom "Diperiksa" di blok tanda tangan dokumen cetak tetap di kertas saja |
 | 14 Nov 2026 | Febriyan | **Renstra berlaku 5 tahun** (draf lab: 2027–2031), jadi cukup diunggah dan disahkan, tidak diisi lewat form | Rencana kerja tahunan merujuk Renstra lewat teks |
 | 14 Nov 2026 | Febriyan | Cakupan rancangan proposal = lapis **Inti + Pelengkap** | Bagian [Cakupan rancangan](#cakupan-rancangan) |
+| 14 Nov 2026 | Febriyan | **Penilai monev bukan aktor sistem.** Yang dibutuhkan penilai adalah bukti berupa dokumen, seperti yang diunggah ke iso.upnvj | Tidak ada grup akses penilai; laporan [R] dibaca KaLab dan diterbitkan sebagai PDF bukti |
 | 14 Nov 2026 | Bimbingan Pak Widi | Lihat addon yang bisa di-*extend* (OCA, Cybro, OpenEduCat, dll.), utamakan lisensi LGPL | Bagian [Platform dan addon yang diperluas](#platform-dan-addon-yang-diperluas) |
 | 14 Nov 2026 | Febriyan | Personel dan Jabatan meng-*extend* `hr.employee` dan `hr.job`; master bersama dan mixin di addon `labfik_core` yang **terpisah** dari `labfik_org` | Perlu disepakati kelompok **[KONFIRMASI]** |
 
@@ -122,9 +123,9 @@ Hal yang menambah kenyamanan atau kedalaman tetapi tidak dibutuhkan untuk membuk
 | **PKG-03 Struktur** | Personel, jabatan (tugas, wewenang, atasan, pengganti), SK + baris penetapan, rapat, evaluasi, bagan (daftar hierarki), matriks kewenangan (daftar) | Ekspor SK format fakultas |
 | **PKG-01 Rencana** | Renstra sebagai dokumen unggahan yang disahkan; rencana tahunan: item dengan KPI, target, PIC, jadwal, anggaran, rujukan Renstra institusi berupa teks; matriks keterkaitan sebagai daftar item per rujukan Renstra; realisasi + bukti; tinjauan → rencana berikutnya; ekspor PDF rencana tahunan; master KPI | Narasi ringkas rencana (ringkasan, latar belakang, tujuan, ruang lingkup) untuk ekspor; revisi rencana; satu dokumen berlaku per jenis dan periode |
 | **PKG-13 Pengembangan** | Rencana jenis pengembangan: temuan gap 4 aspek, item dengan nilai risiko dan manfaat, ukuran manfaat di tinjauan | Ekspor PDF rencana pengembangan (template sama dengan rencana tahunan); prioritas dihitung dari risiko × manfaat |
-| **Status monev** | Persentase PKG-02; kriteria tertinggi K1–K4 PKG-01/03/13 dengan tautan bukti; akses baca penilai | — |
+| **Status monev** | Persentase PKG-02; kriteria tertinggi K1–K4 PKG-01/03/13 dengan tautan bukti, dipantau KaLab; laporan bukti diterbitkan sebagai PDF untuk diserahkan ke penilai | — |
 
-**Aktor sistem:** KaLab, Laboran/PLP, pengguna lab (asisten, dosen), penilai monev, dan penjadwal (pemicu waktu). Dekan dan pejabat lain yang hanya menandatangani dokumen cetak **bukan aktor sistem**; identitasnya tercatat sebagai pengesah.
+**Aktor sistem:** KaLab, Laboran/PLP, pengguna lab (asisten, dosen), dan penjadwal (pemicu waktu). Dekan dan pejabat lain yang hanya menandatangani dokumen cetak **bukan aktor sistem**; identitasnya tercatat sebagai pengesah. **Penilai monev juga bukan aktor sistem:** penilai menerima bukti dalam bentuk dokumen (PDF yang diterbitkan sistem dan diunggah lab ke iso.upnvj), bukan membuka sistem. Karena itu tidak ada grup akses khusus penilai.
 
 ## Kontrak dengan modul lain
 
@@ -177,7 +178,7 @@ CybroAddons dan OpenHRMS belum diperiksa per modul. Lisensinya campuran (sebagia
    - **Dokumen rutin** yang isinya berganti tiap periode, yaitu rencana kerja tahunan (PKG-01) dan rencana pengembangan (PKG-13), **diisi lewat sistem lalu diekspor menjadi PDF** mengikuti format dokumen lab. Penetapan struktur/pengelola per periode (PKG-03) kemungkinan masuk jenis ini **[KONFIRMASI]**.
    - **Dokumen yang jarang berubah**, yaitu SOP dan IK (PKG-02) serta Renstra (berlaku 5 tahun), disusun di luar sistem. Sistem hanya mengelola versi, pengesahan, distribusi, sosialisasi, dan tinjau ulang (file diunggah).
 3. **Pengesahan tanpa tanda tangan digital.** Dokumen diekspor atau disiapkan → ditandatangani manual → PDF bertanda tangan diunggah → KaLab menekan "Sahkan" (tercatat pengesah, pencatat, dan waktu). Pejabat penanda tangan (Dekan) tidak memakai sistem. Pemeriksaan isi dokumen menyatu dengan pengesahan, tidak dicatat sebagai tahap terpisah.
-4. **Skor kriteria berurutan** (Pengelolaan 1, 3, Pengembangan 13): sistem menampilkan kriteria tertinggi yang "lengkap secara data", lalu skor akhir ditetapkan penilai. Skor Pengelolaan 2 dihitung otomatis.
+4. **Skor kriteria berurutan** (Pengelolaan 1, 3, Pengembangan 13): sistem menampilkan kriteria tertinggi yang "lengkap secara data", lalu skor akhir ditetapkan penilai. Penilai tidak memakai sistem; lab menyerahkan bukti berupa dokumen PDF yang diterbitkan sistem (lewat iso.upnvj). Skor Pengelolaan 2 dihitung otomatis.
 5. **Tidak dirancang** (saran pengembangan):
    - form Renstra lengkap (visi, misi, sasaran, program, baseline) dan master sasaran Renstra institusi; rujukan Renstra cukup berupa teks di item rencana;
    - IKU sebagai dokumen tersendiri (target KPI per periode cukup di item rencana tahunan);
