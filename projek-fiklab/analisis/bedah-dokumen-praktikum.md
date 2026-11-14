@@ -61,8 +61,8 @@ Penggolongan mengikuti §2.6.1; kolom peluang otomasi mengikuti §2.6.2. Peran d
 | Dekan | D1 | *Actor* | Mengesahkan POB; mengumumkan rekrutmen asisten | Di luar batas sistem |
 | Bagian Tata Usaha | D1 | *Actor* | Lajur di diagram alur (administrasi, kontrak, honor) | Di luar batas sistem (rekap honor tidak dirancang) |
 | Google Form + Sheets | D3 | *Worker* (sistem yang ada) | Wadah laporan sesi dan rekap honor | Digantikan Jurnal Sesi |
-| SIAKAD / BAAK / prodi | D1 langkah 6 ("tabel jadwal kelas") | *Actor* (sistem luar) | Sumber jadwal kelas **[KONFIRMASI wawancara P2]** | Di luar batas; diimpor |
-| LeADS, SIMPEL | Brief bersama | *Actor* (sistem luar) | Penilaian dan presensi rinci per praktikan | Di luar batas; ditautkan (§3.1: tidak merekam ulang) |
+| Tim jadwal fakultas | D1 langkah 6 ("tabel jadwal kelas"); keterangan Herrens, 14 Nov 2026 | *Actor* (di luar lab) | Menyusun jadwal kelas praktikum; KaLab hanya menyetujui | Di luar batas; berkas jadwalnya diimpor laboran **[ASUMSI]** |
+| LeADS, SIMPEL | Brief bersama | *Actor* (sistem luar) | Penilaian dan presensi rinci per praktikan | Di luar batas. SIMPEL ditautkan; penilaian LeADS ditautkan per kelas, diimpor bila ada ekspor Excel (PKG-19) |
 
 **Batas sistem (usulan):** di dalam: KaLab, laboran, teknisi, asisten, dan peran Google Form. Di luar tetapi berinteraksi: dosen dan praktikan (mengisi lewat sistem). Di luar sepenuhnya: Koordinator Prodi, Wakil Dekan, Dekan, Tata Usaha, SIAKAD, LeADS, SIMPEL. Penilai monev bukan aktor sistem (mengikuti keputusan Tata Kelola).
 
@@ -127,7 +127,7 @@ Kolom tabel: **Bagian** (sumber) · **Field (usulan)** · **Model** · **PKG/kri
 | 7 | Mengembangkan tugas di modul (asisten, dari pembaruan dosen) | Modul | 15 | Versi Modul diterbitkan dosen |
 | 8 | Penyiapan sarana dan prasarana (laboran, 1 minggu) | Laporan Kesiapan Sarpras | 16, 17 | Pemeriksaan Kesiapan per sesi |
 | 9 | Asistensi praktikum (asisten, 16 minggu) | L7 / D3 | 18 | Jurnal Sesi |
-| 10 | "Penilaian" / evaluasi praktikum: presensi dan kendala (asisten) | L7 / D3 | 18, 19 | Jurnal Sesi + catatan penilaian |
+| 10 | "Penilaian" / evaluasi praktikum: presensi dan kendala (asisten) | L7 / D3 | 18, 19 | Jurnal Sesi (presensi, kendala); penilaian lewat tautan LeADS per kelas, impor Excel bila tersedia (PKG-19) |
 | 11 | Kuesioner peserta (praktikan, setiap sesi) | L8 | 20 | Survei per periode (bukan per sesi) |
 | 12 | Evaluasi kendala (KaLab, laboran) | L9 | — | Kendala tercatat di Jurnal Sesi; alur evaluasi kendala tersendiri **tidak dirancang** (tidak ada kriteria instrumen yang memintanya) |
 | 13 | Evaluasi kuesioner (KaLab, asisten) | Laporan Evaluasi Kuesioner | 20 | Evaluasi Survei |
@@ -275,11 +275,11 @@ Bahan untuk Langkah 10. Semua **[USULAN PENULIS]**.
 |---|---|---|
 | Rekaman "satu per Sesi" yang harus dibuat **sebelum** atau **sesudah** jam Sesi (cek waktu terhadap Sesi, satu rekaman per Sesi, ruang dan kelas ikut Sesi) | Pemeriksaan Kesiapan (16), Jurnal Sesi (18) | Mixin kecil `labfik.praktikum.sesi.mixin` (`sesi_id` unik, field *related*, `_cek_waktu_terhadap_sesi()` {hook}) |
 | Rekaman kegiatan bertanggal dengan pelapor dan bukti | Pemeriksaan Kesiapan, Jurnal Sesi, Evaluasi Survei | `labfik.evidence.mixin` (Core) |
-| Dokumen berversi tanpa pengesahan | Versi Modul (15) | `labfik.controlled.mixin` (Core), tanpa `labfik.approval.mixin` |
+| Dokumen berversi tanpa pengesahan | Versi Modul (15) | Field `versi` biasa; `labfik.controlled.mixin` tidak dipakai lagi (kontrak Core terbaru, 14 Nov 2026) |
 | Penetapan oleh pejabat berwenang | Penetapan Jadwal (15), penetapan Survei (20) | Jadwal: `labfik.approval.mixin` (Core), karena jadwal harus ditandatangani (keputusan 14 Nov 2026). Survei: status sederhana + cek wewenang (brief, Kontrak Core) |
 | Persetujuan sederhana (diajukan → disetujui/ditolak) | Rencana Pemakaian Lab (15), Perubahan Sesi (18) | Satu pola status bersama di modul |
 | Indikator kriteria berurutan | Evaluasi Survei (20) | `labfik.criteria.mixin` (Core) |
-| Persentase sesi memenuhi | 15, 16, 17, 18 (19 pendekatan) | Satu cara hitung bersama (*compute* atau *report*); diputuskan di Langkah 10 |
+| Persentase sesi memenuhi | 15, 16, 17, 18 (19: kelas berbukti; per praktikan bila diimpor) | Satu cara hitung bersama (*compute* atau *report*); diputuskan di Langkah 10 |
 
 ---
 

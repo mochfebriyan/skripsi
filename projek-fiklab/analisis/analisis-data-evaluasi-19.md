@@ -4,11 +4,14 @@
 
 **Status: DRAF.** Bahan kerja Langkah 0 (bahan Bab I dan 2.2). Belum dikonfirmasi ke KaLab atau dosen; wawancara bagian Pelaksanaan Praktikum belum dijawab.
 
-Analisis awal ada di bagian "Indikator Evaluasi 19" pada `brief-role-3.md` (Febriyan, 26 Oktober 2026, `git show d6fcc5c:projek-fiklab/brief/brief-role-3.md`) dan isian tab *Analysis* baris 54. Dokumen ini melanjutkan pendekatannya, yaitu bukti penilaian ditempel **per sesi** di Jurnal Sesi PKG-18, lalu menambah dua hal: rubrik diambil dari Versi Modul PKG-15, dan cara menghitung unit praktikan dari data per sesi.
+Analisis awal ada di bagian "Indikator Evaluasi 19" pada `brief-role-3.md` (Febriyan, 26 Oktober 2026, `git show d6fcc5c:projek-fiklab/brief/brief-role-3.md`) dan isian tab *Analysis* baris 54.
 
-**Keputusan (Herrens, 14 November 2026):** penilaian dicatat **per sesi**, bukan rekap per kelas di akhir periode. Alasannya: dosen tidak realistis mengisi rekap di akhir semester, sedangkan jurnal sesi sudah diisi di setiap sesi.
+**Riwayat keputusan:**
+1. Rekap per kelas yang diisi dosen di akhir periode: **ditolak** (dosen tidak realistis mengisinya).
+2. Catatan penilaian per sesi di Jurnal Sesi: **diganti**, karena satu sesi belum tentu ada tugas dan tenggat tugas bisa seminggu atau lebih.
+3. **Berlaku (Herrens, 14 November 2026):** penilaian praktikan dilihat lewat **tautan eksternal ke LeADS** per kelas (lapis Inti). Bila LeADS punya opsi **ekspor ke Excel**, nilai kelas dapat **diimpor** ke Odoo (lapis Pelengkap) **[ASUMSI: tanpa API]**.
 
-Alur analisis mengikuti [pedoman pengisian sheet](pedoman-pengisian-sheet-analisis.md) bagian 2. Rujukan "PKG-18 A8" berarti temuan A8 di [analisis-data-proses-18.md](analisis-data-proses-18.md).
+Alur analisis mengikuti [pedoman pengisian sheet](pedoman-pengisian-sheet-analisis.md) bagian 2.
 
 ---
 
@@ -19,16 +22,17 @@ Alur analisis mengikuti [pedoman pengisian sheet](pedoman-pengisian-sheet-analis
 | Inti | Setiap praktikan dinilai secara individual dengan rubrik, mendapat umpan balik, dan mendapat remediasi bila perlu |
 | PJ (instrumen) | Dosen; asisten |
 | Jenis skor | **Persentase** |
-| Unit | 1 **praktikan** yang dinilai pada periode monev (berbeda dari PKG-15 dan PKG-18 yang menghitung sesi) |
-| Level cakupan (usulan) | **Bukti tertaut**. Sistem menghitung persentase **pendekatan** dari catatan penilaian per sesi; kebenarannya diverifikasi penilai lewat tautan bukti. Skor **tidak** diklaim dihitung otomatis |
-| Posisi dalam dependensi | Paling hilir; butuh Jurnal Sesi (PKG-18) dan Versi Modul (PKG-15) |
+| Unit | 1 **praktikan** dalam satu kelas yang dinilai pada periode monev |
+| Level cakupan (usulan) | **Bukti tertaut** (Inti): sistem menunjukkan kelas mana yang punya tautan penilaian LeADS dan rubrik; persentase per praktikan ditetapkan penilai setelah membuka LeADS. **Semi-otomatis** bila nilai kelas diimpor (Pelengkap): sistem menghitung persentase per praktikan |
+| Posisi dalam dependensi | Hilir; butuh Kelas (Core) dan rubrik di Versi Modul (PKG-15). Tidak bergantung pada Jurnal Sesi |
 | Acuan | Standar SPMI UPNVJ 2025 (dukungan capaian pembelajaran). ISO/IEC 17025 tidak mengatur penilaian mahasiswa secara langsung |
-| Kompleksitas (kasar) | **4** (rincian di bagian 8) |
+| Kompleksitas (kasar) | **5** (rincian di bagian 8) |
 
 **Temuan utama:**
 1. **Lab tidak memegang data penilaian sama sekali.** Penilaian dikerjakan dosen di LeADS; formulir asistensi tidak punya kolom nilai, rubrik, atau umpan balik (A1, A2).
 2. **Dokumen nyata belum mengatur rubrik, remediasi, maupun moderasi antarpenilai.** Yang ada hanya bobot komponen nilai di template modul (A4).
-3. **Data per praktikan adalah data pribadi.** Sistem lab cukup mencatat **jumlah** praktikan per sesi asesmen beserta tautan buktinya, bukan nilai per mahasiswa. Konsekuensinya, persentase per praktikan hanya bisa didekati (bagian 2).
+3. **Penilaian tidak terikat pada satu sesi.** Tugas punya tenggat sendiri dan tidak setiap pertemuan ada tugas, jadi bukti penilaian paling tepat diambil dari tempat nilai disimpan (LeADS), per kelas.
+4. **Data per praktikan adalah data pribadi.** Pada lapis Inti sistem tidak menyimpannya sama sekali (cukup tautan). Bila impor dipakai, yang disimpan dibatasi: NIM (tanpa nama) dan status/nilai, dengan akses terbatas.
 
 ---
 
@@ -78,69 +82,64 @@ Bukti dukung: (1) rubrik keterampilan/produk, (2) hasil observasi individual, (3
 
 ### Cara mencatat
 
-Penilaian dicatat **di sesi tempat asesmen terjadi**, sebagai bagian dari Jurnal Sesi PKG-18. Pengisi jurnal yang sama (asisten, dosen, atau laboran; lihat PKG-18) menambahkan satu **catatan penilaian** bila sesi itu berisi asesmen. Rubrik tidak diunggah ulang di setiap sesi, tetapi diambil dari **Versi Modul** yang dipakai sesi itu (PKG-15), karena template modul sudah punya bagian penilaian (A4).
+**Lapis Inti: tautan eksternal.** Untuk setiap kelas, dosen (atau laboran) mencatat **Penilaian Kelas**: tautan ke *course* atau *gradebook* LeADS kelas itu, dan catatan moderasi bila penilai lebih dari satu orang. Rubrik diambil dari **Versi Modul** MK itu (PKG-15). Nilai tidak disalin ke Odoo; penilai membuka LeADS lewat tautan.
 
-### Syarat per sesi asesmen
+**Lapis Pelengkap: impor Excel.** Bila LeADS punya opsi ekspor ke Excel, berkas ekspor kelas disusun ke **templat impor baku** lab lalu diimpor **[ASUMSI: tanpa API]**. Isinya satu baris per praktikan: NIM (tanpa nama), jumlah tugas individual dinilai, nilai akhir, ada umpan balik, diremediasi. Templat baku menghindari logika pemetaan kolom yang rumit **[USULAN PENULIS]**.
 
-| Syarat | Arti | Cek oleh sistem | Cek oleh penilai |
-|---|---|---|---|
-| P1 Individual | Asesmen menghasilkan bukti unjuk kerja per individu, bukan hanya nilai kelompok | Bentuk asesmen = individual, atau kelompok **dengan** komponen individual | Contoh bukti di tautan |
-| P2 Tertelusur ke rubrik | Skor diberikan dengan rubrik | Versi Modul yang dipakai sesi itu punya rubrik terlampir | Isi rubrik selaras CPMK |
-| P3 Umpan balik | Praktikan menerima umpan balik atas hasil kerjanya | Jumlah praktikan menerima umpan balik terisi | Contoh umpan balik di tautan |
-| P4 Remediasi bila perlu | Praktikan di bawah batas lulus mendapat kesempatan remediasi | Bila jumlah "perlu remediasi" > 0, jumlah "diremediasi" terisi sebelum periode ditutup | Bukti remediasi |
+### Syarat per praktikan
 
-Bila penilai lebih dari satu orang (dosen dan asisten), catatan **moderasi** wajib terisi (bukti 5).
+Satu praktikan dihitung **lengkap** bila keempat syarat terpenuhi. **Persentase PKG-19 = Σ praktikan lengkap ÷ Σ praktikan yang dinilai**, untuk semua kelas pada periode monev.
 
-### Cara menghitung persentase (pendekatan)
+| Syarat | Arti | Cek oleh sistem (Inti: tautan) | Cek oleh sistem (Pelengkap: impor) | Cek oleh penilai |
+|---|---|---|---|---|
+| P1 Individual | Ada bukti unjuk kerja individu, bukan hanya nilai kelompok | Kelas punya tautan penilaian | Jumlah tugas individual dinilai ≥ 1 | Nilai individual di LeADS |
+| P2 Tertelusur ke rubrik | Skor diberikan dengan rubrik | Versi Modul punya berkas rubrik | Sama | Isi rubrik selaras CPMK |
+| P3 Umpan balik | Praktikan menerima umpan balik | — | Kolom "ada umpan balik" = ya | Umpan balik di LeADS |
+| P4 Remediasi bila perlu | Praktikan di bawah batas lulus mendapat remediasi | — | Bila nilai akhir < batas lulus, "diremediasi" = ya | Bukti remediasi |
 
-Data per sesi berupa **jumlah**, bukan daftar nama. Karena itu sistem tidak bisa memastikan bahwa praktikan yang sama sudah lengkap di semua asesmen. Persentase indikator didekati dengan:
-
-**Persentase PKG-19 ≈ Σ praktikan dinilai lengkap (P1–P4) ÷ Σ praktikan hadir**, dijumlahkan atas semua sesi asesmen pada periode monev.
-
-- Jumlah hadir diambil dari Jurnal Sesi PKG-18; praktikan yang tidak hadir di sesi asesmen tidak terhitung di sesi itu.
-- **Ini bukan hitungan per praktikan yang tepat.** Hitungan tepat butuh presensi dan status penilaian per nama, yang ditunda (bagian 7). Penggunaan pendekatan ini perlu disetujui pembimbing **[KONFIRMASI pembimbing]**.
-- Kelas yang tidak punya satu pun sesi asesmen ditampilkan di Daftar Kelas Tanpa Bukti Penilaian, karena praktikannya tidak terhitung sama sekali.
+Artinya:
+- **Tanpa impor**, sistem hanya menghitung **persentase kelas berbukti** (kelas dengan tautan penilaian dan rubrik ÷ seluruh kelas). Persentase per praktikan untuk skor indikator **ditetapkan penilai** setelah memeriksa LeADS. Sistem tidak mengklaim skor PKG-19 dihitung otomatis.
+- **Dengan impor**, sistem menghitung persentase per praktikan (P1–P4) untuk kelas yang datanya diimpor.
 
 Catatan aturan:
-- Sistem **tidak** memeriksa kebenaran angka; penilai memverifikasi lewat tautan bukti. Ini alasan level cakupannya **bukti tertaut**.
-- Batas lulus mengikuti template modul (60) sampai ada ketentuan prodi **[KONFIRMASI wawancara P14d]**.
-- Tautan LeADS butuh akses penilai ke *course* terkait **[KONFIRMASI]**; berkas unggahan disediakan sebagai cadangan.
-- Sesi mana yang wajib berisi asesmen ditentukan dosen di modul. Sistem tidak memaksakannya.
+- Sesi berjenis **UTS** dan **UAS** (pertemuan 8 dan 16) adalah asesmen yang pasti ada; nilainya ada di LeADS, tidak dicatat di jurnal.
+- **Batas lulus** mengikuti template modul (60) sampai ada ketentuan prodi; dijadikan pengaturan KaLab **[KONFIRMASI wawancara P14d]**.
+- **Akses tautan:** penilai dan KaLab harus bisa membuka *course* LeADS lewat tautan itu **[KONFIRMASI wawancara P15]**; bila tidak bisa, berkas ekspor dilampirkan sebagai cadangan.
+- **Data pribadi:** lapis Inti tidak menyimpan data praktikan. Bila impor dipakai, hanya NIM dan status/nilai, tanpa nama; akses: dosen kelas, KaLab, dan pengimpor. Data uji dan demo fiktif.
 
 ## 3. Luaran
 
 | Luaran | Bukti ke- | Keterangan |
 |---|---|---|
-| Rubrik | 1 | Lampiran di Versi Modul (PKG-15) |
-| Catatan penilaian per sesi asesmen | 2, 3 | Jenis dan bentuk asesmen, jumlah dinilai dan lengkap, tautan bukti (observasi, laporan, portofolio) |
-| Umpan balik dan remediasi | 4 | Jumlah menerima umpan balik, perlu remediasi, dan diremediasi |
-| Moderasi antarpenilai | 5 | Catatan moderasi bila penilai lebih dari satu |
-| Persentase PKG-19 dan daftar kelas tanpa bukti penilaian | — | Dihitung dari catatan penilaian, tidak disimpan sebagai tabel |
+| Rubrik | 1 | Berkas rubrik di Versi Modul (PKG-15) |
+| Penilaian individual per kelas | 2, 3 | Tautan LeADS per kelas (Inti); baris nilai per praktikan dan berkas ekspor (Pelengkap) |
+| Umpan balik dan remediasi | 4 | Di LeADS (Inti); kolom per praktikan (Pelengkap) |
+| Moderasi antarpenilai | 5 | Catatan moderasi per kelas |
+| Persentase kelas berbukti; persentase per praktikan (bila diimpor); daftar belum lengkap | — | Dihitung, tidak disimpan sebagai tabel |
 
 ## 4. Data transaksi
 
 | Entitas | Label | Grain | Isi (garis besar) | Catatan |
 |---|---|---|---|---|
-| **Catatan Penilaian Sesi** | [T] anak Jurnal Sesi (PKG-18) | 1 per asesmen dalam satu sesi | Jenis asesmen (kuis, tugas, observasi, laporan, ujian praktik), bentuk (individual / kelompok dengan komponen individual / kelompok saja), penilai, jumlah praktikan dinilai, jumlah lengkap (P1–P4), jumlah menerima umpan balik, jumlah perlu remediasi, jumlah diremediasi, tautan atau berkas bukti, catatan moderasi | Ditulis di dalam induknya (pedoman bagian 4a), jadi tidak dihitung sebagai tabel terpisah. Tidak menyimpan nilai per mahasiswa |
-| Rubrik pada **Versi Modul** | Atribut [T] milik PKG-15 | — | Berkas rubrik | Tambahan kecil pada Versi Modul PKG-15 |
-| **Daftar Kelas Tanpa Bukti Penilaian** | [R] | — | Kelas tanpa sesi asesmen, sesi asesmen tanpa rubrik, atau dengan remediasi tertunda | Dasar tindak lanjut |
-| **Rekap PKG-19 per Periode** | [R] | — | Persentase pendekatan per kelas, per MK, dan total | Persentase indikator |
+| **Penilaian Kelas** | [T] | 1 per kelas per periode | Kelas, **tautan LeADS** (*course*/*gradebook*), catatan moderasi, pengisi, tanggal; bila diimpor: sumber, berkas ekspor asli, tanggal impor. Anak (hanya bila diimpor): **nilai praktikan** (NIM, jumlah tugas individual dinilai, nilai akhir, ada umpan balik, diremediasi; status lengkap dihitung) | Model usulan `labfik.praktikum.penilaian` (+ `.baris`). Impor ulang mengganti baris kelas itu, dengan riwayat |
+| **Daftar Belum Lengkap** | [R] | — | Kelas tanpa tautan penilaian, kelas tanpa rubrik; bila diimpor, praktikan yang gagal P1–P4 | Dasar tindak lanjut |
+| **Rekap PKG-19 per Periode** | [R] | — | Persentase kelas berbukti; persentase per praktikan untuk kelas yang diimpor | — |
 
 Riwayat perubahan memakai `mail.thread` + *tracking* bawaan Odoo.
 
-Dibanding [pemetaan](pemetaan-package-instrumen.md#pkg-19--evaluasi-19-penilaian-individual-praktikan): pendekatannya sama ("«extend» Jurnal Sesi: tautan bukti penilaian"), diperinci menjadi catatan penilaian berisi jumlah dan syarat P1–P4, ditambah rubrik di Versi Modul dan cara menghitung praktikan.
+Dibanding [pemetaan](pemetaan-package-instrumen.md#pkg-19--evaluasi-19-penilaian-individual-praktikan) ("«extend» Jurnal Sesi: tautan bukti penilaian (LeADS)"): pendekatan tautan LeADS dipertahankan, tetapi tautannya **per kelas**, bukan per sesi, dan ditambah impor sebagai lapis Pelengkap.
 
 ## 5. Master data
 
-Semua master **di-*import* dari Core** (melalui Sesi dan Jurnal Sesi). PKG-19 tidak punya master lokal.
+Semua master **di-*import* dari Core**. PKG-19 tidak punya master lokal.
 
 | Master | Dipakai untuk | Sumber (Core) | Bila belum tersedia |
 |---|---|---|---|
 | Periode | Batas periode monev | `labfik.periode` | Periode monev = semester **[ASUMSI]** |
-| Mata Kuliah, Kelas | Pengelompokan rekap | `labfik.mata.kuliah`, `labfik.kelas` | — |
-| Personel | Penilai (dosen, asisten) | `hr.employee` diperluas | — |
+| Mata Kuliah, Kelas | Satuan penilaian; rubrik lewat Versi Modul | `labfik.mata.kuliah`, `labfik.kelas` | — |
+| Personel | Pengisi tautan, pengimpor, dosen kelas | `hr.employee` diperluas | — |
 
-Mahasiswa **tidak** dipakai, karena catatan penilaian tidak menyimpan data per praktikan.
+Master **Mahasiswa tidak dipakai**. Bila impor dipakai, praktikan cukup dicatat dengan NIM pada baris nilai per kelas.
 
 ## 6. Dependensi dan jalan pengganti
 
@@ -148,46 +147,41 @@ Mahasiswa **tidak** dipakai, karena catatan penilaian tidak menyimpan data per p
 
 | Butuh | Dari | Sifat | Bila tidak ada |
 |---|---|---|---|
-| Jurnal Sesi dan jumlah praktikan hadir | PKG-18 Proses 18 (sesi terlaksana) | **Wajib** | Tidak ada tempat mencatat penilaian |
-| Rubrik di Versi Modul | PKG-15 Persiapan 15 (jadwal dan modul) | Wajib untuk P2 | Rubrik diunggah di catatan penilaian sesi |
-| Nilai, umpan balik, bukti kerja | LeADS (eksternal), dosen pengampu | Wajib untuk verifikasi | Berkas diunggah langsung |
+| Kelas | Core (diisi lewat PKG-15) | Wajib | — |
+| Rubrik di Versi Modul | PKG-15 Persiapan 15 (modul) | Wajib untuk P2 | Rubrik diunggah di Penilaian Kelas |
+| Tautan *course*/*gradebook* LeADS | LeADS (eksternal), dosen pengampu | Wajib (Inti) | Berkas ekspor dilampirkan |
+| Ekspor Excel LeADS | LeADS (eksternal) | Opsional (Pelengkap) | Tetap memakai tautan saja |
 
-**Keluar:** tidak dipakai package lain.
+Dependensi ke PKG-18 (Jurnal Sesi) **dilepas**. **Keluar:** tidak dipakai package lain.
 
-**Risiko:** pengisi catatan penilaian sama dengan pengisi Jurnal Sesi. Bila jurnal diisi asisten, kelas tanpa asisten (42–56% kelas; PKG-18 A1) tidak punya pengisi, sehingga PKG-19 ikut bergantung pada jawaban "siapa mengisi jurnal kelas tanpa asisten" **[KONFIRMASI wawancara P10, P13]**.
+**Risiko:** apakah penilai dan KaLab bisa membuka *course* LeADS lewat tautan, dan apakah LeADS punya opsi ekspor Excel, belum diketahui **[KONFIRMASI wawancara P15]**.
 
 ## 7. Ditunda
 
-Tidak dibutuhkan untuk membuktikan P1–P4 dengan level bukti tertaut, jadi tidak dirancang (calon isi batasan masalah):
-- Presensi dan status penilaian **per praktikan** (yang membuat hitungan per praktikan menjadi tepat).
-- Penyimpanan nilai, rubrik terstruktur per kriteria, dan perhitungan nilai di Odoo.
-- Integrasi atau impor otomatis dari LeADS (API atau ekspor *gradebook*).
-- Rekap penilaian per kelas di akhir periode oleh dosen (alternatif yang ditolak, 14 Nov 2026).
+Tidak dibutuhkan untuk membuktikan P1–P4, jadi tidak dirancang (calon isi batasan masalah):
+- Integrasi API dengan LeADS atau SIAKAD; pemetaan kolom ekspor otomatis.
+- Rincian nilai per tugas dan rubrik terstruktur per kriteria.
+- Nama praktikan dan master Mahasiswa.
+- Alur remediasi (penjadwalan dan penilaian ulang).
 - Analisis ketercapaian CPMK per MK (baris Evaluasi 19 yang lain; bukan lingkup proyek).
-- Alur remediasi (penjadwalan dan penilaian ulang). Cukup jumlah dan bukti.
 
 ## 8. Kompleksitas
 
 | T | M | D | E | A | Status data | Total |
 |---|---|---|---|---|---|---|
-| 0 (catatan penilaian adalah anak Jurnal Sesi) | 0 | 1 (PKG-18) | 1 (LeADS) | 0 | +2 (Belum ada di lab) | **4** |
+| 1 (Penilaian Kelas) | 0 | 1 (PKG-15, rubrik) | 1 (LeADS) | 0 | +2 (Belum ada di lab) | **5** |
 
-Analisis awal menghitung 3 karena status data dianggap "ada" (LeADS). Dari sisi lab, data penilaian ternyata belum ada sama sekali (A1, A2).
-
-Ringkasan untuk kolom sheet: Jenis Skor `Persentase` · Unit `praktikan` · Sumber `LeADS (dosen)` · Status `Belum ada` (di lab) · Dependensi ID `Proses 18 (sesi)` · Eksternal `LeADS` · Level `Bukti tertaut` · Kompleksitas `4`.
+Ringkasan untuk kolom sheet: Jenis Skor `Persentase` · Unit `praktikan per kelas` · Sumber `LeADS (tautan; impor Excel bila ada)` · Status `Belum ada` (di lab) · Dependensi ID `Persiapan 15 (modul)` · Eksternal `LeADS` · Level `Bukti tertaut` (semi-otomatis bila diimpor) · Kompleksitas `5`.
 
 ## 9. Pertanyaan untuk narasumber
 
 | Wawancara | Untuk | Yang perlu didapat |
 |---|---|---|
-| P14a–d (KaLab) | P1–P4 | Komponen nilai dan ada tidaknya rubrik per CPMK; siapa penilai dan cara menyamakan penilaian; di mana nilai dicatat; nilai individu vs kelompok; remediasi |
-| P15 (KaLab) | Tautan bukti, pengisi | Bukti apa yang realistis disimpan sistem lab; siapa mengunggah dan kapan |
-| P10, P13 (KaLab, laboran) | Pengisi catatan penilaian | Siapa mengisi jurnal sesi, termasuk kelas tanpa asisten |
-| P19 (KaLab) | Akses | Siapa boleh melihat data penilaian |
+| P14a–d (KaLab) | P1–P4 | Komponen nilai dan rubrik; siapa penilai; di mana nilai dicatat; nilai individu vs kelompok; remediasi; batas lulus |
+| P15 (KaLab) | Tautan dan impor | Bukti apa yang realistis disimpan sistem lab: tautan LeADS, atau ekspor nilai; siapa mengisi dan kapan |
+| P19 (KaLab) | Akses | Siapa boleh melihat data nilai |
 
 Pertanyaan tambahan yang **belum ada** di sheet wawancara (usulan):
-- [ ] Apakah asisten ikut memberi nilai atau umpan balik? Bila ya, bagaimana penilaiannya disamakan dengan dosen (moderasi)?
-- [ ] Apakah KaLab atau penilai monev bisa membuka *course* praktikum di LeADS? Apakah ada tautan per tugas/kuis yang bisa disalin ke jurnal sesi?
-- [ ] Apakah dosen bersedia melampirkan rubrik saat menerbitkan modul?
-
-Pertanyaan untuk **pembimbing**: apakah persentase pendekatan (jumlah penilaian lengkap ÷ jumlah praktikan hadir di sesi asesmen) dapat diterima sebagai bukti untuk unit "praktikan"? **[KONFIRMASI pembimbing]**
+- [ ] Apakah LeADS punya opsi ekspor *gradebook* ke Excel? Apakah ekspor memuat kolom umpan balik dan item remedial?
+- [ ] Apakah KaLab dan penilai monev bisa membuka *course* praktikum di LeADS lewat tautan?
+- [ ] Apakah asisten ikut memberi nilai atau umpan balik (moderasi)?

@@ -65,7 +65,7 @@ Sumber utama: baris ID 15 di *Instrumen Monev Laboratorium UPNVJ 2026 v1.1* (She
 | A12 | Penulisan periode tidak seragam di formulir ("2425 Genap", "2526 Ganjil", "2026/2027 Ganjil"), begitu pula nama MK antarperiode | Google Form (diolah 14 Nov 2026) |
 | A13 | POB 2025 langkah 6 menyebut asisten berkoordinasi dengan dosen "berdasarkan **tabel jadwal kelas** mata kuliah praktikum". Jadi jadwal kelas ada, tetapi di luar lab: tidak dilampirkan di POB dan tidak masuk sheet Alokasi | POB 2025 langkah 6 (studi dokumen, [bedah-dokumen-praktikum.md](bedah-dokumen-praktikum.md) A4) |
 
-Yang **belum diketahui** dan menunggu wawancara KaLab: di mana tabel jadwal kelas itu disimpan (SIAKAD, prodi, atau BAAK), kapan ditetapkan, dan bagaimana diumumkan **[KONFIRMASI wawancara P2]**.
+Menurut keterangan Herrens (14 Nov 2026), jadwal kelas praktikum **disusun tim jadwal fakultas**, dan KaLab hanya menyetujuinya. Cara jadwal itu masuk ke sistem belum diketahui; rancangan memakai **impor berkas** (Excel/CSV) oleh laboran, tanpa API **[ASUMSI]**. Yang masih menunggu wawancara: bentuk dan isi berkas jadwal, serta kapan dikirim **[KONFIRMASI wawancara P2]**.
 
 ---
 
@@ -120,7 +120,7 @@ Catatan aturan:
 | **Sesi** | [T] Core | 1 sesi praktikum bertanggal | Kelas (dan MK), pertemuan ke-, tanggal, jam mulai–selesai rencana, ruang, status | **Milik Core** (keputusan Herrens, 14 Nov 2026), **dibangkitkan di PKG-15** dari kelas × pola mingguan (hari, jam, ruang) × jumlah pertemuan dalam periode. Pola mingguan cukup menjadi masukan saat membangkitkan, tidak disimpan sebagai tabel **[USULAN PENULIS]** |
 | **Penetapan Jadwal** | [T] | 1 jadwal per periode (atau per prodi per periode) | Periode, tanggal publikasi, berkas jadwal bertanda tangan; status dan riwayat pengesahan dari *mixin* (draf → diajukan → disahkan) | **Jadwal harus ditandatangani** (keputusan Herrens, 14 Nov 2026), jadi memakai `labfik.approval.mixin` + `labfik.approval.log` dari Core. Satuan per periode atau per prodi **[KONFIRMASI wawancara P2]** |
 | **Rencana Pemakaian Lab** | [T] | 1 pengajuan pemakaian di luar praktikum | Jenis kegiatan (ujian, seminar, riset, peminjaman, lainnya), ruang, tanggal dan jam, pengaju, status (diajukan → disetujui/ditolak), penyetuju, alasan penolakan | Bukti 1 dan 2; masukan C2 |
-| **Versi Modul** | [T] | 1 versi modul per MK per periode | MK, periode, nomor versi, berkas atau tautan, **berkas rubrik** (dipakai PKG-19), **daftar *software*** berupa teks: nama, versi minimal, bebas/berbayar (dipakai PKG-16), **daftar bahan per pertemuan** berupa teks (dipakai PKG-17), tanggal terbit, status (draf → berlaku → diganti), penyusun (dosen) | Diterbitkan dosen **tanpa pengesahan** (keputusan 14 Nov 2026). Saat versi baru terbit, versi lama otomatis berstatus *diganti*. Kode dan revisi bisa memakai `labfik.controlled.mixin`; `labfik.approval.mixin` tidak dipakai |
+| **Versi Modul** | [T] | 1 versi modul per MK per periode | MK, periode, nomor versi, berkas atau tautan, **berkas rubrik** (dipakai PKG-19), **daftar *software*** berupa teks: nama, versi minimal, bebas/berbayar (dipakai PKG-16), **daftar bahan per pertemuan** berupa teks (dipakai PKG-17), tanggal terbit, status (draf → berlaku → diganti), penyusun (dosen) | Diterbitkan dosen **tanpa pengesahan** (keputusan 14 Nov 2026). Saat versi baru terbit, versi lama otomatis berstatus *diganti*. Nomor versi sebagai field biasa (`labfik.controlled.mixin` dihapus dari kontrak Core, 14 Nov 2026); `labfik.approval.mixin` tidak dipakai |
 | **Jadwal Terpadu** | [R] | — | Sesi + Rencana Pemakaian disetujui, per ruang per minggu | Bukti 1 |
 | **Rekaman Konflik Jadwal** | [R] | — | Tumpang tindih ruang × waktu yang terdeteksi, beserta status penyelesaiannya | Bukti 5. Bila sistem menolak bentrok saat input, rekaman berasal dari Rencana Pemakaian yang ditolak karena bentrok **[USULAN PENULIS]** |
 | **Daftar Sesi Tidak Memenuhi** | [R] | — | Sesi beserta cek C1–C4 yang gagal | Dasar persentase |
@@ -166,7 +166,7 @@ PKG-15 **tidak bergantung** ke package lain. Ini sesuai posisinya sebagai hulu.
 | PKG-16 Persiapan 16 (kesiapan alat) | Sesi; daftar *software* di Versi Modul |
 | PKG-17 Persiapan 17 (bahan) | Sesi; daftar bahan di Versi Modul |
 | PKG-18 Proses 18 (sesi terlaksana) | Sesi sebagai pembagi; Versi Modul untuk mencocokkan modul yang dipakai |
-| PKG-19 Evaluasi 19 (penilaian individual) | Sesi (melalui PKG-18); rubrik di Versi Modul |
+| PKG-19 Evaluasi 19 (penilaian individual) | Kelas; rubrik di Versi Modul |
 
 ## 7. Ditunda
 

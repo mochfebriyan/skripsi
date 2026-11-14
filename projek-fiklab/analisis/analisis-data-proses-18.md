@@ -19,7 +19,7 @@ Alur analisis mengikuti [pedoman pengisian sheet](pedoman-pengisian-sheet-analis
 | Jenis skor | **Persentase** |
 | Unit | 1 sesi praktikum yang direncanakan pada periode monev |
 | Level cakupan (usulan) | **Otomatis**. Kesesuaian tujuan sesi tetap dinilai penilai |
-| Posisi dalam dependensi | Tengah: butuh Sesi dan Versi Modul dari PKG-15; dipakai PKG-19 |
+| Posisi dalam dependensi | Tengah: butuh Sesi dan Versi Modul dari PKG-15; tidak dipakai package lain (PKG-19 kini memakai tautan LeADS per kelas, bukan Jurnal Sesi) |
 | Acuan ISO/IEC 17025 | 7.5.1 (rekaman teknis dibuat pada saat kegiatan) · 7.2.1.3 (versi metode yang berlaku) · 8.4 (pengendalian rekaman) |
 | Kompleksitas (kasar) | **6** (rincian di bagian 8) |
 
@@ -58,8 +58,10 @@ Periode 2024/2025 Genap tidak punya tab alokasi, jadi pencocokan rencana ↔ lap
 | A7 | Tanggal tidak konsisten: tahun salah 3, 1, 0, 0; hari tidak cocok dengan tanggal 9, 9, 27, 2. Jam di laporan juga bisa salah isi, sehingga tampak tumpang tindih ruang (PKG-15 A11) | Google Form |
 | A8 | Presensi: praktikan hanya **jumlah hadir** (selalu terisi). Dosen hanya ya/tidak (hadir: 50%, 38%, 88%, 89%); rincian "hadir penuh / hadir awal / tidak hadir" baru ada sejak 2026/2027 Ganjil. **Presensi laboran tidak ada sama sekali** | Google Form |
 | A9 | 55 laporan menyebut sesi daring/online (24, 3, 26, 2) tanpa catatan persetujuan. POB 2025 langkah 14 menyerahkan penyesuaian jadwal kepada asisten; "Formulir Penyesuaian Jadwal Praktikum" disebut tetapi tidak dilampirkan | Google Form (kolom topik dan kendala); POB 2025 |
+| A9a | Jadwal kelas praktikum tetap selama satu semester (hari dan jam yang sama untuk 16 pertemuan), kecuali ada **perubahan dari dosen pengampu**, misalnya kelas menjadi daring atau jadwal dipindah. Jadi dalam praktik pengaju perubahan adalah dosen, bukan asisten seperti tertulis di POB langkah 14 | Keterangan Herrens, 14 Nov 2026 **[KONFIRMASI wawancara P12]** |
 | A10 | Kolom "Status" berisi TRUE/FALSE (18 FALSE di 2024/2025 Genap, sisanya TRUE atau kosong). Diduga tanda verifikasi untuk rekap honor **[VALIDASI ke laboran]** | Google Form |
 | A11 | Penomoran pertemuan tidak konsisten: rencana memakai 8 = UTS dan 16 = UAS, tetapi ada laporan "pertemuan 8" (14 dan 4 laporan) dan "pertemuan 16" (1 dan 1) | Sheet Alokasi × Google Form |
+| A11a | Pertemuan 8 (UTS) dan 16 (UAS) **tetap berlangsung di kelas** pada jadwal yang sama, berupa ujian atau presentasi proyek. Laporan "pertemuan 8" dan "16" di A11 adalah sesi UTS/UAS, bukan salah nomor. Karena itu pembagi PKG-18 mencakup 16 sesi per kelas, dan Sesi diberi jenis pertemuan (praktikum / UTS / UAS) | Keterangan Herrens, 14 Nov 2026 |
 | A12 | Topik dan jumlah hadir selalu terisi; foto terisi di semua laporan kecuali 2024/2025 Genap (210 dari 312); kendala diisi di 66, 55, 62, 14 laporan | Google Form |
 | A13 | Lembar Pelaksanaan Asistensi POB 2025 memuat: pertemuan, hari/tanggal, nama dosen, nama asisten, paraf dosen, paraf asisten, topik, modul, waktu mulai, ruang, jumlah, kendala; ditandatangani Koordinator Prodi, Dosen Koordinator, dan KaLab. Lembar Monitoring Alokasi dan Pelaksanaan mencatat A (alokasi) dan L (laporan) per pertemuan, diparaf laboran | POB 2025 lampiran |
 | A14 | Presensi rinci per praktikan dicatat dosen di **SIMPEL**; penilaian di **LeADS**. Keduanya tidak terhubung ke laporan sesi | Brief bersama, Kondisi saat ini **[KONFIRMASI: tampilan dan hak akses role dosen/KaLab]** |
@@ -121,7 +123,7 @@ Catatan aturan:
 | Entitas | Label | Grain | Isi (garis besar) | Catatan |
 |---|---|---|---|---|
 | **Sesi** | [T] Core | 1 sesi bertanggal | — | Dibangkitkan PKG-15. PKG-18 hanya memperbarui statusnya (mis. terlaksana, tertunda, diganti). Nama status disatukan di state machine (Langkah 5) |
-| **Jurnal Sesi** | [T] | 1 per Sesi | Jam mulai dan selesai aktual, pertemuan ke-, topik, Versi Modul yang dipakai, jumlah praktikan hadir, tautan presensi SIMPEL (opsional), kendala, foto, pengisi, status (draf → dikirim). Anak: **presensi petugas** (personel, peran: dosen/asisten/laboran, kehadiran: penuh/sebagian/tidak), ***log book*** (waktu, uraian kegiatan), dan **catatan penilaian** bila sesi berisi asesmen (milik PKG-19, lihat [analisis-data-evaluasi-19.md](analisis-data-evaluasi-19.md)) | Satu Sesi satu jurnal. Siapa pengisinya (asisten, dosen, atau laboran) **[KONFIRMASI wawancara P10, P13]** |
+| **Jurnal Sesi** | [T] | 1 per Sesi | Jam mulai dan selesai aktual, pertemuan ke-, topik, Versi Modul yang dipakai, jumlah praktikan hadir, tautan presensi SIMPEL (opsional), kendala, foto, pengisi, status (draf → dikirim). Anak: **presensi petugas** (personel, peran: dosen/asisten/laboran, kehadiran: penuh/sebagian/tidak), ***log book*** (waktu, uraian kegiatan) | Satu Sesi satu jurnal. Siapa pengisinya (asisten, dosen, atau laboran) **[KONFIRMASI wawancara P10, P13]** |
 | **Perubahan Sesi** | [T] | 1 pengajuan perubahan | Sesi asal, jenis (pindah jadwal, pindah ruang, daring, batal dan diganti), alasan, pengaju, status (diajukan → disetujui/ditolak), penyetuju, Sesi pengganti | Bila disetujui dan ada pengganti, Sesi pengganti dibangkitkan dengan rujukan ke Sesi asal |
 | **Daftar Sesi Tidak Memenuhi** | [R] | — | Sesi beserta cek C1–C5 yang gagal | Dasar persentase |
 | **Rekap Keterlaksanaan per Kelas** (+) | [R] | — | Jumlah sesi rencana, terlaksana, memenuhi per kelas per periode | Pengganti rekap manual yang sekarang dibuat (A17) |
@@ -160,7 +162,7 @@ Pilihan tetap: status jurnal, peran petugas, tingkat kehadiran, jenis perubahan,
 
 | Dipakai oleh | Data |
 |---|---|
-| PKG-19 Evaluasi 19 (penilaian individual) | Jurnal Sesi (tempat catatan penilaian per sesi asesmen) dan jumlah praktikan hadir; **wajib** |
+| PKG-19 Evaluasi 19 (penilaian individual) | Tidak lagi (penilaian lewat tautan LeADS per kelas, keputusan 14 Nov 2026) |
 | PKG-04 Pengelolaan 4 (penugasan) | Presensi petugas (untuk mencocokkan dengan penugasan), opsional |
 
 ## 7. Ditunda

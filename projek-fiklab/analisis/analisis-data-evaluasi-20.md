@@ -73,7 +73,7 @@ Bukti dukung: (1) instrumen survei, (2) populasi/jumlah responden dan *response 
 
 ## 2. Aturan "memenuhi"
 
-Kriteria diperiksa **berurutan** per periode survei. Kriteria berikutnya tidak dihitung bila kriteria sebelumnya belum berbukti. Pola ini memakai `labfik.criteria.mixin` dari Core (`status_k1`–`k4`, `kriteria_tertinggi`, `_cek_k1()`–`_cek_k4()`).
+Kriteria diperiksa **berurutan** per periode survei. Kriteria berikutnya tidak dihitung bila kriteria sebelumnya belum berbukti. Pola ini memakai `labfik.criteria.mixin` dari Core (`kriteria_tertinggi` {compute}, `get_kriteria(tanggal_acuan)`, `_cek_k1()`–`_cek_k4()`).
 
 | Kriteria | Arti (instrumen) | Cek oleh sistem | Cek oleh penilai |
 |---|---|---|---|

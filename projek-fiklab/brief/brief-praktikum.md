@@ -27,7 +27,7 @@
 | **PKG-16** Persiapan 16 | Alat, *software*, dan utilitas dinyatakan siap sebelum setiap sesi | PLP/laboran; dosen | Persentase · sesi dilaksanakan | Otomatis | 3 | [analisis-data-persiapan-16.md](../analisis/analisis-data-persiapan-16.md) |
 | **PKG-17** Persiapan 17 | Bahan tersedia dalam jumlah, mutu, dan kondisi sesuai sebelum sesi (**bersyarat**) | PLP/laboran | Persentase · sesi berbahan | Otomatis | 5 | [analisis-data-persiapan-17.md](../analisis/analisis-data-persiapan-17.md) |
 | **PKG-18** Proses 18 | Sesi terlaksana sesuai jadwal, modul, dan waktu | Dosen; KaLab | Persentase · sesi rencana | Otomatis | 6 | [analisis-data-proses-18.md](../analisis/analisis-data-proses-18.md) |
-| **PKG-19** Evaluasi 19 | Praktikan dinilai individual dengan rubrik dan bukti unjuk kerja sesuai CPMK | Dosen; asisten | Persentase · praktikan (pendekatan dari sesi asesmen) | Bukti tertaut | 4 | [analisis-data-evaluasi-19.md](../analisis/analisis-data-evaluasi-19.md) |
+| **PKG-19** Evaluasi 19 | Praktikan dinilai individual dengan rubrik dan bukti unjuk kerja sesuai CPMK | Dosen; asisten | Persentase · praktikan per kelas | Bukti tertaut (tautan LeADS per kelas); semi-otomatis bila nilai diimpor dari ekspor Excel LeADS | 5 | [analisis-data-evaluasi-19.md](../analisis/analisis-data-evaluasi-19.md) |
 | **PKG-20** Evaluasi 20 | Kepuasan pengguna diukur, dianalisis, dan dipakai untuk perbaikan | KaLab; GKM | **Kriteria K1–K4** · paket per periode | Semi-otomatis | 5 | [analisis-data-evaluasi-20.md](../analisis/analisis-data-evaluasi-20.md) |
 
 Acuan ISO/IEC 17025 yang dirujuk instrumen: 6.4.4 (PKG-16), 6.4 dan 6.6 (PKG-17), 8.6.2 (PKG-20). Acuan pendukung dari analisis: 7.2.1 dan 8.3 (modul), 7.5.1 (rekaman sesi).
@@ -40,7 +40,7 @@ Keenam package bertumpu pada **dua objek** dan **dua cara menumpang**, sehingga 
 
 | Pola | Dipakai oleh | Isi |
 |---|---|---|
-| **A. Sesi sebagai tulang punggung** | 15, 16, 17, 18, 19 | Sesi bertanggal (Core) dibangkitkan PKG-15, diperiksa kesiapannya (16, 17), dilaporkan pelaksanaannya (18), dan menjadi tempat catatan penilaian (19). Indikator 15, 16, 17, dan 18 adalah **persentase sesi** |
+| **A. Sesi sebagai tulang punggung** | 15, 16, 17, 18 | Sesi bertanggal (Core) dibangkitkan PKG-15, diperiksa kesiapannya (16, 17), dilaporkan pelaksanaannya (18). Indikator 15, 16, 17, dan 18 adalah **persentase sesi** |
 | **B. Versi Modul sebagai daftar kebutuhan** | 15, 16, 17, 19 | Dosen menerbitkan modul berversi (tanpa pengesahan) yang memuat berkas modul, **daftar *software***, **daftar bahan per pertemuan**, dan **rubrik**. Pemeriksaan dan penilaian merujuk ke daftar ini, bukan ke master baru |
 | **C. Menumpang sebagai tabel anak** | 17 → 16, 19 → 18 | Bahan menjadi kategori butir di Pemeriksaan Kesiapan (16); penilaian menjadi catatan di Jurnal Sesi (18). Satu package = satu indikator tetap terpenuhi tanpa tabel sendiri |
 | **D. Paket bertangga K1–K4** | 20 | Survei (addon `survey` Odoo) + Evaluasi Survei dengan Rencana Tindak Lanjut, memakai `labfik.criteria.mixin` dari Core |
@@ -51,7 +51,8 @@ PKG-15 ─ bangkitkan Sesi (Core) + terbitkan Versi Modul (software, bahan, rubr
    ├─▶ PKG-16 Pemeriksaan Kesiapan per sesi ◀── PKG-17 butir "bahan"
    │        └─ keputusan tunda ─▶ Perubahan Sesi (PKG-18)
    │
-   └─▶ PKG-18 Jurnal Sesi + Perubahan Sesi ◀── PKG-19 catatan penilaian
+   └─▶ PKG-18 Jurnal Sesi + Perubahan Sesi
+PKG-19 Penilaian Kelas: tautan LeADS per kelas (+ impor Excel bila tersedia) ── rubrik dari Versi Modul (PKG-15)
 PKG-20 Survei + Evaluasi Survei (berdiri sendiri, hanya Core)
 ```
 
@@ -83,7 +84,7 @@ Wawancara KaLab dan laboran (sheet "Wawancara FIKLAB Compliance", bagian Pelaksa
 | Jadwal dan modul (PKG-15) | Sesi bertanggal dibangkitkan dari kelas × pola mingguan; penetapan dan publikasi jadwal per periode; pemakaian lab di luar praktikum dengan persetujuan; cek konflik ruang dan kapasitas; versi modul berlaku sebelum sesi; jadwal terpadu dan rekaman konflik |
 | Kesiapan (PKG-16, 17) | Pemeriksaan kesiapan oleh laboran sebelum sesi, dengan butir per kategori (PC, *software* sesuai modul, jaringan, listrik, proyektor, bahan bila ada), keputusan siap/tunda, dan substitusi bahan yang disetujui |
 | Pelaksanaan (PKG-18) | Satu jurnal per sesi berisi jam aktual, modul yang dipakai, presensi petugas, jumlah praktikan hadir, *log book*; perubahan sesi dengan persetujuan dan sesi pengganti |
-| Penilaian (PKG-19) | Catatan penilaian di sesi asesmen: bentuk individual, rubrik dari modul, jumlah dinilai/umpan balik/remediasi, tautan bukti LeADS |
+| Penilaian (PKG-19) | Tautan penilaian LeADS per kelas dan rubrik dari modul (Inti); impor nilai kelas dari ekspor Excel LeADS bila tersedia, sehingga persentase per praktikan dihitung sistem (Pelengkap) |
 | Kepuasan (PKG-20) | Survei per periode yang ditetapkan (populasi, target respons, enam aspek), respons anonim, rekap per aspek, evaluasi dan rencana tindak lanjut, perbandingan antarperiode |
 | Status monev | Persentase PKG-15–19 beserta daftar unit yang tidak memenuhi; kriteria tertinggi K1–K4 PKG-20 |
 
@@ -96,7 +97,7 @@ Ditetapkan di Langkah 1 setelah arahan pembimbing; tabel ini usulan dari hasil a
 | PKG-15 | Bangkitkan Sesi; penetapan jadwal (disahkan, bertanda tangan); rencana pemakaian lab + persetujuan; versi modul (berkas, *software*, bahan, rubrik); cek konflik dan kapasitas; jadwal terpadu dan rekaman konflik (bukti 1 dan 5 instrumen); persentase | Impor kelas dari sheet alokasi |
 | PKG-16, 17 | Pemeriksaan kesiapan per sesi dengan butir dan keputusan; butir bahan dengan substitusi; persentase | Rekap kesiapan per ruang |
 | PKG-18 | Jurnal sesi (presensi petugas, jumlah hadir, *log book*); perubahan sesi + sesi pengganti; persentase | Rekap keterlaksanaan per kelas; peringatan keterlambatan pengisian |
-| PKG-19 | Catatan penilaian di jurnal; rubrik di modul; persentase pendekatan | Daftar kelas tanpa bukti penilaian |
+| PKG-19 | Tautan penilaian LeADS per kelas; rubrik di modul; persentase kelas berbukti | Impor nilai dari ekspor Excel LeADS (persentase per praktikan); daftar belum lengkap |
 | PKG-20 | Survei (*extend* `survey`) dengan aspek, populasi, target; evaluasi + RTL; status K1–K4 | Perbandingan antarperiode dalam bentuk grafik |
 
 Yang **tidak dirancang** tercantum di batasan masalah.
@@ -117,7 +118,7 @@ Yang **tidak dirancang** tercantum di batasan masalah.
 |---|---|---|---|
 | Periode, Ruang Lab, Mata Kuliah, Kelas, Personel, Jabatan | Core | Wajib | — |
 | `labfik.criteria.mixin` | Core | Wajib (PKG-20) | — |
-| `labfik.controlled.mixin` (kode, revisi) | Core | Wajib (Versi Modul) | — |
+| ~~`labfik.controlled.mixin`~~ | Core | **Tidak dipakai** (dihapus dari kontrak Core, 14 Nov 2026) | Nomor versi sebagai field biasa di Versi Modul |
 | `labfik.approval.mixin` + `labfik.approval.log` | Core | Wajib (Penetapan Jadwal; jadwal harus ditandatangani) | — |
 | `labfik.evidence.mixin` | Core | Wajib (Pemeriksaan Kesiapan, Jurnal Sesi, Evaluasi Survei) | — |
 | Addon `survey` | Odoo 17 CE (LGPL-3) | Wajib (PKG-20, keputusan 14 Nov 2026) | Google Form + impor |
@@ -135,10 +136,10 @@ Yang **tidak dirancang** tercantum di batasan masalah.
 |---|---|---|
 | Personel (`hr.employee` diperluas) | Dosen, laboran, teknisi, asisten: pengisi jurnal, petugas hadir, pemeriksa kesiapan, penyusun modul, penyetuju, PIC RTL. **Praktikan tidak dicatat sebagai Personel** | 15–20 |
 | Jabatan (`hr.job` diperluas) + `cari_pemegang_berwenang(tindakan, jenis)` | Jabatan yang dipakai: Kepala Laboratorium, Laboran/PLP, Teknisi, Dosen, **Asisten Praktikum**. Untuk menentukan siapa boleh mengesahkan jadwal, menyetujui pemakaian lab dan perubahan sesi, menetapkan survei, dan mengisi jurnal | 15, 18, 20 |
-| `labfik.controlled.mixin` (kode, revisi, unit pemilik) | Versi Modul (revisi = nomor versi) | 15 |
+| ~~`labfik.controlled.mixin`~~ | `labfik.controlled.mixin` tidak dipakai lagi (keputusan Febriyan di `main`, 14 Nov 2026); nomor versi Versi Modul menjadi field biasa | 15 |
 | `labfik.approval.mixin` + `labfik.approval.log` (ajukan → kembalikan / unggah PDF bertanda tangan → sahkan → cabut; cek wewenang; riwayat; hook `_setelah_disahkan()`) | Penetapan Jadwal: **jadwal harus ditandatangani** (keputusan Herrens, 14 Nov 2026). Hook `_setelah_disahkan()` mengisi tanggal publikasi dan menandai Sesi periode itu sebagai terpublikasi | 15 |
 | `labfik.evidence.mixin` (tanggal, pelapor, bukti, keterangan; rekaman tidak dihapus) | Pemeriksaan Kesiapan, Jurnal Sesi, Evaluasi Survei | 16, 18, 20 |
-| `labfik.criteria.mixin` (`status_k1`–`k4`, `kriteria_tertinggi`, `_cek_k1()`–`_cek_k4()` {abstract}) | Perluasan `survey.survey` sebagai paket per periode | 20 |
+| `labfik.criteria.mixin` (`kriteria_tertinggi` {compute}, `get_kriteria(tanggal_acuan)`, `_cek_k1()`–`_cek_k4()` {abstract}; versi kontrak Core terbaru) | Perluasan `survey.survey` sebagai paket per periode | 20 |
 
 **b. Yang tidak dipakai, dan alasannya**
 
@@ -146,7 +147,7 @@ Yang **tidak dirancang** tercantum di batasan masalah.
 |---|---|
 | `labfik.approval.mixin` untuk Versi Modul, Survei, Rencana Pemakaian Lab, Perubahan Sesi | Modul cukup diterbitkan (keputusan 14 Nov 2026); survei cukup "ditetapkan"; pemakaian lab dan perubahan sesi cukup disetujui. Ketiganya memakai status sederhana + cek wewenang lewat Jabatan, tanpa berkas bertanda tangan |
 | `labfik.period.mixin` | Tidak ada objek Praktikum yang "kedaluwarsa" berdasarkan periode; cukup `periode_id` biasa |
-| Mahasiswa (Core, di pemetaan) | Praktikum tidak menyimpan data per praktikan (batasan masalah 3) |
+| Mahasiswa (Core, di pemetaan) | Tidak dipakai. Bila impor nilai dipakai (PKG-19, Pelengkap), praktikan cukup dicatat dengan NIM pada baris nilai per kelas |
 
 **c. Usulan perubahan ke Core (perlu disetujui pemiliknya)**
 
@@ -163,7 +164,14 @@ Yang **tidak dirancang** tercantum di batasan masalah.
 |---|---|---|
 | `labfik.mata.kuliah` [M] | `kode` «unique», `name`, `prodi`, `semester` | Kode MK sebagai kunci impor (nama MK tidak seragam antarperiode) |
 | `labfik.kelas` [M] | `mata_kuliah_id`, `periode_id`, `name`, `jumlah_mahasiswa`, `dosen_koordinator_id`, `dosen_ids` | Unik per (MK, periode, nama kelas) |
-| `labfik.sesi` [T] | `kelas_id`, `pertemuan_ke`, `tanggal`, `jam_mulai`, `jam_selesai`, `ruang_id`, `state`, `sesi_asal_id` (bila pengganti) | Dibangkitkan hanya oleh PKG-15 (atau sebagai pengganti lewat Perubahan Sesi PKG-18). Satu Sesi asli per (kelas, pertemuan). Nama status ditetapkan di state machine (Langkah 5) |
+| `labfik.sesi` [T] | `kelas_id`, `pertemuan_ke`, `jenis_pertemuan` (praktikum / UTS / UAS), `moda` (luring / daring), `tanggal`, `jam_mulai`, `jam_selesai`, `ruang_id`, `state`, `sesi_asal_id` (bila pengganti) | Dibangkitkan hanya oleh PKG-15 (atau sebagai pengganti lewat Perubahan Sesi PKG-18). Satu Sesi asli per (kelas, pertemuan). Nama status ditetapkan di state machine (Langkah 5) |
+
+**f. Keputusan modul (Herrens, 14 Nov 2026; tidak menunggu kelompok)**
+
+| Hal | Keputusan | Alasan |
+|---|---|---|
+| Rencana Tindak Lanjut (PKG-20) | **Tetap di modul Praktikum** (`labfik.praktikum.evaluasi.rtl`, memakai `labfik.evidence.mixin`). Dicatat sebagai calon entitas bersama "Tindak Lanjut" untuk pengembangan berikutnya | Tidak perlu menunggu kesepakatan kelompok; pola tetap bisa dipindah ke Core nanti tanpa mengubah alur |
+| Akun pengguna asisten, dosen, laboran | Memakai fitur bawaan Odoo: `hr.employee.user_id` → `res.users`, dengan grup akses per peran (`labfik_kalab`, `labfik_laboran`, `labfik_dosen`, `labfik_asisten`) dan *record rule* per kelas | Tanpa kode baru; hak akses tetap mengikuti jabatan (CLAUDE.md bagian 6) |
 
 **e. Aturan pakai bersama untuk Sesi** **[USULAN PENULIS; KONFIRMASI kelompok]**
 - Modul lain (SDM PKG-04, Aset PKG-08) **tidak menambah field** ke `labfik.sesi`. Mereka membuat modelnya sendiri yang merujuk `sesi_id` (misalnya penugasan petugas per sesi), sehingga `labfik_core` tidak bergantung pada modul mana pun.
@@ -176,12 +184,12 @@ Yang **tidak dirancang** tercantum di batasan masalah.
 
 1. **Indikator:** PKG-15 s.d. 20. Baris "Ketercapaian CPMK praktikum dianalisis" (Evaluasi 19 yang lain) tidak dicakup.
 2. **Tanpa integrasi** dengan SIAKAD, SIMPEL, LeADS, atau sistem jadwal fakultas. Data kelas diimpor dari berkas; presensi rinci dan bukti penilaian berupa tautan.
-3. **Tidak menyimpan data per praktikan** (presensi per nama, nilai). Presensi praktikan berupa jumlah; penilaian berupa jumlah per sesi asesmen. Konsekuensinya persentase PKG-19 adalah pendekatan **[KONFIRMASI pembimbing]**.
+3. **Data per praktikan dibatasi:** presensi praktikan berupa jumlah. Penilaian (PKG-19) cukup berupa tautan LeADS per kelas; bila impor nilai dipakai, yang disimpan hanya NIM dan status/nilai, **tanpa nama**, dengan akses terbatas (dosen kelas, KaLab, pengimpor).
 4. **Tanpa master baru** untuk *software* dan bahan: keduanya ditulis per modul. Master Alat, Bahan, dan stok adalah wilayah kelompok Aset.
 5. **Rekap honor asisten** (tarif, rekening, pengajuan) tidak dirancang.
 6. **Tidak dirancang:** penjadwalan otomatis, kalender libur, pengingat (modul, jurnal, lisensi, survei), pemeriksaan per unit PC, register insiden, saluran pengaduan tersendiri, alur remediasi, *snapshot* tren skor.
 7. **PKG-17 bersyarat:** berlaku hanya untuk sesi yang modulnya mencantumkan bahan; N/A untuk periode tanpa sesi semacam itu.
-8. **Skor:** persentase PKG-15–19 dihitung sistem (PKG-19 berupa pendekatan dengan bukti tertaut); PKG-20 hanya menunjukkan kriteria tertinggi yang lengkap secara data, skor akhir ditetapkan penilai.
+8. **Skor:** persentase PKG-15–18 dihitung sistem; PKG-19 ditetapkan penilai dari LeADS (sistem menunjukkan kelas berbukti), dan dihitung sistem bila nilai diimpor; PKG-20 hanya menunjukkan kriteria tertinggi yang lengkap secara data, skor akhir ditetapkan penilai.
 9. **Platform:** Odoo 17 Community, tanpa OpenEduCat. Modul Rafika (`skripsi_rafika/`) hanya acuan.
 10. **Data:** data uji fiktif. Data nyata (sheet alokasi dan formulir asistensi) hanya diolah menjadi angka agregat untuk observasi.
 11. **Sistem adalah alat** pencatatan, pembuktian, dan pemantauan; tidak menjamin skor monev naik.
@@ -194,7 +202,7 @@ Yang **tidak dirancang** tercantum di batasan masalah.
 | M2. Modul tidak berversi dan tidak terbukti tersedia sebelum sesi (PKG-15 A9) | T2. Modul berversi yang terbit sebelum sesi dan menjadi acuan kebutuhan *software*, bahan, dan rubrik | Versi modul |
 | M3. Kesiapan sarana dicatat asisten sesudah sesi, tidak konsisten, dan tanpa keputusan tunda (PKG-16 A3) | T3. Pemeriksaan kesiapan oleh laboran sebelum sesi dengan keputusan siap/tunda | Pemeriksaan kesiapan |
 | M4. Pencatatan pelaksanaan dibuat untuk honor, sehingga kelas tanpa asisten tidak terekam dan kualitas rekaman rendah (PKG-18 A1–A9) | T4. Satu jurnal per sesi untuk semua kelas, dengan presensi petugas dan perubahan sesi yang disetujui | Jurnal sesi, perubahan sesi |
-| M5. Bukti penilaian individual dan kepuasan pengguna tidak ada di lab (PKG-19 A1–A2, PKG-20 A5) | T5. Bukti penilaian per sesi asesmen dan survei kepuasan per periode beserta tindak lanjutnya | Catatan penilaian, survei, evaluasi survei |
+| M5. Bukti penilaian individual dan kepuasan pengguna tidak ada di lab (PKG-19 A1–A2, PKG-20 A5) | T5. Bukti penilaian individual tertaut ke LeADS per kelas, dan survei kepuasan per periode beserta tindak lanjutnya | Penilaian kelas (tautan, impor), survei, evaluasi survei |
 | M6. Status indikator dihitung manual dan tidak tertelusur ke bukti | T6. Status monev: persentase per indikator dan K1–K4 PKG-20, tertaut ke bukti | Status monev |
 
 **Klaim kondisi** di M1–M6 bersumber dari dokumen dan data nyata; konfirmasi KaLab lewat wawancara tetap diperlukan sebelum dikutip di Bab I **[KONFIRMASI]**.
@@ -203,9 +211,9 @@ Yang **tidak dirancang** tercantum di batasan masalah.
 
 | Risiko | Mitigasi |
 |---|---|
-| Siapa mengisi jurnal (dan catatan penilaian) untuk kelas tanpa asisten belum pasti; tanpa pengisi, PKG-18 dan 19 tidak terbukti untuk 42–56% kelas | Dugaan: dosen yang mengajar kelas itu **[ASUMSI, 14 Nov 2026]**; dipastikan lewat wawancara P10, P13. Rancangan memakai aktor abstrak Pengisi Jurnal sehingga tidak terikat satu peran |
+| Siapa mengisi jurnal untuk kelas tanpa asisten belum pasti; tanpa pengisi, PKG-18 tidak terbukti untuk 42–56% kelas | Dugaan: dosen yang mengajar kelas itu **[ASUMSI, 14 Nov 2026]**; dipastikan lewat wawancara P10, P13. Rancangan memakai aktor abstrak Pengisi Jurnal sehingga tidak terikat satu peran |
 | Pemeriksaan kesiapan per sesi terlalu berat untuk laboran | Siapkan opsi satu pemeriksaan per ruang per hari (wawancara P8) |
-| Persentase PKG-19 berupa pendekatan ditolak pembimbing | Ajukan sejak awal; alternatifnya presensi dan status penilaian per nama (lebih berat, data pribadi) |
+| KaLab/penilai tidak bisa membuka *course* LeADS lewat tautan, atau LeADS tidak bisa diekspor ke Excel | Tanyakan di P15; cadangan: berkas ekspor dilampirkan di Penilaian Kelas |
 | Dosen tidak menerbitkan modul berversi atau rubrik | Mulai dari satu MK pilot; jalan pengganti berupa tautan berkas di jurnal |
 | Modul ini hulu bagi SDM dan Aset (Sesi); keterlambatan menghambat modul lain | Sepakati model Sesi lebih dulu (sudah di Core); bangun fitur bangkitkan Sesi paling awal |
 | Data nyata berisi data pribadi asisten | Hanya angka agregat yang dikutip; data uji fiktif; minta izin KaLab sebelum angka dikutip di proposal |
@@ -215,11 +223,11 @@ Yang **tidak dirancang** tercantum di batasan masalah.
 
 **Untuk Pak Widi**
 - [ ] Apakah judul di atas disetujui?
-- [ ] Apakah persentase PKG-19 berupa pendekatan dari sesi asesmen (tanpa data per praktikan) dapat diterima?
+- [ ] Apakah PKG-19 boleh dibuktikan dengan tautan ke LeADS per kelas (persentase ditetapkan penilai), dengan impor Excel sebagai pelengkap?
 - [ ] Apakah skor akhir PKG-20 (kriteria berurutan) boleh ditetapkan penilai, sementara sistem menunjukkan kriteria yang lengkap secara data?
 
 **Untuk KaLab dan laboran (wawancara P1–P19, wajib sebagai lampiran)** — rinciannya di bagian 9 tiap analisis. Yang paling menentukan rancangan:
-- [ ] Sumber dan waktu penetapan jadwal; siapa membagi ruang (P2).
+- [ ] Bentuk berkas jadwal dari tim jadwal fakultas dan kapan dikirim (P2). Diketahui: jadwal disusun tim jadwal fakultas, KaLab hanya menyetujui; masuk ke sistem lewat impor berkas tanpa API **[ASUMSI]**.
 - [ ] Siapa mengisi catatan sesi, termasuk kelas tanpa asisten (P10, P13). Dugaan: dosen yang mengajar **[ASUMSI]**.
 - [ ] Pengesah jadwal: dugaan KaLab **[ASUMSI]** (P5). Penyetuju pemakaian lab dan perubahan sesi: **KaLab** (keputusan 14 Nov 2026). Modul diakses praktikan lewat **LeADS UPNVJ**.
 - [ ] Pemeriksaan kesiapan per sesi atau per hari; siapa berhak menunda (P8).
@@ -230,7 +238,7 @@ Yang **tidak dirancang** tercantum di batasan masalah.
 
 **Untuk kelompok (Febriyan, Zahir)**
 - [ ] `labfik_praktikum` cukup `depends: ['labfik_core', 'survey']`, tanpa `labfik_sdm` dan tanpa addon jembatan Aset?
-- [ ] Rencana Tindak Lanjut PKG-20 dijadikan entitas bersama "Tindak Lanjut" di Core, atau tetap di modul ini?
+- [x] Rencana Tindak Lanjut PKG-20: **tetap di modul Praktikum** (keputusan 14 Nov 2026, Kontrak Core f); calon entitas bersama untuk pengembangan berikutnya.
 - [ ] PKG-17 dinyatakan "dicakup terbatas" (menutup pertanyaan terbuka di brief bersama setelah wawancara P9)?
 
 ## Langkah berikutnya
