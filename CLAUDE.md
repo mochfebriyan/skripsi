@@ -219,13 +219,15 @@ Rancangan tidak boleh dimulai tanpa brief modul dan analisis setiap PKG-nya. Ked
 
 ## 6. Kontrak Core dan model yang sudah ada
 
-Dirancang di modul Tata Kelola (design class diagram di tag `rancangan-tatkel-v1`). Modul lain **memakai**, bukan membuat ulang.
+Sebagian besar dirancang di modul Tata Kelola (design class diagram di branch `febriyan-skripsi`, `projek-fiklab/rancangan/design-class-tata-kelola.md`); Mata Kuliah, Kelas, dan Sesi dari modul Pelaksanaan Praktikum (branch `herrens-skripsi`). Modul lain **memakai**, bukan membuat ulang.
 
 | Model / mixin | Isi | Pakai untuk |
 |---|---|---|
 | Personel = `hr.employee` (Odoo CE `hr`, LGPL-3) diperluas dengan `_inherit` | Semua orang yang punya peran di lab (dosen, laboran/PLP, teknisi, asisten, petugas K3, eksternal) | Semua rujukan ke orang (PIC, peserta, petugas). Cara mencatat asisten (mahasiswa) dan pihak eksternal sebagai `hr.employee` masih **[KONFIRMASI kelompok]** |
 | Jabatan = `hr.job` diperluas (+ `labfik.jabatan.tugas`, `labfik.jabatan.wewenang`) | Jabatan, unit, atasan, pengganti, wewenang per jenis dokumen, syarat kompetensi | Siapa berwenang melakukan apa. `cari_pemegang_berwenang(tindakan, jenis)` |
 | `labfik.ruang`, `labfik.periode` | Master Core | Lokasi dan periode |
+| `labfik.mata.kuliah`, `labfik.kelas` (nama model [USULAN PENULIS]) | Master Core: MK praktikum; kelas per MK per periode (dosen kelas, jumlah mahasiswa) | Identitas sesi, modul, penugasan, survei (keputusan Herrens, 14 November 2026) |
+| `labfik.sesi` (nama model [USULAN PENULIS]) | Satu-satunya **transaksi** di Core: satu sesi praktikum bertanggal (kelas, pertemuan ke-, tanggal, jam, ruang, status). Model sendiri, **tidak** mewarisi `op.session` (OpenEduCat), supaya `labfik_core` tetap `depends: ['hr', 'mail']` | Dibangkitkan PKG-15; dipakai PKG-04, 08, 16, 17, 18, 19 (keputusan Herrens, 14 November 2026) |
 | `labfik.approval.mixin` + `labfik.approval.log` | Siklus status draf → diajukan → disahkan → diganti/dicabut/kedaluwarsa (tanpa tahap pemeriksaan), cek wewenang, berkas bertanda tangan, riwayat pengesahan, hook `_setelah_disahkan()` | Setiap dokumen yang perlu disahkan (mis. rencana pelatihan PKG-14) |
 | `labfik.controlled.mixin` | Kode, revisi, unit pemilik | Dokumen terkendali |
 | `labfik.period.mixin` | Periode berlaku + penjadwal kedaluwarsa | Dokumen berperiode |
