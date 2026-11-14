@@ -344,7 +344,7 @@ Package diurutkan per modul. Package milik kelompok lain tetap dicantumkan karen
 | Import Core | Personel dan Jabatan (keduanya dikelola di sini), Dokumen Induk |
 | Import package lain | — |
 | Dipakai oleh | Tidak ada yang memakai [T]/[R]-nya, tetapi Personel dan Jabatan yang dikelola di sini dipakai 11 package lain lewat Core |
-| Catatan | **Package paling hulu.** Keputusan model Personel (pakai `hr.employee`, model sendiri, atau model Rafika) harus diambil di sini lebih dulu |
+| Catatan | **Package paling hulu.** Model Personel sudah diputuskan: `hr.employee` dan `hr.job` diperluas di `labfik_core` (Febriyan, 14 November 2026, lihat CLAUDE.md bagian 6) |
 
 #### PKG-13 · Pengembangan 13 (rencana pengembangan lab)
 
