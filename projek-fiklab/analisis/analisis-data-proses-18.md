@@ -119,7 +119,7 @@ Catatan aturan:
 | Entitas | Label | Grain | Isi (garis besar) | Catatan |
 |---|---|---|---|---|
 | **Sesi** | [T] Core | 1 sesi bertanggal | — | Dibangkitkan PKG-15. PKG-18 hanya memperbarui statusnya (mis. terlaksana, tertunda, diganti). Nama status disatukan di state machine (Langkah 5) |
-| **Jurnal Sesi** | [T] | 1 per Sesi | Jam mulai dan selesai aktual, pertemuan ke-, topik, Versi Modul yang dipakai, jumlah praktikan hadir, tautan presensi SIMPEL (opsional), kendala, foto, pengisi, status (draf → dikirim). Anak: **presensi petugas** (personel, peran: dosen/asisten/laboran, kehadiran: penuh/sebagian/tidak) dan ***log book*** (waktu, uraian kegiatan) | Satu Sesi satu jurnal. Siapa pengisinya (asisten, dosen, atau laboran) **[KONFIRMASI wawancara P10, P13]** |
+| **Jurnal Sesi** | [T] | 1 per Sesi | Jam mulai dan selesai aktual, pertemuan ke-, topik, Versi Modul yang dipakai, jumlah praktikan hadir, tautan presensi SIMPEL (opsional), kendala, foto, pengisi, status (draf → dikirim). Anak: **presensi petugas** (personel, peran: dosen/asisten/laboran, kehadiran: penuh/sebagian/tidak), ***log book*** (waktu, uraian kegiatan), dan **catatan penilaian** bila sesi berisi asesmen (milik PKG-19, lihat [analisis-data-evaluasi-19.md](analisis-data-evaluasi-19.md)) | Satu Sesi satu jurnal. Siapa pengisinya (asisten, dosen, atau laboran) **[KONFIRMASI wawancara P10, P13]** |
 | **Perubahan Sesi** | [T] | 1 pengajuan perubahan | Sesi asal, jenis (pindah jadwal, pindah ruang, daring, batal dan diganti), alasan, pengaju, status (diajukan → disetujui/ditolak), penyetuju, Sesi pengganti | Bila disetujui dan ada pengganti, Sesi pengganti dibangkitkan dengan rujukan ke Sesi asal |
 | **Daftar Sesi Tidak Memenuhi** | [R] | — | Sesi beserta cek C1–C5 yang gagal | Dasar persentase |
 | **Rekap Keterlaksanaan per Kelas** (+) | [R] | — | Jumlah sesi rencana, terlaksana, memenuhi per kelas per periode | Pengganti sheet "Ketercakupan Praktikum" yang sekarang dibuat manual (`brief-role-3.md`) |
@@ -158,7 +158,7 @@ Pilihan tetap: status jurnal, peran petugas, tingkat kehadiran, jenis perubahan,
 
 | Dipakai oleh | Data |
 |---|---|
-| PKG-19 Evaluasi 19 (penilaian individual) | Jurnal Sesi (tempat menautkan bukti penilaian) |
+| PKG-19 Evaluasi 19 (penilaian individual) | Jurnal Sesi (tempat catatan penilaian per sesi asesmen) dan jumlah praktikan hadir; **wajib** |
 | PKG-04 Pengelolaan 4 (penugasan) | Presensi petugas (untuk mencocokkan dengan penugasan), opsional |
 
 ## 7. Ditunda
