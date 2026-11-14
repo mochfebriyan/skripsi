@@ -8,7 +8,7 @@ Bahasa kerja: **Indonesia**.
 
 1. Tentukan **modul** yang sedang dikerjakan. Lihat nama branch (`<nama>-skripsi`) atau tanya pengguna. Jangan menebak.
 2. Baca [projek-fiklab/brief/brief-seluruh-projek.md](projek-fiklab/brief/brief-seluruh-projek.md) (proyek, modul, Core, keputusan, pertanyaan terbuka).
-3. Baca brief dan analisis modul itu, bila sudah ada (`projek-fiklab/brief/brief-<slug>.md`, `projek-fiklab/analisis/`).
+3. Cek apakah brief modul (`projek-fiklab/brief/brief-<slug>.md`) dan analisis **setiap** PKG modul sudah ada. Bila sudah, baca. **Bila belum, jalankan Langkah 0 (bagian 4) dan jangan lanjut ke rancangan.**
 4. Periksa langkah rancangan mana yang sudah selesai (bagian 4). Lanjutkan dari langkah berikutnya; jangan lompat.
 5. Bila ada file konteks pribadi pemilik branch (contoh: `tatkel-CLAUDE.md` di branch `febriyan-skripsi`), baca juga.
 
@@ -73,6 +73,7 @@ Setiap langkah memakai hasil langkah sebelumnya. Jangan membuat use case atau cl
 
 | # | Langkah | Output (`projek-fiklab/…`) | Bab Wazlawick | Masuk proposal |
 |---|---|---|---|---|
+| 0 | **Prasyarat:** brief modul dan analisis per PKG | `brief/brief-<slug>.md`, `analisis/analisis-*.md` | — | Bahan Bab I dan 2.2 |
 | 1 | Kumpulkan keputusan pembimbing dan scope | Brief modul diperbarui | — | (Bab I 1.3) |
 | 2 | Studi dokumen (bedah dokumen lab) | `analisis/bedah-dokumen-<slug>.md` | — | Bahan 2.1 |
 | 3 | Kontrak Core dengan modul lain | Catatan di brief / dokumen DCD | — | — |
@@ -86,9 +87,24 @@ Setiap langkah memakai hasil langkah sebelumnya. Jangan membuat use case atau cl
 
 Kontrak OCL (Bab 12) **dilewati** untuk proposal; aturan bisnis cukup ditulis sebagai AB-xx dan dipetakan ke mekanisme Odoo di langkah 10.
 
+### Langkah 0: Prasyarat (wajib dicek sebelum langkah 1)
+Rancangan tidak boleh dimulai tanpa brief modul dan analisis setiap PKG-nya. Keduanya adalah dasar semua langkah berikutnya.
+
+1. **Cek keberadaan**, jangan hanya di branch aktif:
+   - `projek-fiklab/brief/brief-<slug>.md` dan analisis untuk **setiap** PKG modul (`projek-fiklab/analisis/`).
+   - Branch lain dan riwayat git: `git log --all --oneline -- 'projek-fiklab/analisis/*' 'projek-fiklab/brief/*'`, lalu `git show <branch atau commit>:<path>`. Sebagian PKG pernah dianalisis anggota lain (lihat catatan di brief bersama, bagian "Modul dan pemegangnya"; contoh: analisis awal PKG-18/19 ada di commit `62e50ce`).
+   - Bahan yang sudah ada di `main`: [pemetaan-package-instrumen.md](projek-fiklab/analisis/pemetaan-package-instrumen.md) (entitas milik, *import*, dan pemakai tiap package) dan tab *Analysis* di Instrumen xlsx.
+2. **Laporkan hasilnya** ke pengguna dalam tabel: PKG → analisis ada / sebagian / belum → lokasinya; brief ada / belum.
+3. **Bila ada yang belum ada: berhenti.** Ajak pengguna menyusunnya dulu. Jangan lanjut ke langkah 1–10 dan jangan mengarang isi analisis.
+4. **Cara menyusun** (sebagai diskusi dengan pengguna, satu PKG demi satu PKG):
+   - **Analisis per PKG:** ikuti [pedoman-pengisian-sheet-analisis.md](projek-fiklab/analisis/pedoman-pengisian-sheet-analisis.md) bagian 2: target → aturan "memenuhi" (K1–K4 atau S1–Sn, dengan kolom cek oleh sistem / cek oleh penilai) → luaran (bukti dukung) → data transaksi → master data → dependensi dan jalan pengganti → yang ditunda → pertanyaan untuk narasumber. Sumber utama: bunyi indikator, kriteria, dan bukti dukung di Instrumen xlsx. Contoh format: `analisis-data-pengelolaan-1-3.md` dan `analisis-data-pengembangan-13.md` di branch `febriyan-skripsi`.
+   - **Brief modul:** tiru struktur `brief-tata-kelola-dokumen.md` (branch `febriyan-skripsi`): ringkasan, indikator yang dipegang (PKG, PJ, jenis skor, level cakupan, acuan), pola bersama di dalam modul, lingkup kebutuhan, kontrak dengan modul lain (disediakan / dipakai), batasan masalah, tabel masalah → tujuan → fitur, risiko dan mitigasi, pertanyaan terbuka.
+   - **Tanyakan** hal yang hanya diketahui pengguna: scope yang sudah disetujui pembimbing, kondisi lab yang diketahui, narasumber yang tersedia, dokumen lab yang dimiliki. Yang belum terjawab ditandai **[KONFIRMASI]**; klaim kondisi lab tanpa sumber ditandai dan tidak dikarang.
+5. Setelah brief dan semua analisis ada, lanjut ke langkah 1.
+
 ### Langkah 1: Keputusan pembimbing dan scope
 - Catat arahan bimbingan terbaru di brief modul. Bila bertentangan dengan brief lama, tandai dan perbarui brief (bagian batasan masalah).
-- Pastikan tiap package modul sudah punya analisis (target → aturan memenuhi K1–K4 atau S1–Sn → luaran → fact → master → dependensi).
+- Brief dan analisis sudah dipastikan ada di Langkah 0; di sini cukup diperbarui sesuai arahan terbaru.
 
 ### Langkah 2: Studi dokumen
 - Bedah setiap dokumen lab yang relevan: bagian dokumen → field → model → PKG/kriteria → **Dasar** (Instrumen / ISO / Format saja).
@@ -222,6 +238,7 @@ Penempatan mixin dan master di addon `labfik_core` (atau di `labfik_org`) masih 
 | Override `action_sahkan()` langsung di model turunan | Cek wewenang bisa terlewat | Template Method + hook |
 | Field dari draf GPT dipakai tanpa dasar instrumen | Kebutuhan palsu | Kolom "Dasar" di bedah dokumen |
 | Konteks pribadi satu anggota di CLAUDE.md bersama | Claude anggota lain salah konteks | Konteks pribadi di brief modul atau file konteks per branch |
+| Rancangan dimulai tanpa brief dan analisis PKG | Kebutuhan tidak berdasar instrumen | Langkah 0: cek, laporkan, susun dulu |
 
 ## 9. Pemetaan ke proposal (Pedoman TA FIK 2025, Prototipe/Proyek)
 
@@ -240,7 +257,8 @@ Semua di branch `febriyan-skripsi`. Baca lokal dengan `git show febriyan-skripsi
 
 | Langkah | File |
 |---|---|
-| Brief | [brief-tata-kelola-dokumen.md](https://github.com/mochfebriyan/skripsi/blob/febriyan-skripsi/projek-fiklab/brief/brief-tata-kelola-dokumen.md) |
+| 0 Analisis per PKG | [analisis-data-pengelolaan-1-3.md](https://github.com/mochfebriyan/skripsi/blob/febriyan-skripsi/projek-fiklab/analisis/analisis-data-pengelolaan-1-3.md), [analisis-data-pengembangan-13.md](https://github.com/mochfebriyan/skripsi/blob/febriyan-skripsi/projek-fiklab/analisis/analisis-data-pengembangan-13.md) |
+| 0 · 1 Brief | [brief-tata-kelola-dokumen.md](https://github.com/mochfebriyan/skripsi/blob/febriyan-skripsi/projek-fiklab/brief/brief-tata-kelola-dokumen.md) |
 | 2 Studi dokumen | [bedah-dokumen-tata-kelola.md](https://github.com/mochfebriyan/skripsi/blob/febriyan-skripsi/projek-fiklab/analisis/bedah-dokumen-tata-kelola.md) |
 | 4 Kebutuhan | [kebutuhan-tata-kelola.md](https://github.com/mochfebriyan/skripsi/blob/febriyan-skripsi/projek-fiklab/rancangan/kebutuhan-tata-kelola.md) |
 | 5 Proses bisnis | [proses-bisnis-tata-kelola.md](https://github.com/mochfebriyan/skripsi/blob/febriyan-skripsi/projek-fiklab/rancangan/proses-bisnis-tata-kelola.md), `activity-state-tata-kelola.drawio` |
