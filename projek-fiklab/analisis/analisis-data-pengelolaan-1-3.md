@@ -72,7 +72,7 @@ Sistem menampilkan **sampai kriteria ke berapa buktinya lengkap**. Skor akhir di
 
 | Fact | Grain | Isi | Catatan |
 |---|---|---|---|
-| **Rencana** | 1 dokumen rencana | jenis (strategis/tahunan), periode berlaku, status (draf/diajukan/disahkan/kedaluwarsa), pengesah, tanggal sah, lampiran | Satu model untuk *roadmap* dan rencana tahunan |
+| **Rencana** | 1 dokumen rencana | jenis (strategis/tahunan), periode berlaku, status (draf/diajukan/disahkan/kedaluwarsa), pengesah, tanggal sah, lampiran | Satu model untuk *roadmap* dan rencana tahunan. **Disesuaikan 14 November 2026:** Renstra (*roadmap*) menjadi model terpisah `labfik.renstra` berisi unggahan saja; `labfik.plan` hanya jenis tahunan dan pengembangan (design-class-tata-kelola.md) |
 | **Item rencana** | 1 sasaran/kegiatan dalam rencana | sasaran, KPI, target, satuan, PIC, jadwal, anggaran, tautan Renstra | Anak dari Rencana |
 | **Realisasi** | 1 laporan realisasi per item per periode lapor | nilai capaian, anggaran terpakai, bukti, pelapor, tanggal | Bukti K3 |
 | **Tinjauan** | 1 tinjauan per periode | tanggal, peserta, ringkasan capaian, keputusan, tautan ke item rencana berikutnya | Bukti K4 |
@@ -155,7 +155,7 @@ Kesesuaian isi SOP dengan kegiatan/risiko **tidak** dicek sistem, karena itu pen
 | Fact | Grain | Isi | Catatan |
 |---|---|---|---|
 | **Versi SOP** | 1 revisi dokumen | SOP induk, nomor revisi, file, status (draf/diajukan/berlaku/dicabut), pengesah, tanggal sah, tanggal tinjau berikutnya, ringkasan perubahan | Hanya satu versi *berlaku* per SOP |
-| **Distribusi** | 1 versi × 1 lokasi | versi, lokasi (ruang/papan/portal), tanggal, petugas | Bukti S4 |
+| **Distribusi** | 1 versi × 1 lokasi | versi, lokasi (ruang lab, master Core), tanggal, petugas | Bukti S4 |
 | **Sosialisasi** | 1 kegiatan sosialisasi | versi, tanggal, metode, bukti; tabel anak **peserta** | Bukti S5 |
 
 ## 5. Master data (*dimension*)
@@ -163,12 +163,12 @@ Kesesuaian isi SOP dengan kegiatan/risiko **tidak** dicek sistem, karena itu pen
 | Master | Dipakai untuk | Sumber | Bila belum tersedia |
 |---|---|---|---|
 | **Daftar induk SOP** | Pembagi; kode, judul, kategori, dasar kebutuhan, lokasi penggunaan, status wajib | **Baru** | — (ini inti indikator) |
-| Ruang lab / lokasi | Titik penggunaan | Master ruang bersama (sudah ada `lab.master.ruangan`) | 8 ruang + "portal" diinput manual |
+| Ruang lab / lokasi | Titik penggunaan | Master ruang bersama (sudah ada `lab.master.ruangan`) | 8 ruang diinput manual. Tanpa nilai "portal" (keputusan 14 November 2026) |
 | Personel dan jabatan | Pengesah, peserta sosialisasi | Master bersama dari Pengelolaan 3 | `res.users` |
 
 **Cukup sebagai pilihan tetap**, tidak perlu tabel master: kategori SOP (tata tertib, praktikum, operasi/manajemen, K3, alat, peminjaman, kedaruratan, limbah), jenis dokumen (SOP/IK/formulir), status versi, dan metode sosialisasi.
 
-**Pengaturan KaLab:** siklus tinjau ulang standar (misalnya 1 tahun).
+**Pengaturan KaLab:** siklus tinjau ulang standar (misalnya 1 tahun). **Disesuaikan 14 November 2026:** tidak ada layar pengaturan; siklus tinjau disimpan per Dokumen Induk (`siklus_tinjau_bulan`, KF-10).
 
 ## 6. Dependensi dan jalan pengganti
 

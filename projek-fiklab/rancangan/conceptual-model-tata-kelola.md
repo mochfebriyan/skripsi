@@ -156,7 +156,7 @@ Versi sebelumnya ada di tag `rancangan-tatkel-v1` (CM-1 s.d. CM-4).
 | Status, jenis, kategori | `fields.Selection` |
 | Atribut turunan | `compute` (tersimpan bila dipakai untuk filter, mis. `perlu_ditinjau`) |
 
-`labfik.controlled.mixin` (kode, revisi, unit pemilik) dari kontrak Core perlu dinilai ulang: di CM ini kode dan revisi hanya dibutuhkan DokumenInduk/Versi dan SK, jadi mixin itu mungkin tidak memberi manfaat yang sepadan.
+`labfik.controlled.mixin` (kode, revisi, unit pemilik) dari kontrak Core **tidak dipakai** (keputusan 14 November 2026): di CM ini kode dan revisi hanya dibutuhkan DokumenInduk/Versi dan SK dengan makna berbeda, jadi mixin itu tidak memberi manfaat yang sepadan.
 
 ## 8. Isu terbuka
 

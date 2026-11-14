@@ -142,8 +142,8 @@ Hal yang menambah kenyamanan atau kedalaman tetapi tidak dibutuhkan untuk membuk
 | Jabatan | 01, 02, 03, 04, 13, 14, 18 | Termasuk **syarat kompetensi minimum** yang dibutuhkan PKG-04 dan PKG-14. Perlu disepakati dengan Zahir (SDM) |
 | Wewenang dari jabatan | Semua modul | Siapa yang boleh mengesahkan atau menyetujui mengikuti jabatan aktif, bukan diatur terpisah per modul |
 | Mekanisme pengesahan bersama | Semua dokumen yang perlu disahkan (mis. rencana pelatihan PKG-14) | Satu jalur: ajukan → kembalikan / sahkan → cabut, dengan riwayat. Tanpa tahap pemeriksaan terpisah |
-| Dokumen Induk + versi | 02, 03, 09 (SOP limbah); kandidat Persiapan 15 (versi modul) | Pola versi sama dengan "modul berversi" di Persiapan 15 |
-| KPI | 01, 21 | — |
+| Dokumen Induk + versi | 02, 03, 09 (SOP limbah); kandidat Persiapan 15 (versi modul) | Pola versi sama dengan "modul berversi" di Persiapan 15. Modelnya di `labfik_org`; modul lain yang butuh relasi memakai modul jembatan **[KONFIRMASI kelompok]** |
+| KPI | 01, 21 | Modelnya di `labfik_org`; sama seperti Dokumen Induk **[KONFIRMASI kelompok]** |
 
 **Yang dipakai modul ini dari modul lain (semuanya opsional, ada jalan pengganti):**
 
@@ -282,7 +282,7 @@ Kebijakannya:
 
 ## Langkah berikutnya
 
-1. Susun rancangan TO-BE langkah 4–10 ([CLAUDE.md](../../CLAUDE.md) bagian 4) dalam batas cakupan Inti + Pelengkap.
+1. ~~Susun rancangan TO-BE langkah 4–10~~ **Selesai 14 November 2026** (`projek-fiklab/rancangan/`). Sisa: cek tampilan semua diagram `.drawio` di draw.io, lalu rapikan bila perlu.
 2. Konfirmasi judul dan aturan skor penilai ke Pak Widi.
 3. Wawancara KaLab untuk keempat indikator, didokumentasikan sebagai lampiran.
 4. Sepakati kontrak master dan mekanisme pengesahan dengan Zahir dan Herrens.

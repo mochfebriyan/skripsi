@@ -333,7 +333,7 @@ Tabel ini menggabungkan hasil bedah dengan entitas di [analisis Pengelolaan 1–
 | `labfik.document.distribution` | [T] | versi, lokasi, tanggal, petugas | evidence | 02 S4 | Instrumen |
 | `labfik.document.socialization` | [T] | versi, tanggal, metode; anak: peserta | evidence | 02 S5 | Instrumen |
 | `labfik.document.review` | [T] | versi, peninjau, `hasil` (tetap berlaku / perlu revisi), catatan. Bila *tetap berlaku*, `tanggal_tinjau_berikutnya` pada versi dihitung ulang dari tanggal tinjauan ini | evidence | 02 S3 | Instrumen, D4 (periode tinjauan) |
-| `labfik.plan` | [T] | `jenis` (strategis, tahunan, pengembangan), narasi (Html: ringkasan, latar belakang, tujuan, ruang lingkup), `revisi_dari_id`. Jenis strategis (Renstra) hanya berisi kepala dokumen dan PDF unggahan. Anak: item, temuan gap | controlled, approval, period, criteria | 01 K1–K2, 13 K1–K2 | D1, D2 |
+| `labfik.plan` | [T] | `jenis` (tahunan, pengembangan), narasi (Html: ringkasan, latar belakang, tujuan, ruang lingkup), `revisi_dari_id`. Renstra menjadi model terpisah `labfik.renstra` (lihat baris berikut). Anak: item, temuan gap | controlled, approval, period, criteria | 01 K1–K2, 13 K1–K2 | D1, D2 |
 | `labfik.plan.line` | [T] anak | kegiatan, `kpi_id`, `baseline`, `target`, `satuan`, jadwal mulai/selesai, `pic_id`, `bukti_diharapkan`, `anggaran`, `komponen_anggaran`, `rujukan_renstra` (teks). Khusus pengembangan: `gap_ids`, `nilai_risiko`, `nilai_manfaat`, `prioritas` | — | 01 K2, 13 K2 | D1 Bab VI–VII, D2 Bagian 5 |
 | `labfik.plan.gap` | [T] anak | aspek (tridharma, kompetensi, sarana, layanan), kondisi saat ini, kebutuhan/standar, sumber data, uraian gap, lampiran | — | 13 K2 | Tidak ada di dokumen. Dari instrumen |
 | `labfik.realisasi` | [T] | `line_id`, periode lapor (triwulan/semester), capaian aktual, anggaran terpakai, `status_capaian` (tercapai, perlu perhatian, tidak tercapai, belum tersedia, tidak relevan), `alasan_tidak_relevan`, analisis/tindakan, PIC tindak lanjut, tenggat | evidence | 01 K3, 13 K3 | D2 Bagian 7–9, D1 Lampiran D |
@@ -346,7 +346,7 @@ Tabel ini menggabungkan hasil bedah dengan entitas di [analisis Pengelolaan 1–
 
 | Perubahan | Alasan | Sumber |
 |---|---|---|
-| Renstra = rencana `jenis = strategis` berisi unggahan saja; RKT merujuknya lewat teks | Renstra berlaku 5 tahun, cukup diunggah dan disahkan. Analisis Pengelolaan 1 sudah menyediakan jalan pengganti "tautan berupa teks bebas" | Keputusan 14 Nov 2026 |
+| Renstra = model terpisah `labfik.renstra` (approval, period) berisi judul, periode, dan berkas unggahan saja (semula direncanakan sebagai `labfik.plan` jenis strategis; dipisah di langkah 9–10 karena tidak punya item, gap, maupun kriteria); RKT merujuknya lewat teks | Renstra berlaku 5 tahun, cukup diunggah dan disahkan. Analisis Pengelolaan 1 sudah menyediakan jalan pengganti "tautan berupa teks bebas" | Keputusan 14 Nov 2026 |
 | Isi D2 (IKU) dibagi ke master KPI dan item RKT | Instrumen tidak meminta dokumen IKU terpisah | D2 |
 | Empat field narasi (Html) di rencana | Dokumen rutin diekspor dari sistem, jadi narasi minimalnya disimpan di sistem | Keputusan 13 Nov 2026 |
 | Status realisasi bertambah "belum tersedia" dan "tidak relevan (dengan alasan)" | Cegah data kosong dianggap tercapai | D2 Bagian 7–8 |
@@ -354,6 +354,7 @@ Tabel ini menggabungkan hasil bedah dengan entitas di [analisis Pengelolaan 1–
 | Dokumen Induk mendapat `asal`, `dokumen_terkait_ids`, `rekaman_dihasilkan` | POB saling merujuk. Dokumen fakultas ikut dikendalikan | D3 |
 | Pengesahan menyimpan dua peran (penyusun, pengesah) + pencatat | Kolom "Diperiksa" di dokumen sumber tidak dijadikan tahap (keputusan 14 Nov 2026) | D1–D4, D6 |
 | Wewenang mengesahkan diatur per jenis dokumen | Pengesah berbeda antar-POB | D3 (A3) |
+| Ditambahkan di langkah 9–10 (tidak ada di tabel 5.1–5.2): `labfik.approval.log` (riwayat pengesahan), `labfik.tinjauan.manfaat` (ukuran manfaat), `labfik.org.monev` (layanan status monev, tanpa tabel) | Konsep kejadian dan hasil hitung muncul saat conceptual model dan DCD | design-class-tata-kelola.md |
 
 ---
 

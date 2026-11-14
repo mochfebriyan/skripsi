@@ -37,7 +37,7 @@ Sumber: [conceptual-model-tata-kelola.md](conceptual-model-tata-kelola.md) (CM-1
 | `labfik.criteria.mixin` | AbstractModel | — | `/kriteria_tertinggi` | Kriteria K1–K4 berurutan; `_cek_k1()`–`_cek_k4()` {abstract} |
 | `labfik.evidence.mixin` | AbstractModel | — | RekamanBukti | Tanggal, pelapor, bukti; koreksi terlacak, tidak bisa dihapus |
 | `hr.employee` (diperluas) | Model Odoo | [M] | Personel | + `jenis_personel`, `unit`. Bawaan: `name`, `job_id`, `user_id` |
-| `hr.job` (diperluas) | Model Odoo | [M] | Jabatan | + `unit`, `is_eksternal`, `atasan_id`, `pengganti_id`, `syarat_kompetensi`, `tugas_ids`, `wewenang_ids` |
+| `hr.job` (diperluas) | Model Odoo | [M] | Jabatan | + `unit`, `is_eksternal`, `atasan_id`, `pengganti_id`, `syarat_kompetensi`, `tugas_ids`, `wewenang_ids`. Data awal (fiktif, seed): Kepala Laboratorium, Laboran, Teknisi, **Asisten Praktikum**, dan jabatan eksternal Dekan, Ketua Jurusan |
 | `labfik.jabatan.tugas` | Model | [M] | Tugas | Anak `hr.job` |
 | `labfik.jabatan.wewenang` | Model | [M] | Wewenang | Anak `hr.job`; unik per (jabatan, tindakan, jenis dokumen) |
 | `labfik.ruang`, `labfik.periode` | Model | [M] | Ruang, Periode | Master Core (sudah dikontrakkan) |
@@ -83,10 +83,27 @@ Semua nama sesuai daftar nama yang sudah dipakai Tata Kelola (CLAUDE.md bagian 6
 | Atribut turunan menjadi `compute` | `/perlu_ditinjau`, `/memenuhi`, `/kriteria_tertinggi`, `/prioritas`, `/versi_berlaku` | `compute` (+ `store` atau `search` bila dipakai sebagai filter) | — |
 | Enumerasi menjadi `Selection` | Semua «enumeration» | `fields.Selection` | — |
 | Rujukan ke Personel menjadi atribut bertipe | peran pengesah, pic, pelapor, peserta | `hr.employee` | Model bawaan Odoo boleh ditulis sebagai atribut bertipe (CLAUDE.md bagian 5) |
+| Nama peran menjadi nama field Odoo | *berlaku_pada*, *revisi_dari* / *pengganti*–*digantikan*, *dievaluasi*, *ditugaskan_di*, *lokasi_penggunaan*, *menjawab*, *ukuran_manfaat*, *temuan_gap*, *item* | `periode_id`, `revisi_dari_id`, `sk_id`, `ruang_ids`, `lokasi_ids`, `gap_ids`, `manfaat_ids`, `gap_ids`, `line_ids` | Konvensi Odoo: Many2one diakhiri `_id`, One2many/Many2many diakhiri `_ids` |
 | Layanan baru | — | `labfik.org.monev` | Tempat `get_status()` untuk UC-28; mendelegasikan perhitungan ke model pemilik data |
 | Mata uang | `anggaran: Money` | `Monetary` + `currency_id` | Aturan Odoo untuk nilai uang |
 
 ---
+
+### 3.1 Field usulan studi dokumen yang tidak diambil
+
+Daftar model di [bedah-dokumen-tata-kelola.md](../analisis/bedah-dokumen-tata-kelola.md) bagian 5 disusun sebelum cakupan dipangkas. Field berikut tidak masuk DCD atau berganti nama:
+
+| Model | Field di bedah dokumen | Di DCD | Alasan |
+|---|---|---|---|
+| `hr.employee` | `parent_id` | Tetap ada sebagai field bawaan, tidak dipakai | Atasan dibaca dari jabatan (`hr.job.atasan_id`), bukan per orang |
+| `hr.job` | `dasar_dokumen_id` | Tidak diambil | PKG-03 K2 hanya memeriksa tugas, wewenang, atasan, dan pengganti; dasar hukumnya ada di SK |
+| `labfik.document` | `lokasi_penggunaan_ids` | `lokasi_ids` | Ganti nama |
+| `labfik.document` | `dokumen_terkait_ids`, `rekaman_dihasilkan` | Tidak diambil | Tidak dibutuhkan S1–S5 |
+| `labfik.document.version` | `tanggal_dibuat`, `tanggal_revisi` | `create_date` bawaan; `tanggal_efektif` dan `tanggal_sah` | Tidak perlu field sendiri |
+| `labfik.plan.line` | `baseline`, `bukti_diharapkan`, `komponen_anggaran` | Tidak diambil | PKG-01 K2 hanya meminta KPI, target, PIC, jadwal, anggaran, dan keterkaitan Renstra |
+| `labfik.realisasi` | `alasan_tidak_relevan` (status *tidak relevan*) | Tidak diambil; status capaian tinggal empat nilai | Tidak dibutuhkan K3 |
+| `labfik.assignment` | `dasar_hukum_ids`, `diktum`, `tembusan` | Tidak diambil | Dasar hukum cukup ditulis di `mengingat`; diktum dibangkitkan dari baris penetapan saat SK diterbitkan (KF-26, Pelengkap) |
+| `labfik.org.evaluation` | `assignment_baru_id` | `sk_revisi_id` | Ganti nama |
 
 ## 4. Template Method dan hook
 

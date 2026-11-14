@@ -83,7 +83,7 @@ Tanpa KF-09, status "masih berlaku" pada K1 tetap dihitung dari tanggal periode 
 |---|---|---|---|---|---|---|
 | KF-10 | Laboran dapat mengelola **Dokumen Induk**: kode, judul, jenis (SOP, IK, formulir, dokumen eksternal), kategori, asal (lab/fakultas/universitas), status wajib, dasar kebutuhan (kegiatan/risiko), lokasi penggunaan, siklus tinjau ulang, dan tanggal ditetapkan sebagai wajib | Laboran, KaLab | `labfik.document` | S1, Bukti 1 | E | W |
 | KF-11 | Laboran dapat **mengunggah versi** SOP/IK: berkas, nomor revisi, tanggal efektif, bagian yang diubah, ringkasan dan alasan perubahan. Versi lalu disahkan lewat KF-01–KF-04 | Laboran | `labfik.document.version` | S2, Bukti 2 | E | W |
-| KF-12 | Laboran dapat mencatat **distribusi** versi berlaku ke lokasi penggunaan (ruang atau portal) | Laboran | `labfik.document.distribution` | S4, Bukti 3 | E | W |
+| KF-12 | Laboran dapat mencatat **distribusi** versi berlaku ke lokasi penggunaan (ruang lab) | Laboran | `labfik.document.distribution` | S4, Bukti 3 | E | W |
 | KF-13 | Laboran dapat mencatat **sosialisasi** versi berlaku beserta pesertanya | Laboran | `labfik.document.socialization` | S5, Bukti 3 | E | W |
 | KF-14 | Laboran atau KaLab dapat mencatat **tinjau ulang** versi berlaku dengan hasil *tetap berlaku* atau *perlu revisi* | Laboran, KaLab | `labfik.document.review` | S3, ISO 8.3.2b | E | W |
 | KF-15 | Sistem menghitung **tanggal tinjau berikutnya** dari tanggal sah atau tinjau ulang terakhir ditambah siklus tinjau, lalu menandai versi yang lewat tanggal sebagai *perlu ditinjau* | Sistem | `labfik.document.version` | S3 | H | W |
@@ -111,7 +111,7 @@ Catatan: S4 (tersedia di titik penggunaan) dibuktikan oleh KF-12, bukan KF-17. K
 | ID | Kebutuhan | Aktor | Model (usulan) | Kriteria/bukti | Jenis | Prio |
 |---|---|---|---|---|---|---|
 | KF-27 | KaLab dapat mengelola master **KPI**: definisi, rumus (pembilang, penyebut), satuan, frekuensi, sumber data/bukti | KaLab | `labfik.kpi` | Bukti 4 | E | W |
-| KF-28 | KaLab dapat mencatat **Renstra lab** sebagai dokumen unggahan berperiode multi-tahun. Renstra disahkan lewat KF-01–KF-04 | KaLab | `labfik.plan` (jenis strategis) | K1, Bukti 1 | E | W |
+| KF-28 | KaLab dapat mencatat **Renstra lab** sebagai dokumen unggahan berperiode multi-tahun. Renstra disahkan lewat KF-01–KF-04 | KaLab | `labfik.renstra` | K1, Bukti 1 | E | W |
 | KF-29 | KaLab dapat menyusun **rencana kerja tahunan** dengan item berisi kegiatan, KPI, target, satuan, PIC, jadwal, anggaran, dan rujukan Renstra institusi (teks) | KaLab | `labfik.plan` (jenis tahunan), `labfik.plan.line` | K2, Bukti 2, 4 | E | W |
 | KF-30 | Sistem **memeriksa kelengkapan rencana** sebelum diajukan. Rencana tahunan: setiap item punya KPI, target, PIC, jadwal, anggaran, dan rujukan Renstra. Rencana pengembangan: ditambah keempat aspek gap terisi (atau dinyatakan "tidak ada gap" dengan alasan) dan setiap item menunjuk temuan gap serta punya nilai risiko dan manfaat | Sistem | `labfik.plan` | K2 PKG-01, K2 PKG-13 | H | W |
 | KF-31 | PIC dapat mengisi **realisasi** item rencana per periode lapor: capaian, anggaran/biaya terpakai, status capaian, tindak lanjut, dan bukti. Dipakai rencana tahunan dan rencana pengembangan | Laboran, KaLab | `labfik.realisasi` | K3 PKG-01, K3 PKG-13 | E | W |
