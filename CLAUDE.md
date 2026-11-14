@@ -223,7 +223,7 @@ Dirancang di modul Tata Kelola (design class diagram di tag `rancangan-tatkel-v1
 
 | Model / mixin | Isi | Pakai untuk |
 |---|---|---|
-| Personel = `hr.employee` (Odoo CE `hr`, LGPL-3) diperluas dengan `_inherit` | Semua orang internal FIK yang punya peran di lab (dosen, laboran/PLP, teknisi, asisten, petugas K3, pejabat pengesah tanpa akun). Pihak eksternal tidak dicatat dan bukan aktor | Semua rujukan ke orang (PIC, peserta, petugas). Cara mencatat asisten (mahasiswa) sebagai `hr.employee` masih **[KONFIRMASI kelompok]** |
+| Personel = `hr.employee` (Odoo CE `hr`, LGPL-3) diperluas dengan `_inherit` | Semua orang internal FIK yang punya peran di lab (dosen, laboran/PLP, teknisi, asisten, petugas K3, pejabat pengesah tanpa akun). Pihak eksternal tidak dicatat dan bukan aktor | Semua rujukan ke orang (PIC, peserta, petugas). Asisten lab (mahasiswa) dicatat sebagai `hr.employee` dengan jenis *asisten* (keputusan Febriyan, 14 November 2026) |
 | Jabatan = `hr.job` diperluas (+ `labfik.jabatan.tugas`, `labfik.jabatan.wewenang`) | Jabatan, unit, atasan, pengganti, wewenang per jenis dokumen, syarat kompetensi | Siapa berwenang melakukan apa. `cari_pemegang_berwenang(tindakan, jenis)` |
 | `labfik.ruang`, `labfik.periode` | Master Core | Lokasi dan periode |
 | `labfik.approval.mixin` + `labfik.approval.log` | Siklus status draf → diajukan → disahkan → diganti/dicabut/kedaluwarsa (tanpa tahap pemeriksaan), cek wewenang, berkas bertanda tangan, riwayat pengesahan, hook `_setelah_disahkan()` | Setiap dokumen yang perlu disahkan (mis. rencana pelatihan PKG-14) |
