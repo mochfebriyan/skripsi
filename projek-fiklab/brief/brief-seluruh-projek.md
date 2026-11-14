@@ -163,36 +163,6 @@ Hal yang terlihat dari peta dependensi:
 | 1 Nov 2026 | Proyek mencakup **21 indikator** dengan aturan 1 package = 1 indikator. Nomor PKG menjadi identitas indikator karena penomoran sheet tidak rapi |
 | 14 Nov 2026 | **Sesi, Mata Kuliah, dan Kelas masuk `labfik_core`** (Herrens). Sesi dibangkitkan PKG-15 dan menjadi model sendiri, tidak mewarisi `op.session`, supaya `labfik_core` tidak bergantung pada OpenEduCat |
 
-## Permasalahan bersama untuk Bab 1
-
-Arahan dosen: **permasalahan awal** di latar belakang semua skripsi FIKLAB Compliance harus selaras, baik kelompok Febriyan/Zahir/Herrens maupun kelompok Wisnu/Patih. Yang disamakan hanya **substansinya**. **Paragrafnya ditulis masing-masing** dari sudut modulnya sendiri, bukan disalin atau diparafrase dari tulisan anggota lain. Setelah paragraf ini, latar belakang tiap skripsi mengerucut ke modulnya.
-
-**Klaim inti yang wajib ada** (boleh diurutkan dan ditekankan berbeda):
-
-| # | Klaim | Sumber |
-|---|---|---|
-| 1 | Mulai 2026 laboratorium UPNVJ dinilai dengan Instrumen Monev Laboratorium UPNVJ 2026 v1.1, yang antara lain mengacu ke SNI ISO/IEC 17025:2017. Tiap indikator diberi skor 1–4 | Instrumen (dokumen internal UPNVJ); dasar resmi acuan ISO **[KONFIRMASI]** |
-| 2 | Bukti yang tidak dapat diverifikasi diberi skor 1, walaupun kegiatannya dilakukan. Yang dinilai adalah bukti, bukan hanya kegiatan | Instrumen, kolom skor 1 |
-| 3 | Data dan bukti LabFIK tersebar dan tidak terhubung (Google Form/Sheets, LeADS, SIMPEL, dokumen kertas, file perorangan), atau belum ada | Wawancara KaLab **[KONFIRMASI; saat ini masih keterangan lisan]** |
-| 4 | Bukti dikumpulkan dan dihitung manual menjelang monev, sulit ditelusuri ke kegiatan asalnya, dan tidak terpantau sepanjang periode | Wawancara KaLab **[KONFIRMASI]** |
-| 5 | Jawabannya adalah proyek bersama FIKLAB Compliance: satu sistem berbasis Odoo, 21 indikator, dibagi per modul fungsional dengan master data bersama | Brief ini |
-
-**Istilah baku:** "FIKLAB Compliance", "Instrumen Monev Laboratorium UPNVJ 2026 v1.1", "21 indikator", dan nama modul sesuai tabel [Modul dan pemegangnya](#modul-dan-pemegangnya).
-
-**Sudut pandang per modul** (contoh, untuk membedakan tulisan):
-
-| Modul | Masalah awal dilihat dari |
-|---|---|
-| Tata Kelola & Dokumen | Keputusan, dokumen, dan rencana lab yang tidak punya satu tempat terkendali |
-| SDM & Kompetensi | Siapa yang ditugaskan dan berwenang, serta bukti kompetensinya |
-| Pelaksanaan Praktikum | Sesi, jadwal, dan penilaian praktikan yang terekam di banyak tempat |
-| Asset Management | Data alat, bahan, kalibrasi, dan pemeliharaan |
-| Safety Management | Sarana keselamatan, limbah, dan penyimpanan bahan |
-
-Hal lain:
-- **Modul Anandar (2026)** disebut sebagai rujukan atau gambaran penerapan Odoo di LabFIK, **bukan** sebagai penelitian yang dilanjutkan.
-- **Angka khusus satu modul** (misalnya cakupan laporan sesi praktikum) tidak dipakai di paragraf masalah awal. Angka seperti itu masuk paragraf modul masing-masing, dan hanya bila sudah diizinkan KaLab.
-
 ## Pertanyaan terbuka tingkat proyek
 
 **Untuk Pak Widi**
