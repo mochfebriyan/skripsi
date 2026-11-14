@@ -204,18 +204,18 @@ Dirancang di modul Tata Kelola (design class diagram di tag `rancangan-tatkel-v1
 
 | Model / mixin | Isi | Pakai untuk |
 |---|---|---|
-| `labfik.personel` | Semua orang yang punya peran di lab (dosen, laboran/PLP, teknisi, asisten, petugas K3, eksternal) | Semua rujukan ke orang (PIC, peserta, petugas). **[ASUMSI]** kelompok memakai model ini, bukan `hr.employee` |
-| `labfik.jabatan` (+ `tugas`, `wewenang`) | Jabatan, atasan, pengganti, koordinasi, wewenang per jenis dokumen, syarat kompetensi | Siapa berwenang melakukan apa. `cari_pemegang_berwenang(tindakan, jenis)` |
+| Personel = `hr.employee` (Odoo CE `hr`, LGPL-3) diperluas dengan `_inherit` | Semua orang yang punya peran di lab (dosen, laboran/PLP, teknisi, asisten, petugas K3, eksternal) | Semua rujukan ke orang (PIC, peserta, petugas). Cara mencatat asisten (mahasiswa) dan pihak eksternal sebagai `hr.employee` masih **[KONFIRMASI kelompok]** |
+| Jabatan = `hr.job` diperluas (+ `labfik.jabatan.tugas`, `labfik.jabatan.wewenang`) | Jabatan, unit, atasan, pengganti, wewenang per jenis dokumen, syarat kompetensi | Siapa berwenang melakukan apa. `cari_pemegang_berwenang(tindakan, jenis)` |
 | `labfik.ruang`, `labfik.periode` | Master Core | Lokasi dan periode |
-| `labfik.approval.mixin` + `labfik.approval.log` | Siklus status draf → diajukan → (diperiksa) → disahkan → diganti/dicabut/kedaluwarsa, cek wewenang, berkas bertanda tangan, riwayat pengesahan, hook `_setelah_disahkan()` | Setiap dokumen yang perlu disahkan (mis. rencana pelatihan PKG-14) |
+| `labfik.approval.mixin` + `labfik.approval.log` | Siklus status draf → diajukan → disahkan → diganti/dicabut/kedaluwarsa (tanpa tahap pemeriksaan), cek wewenang, berkas bertanda tangan, riwayat pengesahan, hook `_setelah_disahkan()` | Setiap dokumen yang perlu disahkan (mis. rencana pelatihan PKG-14) |
 | `labfik.controlled.mixin` | Kode, revisi, unit pemilik | Dokumen terkendali |
 | `labfik.period.mixin` | Periode berlaku + penjadwal kedaluwarsa | Dokumen berperiode |
 | `labfik.criteria.mixin` | `status_k1`–`k4`, `kriteria_tertinggi`; `_cek_k1()`–`_cek_k4()` {abstract} | Indikator kriteria berurutan K1–K4 |
 | `labfik.evidence.mixin` | Tanggal, pelapor, bukti, keterangan | Setiap rekaman kegiatan yang menjadi bukti |
 
-**Nama model yang sudah dipakai Tata Kelola** (jangan dipakai ulang untuk hal lain): `labfik.plan*`, `labfik.document*`, `labfik.assignment*`, `labfik.meeting`, `labfik.org.evaluation`, `labfik.realisasi`, `labfik.tinjauan*`, `labfik.kpi`, `labfik.sasaran.renstra`, `labfik.approval.log`. Untuk modul baru, pakai pola `labfik.<slug>.<objek>`, misalnya `labfik.sdm.kompetensi`.
+**Nama model yang sudah dipakai Tata Kelola** (jangan dipakai ulang untuk hal lain): `labfik.plan*`, `labfik.document*`, `labfik.assignment*`, `labfik.meeting`, `labfik.org.evaluation`, `labfik.realisasi`, `labfik.tinjauan*`, `labfik.kpi`, `labfik.approval.log`. Untuk modul baru, pakai pola `labfik.<slug>.<objek>`, misalnya `labfik.sdm.kompetensi`.
 
-Penempatan mixin dan master di addon `labfik_core` (atau di `labfik_org`) masih **[KONFIRMASI]** (brief bersama, pertanyaan terbuka).
+**Penempatan (keputusan Febriyan, 14 November 2026; [KONFIRMASI kelompok]):** master bersama, perluasan `hr`, dan semua mixin di atas ditempatkan di addon **`labfik_core`** (`depends: ['hr', 'mail']`), terpisah dari `labfik_org`. Setiap modul fungsional cukup `depends: ['labfik_core']`. DCD di tag `rancangan-tatkel-v1` masih memakai model `labfik.personel` dan tahap *diperiksa*; tabel ini yang berlaku.
 
 ## 7. Konvensi dokumen Markdown
 
