@@ -219,7 +219,7 @@ Rancangan tidak boleh dimulai tanpa brief modul dan analisis setiap PKG-nya. Ked
 
 ## 6. Kontrak Core dan model yang sudah ada
 
-Dirancang di modul Tata Kelola (design class diagram di branch `febriyan-skripsi`, `projek-fiklab/rancangan/design-class-tata-kelola.md`). Modul lain **memakai**, bukan membuat ulang.
+Sebagian besar dirancang di modul Tata Kelola (design class diagram di branch `febriyan-skripsi`, `projek-fiklab/rancangan/design-class-tata-kelola.md`); Mata Kuliah, Kelas, dan Sesi dari modul Pelaksanaan Praktikum (branch `herrens-skripsi`). Modul lain **memakai**, bukan membuat ulang.
 
 | Model / mixin | Isi | Pakai untuk |
 |---|---|---|
