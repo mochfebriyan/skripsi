@@ -54,6 +54,7 @@ Baris lain dengan nomor yang sama **bukan** scope modul ini. Contohnya Pengelola
 | 14 Nov 2026 | Febriyan | **Penilai monev bukan aktor sistem.** Yang dibutuhkan penilai adalah bukti berupa dokumen, seperti yang diunggah ke iso.upnvj | Tidak ada grup akses penilai; laporan [R] dibaca KaLab dan diterbitkan sebagai PDF bukti |
 | 14 Nov 2026 | Bimbingan Pak Widi | Lihat addon yang bisa di-*extend* (OCA, Cybro, OpenEduCat, dll.), utamakan lisensi LGPL | Bagian [Platform dan addon yang diperluas](#platform-dan-addon-yang-diperluas) |
 | 14 Nov 2026 | Febriyan | Personel dan Jabatan meng-*extend* `hr.employee` dan `hr.job`; master bersama dan mixin di addon `labfik_core` yang **terpisah** dari `labfik_org` | Perlu disepakati kelompok **[KONFIRMASI]** |
+| 14 Nov 2026 | Febriyan | **Pihak eksternal bukan aktor dan bukan Personel.** Vendor, tamu, dan pihak luar lain tidak dicatat di sistem; tidak ada master pihak luar (`res.partner`) untuk modul ini | Personel hanya mencakup orang internal FIK; pertanyaan terbuka tinggal soal asisten (mahasiswa) |
 
 ## Pola bersama di dalam modul
 
@@ -125,7 +126,7 @@ Hal yang menambah kenyamanan atau kedalaman tetapi tidak dibutuhkan untuk membuk
 | **PKG-13 Pengembangan** | Rencana jenis pengembangan: temuan gap 4 aspek, item dengan nilai risiko dan manfaat, ukuran manfaat di tinjauan | Ekspor PDF rencana pengembangan (template sama dengan rencana tahunan); prioritas dihitung dari risiko × manfaat |
 | **Status monev** | Persentase PKG-02; kriteria tertinggi K1–K4 PKG-01/03/13 dengan tautan bukti, dipantau KaLab; laporan bukti diterbitkan sebagai PDF untuk diserahkan ke penilai | — |
 
-**Aktor sistem:** KaLab, Laboran/PLP, pengguna lab (asisten, dosen), dan penjadwal (pemicu waktu). Dekan dan pejabat lain yang hanya menandatangani dokumen cetak **bukan aktor sistem**; identitasnya tercatat sebagai pengesah. **Penilai monev juga bukan aktor sistem:** penilai menerima bukti dalam bentuk dokumen (PDF yang diterbitkan sistem dan diunggah lab ke iso.upnvj), bukan membuka sistem. Karena itu tidak ada grup akses khusus penilai.
+**Aktor sistem:** KaLab, Laboran/PLP, pengguna lab (asisten, dosen), dan penjadwal (pemicu waktu). Dekan dan pejabat lain yang hanya menandatangani dokumen cetak **bukan aktor sistem**; identitasnya tercatat sebagai pengesah. **Penilai monev juga bukan aktor sistem:** penilai menerima bukti dalam bentuk dokumen (PDF yang diterbitkan sistem dan diunggah lab ke iso.upnvj), bukan membuka sistem. Karena itu tidak ada grup akses khusus penilai. **Pihak eksternal** (vendor, tamu, pihak luar FIK) bukan aktor dan tidak dicatat sebagai Personel.
 
 ## Kontrak dengan modul lain
 
@@ -133,7 +134,7 @@ Hal yang menambah kenyamanan atau kedalaman tetapi tidak dibutuhkan untuk membuk
 
 | Master / data | Dipakai oleh | Catatan |
 |---|---|---|
-| Personel | 01, 02, 03, 04, 06, 07, 10, 13, 14, 15, 18, 21 | Mencakup dosen, laboran/PLP, asisten (mahasiswa), petugas K3, pihak eksternal. NIP/NIM adalah data pribadi. Opsi modelnya ada di analisis Pengelolaan 3 |
+| Personel | 01, 02, 03, 04, 06, 07, 10, 13, 14, 15, 18, 21 | Mencakup dosen, laboran/PLP, teknisi, asisten (mahasiswa), petugas K3, dan pejabat fakultas yang menjadi pengesah (tanpa akun). Pihak eksternal tidak dicatat. NIP/NIM adalah data pribadi. Model: `hr.employee` diperluas di `labfik_core` (lihat [Platform dan addon yang diperluas](#platform-dan-addon-yang-diperluas)) |
 | Jabatan | 01, 02, 03, 04, 13, 14, 18 | Termasuk **syarat kompetensi minimum** yang dibutuhkan PKG-04 dan PKG-14. Perlu disepakati dengan Zahir (SDM) |
 | Wewenang dari jabatan | Semua modul | Siapa yang boleh mengesahkan atau menyetujui mengikuti jabatan aktif, bukan diatur terpisah per modul |
 | Mekanisme pengesahan bersama | Semua dokumen yang perlu disahkan (mis. rencana pelatihan PKG-14) | Satu jalur: ajukan → kembalikan / sahkan → cabut, dengan riwayat. Tanpa tahap pemeriksaan terpisah |
@@ -162,7 +163,7 @@ Hasil survei awal (cabang 17.0, dicek 14 November 2026):
 | Addon | Lisensi | Untuk | Keputusan |
 |---|---|---|---|
 | Odoo CE `mail` | LGPL-3 | Riwayat perubahan, aktivitas, notifikasi | **Dipakai** |
-| Odoo CE `hr` (`hr.employee`, `hr.job`, `hr.department`) | LGPL-3 | Personel dan Jabatan | **Dipakai**, di-*extend* di `labfik_core`. Asisten (mahasiswa) dan pihak eksternal bukan pegawai; cara mencatatnya perlu disepakati kelompok **[KONFIRMASI]** |
+| Odoo CE `hr` (`hr.employee`, `hr.job`, `hr.department`) | LGPL-3 | Personel dan Jabatan | **Dipakai**, di-*extend* di `labfik_core`. Asisten (mahasiswa) bukan pegawai; cara mencatatnya perlu disepakati kelompok **[KONFIRMASI]**. Pihak eksternal tidak dicatat |
 | OCA `dms` | LGPL-3 | Penyimpanan berkas, folder, hak akses | **Opsional** untuk penyimpanan PDF. Versi berlaku, pengesahan, distribusi, dan tinjau ulang tetap dibuat sendiri **[USULAN PENULIS]** |
 | OCA `base_tier_validation` | AGPL-3 | Persetujuan bertingkat | **Tidak dipakai** (AGPL; alur bertingkat tidak sesuai pengesahan satu tahap dengan PDF bertanda tangan). Pembanding di studi terkait |
 | OCA `mgmtsystem`, `mgmtsystem_review`, `mgmtsystem_manual`, `document_page_approval` | AGPL-3 | Sistem manajemen ISO, tinjauan manajemen, prosedur | **Tidak dipakai** (AGPL). Pembanding di studi terkait |
@@ -269,7 +270,7 @@ Kebijakannya:
 - [ ] Data kebutuhan kurikulum/CPMK, riset, dan PkM untuk analisis gap didapat dari mana?
 
 **Untuk kelompok (Zahir, Herrens)**
-- [ ] Setuju Personel = `hr.employee` dan Jabatan = `hr.job` yang diperluas di `labfik_core` (lihat [Platform dan addon yang diperluas](#platform-dan-addon-yang-diperluas))? Bagaimana asisten (mahasiswa) dan pihak eksternal dicatat?
+- [ ] Setuju Personel = `hr.employee` dan Jabatan = `hr.job` yang diperluas di `labfik_core` (lihat [Platform dan addon yang diperluas](#platform-dan-addon-yang-diperluas))? Bagaimana asisten (mahasiswa) dicatat? (Pihak eksternal tidak dicatat sebagai Personel.)
 - [ ] Apakah setiap modul juga mensurvei addon LGPL yang bisa di-*extend* untuk modulnya (mis. `hr` untuk SDM)?
 - [ ] Setuju master bersama dan mekanisme pengesahan ditempatkan di `labfik_core` yang terpisah dari `labfik_org`?
 - [ ] Field syarat kompetensi minimum di Jabatan: dikelola di Tata Kelola atau di SDM?

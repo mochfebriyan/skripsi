@@ -1,10 +1,10 @@
-# Analisis Data Indikator Pengelolaan 1, 2, 3 (MVP)
+# Analisis Data Indikator Pengelolaan 1, 2, 3
 
 26 Oktober 2026 (disunting 1 November 2026) · Febriyan · Bagian dari proyek LabFIK Compliance · Modul: Tata Kelola & Dokumen (di sheet: Organization Management)
 
 Package keempat di modul ini, Pengembangan 13, dianalisis di [analisis-data-pengembangan-13.md](analisis-data-pengembangan-13.md). Scope modul secara utuh ada di [brief-tata-kelola-dokumen.md](../brief/brief-tata-kelola-dokumen.md).
 
-Alur analisis mengikuti [pedoman pengisian sheet](pedoman-pengisian-sheet-analisis.md): **target → aturan memenuhi → luaran (bukti dukung) → data transaksi (*fact*) → master data (*dimension*) → dependensi**. Cakupannya sengaja dibatasi ke MVP. Hanya data yang bisa **dicatat oleh sistem sendiri** yang menjadi syarat wajib. Data yang bergantung pada pihak lain diberi jalan pengganti.
+Alur analisis mengikuti [pedoman pengisian sheet](pedoman-pengisian-sheet-analisis.md): **target → aturan memenuhi → luaran (bukti dukung) → data transaksi (*fact*) → master data (*dimension*) → dependensi**. Cakupannya sengaja dibatasi ke lapis Inti + Pelengkap (lihat bagian Cakupan rancangan di brief). Hanya data yang bisa **dicatat oleh sistem sendiri** yang menjadi syarat wajib. Data yang bergantung pada pihak lain diberi jalan pengganti.
 
 Kondisi saat ini: per 26 Oktober 2026, KaLab menyampaikan secara lisan bahwa FIKLAB **belum punya** SK pengelola, SOP yang disahkan, maupun rencana kerja. Pernyataan ini masih harus dicatat sebagai hasil wawancara (nama, jabatan, tanggal) sebelum dikutip **[KONFIRMASI]**.
 
@@ -44,7 +44,7 @@ Kondisi saat ini: per 26 Oktober 2026, KaLab menyampaikan secara lisan bahwa FIK
 
 Bukti dukung: (1) *roadmap* lab, (2) rencana kerja tahunan disahkan, (3) matriks keterkaitan Renstra UPNVJ/UPPS/prodi, (4) KPI dengan definisi, sumber data, target, dan anggaran, (5) laporan pelaksanaan kegiatan kerja laboratorium.
 
-## 2. Aturan "memenuhi" versi MVP
+## 2. Aturan "memenuhi"
 
 Kriteria diperiksa **berurutan**. Kriteria berikutnya tidak dihitung bila kriteria sebelumnya belum berbukti.
 
@@ -126,7 +126,7 @@ Bukti dukung: (1) daftar induk kebutuhan SOP berbasis kegiatan/risiko, (2) SOP t
 
 Acuan ISO/IEC 17025:2017 8.3.2: dokumen disetujui sebelum terbit oleh personel berwenang, dikaji ulang berkala, status revisinya teridentifikasi, dan versi yang berlaku tersedia di tempat penggunaan.
 
-## 2. Aturan "memenuhi" versi MVP
+## 2. Aturan "memenuhi"
 
 Satu SOP wajib dinyatakan memenuhi bila semua cek lolos.
 
@@ -205,7 +205,7 @@ Bukti dukung: (1) SK/penetapan pengelola, (2) bagan organisasi, (3) uraian tugas
 
 Acuan ISO/IEC 17025:2017 5.5–5.6: struktur organisasi dan posisinya di organisasi induk, tanggung jawab, wewenang, dan hubungan antarpersonel ditentukan.
 
-## 2. Aturan "memenuhi" versi MVP
+## 2. Aturan "memenuhi"
 
 | Kriteria | Arti | Cek oleh sistem | Cek oleh penilai |
 |---|---|---|---|
@@ -239,18 +239,20 @@ Sistem menampilkan kriteria yang sudah berbukti. Skor akhir ditetapkan penilai (
 
 | Master | Dipakai untuk | Sumber | Bila belum tersedia |
 |---|---|---|---|
-| **Personel** | Semua orang yang punya peran di lab: KaLab, PLP/laboran, dosen, asisten, petugas K3 | **Master bersama, harus diputuskan.** Saat ini tersebar di `mst_dosen`, `op.faculty`, `op.student` / `op.student.assistant`, `res.users`. Odoo juga punya `hr.employee` di modul HR | Laboran diinput manual (jumlahnya sedikit) |
-| **Jabatan** | Uraian tugas, kewenangan, atasan (alur pelaporan), jabatan/personel pengganti | **Baru.** Kandidat: `hr.job` (Odoo HR) atau model sendiri. `mst_role` milik Rafika hanya berisi nama peran, tanpa tugas dan wewenang | — (ini inti indikator) |
+| **Personel** | Semua orang yang punya peran di lab: KaLab, PLP/laboran, dosen, asisten, petugas K3 | **Master bersama.** Diputuskan: `hr.employee` (Odoo CE `hr`) diperluas di `labfik_core` (14 November 2026). Sebelumnya tersebar di `mst_dosen`, `op.faculty`, `op.student` / `op.student.assistant`, `res.users` | Laboran diinput manual (jumlahnya sedikit) |
+| **Jabatan** | Uraian tugas, kewenangan, atasan (alur pelaporan), jabatan/personel pengganti | Diputuskan: `hr.job` diperluas di `labfik_core`, ditambah anak tugas dan wewenang (14 November 2026). `mst_role` milik Rafika hanya berisi nama peran, tanpa tugas dan wewenang | — (ini inti indikator) |
 | Kewenangan | Isi matriks kewenangan | Cukup daftar di jabatan (teks atau pilihan) | — |
 | Unit / lab | Posisi lab dalam organisasi induk (FIK) | Cukup pengaturan | — |
 
-**Keputusan penting untuk kelompok:** master **Personel** dipakai oleh Pengelolaan 1 (PIC), 2 (pengesah), 4 dan 10 (petugas, otorisasi), 14 (laboran yang dilatih), dan 18 (presensi petugas). Bila tiap indikator membuat daftar personelnya sendiri, data akan tidak sinkron. Pilihan yang perlu dibandingkan:
+**Keputusan penting untuk kelompok:** master **Personel** dipakai oleh Pengelolaan 1 (PIC), 2 (pengesah), 4 dan 10 (petugas, otorisasi), 14 (laboran yang dilatih), dan 18 (presensi petugas). Bila tiap indikator membuat daftar personelnya sendiri, data akan tidak sinkron. Pilihan yang dibandingkan:
 
 | Opsi | Kelebihan | Kekurangan |
 |---|---|---|
 | `hr.employee` + `hr.job` (Odoo HR) | Bagan organisasi, atasan, dan jabatan sudah tersedia | Asisten adalah mahasiswa, bukan pegawai. Menambah dependensi modul |
 | Model personel sendiri, ditautkan ke `res.partner`/`res.users`, `op.faculty`, `op.student` | Bisa mencakup dosen, laboran, dan asisten dalam satu tempat | Bagan organisasi harus dibuat sendiri |
 | Pakai yang sudah ada di modul Rafika (`mst_dosen`, `op.student.assistant`, `res.users`) | Paling cepat | Laboran dan petugas K3 belum punya tempat. Tetap tersebar |
+
+**Keputusan (14 November 2026):** opsi pertama. Personel = `hr.employee` dan Jabatan = `hr.job`, keduanya diperluas dengan `_inherit` di addon `labfik_core`. Alasannya: `hr` berlisensi LGPL-3, sudah menyediakan atasan dan jabatan, dan bisa dipakai semua modul. Kekurangannya (asisten adalah mahasiswa, bukan pegawai) masih harus disepakati kelompok **[KONFIRMASI kelompok]**. Pihak eksternal tidak dicatat sebagai Personel.
 
 ## 6. Dependensi dan jalan pengganti
 
@@ -263,8 +265,8 @@ Sistem menampilkan kriteria yang sudah berbukti. Skor akhir ditetapkan penilai (
 
 ## 7. Ditunda
 
-- Bagan organisasi interaktif. MVP cukup tampilan hierarki atau laporan.
-- Analisis beban kerja rinci (jam kerja, ekuivalen penuh waktu). MVP cukup jumlah sesi per personel.
+- Bagan organisasi interaktif. Cukup tampilan hierarki atau laporan.
+- Analisis beban kerja rinci (jam kerja, ekuivalen penuh waktu). Cukup jumlah sesi per personel.
 - Delegasi wewenang otomatis saat petugas berhalangan.
 
 ---

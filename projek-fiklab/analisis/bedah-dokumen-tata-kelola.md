@@ -201,7 +201,7 @@ Sama seperti SOP, isi IK tidak dimodelkan. Lembar pengendaliannya **lebih lengka
 | **Unit pemilik** | `unit_pemilik` | mixin kendali | ISO 8.3 |
 | **Periode tinjauan** ("minimal tahunan atau saat ada perubahan signifikan") | `periode_tinjau_bulan` + `alasan_revisi` (pilihan: tinjauan berkala, perubahan alat, perubahan metode, perubahan fasilitas, perubahan risiko, perubahan lingkup) | mixin kendali, `labfik.document.version` | Instr PKG-02 S3, ISO 8.3.2b |
 | Riwayat revisi (revisi, tanggal, **bagian yang diubah**, uraian, pengesahan) | `bagian_diubah`, `ringkasan_perubahan` | `labfik.document.version` | ISO 8.3.2c |
-| 5 Tanggung jawab (pelaku × tanggung jawab) | **Tidak diambil sebagai field.** Menjadi masukan isi **tugas Jabatan** saat menyusun SK pengelola (PKG-03) | Masukan `labfik.jabatan` | Instr PKG-03 Bukti 3 |
+| 5 Tanggung jawab (pelaku × tanggung jawab) | **Tidak diambil sebagai field.** Menjadi masukan isi **tugas Jabatan** saat menyusun SK pengelola (PKG-03) | Masukan `hr.job` | Instr PKG-03 Bukti 3 |
 | 9 Rekaman yang harus dipelihara (rekaman, PJ, lokasi/retensi) | `rekaman_dihasilkan`; kandidat isi awal Dokumen Induk jenis formulir/rekaman | `labfik.document` | ISO 8.4 |
 | 6–8, 10–13 Instruksi, darurat, ketidaksesuaian, lampiran | — (isi file) | — | — |
 
@@ -212,8 +212,8 @@ Slide ini bukan dokumen tata kelola. Isinya dipakai sebagai **contoh data** untu
 | Bagian | Yang diambil | Model | Dasar |
 |---|---|---|---|
 | Daftar ruang (Sekretariat, FIK-Lab 201, 301–304, 401–403) beserta jumlah dan spesifikasi PC | Isi awal master Ruang Lab (kode, nama, fungsi, kapasitas) | `labfik.ruang` (Core) | Master bersama |
-| Kepala Laboratorium per prodi (Informatika, Sistem Informasi) | Jabatan "Kepala Laboratorium" dengan `unit` berbeda | `labfik.jabatan` | Instr PKG-03. Lihat A9 |
-| Teknisi jaringan, laboran per ruang (mis. "Laboran 302–304") | Jabatan "Laboran" dan "Teknisi"; penugasan per ruang di baris SK pengelola (`ruang_ids`) | `labfik.jabatan`, `labfik.assignment.line` | Instr PKG-03 Bukti 3 |
+| Kepala Laboratorium per prodi (Informatika, Sistem Informasi) | Jabatan "Kepala Laboratorium" dengan `unit` berbeda | `hr.job` | Instr PKG-03. Lihat A9 |
+| Teknisi jaringan, laboran per ruang (mis. "Laboran 302–304") | Jabatan "Laboran" dan "Teknisi"; penugasan per ruang di baris SK pengelola (`ruang_ids`) | `hr.job`, `labfik.assignment.line` | Instr PKG-03 Bukti 3 |
 | Staf kebersihan | Tidak dimodelkan. Bukan pengelola lab **[ASUMSI]** | — | — |
 | Hak dan kewajiban pengguna | Tidak dimodelkan. Isi tata tertib, dokumen terpisah (Dokumen Induk kategori tata tertib) | `labfik.document` | Instr PKG-02 |
 | Tautan layanan (lapor kendala, pinjam ruangan, survei, instal software, pinjam 3D printer) | Tidak diambil. Milik modul lain. Dicatat sebagai bukti A5 | — | — |
@@ -240,14 +240,14 @@ D6 adalah dokumen fakultas, bukan dokumen lab. Perannya dua:
 | Penandatangan (Dekan) | `pengesah_id` | mixin pengesahan | Instr PKG-03 K1 (PJ: Dekan) |
 | Tembusan | `tembusan` (teks) | `labfik.assignment` | Format |
 | Lampiran I: bagan struktur (garis instruksi dan garis koordinasi) | Dihasilkan dari Jabatan → `atasan_id` (garis instruksi), sebagai daftar hierarki. Garis koordinasi tidak dicatat | `[R]` Bagan organisasi | Instr PKG-03 Bukti 2 |
-| Lampiran II: tugas pokok dan fungsi per jabatan (daftar berhuruf a, b, c, …) | `labfik.jabatan.tugas` (anak: urutan, uraian) | `labfik.jabatan` | Instr PKG-03 Bukti 3, K2 |
+| Lampiran II: tugas pokok dan fungsi per jabatan (daftar berhuruf a, b, c, …) | `labfik.jabatan.tugas` (anak: urutan, uraian) | `hr.job` | Instr PKG-03 Bukti 3, K2 |
 
 **Isi D6 yang langsung relevan**
 
 | Isi | Dipakai sebagai | Model | Dasar |
 |---|---|---|---|
 | Rincian tugas Kepala Laboratorium (a–k) | Isi awal tugas jabatan "Kepala Laboratorium". Sumber: D6 | `labfik.jabatan.tugas` | Instr PKG-03 Bukti 3 |
-| Garis pelaporan: KaLab melapor tiap semester ke Ketua Jurusan; KaLab di bawah Dekan pada bagan | `atasan_id` pada jabatan KaLab. Jabatan fakultas (Dekan, Ketua Jurusan) dicatat sebagai jabatan **eksternal** (`is_eksternal`) | `labfik.jabatan` | Instr PKG-03 K2 (alur pelaporan), ISO 5.5 (posisi lab dalam organisasi induk) |
+| Garis pelaporan: KaLab melapor tiap semester ke Ketua Jurusan; KaLab di bawah Dekan pada bagan | `atasan_id` pada jabatan KaLab. Jabatan fakultas (Dekan, Ketua Jurusan) dicatat sebagai jabatan **eksternal** (`is_eksternal`) | `hr.job` | Instr PKG-03 K2 (alur pelaporan), ISO 5.5 (posisi lab dalam organisasi induk) |
 | Tugas a–b KaLab ("merencanakan kegiatan…", "menyusun rencana operasional dan pengembangan") | Dasar wewenang KaLab sebagai **penyusun** rencana PKG-01 dan PKG-13 | `labfik.jabatan.wewenang` | Instr PKG-01, PKG-13 |
 | Tugas j KaLab ("melaporkan kegiatan sekurang-kurangnya setiap semester") | Dasar frekuensi laporan realisasi semesteran | Pengaturan periode lapor | Instr PKG-01 K3 |
 
@@ -255,9 +255,9 @@ D6 adalah dokumen fakultas, bukan dokumen lab. Perannya dua:
 
 | Field (usulan) | Model | Dasar |
 |---|---|---|
-| `wewenang_ids` (wewenang × jenis dokumen/tindakan: menyusun, mengesahkan) | `labfik.jabatan` | Instr PKG-03 Bukti 4 (matriks kewenangan) |
-| `pengganti_id` (jabatan pengganti saat berhalangan) | `labfik.jabatan` | Instr PKG-03 K2 (pengganti petugas) |
-| `syarat_kompetensi` | `labfik.jabatan` | Dipakai PKG-04/14. Pengelolanya disepakati dengan Zahir **[KONFIRMASI]** |
+| `wewenang_ids` (wewenang × jenis dokumen/tindakan: menyusun, mengesahkan) | `hr.job` | Instr PKG-03 Bukti 4 (matriks kewenangan) |
+| `pengganti_id` (jabatan pengganti saat berhalangan) | `hr.job` | Instr PKG-03 K2 (pengganti petugas) |
+| `syarat_kompetensi` | `hr.job` | Dipakai PKG-04/14. Pengelolanya disepakati dengan Zahir **[KONFIRMASI]** |
 | Rapat koordinasi (tanggal, peserta, agenda, keputusan, notulen) | `labfik.meeting` | Instr PKG-03 K3, Bukti 5 |
 | Evaluasi struktur (temuan beban kerja, efektivitas koordinasi, keputusan, tautan ke SK/jabatan yang direvisi) | `labfik.org.evaluation` | Instr PKG-03 K4 |
 
@@ -297,8 +297,8 @@ Semua mixin adalah `models.AbstractModel` (tidak membuat tabel sendiri). Model k
 | Jenis | Sintaks | Di modul ini |
 |---|---|---|
 | **Mixin / abstrak** | `_inherit = ['labfik.approval.mixin', ...]` pada model baru | Semua mixin di 4.1 |
-| **Ekstensi model yang sudah ada** (*classical*) | `_inherit = 'hr.employee'` tanpa `_name` baru | Bila Personel memakai opsi `hr.employee`/`hr.job` **[KONFIRMASI kelompok]** |
-| **Delegasi** | `_inherits = {'res.partner': 'partner_id'}` | Bila Personel dibuat sebagai model sendiri yang tetap memakai data kontak `res.partner` **[KONFIRMASI kelompok]** |
+| **Ekstensi model yang sudah ada** (*classical*) | `_inherit = 'hr.employee'` tanpa `_name` baru | Personel (`hr.employee`) dan Jabatan (`hr.job`) diperluas di addon `labfik_core` (keputusan 14 November 2026) |
+| **Delegasi** | `_inherits = {'res.partner': 'partner_id'}` | Tidak dipakai. Opsi Personel sebagai model sendiri sudah gugur (keputusan 14 November 2026) |
 
 ### 4.3 Satu tahap pengesahan
 
@@ -316,8 +316,8 @@ Tabel ini menggabungkan hasil bedah dengan entitas di [analisis Pengelolaan 1–
 
 | Model | Label | Nama baku | Field inti | Mixin | PKG | Dari dokumen |
 |---|---|---|---|---|---|---|
-| `labfik.personel` | [M] | Personel | nama, jenis (dosen, laboran/PLP, teknisi, asisten, petugas K3, eksternal), user, unit/prodi | — | 03 (dipakai semua) | D5 (jenis teknisi). **Opsi model belum diputuskan** |
-| `labfik.jabatan` | [M] | Jabatan | nama, kode, `unit` (lab FIK, prodi Informatika, prodi SI, fakultas), `is_eksternal`, `atasan_id`, `pengganti_id`, `syarat_kompetensi`, `dasar_dokumen_id`. Anak: **tugas** (urutan, uraian), **wewenang** (tindakan × jenis dokumen) | — | 03 | D5 (KaLab per prodi), D6 (tugas a–k, garis instruksi, format daftar berhuruf) |
+| `hr.employee` (diperluas di `labfik_core`) | [M] | Personel | Bawaan `hr`: nama, `user_id`, `job_id`, `parent_id`. Tambahan: jenis (dosen, laboran/PLP, teknisi, asisten, petugas K3), unit/prodi. Pihak eksternal tidak dicatat (keputusan 14 November 2026) | — | 03 (dipakai semua) | D5 (jenis teknisi). Cara mencatat asisten (mahasiswa) sebagai `hr.employee` **[KONFIRMASI kelompok]** |
+| `hr.job` (diperluas di `labfik_core`) + `labfik.jabatan.tugas`, `labfik.jabatan.wewenang` | [M] | Jabatan | nama, kode, `unit` (lab FIK, prodi Informatika, prodi SI, fakultas), `is_eksternal`, `atasan_id`, `pengganti_id`, `syarat_kompetensi`, `dasar_dokumen_id`. Anak: **tugas** (urutan, uraian), **wewenang** (tindakan × jenis dokumen) | — | 03 | D5 (KaLab per prodi), D6 (tugas a–k, garis instruksi, format daftar berhuruf) |
 | `labfik.document` | [M] | Dokumen Induk | kode, judul, `jenis`, `kategori`, `asal` (lab/fakultas/universitas), `dasar_kebutuhan`, `is_wajib`, `lokasi_penggunaan_ids`, `dokumen_terkait_ids`, `rekaman_dihasilkan`, `versi_berlaku_id` (compute) | — | 02 | D3 (keterkaitan, pencatatan, POB fakultas), D1 Bab IX (isi awal) |
 | `labfik.kpi` | [M] | KPI | kode, nama, sasaran kerja, rumus (pembilang, penyebut), satuan, frekuensi, PIC (jabatan), sumber data/bukti, acuan ISO | — | 01 (dipakai 13, 21) | D2 Bagian 5 |
 | `labfik.ruang` | [M] | Ruang Lab | kode, nama, fungsi, kapasitas | — | Core | D1 2.2, D5 |
@@ -365,9 +365,9 @@ Semua laporan dihasilkan sebagai QWeb report (PDF) dari data T dan M. Tidak ada 
 | **Dokumen Rencana Pengembangan** | Analisis gap per aspek, program dengan prioritas, biaya, target, PIC, jadwal | `labfik.plan` (pengembangan) | D1 (struktur umum) | 13 Bukti 1–4 |
 | **Laporan capaian triwulan/semester** | Target, capaian, status, analisis, tindak lanjut | `labfik.realisasi` | D2 Bagian 9, D1 Lampiran D | 01 Bukti 5, 13 Bukti 5 |
 | **Matriks keterkaitan Renstra** | Rujukan Renstra × item RKT | `labfik.plan.line` | D1 Lampiran E | 01 Bukti 3 |
-| **SK Penetapan Pengelola Lab** | Format SK + Lampiran I (bagan) + Lampiran II (tugas per jabatan) | `labfik.assignment` + `labfik.jabatan` | D6 | 03 Bukti 1–3 |
-| **Bagan organisasi** | Garis instruksi (daftar hierarki) | `labfik.jabatan` | D6 Lampiran I | 03 Bukti 2 |
-| **Matriks kewenangan** | Jabatan × wewenang | `labfik.jabatan` | Instrumen | 03 Bukti 4 |
+| **SK Penetapan Pengelola Lab** | Format SK + Lampiran I (bagan) + Lampiran II (tugas per jabatan) | `labfik.assignment` + `hr.job` | D6 | 03 Bukti 1–3 |
+| **Bagan organisasi** | Garis instruksi (daftar hierarki) | `hr.job` | D6 Lampiran I | 03 Bukti 2 |
+| **Matriks kewenangan** | Jabatan × wewenang | `hr.job` | Instrumen | 03 Bukti 4 |
 | **Daftar Induk Dokumen** | Kode, judul, jenis, revisi berlaku, tanggal berlaku, pemilik, tinjau berikutnya, lokasi | `labfik.document` + versi | D1 Bab IX (kolom), ISO 8.3 | 02 Bukti 1 |
 | **Riwayat revisi** | Revisi, tanggal, bagian diubah, uraian, pengesah | Rantai `revisi_dari_id` | D1, D2, D4 | 02 Bukti 3 |
 | **Status monev** | Persentase SOP wajib yang memenuhi (PKG-02); kriteria tertinggi K1–K4 beserta tautan bukti (PKG-01, 03, 13) | Semua model di atas | Instrumen | Semua |
@@ -407,5 +407,6 @@ Semua laporan dihasilkan sebagai QWeb report (PDF) dari data T dan M. Tidak ada 
 - [ ] Bagaimana pembagian tugas kedua KaLab? Siapa pengganti bila KaLab atau laboran berhalangan? (A8, A9)
 
 **Untuk kelompok (Zahir, Herrens)**
-- [ ] Opsi model Personel (`hr.employee`, model sendiri dengan `_inherits res.partner`, atau model Rafika). (4.2)
+- [x] Opsi model Personel: **diputuskan** `hr.employee` dan `hr.job` diperluas di `labfik_core` (14 November 2026). Persetujuan kelompok masih ditunggu. (4.2)
+- [ ] Bagaimana asisten (mahasiswa) dicatat sebagai `hr.employee`? (Pihak eksternal tidak dicatat, keputusan 14 November 2026.)
 - [ ] Mixin di bagian 4.1 ditempatkan di `labfik_core` supaya bisa dipakai modul lain (misalnya pengesahan rencana pelatihan PKG-14)?
