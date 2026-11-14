@@ -104,7 +104,7 @@ Catatan aturan:
 
 | Entitas | Label | Grain | Isi (garis besar) | Catatan |
 |---|---|---|---|---|
-| **Pemeriksaan Kesiapan** | [T] | 1 per Sesi | Sesi, ruang, pemeriksa (laboran), waktu periksa, jumlah stasiun kerja berfungsi, keputusan (siap / siap setelah perbaikan / tunda), catatan. Anak: **butir pemeriksaan** (kategori: PC/stasiun kerja, *software*, jaringan, listrik, proyektor/audio; nama dan versi *software* bila kategori *software*; tanda lisensi sah untuk *software* berbayar; hasil: baik / diperbaiki sebelum sesi / bermasalah; keterangan) | Menggabungkan tiga transaksi di sheet (*checklist*, uji fungsi, keputusan siap/tunda) menjadi satu, seperti usulan pemetaan. Butir *software* dibuat otomatis dari daftar *software* Versi Modul |
+| **Pemeriksaan Kesiapan** | [T] | 1 per Sesi | Sesi, ruang, pemeriksa (laboran), waktu periksa, jumlah stasiun kerja berfungsi, keputusan (siap / siap setelah perbaikan / tunda), catatan. Anak: **butir pemeriksaan** (kategori: PC/stasiun kerja, *software*, jaringan, listrik, proyektor/audio, dan **bahan** untuk sesi berbahan (milik PKG-17, lihat [analisis-data-persiapan-17.md](analisis-data-persiapan-17.md)); nama dan versi *software* bila kategori *software*; tanda lisensi sah untuk *software* berbayar; hasil: baik / diperbaiki sebelum sesi / bermasalah; keterangan) | Menggabungkan tiga transaksi di sheet (*checklist*, uji fungsi, keputusan siap/tunda) menjadi satu, seperti usulan pemetaan. Butir *software* dibuat otomatis dari daftar *software* Versi Modul |
 | **Daftar Sesi Tidak Memenuhi** | [R] | — | Sesi beserta cek S1–S4 yang gagal | Dasar persentase |
 | **Rekap Kesiapan per Ruang** (+) | [R] | — | Jumlah pemeriksaan, butir bermasalah per kategori, dan keputusan tunda per ruang per periode | Menjawab kebutuhan rekap di wawancara P19 dan temuan A5 |
 
@@ -138,7 +138,7 @@ Pilihan tetap: kategori butir, hasil butir, keputusan, jenis lisensi.
 
 Dibanding [pemetaan](pemetaan-package-instrumen.md#pkg-16--persiapan-16-kesiapan-alat-dan-software): master Alat tidak lagi dibutuhkan, sehingga PKG-16 tidak bergantung pada kelompok Aset kecuali untuk kalibrasi yang opsional.
 
-**Keluar:** tidak dipakai package lain. Keputusan *tunda* memicu Perubahan Sesi di PKG-18.
+**Keluar:** PKG-17 Persiapan 17 (bahan) menumpang di Pemeriksaan Kesiapan sebagai butir berkategori bahan. Keputusan *tunda* memicu Perubahan Sesi di PKG-18.
 
 ## 7. Ditunda
 
