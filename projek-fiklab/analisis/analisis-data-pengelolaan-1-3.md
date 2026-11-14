@@ -212,7 +212,7 @@ Acuan ISO/IEC 17025:2017 5.5–5.6: struktur organisasi dan posisinya di organis
 | K1 Disahkan | Struktur dan pengangkatan personel disahkan | Ada SK berstatus *berlaku* dengan pengesah, tanggal, dan daftar personel–jabatan | Keabsahan SK |
 | K2 Lengkap | Uraian tugas, batas kewenangan, alur pelaporan, dan petugas pengganti lengkap | Setiap jabatan aktif punya uraian tugas, kewenangan, atasan, dan pengganti | Kejelasan isi |
 | K3 Dijalankan | Penugasan dan koordinasi mengikuti struktur | Ada rapat koordinasi pada periode ini. **Opsional:** penugasan petugas sesi (Pengelolaan 4) dan presensi petugas (Proses 18) hanya berisi personel dengan jabatan yang sesuai | Kesesuaian praktik |
-| K4 Dievaluasi | Beban kerja dan efektivitas koordinasi dievaluasi, struktur diperbaiki bila perlu | Ada evaluasi pada periode ini, dan keputusannya tertaut ke SK atau uraian tugas yang direvisi | Kualitas evaluasi |
+| K4 Dievaluasi | Beban kerja dan efektivitas koordinasi dievaluasi, struktur diperbaiki bila perlu | Ada evaluasi pada periode ini. Bila keputusannya struktur perlu diubah, evaluasi tertaut ke SK atau uraian tugas yang direvisi (disesuaikan 14 November 2026, AB-25) | Kualitas evaluasi |
 
 Sistem menampilkan kriteria yang sudah berbukti. Skor akhir ditetapkan penilai (semi-otomatis).
 
