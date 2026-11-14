@@ -112,8 +112,8 @@ labfik_core                  master bersama + Sesi
 |---|---|---|
 | Personel | **PKG-03** (Tata Kelola) | 01, 02, 03, 04, 06, 07, 10, 13, 14, 15, 18, 21 |
 | Jabatan (tugas, kewenangan, atasan, pengganti, syarat kompetensi) | **PKG-03** (Tata Kelola) | 01, 02, 03, 04, 13, 14, 18 |
-| Dokumen Induk (daftar dokumen terkendali) | **PKG-02** (Tata Kelola) | 02, 03, 09 |
-| KPI | **PKG-01** (Tata Kelola) | 01, 21 |
+| Dokumen Induk (daftar dokumen terkendali) | **PKG-02** (Tata Kelola), model di `labfik_org` | 02, 03, 09 (09 lewat modul jembatan bila butuh relasi) **[KONFIRMASI kelompok]** |
+| KPI | **PKG-01** (Tata Kelola), model di `labfik_org` | 01, 21 (21 lewat modul jembatan bila butuh relasi) **[KONFIRMASI kelompok]** |
 | Kompetensi | PKG-04 (SDM) | 04, 10, 14 |
 | Alat, Bahan | PKG-07 (Aset) | 05, 07, 08, 10, 11, 12, 16, 17, 21 |
 | Periode, Mata Kuliah, Kelas, Ruang Lab, Mahasiswa | Core | Banyak package |
