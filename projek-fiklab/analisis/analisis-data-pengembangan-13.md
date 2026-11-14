@@ -1,10 +1,10 @@
-# Analisis Data Indikator Pengembangan 13 (MVP)
+# Analisis Data Indikator Pengembangan 13
 
 1 November 2026 · Febriyan · Bagian dari proyek LabFIK Compliance · Modul: Tata Kelola & Dokumen (PKG-13)
 
 Alur analisis mengikuti [pedoman pengisian sheet](pedoman-pengisian-sheet-analisis.md) dan [analisis Pengelolaan 1–3](analisis-data-pengelolaan-1-3.md): **target → aturan memenuhi → luaran (bukti dukung) → data transaksi (*fact*) → master data (*dimension*) → dependensi**.
 
-Cakupannya sengaja dibatasi ke MVP. Data yang bergantung pada pihak lain diberi jalan pengganti. Isi sheet untuk baris ini awalnya ditulis Herrens (PIC analisis awal), lalu package-nya pindah ke modul Tata Kelola & Dokumen per 1 November 2026.
+Cakupannya sengaja dibatasi ke lapis Inti + Pelengkap (lihat bagian Cakupan rancangan di brief). Data yang bergantung pada pihak lain diberi jalan pengganti. Isi sheet untuk baris ini awalnya ditulis Herrens (PIC analisis awal), lalu package-nya pindah ke modul Tata Kelola & Dokumen per 1 November 2026.
 
 Kondisi saat ini **belum diketahui**: apakah LabFIK pernah menyusun analisis kebutuhan, renstra, atau roadmap pengembangan, dan siapa yang mengesahkannya. Semua klaim kondisi saat ini ditandai **[KONFIRMASI]**.
 
@@ -28,7 +28,7 @@ Kondisi saat ini **belum diketahui**: apakah LabFIK pernah menyusun analisis keb
    - **Analisis gap** per aspek sebagai dasar item.
    - **Prioritas berbasis risiko/manfaat.**
    - K4 meminta **pengukuran manfaat**, bukan sekadar tinjauan capaian.
-2. **Dimensi analisis gap adalah titik temu modul.** Aspek kompetensi berasal dari SDM, sarana dari Aset, dan layanan dari hasil monev/kepuasan. Untuk MVP, semua aspek diisi manual. Tautan otomatis menyusul.
+2. **Dimensi analisis gap adalah titik temu modul.** Aspek kompetensi berasal dari SDM, sarana dari Aset, dan layanan dari hasil monev/kepuasan. Dalam cakupan rancangan, semua aspek diisi manual. Tautan otomatis menyusul.
 3. **Roadmap muncul di dua indikator.** Bukti 1 Pengelolaan 1 adalah "roadmap lab", dan Bukti 3 Pengembangan 13 adalah "roadmap". Perlu diputuskan apakah keduanya satu dokumen **[VALIDASI ke Pak Widi]**.
 
 ---
@@ -55,7 +55,7 @@ Kriteria di instrumen:
 3. Program pengembangan berjalan sesuai tahapan dan realisasinya dapat ditelusuri.
 4. Manfaat pengembangan bagi pembelajaran/layanan diukur dan rencana diperbarui.
 
-## 2. Aturan "memenuhi" versi MVP
+## 2. Aturan "memenuhi"
 
 Kriteria diperiksa **berurutan**. Kriteria berikutnya tidak dihitung bila kriteria sebelumnya belum berbukti.
 
@@ -123,7 +123,7 @@ Tidak ada master baru.
 
 ## 7. Ditunda
 
-- Matriks risiko formal (kemungkinan × dampak). Untuk MVP cukup skala risiko dan manfaat sederhana.
+- Matriks risiko formal (kemungkinan × dampak). Cukup skala risiko dan manfaat sederhana.
 - Penarikan data gap otomatis dari modul SDM, Aset, dan status monev.
 - Tren manfaat multi-tahun.
 - Penganggaran rinci (mata anggaran, pencairan).
