@@ -1,6 +1,8 @@
 # Brief Modul Tata Kelola & Dokumen
 
-1 November 2026 · Febriyan · Scope skripsi final. Bagian dari proyek LabFIK Compliance (lihat [brief-seluruh-projek.md](brief-seluruh-projek.md))
+14 November 2026 · Febriyan · PKG-01, 02, 03, 13. Bagian dari proyek LabFIK Compliance (lihat [brief-seluruh-projek.md](brief-seluruh-projek.md))
+
+**Status: DRAF.** Scope skripsi final (1 November 2026); cakupan rancangan ditetapkan 14 November 2026. Bahan Bab I (1.2, 1.3, 1.4) dan dasar seluruh rancangan TO-BE.
 
 ## Ringkasan
 
@@ -17,7 +19,7 @@
 
   Personel dan Jabatan dipakai hampir semua package lain, termasuk milik kelompok lain. Karena itu modul ini berada **paling hulu** di proyek.
 - **Benang merah:** lab membuktikan bahwa ia punya **struktur, aturan, dan rencana** yang disahkan, dijalankan, dan dievaluasi. Bukti kegiatan direkam saat terjadi, bukan dikumpulkan menjelang monev.
-- **Status:** keempat package sudah dianalisis, tetapi belum ada rancangan teknis maupun kode. Rancangan dimulai dari analisis, bukan dari prototipe sebelumnya.
+- **Status:** keempat package sudah dianalisis dan dokumen lab sudah dibedah. Rancangan TO-BE disusun berikutnya mengikuti alur di [CLAUDE.md](../../CLAUDE.md) bagian 4 (langkah 4–10), dalam batas [cakupan rancangan](#cakupan-rancangan) di bawah.
 - **Usulan judul (draf, perlu persetujuan Pak Widi):** Kustomisasi Modul Odoo untuk Tata Kelola dan Pengendalian Dokumen Laboratorium Berbasis Instrumen Monev (Studi Kasus: Laboratorium FIK UPN "Veteran" Jakarta)
 
 ## Indikator yang dipegang
@@ -33,7 +35,22 @@ Rincian kriteria, aturan memenuhi, entitas, dan dependensi ada di:
 - [analisis-data-pengelolaan-1-3.md](../analisis/analisis-data-pengelolaan-1-3.md)
 - [analisis-data-pengembangan-13.md](../analisis/analisis-data-pengembangan-13.md)
 
-Baris lain dengan nomor yang sama **bukan** scope modul ini. Contohnya Pengelolaan 10 (KPI dipantau), Pengelolaan 10 (legalitas), dan Pengelolaan 13 (dokumen mutu dikendalikan). Baris-baris ini memang menempel ke komponen modul ini, jadi dicatat sebagai **kandidat perluasan** (lihat [Batasan masalah](#batasan-masalah-usulan)).
+Temuan kondisi dokumen lab saat ini ada di [bedah-dokumen-tata-kelola.md](../analisis/bedah-dokumen-tata-kelola.md).
+
+Baris lain dengan nomor yang sama **bukan** scope modul ini. Contohnya Pengelolaan 10 (KPI dipantau), Pengelolaan 10 (legalitas), dan Pengelolaan 13 (dokumen mutu dikendalikan). Baris-baris ini memang menempel ke komponen modul ini, jadi dicatat sebagai **kandidat perluasan** (lihat [Batasan masalah](#batasan-masalah)).
+
+## Arahan pembimbing dan keputusan
+
+| Tanggal | Sumber | Isi | Dampak |
+|---|---|---|---|
+| 13 Nov 2026 | Bimbingan Pak Widi | Dahulukan rancangan **TO-BE** (Bab II 2.3) dengan **UML**, sebelum Bab I dan 2.1 Observasi | Urutan kerja: rancangan dulu |
+| 13 Nov 2026 | Bimbingan Pak Widi | Class Odoo dirancang dengan **inheritance**, supaya field dan perilaku tidak ditulis berulang | Perilaku bersama (pengesahan, dokumen terkendali, periode, kriteria, bukti) dirancang sekali lalu diwarisi |
+| 13 Nov 2026 | Bimbingan Pak Widi | Proses pendokumentasian di FIK sebagian besar belum ada; observasi as-is boleh dari studi dokumen dan ISO 17025 selama wawancara belum ada | 2.1 Observasi memakai temuan bedah dokumen |
+| 13 Nov 2026 | Febriyan | Dokumen rutin diisi di sistem lalu diekspor; SOP/IK diunggah. Pengesahan tanpa tanda tangan digital | Batasan masalah 2 dan 3 |
+| 14 Nov 2026 | Febriyan | **Dekan tidak memakai sistem.** Dekan hanya menandatangani dokumen cetak. KaLab mencatat hasilnya di sistem: pengesah tercatat = Dekan, pencatat = KaLab | Dekan bukan aktor sistem |
+| 14 Nov 2026 | Febriyan | **Memeriksa dan mengesahkan adalah satu kesatuan.** Pejabat yang mengesahkan dianggap sudah memeriksa isi dokumen; catatan pengesahan menjadi buktinya | Tidak ada tahap pemeriksaan terpisah. Kolom "Diperiksa" di blok tanda tangan dokumen cetak tetap di kertas saja |
+| 14 Nov 2026 | Febriyan | **Renstra berlaku 5 tahun** (draf lab: 2027–2031), jadi cukup diunggah dan disahkan, tidak diisi lewat form | Rencana kerja tahunan merujuk Renstra lewat teks |
+| 14 Nov 2026 | Febriyan | Cakupan rancangan proposal = lapis **Inti + Pelengkap** | Bagian [Cakupan rancangan](#cakupan-rancangan) |
 
 ## Pola bersama di dalam modul
 
@@ -42,31 +59,70 @@ Keempat package hanya memakai **dua pola**. Karena itu modulnya bisa dibangun se
 | Pola | Dipakai oleh | Alurnya |
 |---|---|---|
 | **A. Paket dokumen bertangga K1–K4** | PKG-01, PKG-03, PKG-13 | Ditetapkan/disahkan → isinya lengkap → dijalankan (rekaman) → dievaluasi dan diperbaiki |
-| **B. Dokumen terkendali berversi** | PKG-02. Juga menyimpan PDF SK (PKG-03) dan rencana bertanda tangan (PKG-01, 13) | Draf → diajukan → berlaku → dicabut, dengan distribusi, sosialisasi, dan tinjau ulang |
+| **B. Dokumen terkendali berversi** | PKG-02. Juga menyimpan PDF SK (PKG-03), rencana bertanda tangan (PKG-01, 13), dan Renstra | Draf → diajukan → disahkan (berlaku) → diganti / dicabut / kedaluwarsa, dengan distribusi, sosialisasi, dan tinjau ulang |
 
-PKG-01 dan PKG-13 polanya **sama persis**: rencana (+ item) → realisasi → tinjauan. Usulannya, keduanya memakai satu model rencana generik yang dibedakan **jenis**-nya (strategis/tahunan/pengembangan). Pembedanya PKG-13 dibahas di analisisnya: analisis gap per aspek, prioritas berbasis risiko/manfaat, dan pengukuran manfaat.
+Kedua pola memakai **satu mekanisme pengesahan** yang sama:
+
+```
+Penyusun ajukan ─▶ cetak & tanda tangan di luar sistem ─▶ unggah PDF bertanda tangan ─▶ KaLab sahkan
+                   (KaLab sendiri, atau Dekan)                                          atau kembalikan dengan alasan
+```
+
+Pengesahan dicek terhadap **wewenang jabatan** dan setiap kejadian (diajukan, dikembalikan, berkas diunggah, disahkan, dicabut, kedaluwarsa) **dicatat sebagai riwayat**, bukan hanya status terakhir.
+
+PKG-01 dan PKG-13 polanya **sama persis**: rencana (+ item) → realisasi → tinjauan. Keduanya memakai satu konsep rencana yang dibedakan **jenis**-nya (tahunan / pengembangan). Pembedanya PKG-13: temuan gap per aspek, prioritas berbasis risiko dan manfaat, dan pengukuran manfaat di tinjauan. Renstra bukan rencana yang diisi di sistem, melainkan dokumen unggahan yang dirujuk.
 
 Hubungan antar-package:
 
 ```
-PKG-03 Struktur ──(Personel, Jabatan: PIC, pengesah, peserta)──▶ PKG-01, PKG-02, PKG-13
-PKG-02 Register dokumen ──(PDF SK, rencana bertanda tangan)──▶ PKG-03, PKG-01, PKG-13
-PKG-01 Roadmap / rencana strategis ◀──(keterkaitan, opsional)── PKG-13
+PKG-03 Struktur ──(Personel, Jabatan: PIC, pengesah, peserta, wewenang)──▶ PKG-01, PKG-02, PKG-13
+PKG-02 Register dokumen ──(PDF SK, rencana bertanda tangan, Renstra)──▶ PKG-03, PKG-01, PKG-13
+PKG-01 Renstra (unggahan) ◀──(dirujuk lewat teks)── item rencana tahunan dan pengembangan
 PKG-01 Master KPI ──▶ dipakai juga PKG-21 (kelompok Aset)
 ```
 
 ## Lingkup kebutuhan
 
-Kebutuhan berikut diturunkan dari bukti dukung dan kriteria di instrumen, lewat analisis. Rancangan teknisnya (model, layar, alur persetujuan) **belum dibuat**.
+Kebutuhan berikut diturunkan dari bukti dukung dan kriteria di instrumen, lewat analisis.
 
 | Area | Yang harus bisa dibuktikan sistem |
 |---|---|
-| Struktur (PKG-03) | Personel dan jabatan (tugas, kewenangan, atasan, pengganti); penetapan pengelola (SK) berperiode; rapat koordinasi; evaluasi struktur; bagan organisasi dan matriks kewenangan sebagai laporan |
+| Struktur (PKG-03) | Personel dan jabatan (tugas, wewenang, atasan, pengganti); penetapan pengelola (SK) berperiode; rapat koordinasi; evaluasi struktur; bagan organisasi dan matriks kewenangan sebagai laporan |
 | Dokumen (PKG-02) | Daftar induk SOP/IK beserta dasar kebutuhan dan lokasi penggunaan; versi dengan pengesahan; distribusi ke titik penggunaan; sosialisasi; tinjau ulang; persentase SOP wajib yang memenuhi |
-| Rencana kerja (PKG-01) | Rencana (strategis dan tahunan) dengan item: sasaran, KPI, target, PIC, jadwal, anggaran, keterkaitan Renstra; pengesahan; realisasi; tinjauan |
-| Rencana pengembangan (PKG-13) | Analisis gap per aspek (tridharma, kompetensi, sarana, layanan); program dengan prioritas risiko/manfaat, biaya, target, PIC, jadwal; realisasi; tinjauan dengan pengukuran manfaat |
+| Rencana kerja (PKG-01) | Renstra sebagai dokumen unggahan yang disahkan; rencana tahunan dengan item: KPI, target, PIC, jadwal, anggaran, rujukan Renstra; pengesahan; realisasi; tinjauan |
+| Rencana pengembangan (PKG-13) | Temuan gap per aspek (tridharma, kompetensi, sarana, layanan); item dengan nilai risiko dan manfaat, biaya, target, PIC, jadwal; realisasi; tinjauan dengan pengukuran manfaat |
+| Pengesahan (semua) | Ajukan dengan cek kelengkapan; kembalikan dengan alasan; unggah PDF bertanda tangan; sahkan dengan cek wewenang; cabut; riwayat pengesahan |
 | Status monev | Skor persentase Pengelolaan 2; untuk Pengelolaan 1, 3, dan Pengembangan 13, kriteria K1–K4 yang sudah berbukti beserta tautan ke rekamannya |
-| Integrasi (ditunda) | Penautan ke master modul Rafika; pengambilan data gap dan realisasi KPI dari modul lain |
+
+## Cakupan rancangan
+
+Rancangan proposal dibagi dua lapis. Keduanya dirancang penuh dan digambar di diagram Bab II.
+
+| Lapis | Arti | Prioritas implementasi |
+|---|---|---|
+| **Inti** | Tanpa ini ada kriteria instrumen (K1–K4, S1–S5) yang tidak bisa dibuktikan, atau alur pengesahan putus | Wajib (W) |
+| **Pelengkap** | Memperkuat rancangan (format dokumen lab, kelengkapan siklus) dengan biaya kecil | Opsional (O); dibangun bila waktu cukup |
+
+Hal yang menambah kenyamanan atau kedalaman tetapi tidak dibutuhkan untuk membuktikan kriteria **tidak dirancang**; dicatat di [batasan masalah](#batasan-masalah) dan menjadi saran pengembangan.
+
+**Prinsip pemilahan:**
+1. **Lantai ditentukan instrumen.** Setiap kriteria K1–K4 dan S1–S5 harus punya kebutuhan dan rekaman bukti.
+2. **Satu mekanisme, satu jalur utama.** Pengesahan cukup satu jalur: ajukan → kembalikan atau sahkan → cabut. Penolakan yang terjadi di atas kertas dicatat lewat aksi kembalikan yang sama.
+3. **Teks dulu, master kemudian.** Bila analisis menyediakan jalan pengganti berupa teks bebas (rujukan Renstra), master khususnya tidak dibuat.
+4. **Unggah dulu, form kemudian.** Dokumen yang jarang berubah (SOP/IK, Renstra) cukup diunggah lalu disahkan.
+5. **Hitung, bukan jadwalkan.** Penanda yang bisa dihitung dari data (perlu ditinjau, masih berlaku, realisasi belum diisi) tidak butuh pengingat terjadwal.
+6. **Tunjukkan desain.** Inheritance, riwayat pengesahan, dan urutan baku pengesahan yang tidak bisa dilewati tetap dirancang, karena biayanya kecil dan diminta pembimbing.
+
+| Area | Inti | Pelengkap |
+|---|---|---|
+| **Pengesahan** | Ajukan (cek kelengkapan), kembalikan dengan alasan, unggah PDF bertanda tangan, sahkan (cek wewenang pengesah tercatat), cabut, riwayat pengesahan. Pengesah tercatat = pejabat penanda tangan; pencatat = KaLab | Dokumen berperiode otomatis kedaluwarsa saat periodenya habis (penjadwal harian) |
+| **PKG-02 SOP/IK** | Dokumen induk, unggah versi (satu berlaku), distribusi, sosialisasi, tinjau ulang + penanda "perlu ditinjau", persentase memenuhi, daftar induk dan riwayat revisi | Pengguna lab membaca versi berlaku; hanya satu versi yang diproses per dokumen |
+| **PKG-03 Struktur** | Personel, jabatan (tugas, wewenang, atasan, pengganti), SK + baris penetapan, rapat, evaluasi, bagan (daftar hierarki), matriks kewenangan (daftar) | Ekspor SK format fakultas |
+| **PKG-01 Rencana** | Renstra sebagai dokumen unggahan yang disahkan; rencana tahunan: item dengan KPI, target, PIC, jadwal, anggaran, rujukan Renstra institusi berupa teks; matriks keterkaitan sebagai daftar item per rujukan Renstra; realisasi + bukti; tinjauan → rencana berikutnya; ekspor PDF rencana tahunan; master KPI | Narasi ringkas rencana (ringkasan, latar belakang, tujuan, ruang lingkup) untuk ekspor; revisi rencana; satu dokumen berlaku per jenis dan periode |
+| **PKG-13 Pengembangan** | Rencana jenis pengembangan: temuan gap 4 aspek, item dengan nilai risiko dan manfaat, ukuran manfaat di tinjauan | Ekspor PDF rencana pengembangan (template sama dengan rencana tahunan); prioritas dihitung dari risiko × manfaat |
+| **Status monev** | Persentase PKG-02; kriteria tertinggi K1–K4 PKG-01/03/13 dengan tautan bukti; akses baca penilai | — |
+
+**Aktor sistem:** KaLab, Laboran/PLP, pengguna lab (asisten, dosen), penilai monev, dan penjadwal (pemicu waktu). Dekan dan pejabat lain yang hanya menandatangani dokumen cetak **bukan aktor sistem**; identitasnya tercatat sebagai pengesah.
 
 ## Kontrak dengan modul lain
 
@@ -76,7 +132,8 @@ Kebutuhan berikut diturunkan dari bukti dukung dan kriteria di instrumen, lewat 
 |---|---|---|
 | Personel | 01, 02, 03, 04, 06, 07, 10, 13, 14, 15, 18, 21 | Mencakup dosen, laboran/PLP, asisten (mahasiswa), petugas K3, pihak eksternal. NIP/NIM adalah data pribadi. Opsi modelnya ada di analisis Pengelolaan 3 |
 | Jabatan | 01, 02, 03, 04, 13, 14, 18 | Termasuk **syarat kompetensi minimum** yang dibutuhkan PKG-04 dan PKG-14. Perlu disepakati dengan Zahir (SDM) |
-| Wewenang dari jabatan | Semua modul | Siapa yang boleh mengesahkan atau menyetujui sebaiknya mengikuti jabatan aktif, bukan diatur terpisah per modul |
+| Wewenang dari jabatan | Semua modul | Siapa yang boleh mengesahkan atau menyetujui mengikuti jabatan aktif, bukan diatur terpisah per modul |
+| Mekanisme pengesahan bersama | Semua dokumen yang perlu disahkan (mis. rencana pelatihan PKG-14) | Satu jalur: ajukan → kembalikan / sahkan → cabut, dengan riwayat. Tanpa tahap pemeriksaan terpisah |
 | Dokumen Induk + versi | 02, 03, 09 (SOP limbah); kandidat Persiapan 15 (versi modul) | Pola versi sama dengan "modul berversi" di Persiapan 15 |
 | KPI | 01, 21 | — |
 
@@ -85,31 +142,48 @@ Kebutuhan berikut diturunkan dari bukti dukung dan kriteria di instrumen, lewat 
 | Data | Dari | Untuk | Bila tidak ada |
 |---|---|---|---|
 | Penugasan petugas per sesi, presensi petugas | SDM (PKG-04), Praktikum (PKG-18) | Pengelolaan 3 K3 (penugasan mengikuti struktur), rekap beban kerja K4 | K3–K4 dari rapat dan evaluasi saja |
-| Skor indikator monev | *Dashboard* / registri indikator (belum ada pemiliknya) | Realisasi KPI otomatis (Pengelolaan 1 K3) dan data gap layanan (Pengembangan 13) | Diinput manual |
-| Gap kompetensi personel | SDM (PKG-04 matriks kompetensi, PKG-14) | Aspek kompetensi di analisis gap Pengembangan 13 | Diisi manual |
-| Kondisi alat dan pemeliharaan | Aset (PKG-07, PKG-12, PKG-21) | Aspek sarana di analisis gap Pengembangan 13 | Diisi manual |
+| Skor indikator monev | *Dashboard* / registri indikator (belum ada pemiliknya) | Realisasi KPI (Pengelolaan 1 K3) dan data gap layanan (Pengembangan 13) | Diinput manual |
+| Gap kompetensi personel | SDM (PKG-04 matriks kompetensi, PKG-14) | Aspek kompetensi di temuan gap Pengembangan 13 | Diisi manual |
+| Kondisi alat dan pemeliharaan | Aset (PKG-07, PKG-12, PKG-21) | Aspek sarana di temuan gap Pengembangan 13 | Diisi manual |
 
 Sebaliknya, **gap kompetensi** dari Pengembangan 13 bisa menjadi masukan kebutuhan pelatihan di Pengembangan 14 (SDM). Hubungan ini opsional dan perlu disepakati.
 
-## Batasan masalah (usulan)
+## Batasan masalah
 
 1. **Indikator yang dicakup:** Pengelolaan 1, 2, 3, dan Pengembangan 13. Baris lain tidak dicakup, termasuk Pengelolaan 10 (KPI dipantau), Pengelolaan 10 (legalitas), Pengelolaan 13 (dokumen mutu), dan Evaluasi E07/E10 (tinjauan). Namun komponen register dokumen, KPI, dan tinjauan bisa dipakai ulang untuk baris-baris itu.
-2. **Dua jenis dokumen** (arahan Pak Widi, bimbingan November 2026; menggantikan batasan lama "isi dokumen tidak ditulis di Odoo"):
-   - **Dokumen rutin** yang isinya berganti tiap periode, yaitu rencana kerja tahunan dan sasaran/KPI (PKG-01) serta rencana pengembangan (PKG-13), **diisi lewat sistem lalu diekspor menjadi dokumen PDF** mengikuti format dokumen lab. Penetapan struktur/pengelola per periode (PKG-03) kemungkinan masuk jenis ini **[KONFIRMASI]**.
-   - **Dokumen yang jarang berubah**, yaitu SOP dan IK (PKG-02), tetap disusun di Word/Docs. Sistem hanya mengelola versi, pengesahan, distribusi, sosialisasi, dan tinjau ulang (file diunggah).
-3. **Pengesahan tanpa tanda tangan digital.** Alur untuk dokumen yang dihasilkan sistem: ekspor PDF → ditandatangani manual → PDF bertanda tangan diunggah balik → pejabat berwenang menekan "Sahkan" (tercatat siapa dan kapan). Untuk SOP/IK, PDF bertanda tangan langsung diunggah.
+2. **Dua jenis dokumen:**
+   - **Dokumen rutin** yang isinya berganti tiap periode, yaitu rencana kerja tahunan (PKG-01) dan rencana pengembangan (PKG-13), **diisi lewat sistem lalu diekspor menjadi PDF** mengikuti format dokumen lab. Penetapan struktur/pengelola per periode (PKG-03) kemungkinan masuk jenis ini **[KONFIRMASI]**.
+   - **Dokumen yang jarang berubah**, yaitu SOP dan IK (PKG-02) serta Renstra (berlaku 5 tahun), disusun di luar sistem. Sistem hanya mengelola versi, pengesahan, distribusi, sosialisasi, dan tinjau ulang (file diunggah).
+3. **Pengesahan tanpa tanda tangan digital.** Dokumen diekspor atau disiapkan → ditandatangani manual → PDF bertanda tangan diunggah → KaLab menekan "Sahkan" (tercatat pengesah, pencatat, dan waktu). Pejabat penanda tangan (Dekan) tidak memakai sistem. Pemeriksaan isi dokumen menyatu dengan pengesahan, tidak dicatat sebagai tahap terpisah.
 4. **Skor kriteria berurutan** (Pengelolaan 1, 3, Pengembangan 13): sistem menampilkan kriteria tertinggi yang "lengkap secara data", lalu skor akhir ditetapkan penilai. Skor Pengelolaan 2 dihitung otomatis.
-5. **Tanpa integrasi** dengan sistem kepegawaian, keuangan, SIAKAD, LeADS, atau SIMPEL.
-6. **Platform:** Odoo 17 Community, berdiri sendiri tanpa OpenEduCat. Integrasi dengan modul Rafika lewat modul jembatan menjadi saran pengembangan.
-7. **Data:** data uji fiktif. Pilot memakai minimal satu dokumen nyata (1 SOP dan 1 draf struktur).
-8. **Sistem adalah alat** pencatatan, pembuktian, dan pemantauan. Sistem tidak menjamin skor monev naik.
+5. **Tidak dirancang** (saran pengembangan):
+   - form Renstra lengkap (visi, misi, sasaran, program, baseline) dan master sasaran Renstra institusi; rujukan Renstra cukup berupa teks di item rencana;
+   - IKU sebagai dokumen tersendiri (target KPI per periode cukup di item rencana tahunan);
+   - penarikan pengajuan oleh penyusun dan pengaturan modul;
+   - pengingat terjadwal (tinjau ulang, realisasi); sistem cukup menampilkan penandanya;
+   - koordinasi antarjabatan dan bagan organisasi visual;
+   - grafik tren status monev antarperiode;
+   - penarikan data gap otomatis dari modul lain.
+6. **Tanpa integrasi** dengan sistem kepegawaian, keuangan, SIAKAD, LeADS, atau SIMPEL.
+7. **Platform:** Odoo 17 Community, berdiri sendiri tanpa OpenEduCat. Integrasi dengan modul Rafika lewat modul jembatan menjadi saran pengembangan.
+8. **Data:** data uji fiktif. Pilot memakai minimal satu dokumen nyata (1 SOP dan 1 draf struktur).
+9. **Sistem adalah alat** pencatatan, pembuktian, dan pemantauan. Sistem tidak menjamin skor monev naik.
 
 ## Rancangan proposal
 
 Mengikuti [Pedoman TA FIK 2025](../docs/Pedoman-TA-FIK-2025-23-29.md), jenis **Prototipe/Proyek**:
 - **Bab I:** 1.1 Latar Belakang · 1.2 **Identifikasi Masalah** · 1.3 Batasan Masalah · 1.4 Tujuan dan Manfaat · 1.5 Jadwal Kegiatan
-- **Bab II Rancangan Proyek:** 2.1 Observasi · 2.2 Usulan Solusi · 2.3 Rancangan Proyek · 2.4 Rencana Pengujian. Pendekatannya terstruktur (DFD/ERD) atau UML.
+- **Bab II Rancangan Proyek:** 2.1 Observasi · 2.2 Usulan Solusi · 2.3 Rancangan Proyek · 2.4 Rencana Pengujian. Pendekatannya UML, dengan alur rancangan Wazlawick (2024).
 - **Lampiran wajib:** dokumen observasi dan wawancara, serta Surat Keterangan Riset dari LabFIK.
+
+| Bagian | Isi dari brief ini |
+|---|---|
+| 1.2 Identifikasi Masalah | M1–M4 di tabel bawah |
+| 1.3 Batasan Masalah | Bagian [Batasan masalah](#batasan-masalah), termasuk butir 5 |
+| 2.2 Usulan Solusi | Empat area fitur + mekanisme pengesahan bersama, dengan penanda Inti/Pelengkap |
+| 2.3 Rancangan Proyek | Diagram untuk lapis Inti + Pelengkap |
+| 2.4 Rencana Pengujian | Skenario *black box* lapis Inti; Pelengkap diuji bila dibangun |
+| Saran pengembangan | Batasan masalah butir 5 |
 
 Ketentuan penting:
 - **Rubrik:** kesesuaian judul 15, penerapan teknologi 15, masalah jelas 20, studi terkait 20, kesesuaian metode 30.
@@ -118,14 +192,14 @@ Ketentuan penting:
 
 | Masalah (1.2) | Tujuan (1.4) | Fitur |
 |---|---|---|
-| M1. LabFIK belum punya SK pengelola lab, rencana kerja, maupun rencana pengembangan yang disahkan (Renstra/RKT/IKU masih draf). SOP lab sudah ada sejak 2024, tetapi nomor, tanggal efektif, dan status pengesahannya tidak lengkap. Akibatnya kriteria pertama keempat indikator tidak terpenuhi atau tidak dapat dibuktikan (studi dokumen: [bedah-dokumen-tata-kelola.md](../analisis/bedah-dokumen-tata-kelola.md#2-temuan-as-is-bahan-21-observasi)) **[KONFIRMASI lewat wawancara]** | T1. Sistem yang menuntun lab menyusun dan mengesahkan struktur, SOP, rencana kerja, dan rencana pengembangan | Penetapan struktur, versi dokumen, rencana |
+| M1. LabFIK belum punya SK pengelola lab, rencana kerja, maupun rencana pengembangan yang disahkan (Renstra/RKT/IKU masih draf). SOP lab sudah ada sejak 2024, tetapi nomor, tanggal efektif, dan status pengesahannya tidak lengkap. Akibatnya kriteria pertama keempat indikator tidak terpenuhi atau tidak dapat dibuktikan (studi dokumen: [bedah-dokumen-tata-kelola.md](../analisis/bedah-dokumen-tata-kelola.md#2-temuan-as-is-bahan-21-observasi)) **[KONFIRMASI lewat wawancara]** | T1. Sistem yang menuntun lab menyusun dan mengesahkan struktur, SOP, rencana kerja, dan rencana pengembangan | Penetapan struktur, versi dokumen, rencana, pengesahan |
 | M2. Kriteria "dijalankan" dan "dievaluasi" hanya bisa dibuktikan dengan rekaman kegiatan, dan rekaman itu belum ada | T2. Rekaman realisasi, rapat koordinasi, tinjauan, dan evaluasi yang tertaut ke dokumen asalnya | Realisasi, rapat, tinjauan, evaluasi |
-| M3. Belum ada pengendalian dokumen (versi berlaku, pengesah berwenang, distribusi, tinjau ulang), sehingga SOP tidak bisa dibuktikan mutakhir dan tersedia | T3. Pengendalian dokumen berversi dengan pengesah yang mengikuti jabatan | Register dokumen |
+| M3. Belum ada pengendalian dokumen (versi berlaku, pengesah berwenang, distribusi, tinjau ulang), sehingga SOP tidak bisa dibuktikan mutakhir dan tersedia | T3. Pengendalian dokumen berversi dengan pengesah yang mengikuti jabatan dan riwayat pengesahan | Register dokumen, pengesahan |
 | M4. Status indikator dihitung manual dan tidak tertelusur ke buktinya | T4. Status monev: skor Pengelolaan 2 dihitung sistem, kriteria K1–K4 tertaut ke buktinya | Status monev |
 
 Kolom "Fitur" masih tingkat kebutuhan. Rinciannya ditetapkan saat rancangan (Bab II).
 
-**Metode:** belum diputuskan. Kandidat yang pernah diusulkan untuk kelompok adalah Water-Scrum-Fall.
+**Metode rancangan:** OOAD Wazlawick (2024): kebutuhan → proses bisnis (activity, state machine) → use case → expanded use case → system sequence diagram → conceptual model → design class diagram Odoo dengan inheritance. **Metode pengembangan:** belum diputuskan; kandidat yang pernah diusulkan untuk kelompok adalah Water-Scrum-Fall.
 
 **Evaluasi (usulan):**
 - *black box* per kebutuhan;
@@ -141,15 +215,17 @@ Daftar pustaka yang dipakai dan status verifikasinya ada di [draf latar belakang
 Kebijakannya:
 - Utamakan jurnal (2022 ke atas), standar, dan regulasi.
 - Skripsi dibatasi, saat ini hanya Anandar (2026) sebagai rujukan penerapan Odoo di LabFIK.
+- Rancangan: Wazlawick, R. S. (2024). *Object-Oriented Analysis and Design for Information Systems* (2nd ed.). Morgan Kaufmann/Elsevier.
 
 ## Risiko dan mitigasi
 
 | Risiko | Mitigasi |
 |---|---|
-| Dinilai "sekadar CRUD" | Bingkai kontribusinya sebagai **keterlacakan butir instrumen → kebutuhan → bukti → status**, dan tunjukkan lewat matriks keterlacakan |
-| Model Personel/Jabatan tidak disepakati kelompok, lalu tiap modul membuat versinya sendiri | Sepakati model Personel dan Jabatan sebagai kontrak bersama sebelum modul lain mulai |
-| Data gap Pengembangan 13 bergantung pada modul lain yang belum jadi | Semua aspek gap bisa diisi manual dulu; tautan otomatis menyusul |
-| KaLab satu-satunya pengesah | Jabatan pengganti dipakai sebagai cadangan (ditunda); dicatat sebagai keterbatasan |
+| Dinilai "sekadar CRUD" | Bingkai kontribusinya sebagai **keterlacakan butir instrumen → kebutuhan → bukti → status**, tunjukkan lewat matriks keterlacakan; tunjukkan desain inheritance dan riwayat pengesahan |
+| Model Personel/Jabatan dan mekanisme pengesahan tidak disepakati kelompok, lalu tiap modul membuat versinya sendiri | Sepakati sebagai kontrak bersama sebelum modul lain mulai |
+| Data gap Pengembangan 13 bergantung pada modul lain yang belum jadi | Semua aspek gap diisi manual; penarikan otomatis menjadi saran pengembangan |
+| KaLab satu-satunya pencatat pengesahan | Jabatan pengganti dipakai sebagai cadangan; dicatat sebagai keterbatasan |
+| Pengesahan oleh Dekan tidak bisa diverifikasi sistem | PDF bertanda tangan wajib diunggah sebelum disahkan; pengesah tercatat dicek terhadap wewenang jabatan |
 | Tidak ada dokumen nyata yang disusun selama pilot | Targetkan minimal 1 SOP nyata dan 1 draf struktur, disusun bersama laboran |
 | Tumpang tindih dengan baris tanpa PIC (Pengelolaan 10 KPI, Pengelolaan 13 dokumen mutu) | Nyatakan di batasan; komponen boleh dipakai ulang |
 | Klaim kondisi saat ini tanpa bukti | Wawancara KaLab terdokumentasi (nama, jabatan, tanggal) sebagai lampiran |
@@ -159,26 +235,26 @@ Kebijakannya:
 **Untuk Pak Widi**
 - [ ] Apakah judul di atas disetujui?
 - [ ] Apakah skor akhir indikator kriteria berurutan boleh ditetapkan penilai, sementara sistem hanya menunjukkan "lengkap secara data"?
-- [ ] Apakah roadmap Pengelolaan 1 (Bukti 1) dan roadmap Pengembangan 13 (Bukti 3) boleh satu dokumen?
+- [ ] Apakah Renstra (berlaku 5 tahun) boleh dipakai sebagai roadmap Pengelolaan 1 (Bukti 1) sekaligus roadmap Pengembangan 13 (Bukti 3)?
 
 **Untuk KaLab (wawancara, wajib sebagai lampiran)**
 - [ ] Konfirmasi tertulis: SK pengelola, SOP disahkan, rencana kerja, dan rencana pengembangan belum ada.
-- [ ] Siapa yang akan menyusun dan mengesahkan dokumen pertama? Apakah Dekan mengesahkan SK dan rencana?
+- [ ] Siapa yang menyusun dokumen pertama? Dokumen mana yang ditandatangani Dekan dan mana yang cukup KaLab?
 - [ ] SOP apa saja yang wajib menurut KaLab?
 - [ ] Apakah ada rapat koordinasi rutin?
 - [ ] Apakah anggaran disusun per tahun anggaran atau per tahun akademik?
-- [ ] Apakah pernah ada analisis kebutuhan, renstra, atau roadmap lab? Data kebutuhan kurikulum/CPMK, riset, dan PkM didapat dari mana?
+- [ ] Data kebutuhan kurikulum/CPMK, riset, dan PkM untuk analisis gap didapat dari mana?
 
 **Untuk kelompok (Zahir, Herrens)**
 - [ ] Model Personel memakai opsi yang mana (`hr.employee`, model sendiri, atau model Rafika)? Lihat tabel opsi di analisis Pengelolaan 3.
-- [ ] Apakah master bersama ditempatkan di addon Core sendiri (`labfik_core`) atau di addon Tata Kelola?
+- [ ] Apakah master bersama dan mekanisme pengesahan ditempatkan di addon Core sendiri (`labfik_core`) atau di addon Tata Kelola?
 - [ ] Field syarat kompetensi minimum di Jabatan: dikelola di Tata Kelola atau di SDM?
 - [ ] Apakah gap kompetensi Pengembangan 13 dipakai sebagai masukan Pengembangan 14?
 
 ## Langkah berikutnya
 
-1. Konfirmasi judul dan aturan skor penilai ke Pak Widi.
-2. Wawancara KaLab untuk keempat indikator, didokumentasikan sebagai lampiran.
-3. Sepakati kontrak master (Personel, Jabatan, Periode, Ruang, Core) dengan Zahir dan Herrens.
-4. Susun kebutuhan dan rancangan (Bab II) untuk keempat package dari analisis.
+1. Susun rancangan TO-BE langkah 4–10 ([CLAUDE.md](../../CLAUDE.md) bagian 4) dalam batas cakupan Inti + Pelengkap.
+2. Konfirmasi judul dan aturan skor penilai ke Pak Widi.
+3. Wawancara KaLab untuk keempat indikator, didokumentasikan sebagai lampiran.
+4. Sepakati kontrak master dan mekanisme pengesahan dengan Zahir dan Herrens.
 5. Tulis ulang Bab I mengikuti scope ini.
