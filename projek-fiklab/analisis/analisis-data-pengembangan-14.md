@@ -17,9 +17,13 @@ Alur analisis mengikuti [pedoman pengisian sheet](pedoman-pengisian-sheet-analis
 | Pedoman Diklatfung PLP 2022 | Acuan resmi yang disebut instrumen; **belum dimiliki** **[VALIDASI]** | Jenis pelatihan fungsional PLP |
 | `09_Formulir_Perencanaan_Kompetensi_Risiko`, bagian FRM-DIK-001 "Rencana Pelatihan dan Evaluasi Penerapan" | **Draf GPT** ("Templat contoh", isian simulasi) | Contoh format saja |
 | `07_SOP_Kompetensi_Penugasan_Otorisasi`, langkah 4–5 | **Draf GPT** | Contoh format saja |
-| Dokumen nyata tentang pelatihan PLP di LabFIK | **Tidak ditemukan** di Drive proyek (14 November 2026) | — |
+| Folder "PELATIHAN" (baris 10 `ISO_LAB_SI`, "Peningkatan Kompetensi Personel Laboratorium") | **Nyata**: dua sertifikat milik laboran ruang 201 (sertifikat kompetensi BNSP berlaku 3 tahun; sertifikat pelatihan 24 JP tanpa masa berlaku) | Bukti as-is K3; bentuk field Realisasi dan Bukti Kompetensi ([bedah dokumen](bedah-dokumen-sdm.md) A13, D4) |
+| SK SOTK FIK 2025 (baris 9 `ISO_LAB_SI`) | **Nyata** | Pembinaan personel: KaLab (pembinaan anggota lab), Wadek Bidang Keuangan dan Umum (pembinaan karier dan evaluasi kinerja tendik) ([bedah dokumen](bedah-dokumen-sdm.md) A20) |
+| [kontrak-core-sdm.md](../rancangan/kontrak-core-sdm.md) | Draf Langkah 3 | Mixin Rencana Pelatihan; *hook* pembekuan kebutuhan |
 
-**Kondisi saat ini belum diketahui.** Belum ada sumber tentang apakah LabFIK pernah memetakan kebutuhan kompetensi PLP, siapa yang menyusun dan mengesahkan rencana pelatihan, dan bukti apa yang disimpan. Semua klaim as-is ditandai **[KONFIRMASI]**.
+*Koreksi (Langkah 2):* versi pertama dokumen ini menulis "dokumen nyata tentang pelatihan PLP tidak ditemukan". Folder di baris 10 `ISO_LAB_SI` ternyata berisi dua sertifikat nyata.
+
+**Kondisi saat ini sebagian diketahui.** Bukti yang diunggah lab hanya sertifikat lepas milik satu laboran, tanpa analisis kebutuhan, rencana, maupun evaluasi (A13). Siapa yang menyusun dan mengesahkan rencana pelatihan, dan apakah sertifikat itu relevan dengan gap tugasnya, masih **[KONFIRMASI KaLab]**.
 
 ---
 
@@ -38,7 +42,7 @@ Alur analisis mengikuti [pedoman pengisian sheet](pedoman-pengisian-sheet-analis
 **Temuan utama:**
 1. **Analisis kebutuhan kompetensi (bukti 1) tidak perlu diinput dari nol.** Gap per personel bisa dihitung dari data PKG-04: syarat kompetensi jabatan dibandingkan dengan Bukti Kompetensi yang dimiliki. Ini laporan [R], bukan tabel baru.
 2. **Siklus kompetensi tertutup di modul ini.** Evaluasi yang menyatakan pelatihan efektif menghasilkan Bukti Kompetensi baru (jenis "pelatihan"). Matriks Kompetensi PKG-04 ikut berubah, dan gap periode berikutnya berkurang.
-3. **Tidak bisa memakai model rencana Tata Kelola (`labfik.plan*`).** Model itu ada di `labfik_org`, sedangkan `labfik_sdm` hanya bergantung ke `labfik_core`. Yang dipakai adalah mixin Core: `labfik.approval.mixin` (pengesahan rencana), `labfik.criteria.mixin` (status K1–K4), dan `labfik.evidence.mixin` (sertifikat dan bukti). Rencana Pelatihan ditulis sebagai model sendiri, dan perilaku bersamanya diwarisi dari mixin.
+3. **Tidak bisa memakai model rencana Tata Kelola (`labfik.plan*`).** Model itu ada di `labfik_org`, sedangkan `labfik_sdm` hanya bergantung ke `labfik_core`. Yang dipakai adalah mixin Core: `labfik.approval.mixin` (pengesahan rencana), `labfik.period.mixin` (satu rencana per periode tahunan), `labfik.criteria.mixin` (status K1–K4), dan `labfik.evidence.mixin` (sertifikat dan bukti). Pembekuan kebutuhan saat diajukan memakai *hook* `_sebelum_ajukan()` yang sudah disediakan `approval.mixin`. Rencana Pelatihan ditulis sebagai model sendiri, dan perilaku bersamanya diwarisi dari mixin.
 
 ---
 
@@ -94,8 +98,8 @@ Ambang K3 ("setiap item") bisa terlalu ketat bila pelatihan dibatalkan dari piha
 
 | Fact | Grain | Isi | Catatan |
 |---|---|---|---|
-| **Rencana Pelatihan** | 1 rencana per periode | periode, berkas; status dan riwayat pengesahan dari `labfik.approval.mixin`; status K1–K4 dari `labfik.criteria.mixin`. **Anak 1, Kebutuhan Kompetensi:** personel, kompetensi, keterangan gap (atau "tidak ada gap"), sumber (otomatis dari matriks / ditambah KaLab). **Anak 2, Item Pelatihan:** kompetensi sasaran, jenis (Diklatfung/bimtek/sertifikasi/pelatihan internal), materi, peserta, penyelenggara, anggaran, jadwal, kriteria keberhasilan, status (rencana/terlaksana/batal) | Kebutuhan dibekukan saat rencana diajukan, supaya bukti 1 tidak berubah setelah disahkan |
-| **Realisasi Pelatihan** | 1 peserta × 1 item | item, personel, tanggal pelaksanaan, sertifikat, bukti praktik/demonstrasi pascapelatihan; tanggal, pelapor, berkas, keterangan dari `labfik.evidence.mixin` | Bukti K3 (bukti dukung 3 dan 4). Sheet: "Upload PDF sertifikat" |
+| **Rencana Pelatihan** | 1 rencana per periode | berkas; status dan riwayat pengesahan dari `labfik.approval.mixin`; periode tahunan dari `labfik.period.mixin`; status K1–K4 dari `labfik.criteria.mixin`. **Anak 1, Kebutuhan Kompetensi:** personel, kompetensi, keterangan gap (atau "tidak ada gap"), sumber (otomatis dari matriks / ditambah KaLab). **Anak 2, Item Pelatihan:** kompetensi sasaran, jenis (Diklatfung/bimtek/sertifikasi/pelatihan internal), materi, peserta, penyelenggara, anggaran, jadwal, kriteria keberhasilan, status (rencana/terlaksana/batal) | Kebutuhan dibekukan saat rencana diajukan (*hook* `_sebelum_ajukan()`), supaya bukti 1 tidak berubah setelah disahkan. Pengesah: KaLab dan/atau Wadek Bidang Keuangan dan Umum **[KONFIRMASI K10]** |
+| **Realisasi Pelatihan** | 1 peserta × 1 item | item, personel, tanggal pelaksanaan, penyelenggara, durasi jam (mis. 24 JP, dari sertifikat nyata D4), sertifikat, bukti praktik/demonstrasi pascapelatihan; tanggal, pelapor, berkas, keterangan dari `labfik.evidence.mixin` | Bukti K3 (bukti dukung 3 dan 4). Sheet: "Upload PDF sertifikat" |
 | **Evaluasi Efektivitas Pelatihan** | 1 per Realisasi | metode (asesmen ulang / penilaian kinerja atasan), skor sebelum, skor sesudah, penilai, kesimpulan (efektif / perlu pengembangan), rekaman peningkatan layanan, tindak lanjut kebutuhan berikutnya | Bukti K4. Dicatat terpisah dari Realisasi karena terjadi di waktu lain, oleh aktor lain (*modal class*, Wazlawick §9.3.2). Bila efektif, sistem membuat **Bukti Kompetensi** (PKG-04) berjenis pelatihan |
 
 Riwayat perubahan memakai `mail.thread` + `tracking`.
@@ -141,7 +145,7 @@ Sudah ada di lembar wawancara (SDM & Kompetensi no. 9–12), belum dijawab. Yang
 
 | No. wawancara | Pertanyaan inti | Menentukan |
 |---|---|---|
-| 9 | Bagaimana kebutuhan pelatihan PLP ditentukan? Siapa menyusun dan menyetujui rencana pelatihan? | Pengesah Rencana Pelatihan (K1), jabatan berwenang di `hr.job` |
+| 9 | Bagaimana kebutuhan pelatihan PLP ditentukan? Siapa menyusun dan menyetujui rencana pelatihan: KaLab, Wadek Bidang Keuangan dan Umum (SK SOTK butir 5b), atau keduanya? | Pengesah Rencana Pelatihan (K1), baris wewenang `rencana_pelatihan` di `hr.job` |
 | 10, 11 | Bukti apa yang disimpan setelah pelatihan, dan di mana? | Isi Realisasi (K3) |
 | 12 | Bagaimana keberhasilan pelatihan dinilai, oleh siapa, dan kapan? Hasilnya dipakai untuk pelatihan berikutnya? | Metode dan penilai Evaluasi Efektivitas (K4) |
 | Tambahan | Rencana pelatihan disusun per tahun anggaran atau per tahun akademik? Berapa PLP/laboran aktif? | Grain periode; ukuran data uji |

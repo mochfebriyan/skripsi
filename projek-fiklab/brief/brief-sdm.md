@@ -33,14 +33,19 @@ Dua baris "Pengelolaan 10" lainnya di sheet (capaian KPI, legalitas lab) **bukan
 
 ## Kondisi saat ini (as-is) dan sumbernya
 
-| No | Temuan | Sumber | Status |
+Rincian 21 temuan (A1–A21) beserta sumber dan cara hitungnya ada di [bedah-dokumen-sdm.md](../analisis/bedah-dokumen-sdm.md) bagian 3. Ringkasan yang dipakai di brief:
+
+| Topik | Temuan | Rujukan | Status |
 |---|---|---|---|
-| A1 | Rencana pertemuan praktikum disusun di *spreadsheet* alokasi asisten (nama asisten per kelas per pertemuan) | Spreadsheet "Alokasi Pertemuan Asisten Praktikum" (akun LabFIK) | Data nyata; strukturnya dibedah di Langkah 2 **[VALIDASI]** |
-| A2 | Pelaksanaan sesi dilaporkan asisten lewat Google Form dan direkap manual untuk honor; hanya mencakup asisten, laboran/PLP tidak tercatat | "Pelaksanaan Asistensi Praktikum LABFIK UPNVJ (Responses)" | Data nyata **[VALIDASI]** |
-| A3 | Pada 2025/2026 Ganjil dan Genap, 42–56% kelas praktikum tidak punya alokasi asisten, dan tidak bisa dibedakan antara tidak butuh atau belum terpenuhi | Analisis penulis atas A1 | Perlu dihitung ulang dan dicatat caranya di Langkah 2 **[VALIDASI]** |
-| A4 | POB Manajemen Praktikum dan Asistensi 2025 mengatur alokasi → rekrutmen → seleksi (administrasi, wawancara, teknis) → kontrak → alokasi jadwal asisten. Dokumennya belum bernomor dan belum disahkan | `LABFIK_POB_Praktikum.pdf` (Drive proyek) | Dokumen nyata |
-| A5 | Syarat nilai A untuk asisten dapat dilonggarkan secara informal bila pendaftar sedikit | Draf pendahuluan penulis | **[KONFIRMASI KaLab/Koor Prodi]** |
-| A6 | Belum diketahui: alat/tugas yang dibatasi dan cara izinnya; cara penetapan dan pembuktian pelatihan PLP | Tidak ada dokumen nyata di Drive; wawancara belum dijawab | **[KONFIRMASI]** |
+| Prosedur | POB Manajemen Praktikum dan Asistensi 2025 mengatur alokasi → rekrutmen → seleksi → kontrak → alokasi asisten, tetapi belum bernomor dan belum disahkan. Besaran syarat nilai MK tidak tertulis | A1–A5 | Dokumen nyata |
+| Kebutuhan petugas | Kelas tanpa asisten: **56,3%** (2025/2026 Ganjil), **41,8%** (2025/2026 Genap), **55,6%** (2026/2027 Ganjil), tanpa keterangan apakah memang tidak butuh | A7 | Dihitung penuh dari data nyata |
+| Penugasan asisten | Satu asisten per kelas sepanjang semester, tetapi tidak selalu mulai di pertemuan 1 (mis. pertemuan 5 pada 2026/2027 Ganjil) | A6 | Dihitung penuh |
+| Laboran | Laboran/PLP tidak tercatat di data alokasi maupun pelaksanaan. Menurut slide PKKMB, 4 laboran dibagi **per ruang** (201; 301; 302–304; 401–403) dan ada 1 teknisi jaringan | A9, A10 | Slide bukan penetapan resmi **[KONFIRMASI]** |
+| Keterhubungan rekaman | Alokasi dan laporan pelaksanaan tidak punya kunci bersama; nama pelapor berbeda dari alokasi pada 9–47 laporan per periode; ada laporan dari kelas tanpa alokasi | A12, A18, A19 | Dihitung penuh |
+| Pelatihan PLP | Bukti yang diunggah ke iso.upnvj hanya dua sertifikat milik laboran ruang 201, tanpa analisis kebutuhan, rencana, maupun evaluasi | A13, A14 | Dokumen nyata |
+| Otorisasi | Tidak ada rekaman izin/asesmen personel. Lab punya alat khusus (3D printer, VR, robotika, switch) dan form permintaan untuk sebagian layanan | A16, A21 | Dokumen nyata |
+| Syarat kompetensi | SK SOTK hanya mengatur Kepala Laboratorium; syarat kompetensi jabatan lab tidak tertulis di mana pun | A17, A20 | Dokumen nyata |
+| Syarat nilai asisten | "Nilai A dapat dilonggarkan secara informal" (draf pendahuluan) belum punya sumber dokumen | A4 | **[KONFIRMASI KaLab/Koor Prodi]** |
 
 Paket Manajemen Praktikum 2026 dan Paket Dokumen Monev di Drive adalah **draf** (diduga hasil GPT) dan hanya dipakai sebagai contoh format.
 
@@ -57,14 +62,19 @@ Paket Manajemen Praktikum 2026 dan Paket Dokumen Monev di Drive adalah **draf** 
 | 14 Nov 2026 | Zahir | Orientasi/supervisi (bukti 7 PKG-04) dan pembatasan akses (bukti 4 PKG-10) = rekaman pendukung, bukan syarat persentase | **[KONFIRMASI pembimbing]** |
 | 14 Nov 2026 | Zahir | PKG-14: peserta PLP/laboran dan teknisi; rencana per tahun; item pelatihan boleh *batal* dengan alasan dan tidak dihitung di K3 | — |
 | 14 Nov 2026 | Zahir | PKG-10: hanya PLP/laboran (asisten, dosen, praktikan tidak dicakup); sistem tidak memblokir pemakaian alat | **[KONFIRMASI pembimbing]** |
+| 14 Nov 2026 | Febriyan (kontrak Core), dikonfirmasi Zahir | Asisten dicatat sebagai Personel (`hr.employee`) dengan `jenis_personel` = **asisten** dan Jabatan (`hr.job`) = **Asisten Praktikum** | Syarat di jabatan Asisten Praktikum hanya syarat umum; syarat per MK dicek lewat Seleksi |
+| 14 Nov 2026 | Zahir | Personel asisten **dibuat saat calon lulus seleksi** (termasuk lulus dengan pengecualian). Calon yang tidak lulus tidak dicatat di sistem | Data Personel hanya berisi asisten yang bertugas; pendaftaran tetap di luar cakupan |
+| 14 Nov 2026 | Zahir | **Kelas, Mata Kuliah, dan Sesi masuk Core**, tanpa OpenEduCat. Sesi = satu-satunya transaksi di Core | Diajukan ke Herrens dan Febriyan **[KONFIRMASI kelompok]** ([kontrak-core-sdm.md](../rancangan/kontrak-core-sdm.md) K-5) |
+| 14 Nov 2026 | Zahir | Penugasan dicatat sebagai **Surat Tugas bergaris**: satu surat per periode berisi baris penugasan (asisten per kelas, laboran per ruang), disahkan sekali | Surat Tugas berubah dari [R] menjadi [T] (K-6) |
+| 14 Nov 2026 | Zahir | Perubahan **tidak di-*merge* ke `main`** dulu; SDM merujuk kontrak Core versi branch `febriyan-skripsi` | — |
 
 ## Pola bersama di dalam modul
 
 | Pola | Dipakai oleh | Alurnya | Mekanisme Core |
 |---|---|---|---|
 | **A. Syarat vs bukti kompetensi** | PKG-04, 10, 14 | Jabatan/tugas mensyaratkan kompetensi → personel punya bukti → sistem membandingkan | — (milik modul ini) |
-| **B. Keputusan yang disahkan** | Penugasan Petugas, Otorisasi, Rencana Pelatihan | Draf → diajukan → disahkan → diganti/dicabut/kedaluwarsa, dengan riwayat | `labfik.approval.mixin` (+ `labfik.period.mixin` untuk Otorisasi) |
-| **C. Rekaman bukti** | Bukti Kompetensi, Realisasi Pelatihan | Tanggal, pelapor, berkas, keterangan | `labfik.evidence.mixin` |
+| **B. Keputusan yang disahkan** | Surat Tugas, Otorisasi, Rencana Pelatihan | Draf → diajukan → disahkan → diganti/dicabut/kedaluwarsa, dengan riwayat | `labfik.approval.mixin`; Rencana Pelatihan + `labfik.period.mixin` (periode tahunan). Otorisasi **tanpa** `period.mixin`: masa berlaku perorangan ditulis sebagai interval tanggal sendiri (kontrak Core K-3) |
+| **C. Rekaman bukti** | Bukti Kompetensi, Kebutuhan Petugas, Seleksi, Asesmen, Evaluasi Ulang Otorisasi, Realisasi Pelatihan, Evaluasi Efektivitas | Tanggal, pelapor, berkas, keterangan | `labfik.evidence.mixin` |
 | **D. Status monev** | PKG-04, 10 (persentase); PKG-14 (K1–K4) | Unit dihitung dari data; untuk K1–K4 ditampilkan kriteria tertinggi yang lengkap secara data | `labfik.criteria.mixin` (PKG-14) |
 
 ## Lingkup kebutuhan
@@ -72,7 +82,7 @@ Paket Manajemen Praktikum 2026 dan Paket Dokumen Monev di Drive adalah **draf** 
 | Area | Yang harus bisa dibuktikan sistem |
 |---|---|
 | Kompetensi (bersama) | Master kompetensi; syarat kompetensi per jabatan; bukti kompetensi per personel (jenis, berkas, masa berlaku); matriks kompetensi sebagai laporan |
-| Penugasan (PKG-04) | Kebutuhan petugas per kelas; seleksi asisten per MK termasuk pengecualian dan penyetujunya; penugasan per kelas yang disahkan dengan surat tugas; daftar sesi dan petugas; persentase sesi memenuhi |
+| Penugasan (PKG-04) | Kebutuhan petugas per kelas; seleksi asisten per MK termasuk pengecualian dan penyetujunya; Surat Tugas bergaris yang disahkan, berisi asisten per kelas dan laboran per ruang dengan rentang berlaku; daftar sesi dan petugas; persentase sesi memenuhi |
 | Otorisasi (PKG-10) | Daftar tugas/alat berkewenangan khusus; asesmen keterampilan; otorisasi berlevel dan bermasa berlaku; evaluasi ulang saat ada pemicu; daftar operator sah; persentase pasangan memenuhi |
 | Pelatihan (PKG-14) | Kebutuhan kompetensi PLP dari matriks; rencana pelatihan disahkan; realisasi dengan sertifikat dan bukti penerapan; evaluasi efektivitas yang menambah bukti kompetensi; status K1–K4 |
 | Status monev | Persentase PKG-04 dan PKG-10; kriteria tertinggi PKG-14; daftar unit yang belum memenuhi beserta syarat yang gagal; laporan bukti sebagai PDF |
@@ -84,37 +94,41 @@ Mengikuti prinsip *sweet spot* di [CLAUDE.md](../../CLAUDE.md) bagian 1. Lapis *
 | Area | Inti | Pelengkap |
 |---|---|---|
 | **Kompetensi** | Master Kompetensi; syarat kompetensi di `hr.job`; Bukti Kompetensi (mewarisi `evidence.mixin`) dengan status berlaku dihitung dari tanggal; Matriks Kompetensi (daftar personel × kompetensi, penanda kurang) | — |
-| **PKG-04 Penugasan** | Kebutuhan Petugas per kelas (jumlah minimal per peran; 0 = tidak butuh); Seleksi Kompetensi per MK (nilai, skor uji, keputusan, pengecualian + penyetuju); Penugasan Petugas per kelas (disahkan, berkas surat tugas); Daftar Sesi dan Petugas dengan status S1–S4; persentase | Pengganti per sesi; Komitmen petugas (berkas di penugasan); rekaman Orientasi/Supervisi (bukti 7); ekspor surat tugas PDF |
-| **PKG-10 Otorisasi** | Master Tugas/Alat (kompetensi disyaratkan, masa berlaku standar); Asesmen Keterampilan (layak → Bukti Kompetensi); Otorisasi (level terbimbing/mandiri, supervisor, lingkup, masa berlaku; `approval.mixin` + `period.mixin`); Evaluasi Ulang (pemicu, keputusan, versi baru mengganti versi lama); Daftar Operator Sah; persentase | Cara pembatasan akses + berkas di master (bukti 4); kedaluwarsa otomatis lewat penjadwal `period.mixin` |
-| **PKG-14 Pelatihan** | Rencana Pelatihan tahunan (kebutuhan dibekukan saat diajukan, item lengkap; `approval.mixin` + `criteria.mixin`); Realisasi per peserta (sertifikat, bukti penerapan); Evaluasi Efektivitas (skor sebelum/sesudah, kesimpulan, tindak lanjut; efektif → Bukti Kompetensi); status K1–K4 | Item *batal* dengan alasan; rekap pelatihan per personel; ekspor PDF rencana |
+| **PKG-04 Penugasan** | Kebutuhan Petugas per kelas (jumlah minimal per peran; 0 = tidak butuh); Seleksi Kompetensi per MK (nilai, skor uji, keputusan, pengecualian + penyetuju; Personel asisten dibuat saat lulus); **Surat Tugas bergaris** (disahkan sekali per periode; baris: personel, kelas untuk asisten atau ruang untuk laboran, rentang berlaku); Daftar Sesi dan Petugas dengan status S1–S4; persentase | Pengganti di tengah semester (revisi surat atau surat tambahan); Komitmen petugas (berkas di Surat Tugas); rekaman Orientasi/Supervisi (bukti 7); ekspor surat tugas PDF |
+| **PKG-10 Otorisasi** | Master Tugas/Alat (kompetensi disyaratkan, masa berlaku standar); Asesmen Keterampilan (layak → Bukti Kompetensi); Otorisasi (level terbimbing/mandiri, supervisor, lingkup; `approval.mixin`; masa berlaku sebagai interval tanggal sendiri, status berlaku dihitung); Evaluasi Ulang (pemicu, keputusan, versi baru mengganti versi lama); Daftar Operator Sah; persentase | Cara pembatasan akses + berkas di master (bukti 4) |
+| **PKG-14 Pelatihan** | Rencana Pelatihan tahunan (kebutuhan dibekukan saat diajukan lewat *hook* `_sebelum_ajukan()`, item lengkap; `approval.mixin` + `period.mixin` + `criteria.mixin`); Realisasi per peserta (sertifikat, durasi jam, bukti penerapan); Evaluasi Efektivitas (skor sebelum/sesudah, kesimpulan, tindak lanjut; efektif → Bukti Kompetensi); status K1–K4 | Item *batal* dengan alasan; rekap pelatihan per personel; ekspor PDF rencana |
 | **Status monev** | Persentase PKG-04/10 dan kriteria tertinggi PKG-14, masing-masing dengan daftar unit yang belum memenuhi dan tautan ke rekaman; laporan bukti diterbitkan sebagai PDF | — |
 
 **Aktor sistem (usulan):** **KaLab** (menetapkan kebutuhan, mencatat pengesahan, menyetujui pengecualian, memantau status), **Laboran/PLP** (mencatat seleksi, bukti kompetensi, asesmen, realisasi), dan **Penjadwal** (kedaluwarsa otorisasi, Pelengkap). Dekan, Dekanat SDM, dan Koor Prodi yang hanya menandatangani dokumen cetak **bukan aktor sistem**; identitasnya tercatat sebagai pengesah. Penilai monev menerima bukti berupa PDF. Apakah asisten dan dosen perlu masuk sistem (mis. melihat surat tugas sendiri) **tidak dirancang** di proposal **[KONFIRMASI pembimbing]**.
 
 ## Kontrak dengan modul lain
 
+Rincian pemakaian Core, perluasan, dan isu kontrak (K-1–K-6) ada di [kontrak-core-sdm.md](../rancangan/kontrak-core-sdm.md).
+
 **Yang disediakan modul ini:**
 
 | Data | Dipakai oleh | Catatan |
 |---|---|---|
 | Kompetensi, syarat kompetensi jabatan, Bukti Kompetensi, Matriks Kompetensi | Opsional PKG-13 (gap aspek kompetensi) | Bila diotomatiskan, `labfik_org` yang bergantung ke `labfik_sdm` |
-| Penugasan Petugas per kelas/sesi | Opsional PKG-18 (cocokkan presensi petugas), PKG-08 (jumlah petugas per sesi) | Alasan `labfik_praktikum` bergantung ke `labfik_sdm` (pemetaan bersama) |
+| Baris Surat Tugas (petugas per kelas/ruang dengan rentang berlaku) | Opsional PKG-18 (cocokkan petugas hadir), PKG-08 (jumlah petugas per sesi) | Alasan `labfik_praktikum` bergantung ke `labfik_sdm` (pemetaan bersama). Petugas hadir di PKG-18 sebaiknya merujuk `hr.employee` yang sama **[KONFIRMASI Herrens]** |
 | Daftar Operator Sah / cek berwenang | Peluang untuk modul Praktikum dan Aset | Tidak dirancang sekarang |
 
 **Yang dipakai modul ini:**
 
 | Data | Dari | Sifat | Bila tidak ada |
 |---|---|---|---|
-| Personel (`hr.employee`), Jabatan (`hr.job`), Periode, mixin approval/period/criteria/evidence | Core (`labfik_core`) | Wajib | — |
-| Mata Kuliah, Kelas, Sesi bertanggal | Core, dibangkitkan PKG-15 (Herrens) | Wajib | Data contoh dari skrip uji |
-| Status sesi terlaksana (penyebut PKG-04) | PKG-18 (Herrens) | Wajib untuk penyebut | Sesi terjadwal yang tanggalnya sudah lewat dianggap terlaksana **[ASUMSI]** |
+| Personel (`hr.employee`), Jabatan (`hr.job`), Ruang, Periode, mixin approval/period/criteria/evidence, grup KaLab dan Laboran | Core (`labfik_core`, versi branch `febriyan-skripsi`) | Wajib | — |
+| Mata Kuliah, Kelas, Sesi bertanggal | **Diputuskan masuk Core** (tanpa OpenEduCat); Sesi dibangkitkan PKG-15 | Wajib | Data contoh dari skrip uji. Menunggu persetujuan Herrens dan Febriyan **[KONFIRMASI kelompok]** |
+| Status sesi terlaksana (penyebut PKG-04) | `state` Sesi di Core, diisi PKG-18 (Herrens) | Wajib untuk penyebut | Sesi terjadwal yang tanggalnya sudah lewat dianggap terlaksana **[ASUMSI]** |
 | Alat | Asset Management (kelompok lain) | Opsional | Nama alat sebagai teks di master Tugas/Alat |
+
+**Perluasan Core oleh `labfik_sdm` (Core tidak diubah):** `hr.job` + daftar Kompetensi wajib (berdampingan dengan field teks `syarat_kompetensi` milik Core, K-1); `hr.employee` + Bukti Kompetensi dan cek "punya kompetensi"; tiga jenis dokumen SDM ditambahkan ke wewenang jabatan lewat `selection_add` (K-2).
 
 ## Platform dan addon yang diperluas
 
 | Addon | Lisensi | Untuk | Keputusan |
 |---|---|---|---|
-| `labfik_core` (proyek) | — | Personel, Jabatan, Periode, mixin | **Dipakai**; `hr.job` dan `hr.employee` diperluas lagi oleh `labfik_sdm` lewat `_inherit` |
+| `labfik_core` (proyek) | — | Personel, Jabatan, Ruang, Periode, mixin, grup; usulan Kelas, Mata Kuliah, Sesi | **Dipakai**. Diperluas oleh `labfik_sdm`: `hr.job` (Kompetensi wajib), `hr.employee` (Bukti Kompetensi), `labfik.jabatan.wewenang.jenis_dokumen` (`selection_add`) |
 | Odoo CE `mail` | LGPL-3 | Riwayat perubahan | **Dipakai** (lewat Core) |
 | Odoo CE `hr_skills` | LGPL-3 | Skill dan level per pegawai | **Tidak dipakai** **[VALIDASI]**: tidak menyimpan berkas bukti dan masa berlaku yang dibutuhkan monev |
 | `skripsi_rafika/PendaftaranAsisten` (OpenEduCat) | — | Pendaftaran dan alokasi asisten | **Acuan saja**, tidak di-*extend* (CLAUDE.md bagian 3) |
@@ -143,7 +157,7 @@ Mengikuti prinsip *sweet spot* di [CLAUDE.md](../../CLAUDE.md) bagian 1. Lapis *
 
 | Masalah (draf pendahuluan 1.2) | Tujuan (1.4) | Fitur (lapis Inti) |
 |---|---|---|
-| M1 Syarat kompetensi asisten bisa dilonggarkan tanpa persetujuan tercatat; pencatatan petugas hanya asisten untuk honor; kesesuaian kompetensi petugas per sesi (PKG-04) tidak bisa dibuktikan | T1 Pengelolaan kompetensi dan penugasan petugas per sesi yang memeriksa kesesuaian kompetensi dan mencatat pengecualian | Master + syarat + bukti kompetensi; Kebutuhan Petugas; Seleksi dengan pengecualian; Penugasan per kelas; Daftar Sesi dan Petugas |
+| M1 Syarat kompetensi asisten bisa dilonggarkan tanpa persetujuan tercatat; pencatatan petugas hanya asisten untuk honor; kesesuaian kompetensi petugas per sesi (PKG-04) tidak bisa dibuktikan | T1 Pengelolaan kompetensi dan penugasan petugas per sesi yang memeriksa kesesuaian kompetensi dan mencatat pengecualian | Master + syarat + bukti kompetensi; Kebutuhan Petugas; Seleksi dengan pengecualian; Surat Tugas bergaris (asisten per kelas, laboran per ruang); Daftar Sesi dan Petugas |
 | M2 Belum ada rekaman tugas/alat berkewenangan khusus, asesmen, otorisasi, dan evaluasi ulangnya (PKG-10) **[KONFIRMASI]** | T2 Asesmen, otorisasi, dan evaluasi ulang otorisasi PLP/laboran | Master Tugas/Alat; Asesmen; Otorisasi; Evaluasi Ulang; Daftar Operator Sah |
 | M3 Kebutuhan, pelaksanaan, dan efektivitas pelatihan PLP belum terhubung dengan kompetensi (PKG-14) **[KONFIRMASI]** | T3 Rencana, realisasi, dan evaluasi efektivitas pelatihan yang memperbarui matriks kompetensi | Rencana Pelatihan; Realisasi; Evaluasi Efektivitas → Bukti Kompetensi |
 | M4 Skor dihitung manual menjelang monev dan tidak tertelusur ke bukti | T4 Status ketiga indikator yang tertelusur ke bukti, diuji dengan *black box* dan UAT | Status monev (persentase, K1–K4, daftar unit belum memenuhi, PDF bukti) |
@@ -154,11 +168,11 @@ Mengikuti prinsip *sweet spot* di [CLAUDE.md](../../CLAUDE.md) bagian 1. Lapis *
 
 | Risiko | Mitigasi |
 |---|---|
-| Model Sesi/Kelas belum jelas (pemetaan: Sesi mewarisi `op.session`; brief Tata Kelola: tanpa OpenEduCat) | Sepakati dengan Herrens dan Febriyan sebelum Langkah 9; sementara modelkan Sesi sebagai konsep Core tanpa mengikat ke OpenEduCat |
+| Kelas, Mata Kuliah, Sesi sudah diputuskan masuk Core oleh Zahir, tetapi pemilik Core dan Sesi belum menyetujui | Ajukan field minimum (kontrak Core K-5) sebelum Langkah 9; sementara digambar sebagai «Core (usulan)» |
+| Kontrak Core terbaru hanya ada di branch `febriyan-skripsi`, belum di `main` (sengaja belum di-*merge*) | Rancangan SDM selalu mencantumkan versi kontrak yang dirujuk; cek ulang sebelum Langkah 10 |
 | Wawancara KaLab/laboran belum dijawab | Rancangan memakai instrumen dan ISO sebagai dasar; klaim as-is ditandai; pertanyaan sudah disiapkan di lembar wawancara |
 | Dinilai "sekadar CRUD" | Tunjukkan siklus syarat → bukti → penugasan/otorisasi/pelatihan → bukti baru, pewarisan mixin Core, dan keterlacakan kriteria → bukti |
 | Data pribadi asisten (NIM, nilai) masuk sistem atau repo | Hanya nilai yang dipersyaratkan; lampiran KHS berakses terbatas; data uji fiktif; cek `grep` sebelum commit |
-| Asisten (mahasiswa) dicatat sebagai `hr.employee` belum disepakati | Ikuti keputusan kelompok **[KONFIRMASI]**; rancangan SDM hanya merujuk "Personel" |
 | Penyebut PKG-10 tidak menangkap orang yang belum berizin | Dibahas di Langkah 4 (usulan: pasangan aktif dari jabatan pelaksana) |
 
 ## Pertanyaan terbuka
@@ -169,23 +183,27 @@ Mengikuti prinsip *sweet spot* di [CLAUDE.md](../../CLAUDE.md) bagian 1. Lapis *
 - [ ] Otorisasi PKG-10 dibatasi ke PLP/laboran saja, padahal instrumen menyebut "personel/pengguna"?
 - [ ] Item pelatihan yang batal boleh dikecualikan dari K3 PKG-14?
 
-**Untuk KaLab dan laboran (lembar wawancara SDM & Kompetensi no. 1–19, wajib sebagai lampiran)**
-- [ ] Siapa yang menetapkan dan menandatangani penugasan petugas, izin alat/tugas khusus, dan rencana pelatihan?
-- [ ] Syarat kompetensi minimal per peran; nilai minimal MK asisten; cara pengecualian dicatat
-- [ ] Setelah asisten memilih kelas, siapa yang mengesahkan?
-- [ ] Alat/tugas apa yang dibatasi, dan berapa lama izinnya berlaku?
-- [ ] Apakah teknisi termasuk laboran? Berapa PLP/laboran aktif?
+**Untuk KaLab dan laboran (lembar wawancara SDM & Kompetensi no. 1–19, wajib sebagai lampiran; ditambah K1–K10 dari [bedah dokumen](../analisis/bedah-dokumen-sdm.md) bagian 10.2)**
+- [ ] Siapa yang menetapkan dan menandatangani surat tugas, izin alat/tugas khusus, dan rencana pelatihan (KaLab, Wadek Bidang Keuangan dan Umum)? (K7, K10)
+- [ ] Syarat kompetensi minimal per jabatan (termasuk syarat umum Asisten Praktikum); nilai minimal MK asisten; cara pengecualian dicatat (K2)
+- [ ] Minta salinan Lembar Seleksi Asisten dan Surat Kontrak Asisten (K1)
+- [ ] Laboran ditugaskan per ruang atau per kelas? Apakah teknisi termasuk laboran? (K3, K4)
+- [ ] Kenapa asisten 2026/2027 Ganjil baru mulai pertemuan 5? Siapa menunjuk asisten yang melapor di kelas tanpa alokasi? (K8, K9)
+- [ ] Alat/tugas apa yang wajib izin (3D printer, VR, robotika, switch?), dan berapa lama izinnya berlaku?
+- [ ] Apakah dua sertifikat laboran ruang 201 relevan dengan gap tugasnya? (K5)
 - [ ] Rencana pelatihan per tahun anggaran atau tahun kalender?
 
-**Untuk kelompok (Febriyan, Herrens)**
-- [ ] Febriyan: syarat kompetensi ditambahkan ke `hr.job` oleh `labfik_sdm`, bukan oleh Core. CLAUDE.md bagian 6 perlu disesuaikan
-- [ ] Herrens: model Sesi, Kelas, Mata Kuliah di Core, dengan atau tanpa OpenEduCat? Status "terlaksana" dari PKG-18 dipakai sebagai penyebut PKG-04
-- [ ] Bersama: cara mencatat asisten (mahasiswa) sebagai Personel
+**Untuk kelompok (Febriyan, Herrens)** — rincian di [kontrak-core-sdm.md](../rancangan/kontrak-core-sdm.md) bagian 7.2
+- [ ] Febriyan: `syarat_kompetensi` (Text, Core) dan `syarat_kompetensi_ids` (SDM) boleh berdampingan? (KC-1)
+- [ ] Febriyan: `jenis_dokumen` wewenang boleh diperluas dengan `selection_add`? (KC-2)
+- [ ] Febriyan: grup `labfik_pengguna/laboran/kalab` didefinisikan di `labfik_core`? (KC-3)
+- [ ] Herrens, Febriyan: setuju Kelas, Mata Kuliah, Sesi masuk Core dengan field minimum di K-5? Siapa menulis `state` sesi? (KC-4)
+- [ ] Herrens: petugas hadir di PKG-18 merujuk `hr.employee`? (KC-5)
 
 ## Langkah berikutnya
 
-1. Langkah 2: bedah dokumen (`analisis/bedah-dokumen-sdm.md`): POB 2025, struktur kolom spreadsheet alokasi dan Google Form (tanpa data pribadi), draf paket 2026 sebagai pembanding.
-2. Langkah 3: sepakati kontrak Core dan Sesi dengan Febriyan dan Herrens.
-3. Langkah 4–10 dalam batas cakupan Inti + Pelengkap di atas.
+1. ~~Langkah 2: bedah dokumen~~ selesai (draf): [bedah-dokumen-sdm.md](../analisis/bedah-dokumen-sdm.md).
+2. ~~Langkah 3: kontrak Core~~ selesai (draf): [kontrak-core-sdm.md](../rancangan/kontrak-core-sdm.md). Ajukan KC-1–KC-5 ke Febriyan dan Herrens.
+3. Langkah 4–10 dalam batas cakupan Inti + Pelengkap di atas, mulai dari kebutuhan `KF-SDM-nn`.
 4. Wawancara KaLab dan laboran, didokumentasikan sebagai lampiran.
 5. Revisi draf pendahuluan sesuai bagian "Yang perlu diubah".

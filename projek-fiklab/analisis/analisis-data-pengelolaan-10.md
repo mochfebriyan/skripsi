@@ -19,9 +19,11 @@ Alur analisis mengikuti [pedoman pengisian sheet](pedoman-pengisian-sheet-analis
 | Pedoman Diklatfung PLP 2022 (kompetensi) | Acuan resmi yang disebut instrumen; **belum dimiliki** **[VALIDASI]** | — |
 | `07_SOP_Kompetensi_Penugasan_Otorisasi` (langkah 6, 10, tabel keputusan) dan `09_Formulir_…` (FRM-ASM-001 Asesmen Keterampilan, FRM-OTR-001 Otorisasi Tugas) | **Draf GPT** ("Templat contoh", isian simulasi) | Contoh format saja |
 | `LABFIK-ISO17025-STD-01` Standar Sumber Daya, Kompetensi Personel, Peralatan | **Draf** versi 0.1 berisi placeholder **[VALIDASI asal dokumen]** | Contoh format saja |
-| Dokumen nyata tentang alat/tugas berkewenangan khusus atau izin pemakaian alat di LabFIK | **Tidak ditemukan** di Drive proyek (14 November 2026) | — |
+| Dokumen nyata tentang izin, asesmen, atau otorisasi personel di LabFIK | **Tidak ditemukan** di Drive proyek (14 November 2026) | — |
+| Slide "Presentasi Laboratorium PKKMB FIK" (baris 8 `ISO_LAB_SI`) | **Nyata** (bahan presentasi) | Alat/akses khusus per ruang: 3D printer dan VR (301), peralatan robotika (302), switch (304); form "pinjam 3D printer" dan "install software"; 4 laboran per ruang + 1 teknisi jaringan ([bedah dokumen](bedah-dokumen-sdm.md) A10, A21) |
+| [kontrak-core-sdm.md](../rancangan/kontrak-core-sdm.md) | Draf Langkah 3 | Otorisasi tanpa `period.mixin` (K-3) |
 
-**Kondisi saat ini belum diketahui:** alat atau pekerjaan apa yang dibatasi, siapa yang memberi izin, dan bagaimana pembatasannya. Contoh di lembar wawancara (server/jaringan, instalasi *software* berlisensi, 3D printer, kit IoT) adalah **dugaan penanya**, bukan fakta **[KONFIRMASI KaLab/laboran]**.
+**Kondisi saat ini sebagian diketahui:** lab punya alat khusus dan form permintaan untuk dua layanan (A21), tetapi tidak ada rekaman izin per personel. Alat mana yang wajib izin, siapa yang memberi izin, dan bagaimana pembatasannya masih **[KONFIRMASI KaLab/laboran]**.
 
 ---
 
@@ -37,7 +39,7 @@ Alur analisis mengikuti [pedoman pengisian sheet](pedoman-pengisian-sheet-analis
 | Posisi dalam dependensi | Hilir di dalam modul: memakai Kompetensi dan Bukti Kompetensi (PKG-04) dan sertifikat pelatihan (PKG-14). Hasil asesmen menambah Bukti Kompetensi |
 
 **Temuan utama:**
-1. **Otorisasi sangat cocok dengan mixin Core.** Otorisasi punya siklus *diajukan → disahkan → diganti/dicabut/kedaluwarsa*, pengesah, berkas, dan masa berlaku. Siklus ini persis `labfik.approval.mixin` + `labfik.period.mixin`, jadi model Otorisasi cukup mewarisi keduanya.
+1. **Otorisasi cocok dengan `labfik.approval.mixin`.** Siklusnya *diajukan → disahkan → diganti/dicabut*, dengan pengesah dan berkas. **Koreksi (Langkah 3):** `labfik.period.mixin` **tidak** dipakai, karena mixin itu menautkan dokumen ke satu periode bersama (`periode_id`), sedangkan masa berlaku otorisasi dihitung per orang sejak disahkan. Masa berlaku ditulis sebagai interval tanggal milik Otorisasi sendiri, dan status berlaku dihitung saat dibaca ([kontrak-core-sdm.md](../rancangan/kontrak-core-sdm.md) K-3).
 2. **Masalah penyebut.** Instrumen menghitung "seluruh pasangan yang memerlukan otorisasi dan **aktif**". Orang yang memakai alat **tanpa** izin justru tidak tercatat di data otorisasi. Usulan: pasangan aktif diturunkan dari **jabatan pelaksana** di master tugas/alat (mis. tugas "administrasi server" dijalankan oleh jabatan laboran), sehingga orang yang wajib berizin tetapi belum berizin tetap masuk penyebut **[USULAN PENULIS; belum diputuskan, ditunda ke Langkah 4]**.
 3. **Asesmen Keterampilan dipisah dari Seleksi Kompetensi PKG-04** (keputusan Zahir, 14 November 2026). Seleksi: per mata kuliah, saat rekrutmen, khusus asisten. Asesmen: per tugas/alat, kapan saja, untuk semua personel. Keduanya boleh menghasilkan Bukti Kompetensi.
 
@@ -89,7 +91,7 @@ Catatan:
 | Fact | Grain | Isi | Catatan |
 |---|---|---|---|
 | **Asesmen Keterampilan** | 1 personel × 1 tugas/alat per kejadian | personel, tugas/alat, penilai, tanggal, metode (demonstrasi/uji praktik/tinjauan sertifikat), skor, unsur kritis terpenuhi (ya/tidak), kesimpulan (layak/belum layak), catatan pengembangan, berkas | Bila layak, sistem membuat Bukti Kompetensi (PKG-04) berjenis demonstrasi. Rekomendasi asesmen terpisah dari keputusan otorisasi (draf SOP 07; juga logis karena penilai ≠ pengesah) |
-| **Otorisasi Personel** | 1 personel × 1 tugas/alat per versi | personel, tugas/alat, dasar (asesmen atau bukti kompetensi), lingkup dan pembatasan, level (*terbimbing*/*mandiri*), supervisor (wajib bila terbimbing), berkas; status, pengesah, riwayat dari `labfik.approval.mixin`; berlaku dari/sampai dan kedaluwarsa dari `labfik.period.mixin` | Versi baru **mengganti** versi lama (status *diganti*). Riwayat tidak hilang |
+| **Otorisasi Personel** | 1 personel × 1 tugas/alat per versi | personel, tugas/alat, dasar (asesmen atau bukti kompetensi), lingkup dan pembatasan, level (*terbimbing*/*mandiri*), supervisor (wajib bila terbimbing), berkas; status, pengesah, riwayat dari `labfik.approval.mixin`; `berlaku_mulai`, `berlaku_sampai`, dan `is_berlaku` {compute} milik sendiri (bukan `period.mixin`) | Versi baru **mengganti** versi lama lewat *hook* `_dokumen_diganti()` (status *diganti*). Riwayat tidak hilang |
 | **Evaluasi Ulang Otorisasi** | 1 per pemicu | otorisasi, pemicu (masa berlaku habis/alat atau metode berubah/insiden/lama tidak aktif/lainnya), tanggal pemicu, penilai, hasil, keputusan (diperpanjang/dibatasi/dinaikkan ke mandiri/dicabut), status (terbuka/diputuskan) | Bila diperpanjang/dibatasi/dinaikkan, dibuat Otorisasi versi baru. Bila dicabut, otorisasi lama berstatus *dicabut* |
 
 Riwayat perubahan memakai `mail.thread` + `tracking`. Catatan supervisi harian untuk pemula ditunda (bagian 7); yang dicek cukup keberadaan supervisor yang berwenang.
@@ -112,7 +114,7 @@ Riwayat perubahan memakai `mail.thread` + `tracking`. Catatan supervisi harian u
 |---|---|---|---|
 | Kompetensi, Bukti Kompetensi | PKG-04 (modul sendiri) | **Wajib** | — |
 | Sertifikat pelatihan sebagai bukti kompetensi | PKG-14 (modul sendiri, lewat Bukti Kompetensi) | Opsional | Bukti diinput manual |
-| Personel, Jabatan, Periode, `approval.mixin`, `period.mixin` | Core | Wajib | — |
+| Personel, Jabatan, Periode, `approval.mixin`, `evidence.mixin` | Core (versi branch `febriyan-skripsi`) | Wajib | — |
 | Master Alat | Asset Management (kelompok lain) | Opsional | Nama alat sebagai teks di master Tugas/Alat |
 | Insiden alat sebagai pemicu evaluasi ulang | Safety/Asset (kelompok lain) | Opsional | Pemicu dicatat manual |
 | Log penggunaan alat (siapa memakai alat apa) | PKG-18 / Q04 di pemetaan | Opsional | Pasangan aktif diturunkan dari jabatan pelaksana |
@@ -124,7 +126,7 @@ Riwayat perubahan memakai `mail.thread` + `tracking`. Catatan supervisi harian u
 - Pemblokiran otomatis pemakaian alat atau akun oleh sistem. Cukup daftar operator sah dan pencatatan.
 - Catatan supervisi harian untuk pemula (log pendampingan per sesi). Cukup supervisor berwenang yang tercantum di otorisasi.
 - Otorisasi untuk asisten, dosen, dan mahasiswa praktikan. Cakupan dibatasi ke PLP/laboran.
-- Pengingat otorisasi akan kedaluwarsa (notifikasi). Status kedaluwarsa tetap dihitung oleh penjadwal `period.mixin` yang sudah ada di Core.
+- Pengingat otorisasi akan kedaluwarsa (notifikasi) dan penjadwal yang mengubah status menjadi *kedaluwarsa*. Cukup `is_berlaku` yang dihitung dari tanggal saat dibaca.
 - Integrasi pemicu insiden otomatis dari modul Safety.
 
 ## 8. Pertanyaan untuk narasumber
