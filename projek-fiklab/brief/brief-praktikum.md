@@ -93,7 +93,7 @@ Ditetapkan di Langkah 1 setelah arahan pembimbing; tabel ini usulan dari hasil a
 
 | Area | Inti (W) | Pelengkap (O) |
 |---|---|---|
-| PKG-15 | Bangkitkan Sesi; penetapan jadwal; rencana pemakaian lab + persetujuan; versi modul (berkas, *software*, bahan, rubrik); cek konflik dan kapasitas; persentase | Impor kelas dari sheet alokasi; jadwal terpadu per ruang per minggu |
+| PKG-15 | Bangkitkan Sesi; penetapan jadwal (disahkan, bertanda tangan); rencana pemakaian lab + persetujuan; versi modul (berkas, *software*, bahan, rubrik); cek konflik dan kapasitas; jadwal terpadu dan rekaman konflik (bukti 1 dan 5 instrumen); persentase | Impor kelas dari sheet alokasi |
 | PKG-16, 17 | Pemeriksaan kesiapan per sesi dengan butir dan keputusan; butir bahan dengan substitusi; persentase | Rekap kesiapan per ruang |
 | PKG-18 | Jurnal sesi (presensi petugas, jumlah hadir, *log book*); perubahan sesi + sesi pengganti; persentase | Rekap keterlaksanaan per kelas; peringatan keterlambatan pengisian |
 | PKG-19 | Catatan penilaian di jurnal; rubrik di modul; persentase pendekatan | Daftar kelas tanpa bukti penilaian |
@@ -203,7 +203,7 @@ Yang **tidak dirancang** tercantum di batasan masalah.
 
 | Risiko | Mitigasi |
 |---|---|
-| Siapa mengisi jurnal (dan catatan penilaian) untuk kelas tanpa asisten belum jelas; tanpa pengisi, PKG-18 dan 19 tidak terbukti untuk 42–56% kelas | Tanyakan di wawancara P10, P13; rancangan tidak mengikat peran pengisi (asisten, dosen, atau laboran) |
+| Siapa mengisi jurnal (dan catatan penilaian) untuk kelas tanpa asisten belum pasti; tanpa pengisi, PKG-18 dan 19 tidak terbukti untuk 42–56% kelas | Dugaan: dosen yang mengajar kelas itu **[ASUMSI, 14 Nov 2026]**; dipastikan lewat wawancara P10, P13. Rancangan memakai aktor abstrak Pengisi Jurnal sehingga tidak terikat satu peran |
 | Pemeriksaan kesiapan per sesi terlalu berat untuk laboran | Siapkan opsi satu pemeriksaan per ruang per hari (wawancara P8) |
 | Persentase PKG-19 berupa pendekatan ditolak pembimbing | Ajukan sejak awal; alternatifnya presensi dan status penilaian per nama (lebih berat, data pribadi) |
 | Dosen tidak menerbitkan modul berversi atau rubrik | Mulai dari satu MK pilot; jalan pengganti berupa tautan berkas di jurnal |
@@ -220,7 +220,8 @@ Yang **tidak dirancang** tercantum di batasan masalah.
 
 **Untuk KaLab dan laboran (wawancara P1–P19, wajib sebagai lampiran)** — rinciannya di bagian 9 tiap analisis. Yang paling menentukan rancangan:
 - [ ] Sumber dan waktu penetapan jadwal; siapa membagi ruang (P2).
-- [ ] Siapa mengisi catatan sesi, termasuk kelas tanpa asisten (P10, P13).
+- [ ] Siapa mengisi catatan sesi, termasuk kelas tanpa asisten (P10, P13). Dugaan: dosen yang mengajar **[ASUMSI]**.
+- [ ] Pengesah jadwal: dugaan KaLab **[ASUMSI]** (P5). Penyetuju pemakaian lab dan perubahan sesi: **KaLab** (keputusan 14 Nov 2026). Modul diakses praktikan lewat **LeADS UPNVJ**.
 - [ ] Pemeriksaan kesiapan per sesi atau per hari; siapa berhak menunda (P8).
 - [ ] Praktikum mana yang memakai bahan fisik (P9).
 - [ ] Rubrik, penilai, dan remediasi (P14).
