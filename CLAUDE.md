@@ -24,6 +24,24 @@ Bahasa kerja: **Indonesia**.
   - Class Odoo dirancang memakai **inheritance**, supaya field dan perilaku tidak ditulis berulang.
   - Proses pendokumentasian di FIK banyak yang belum ada; observasi *as-is* boleh dari studi dokumen dan ISO selama wawancara belum ada.
 
+### Prinsip utama: cari *sweet spot*, bukan sistem selengkap mungkin
+
+Tujuan rancangan **bukan** sistem yang selengkap dan serumit mungkin. Yang dicari adalah titik tengah antara dua ujung:
+
+| MVP | **Sweet spot (target)** | Rancangan lengkap |
+|---|---|---|
+| Minimum, sederhana, cakupan rendah. Ada kriteria instrumen yang tidak bisa dibuktikan | Semua kebutuhan awal (kriteria instrumen) terpenuhi, dan rancangannya tetap mudah dipahami pengguna, pembimbing, dan penguji | Lengkap, sangat detail, rumit. Sulit dipahami dan terlalu besar untuk dibangun dalam satu skripsi |
+
+Cara menerapkannya di setiap modul:
+- **Lantai ditentukan instrumen.** Setiap kriteria (K1–K4 / S1–Sn) harus punya kebutuhan dan rekaman bukti. Itu batas bawah yang tidak boleh dipangkas.
+- **Langit-langit ditentukan kejelasan.** Fitur yang tidak dibutuhkan untuk membuktikan kriteria dan menambah kerumitan (varian alur, master tambahan, otomatisasi, pengingat, tahap persetujuan berlapis) **tidak dirancang**; cukup dicatat di batasan masalah sebagai saran pengembangan.
+- **Dua lapis cakupan:** **Inti** (tanpa ini ada kriteria yang tidak terbukti atau alur putus; prioritas W) dan **Pelengkap** (memperkuat rancangan dengan biaya kecil; prioritas O). Keduanya dirancang dan digambar; selain itu tidak.
+- **Pilihan sederhana didahulukan:** satu jalur utama sebelum jalur alternatif, teks bebas sebelum master baru, unggah berkas sebelum form isian, nilai yang dihitung dari data sebelum penjadwal/pengingat.
+- **Yang menunjukkan desain tetap dipertahankan** bila murah: inheritance (mixin), riwayat kejadian penting, Template Method. Ini yang diminta pembimbing.
+- Ragu apakah sesuatu masuk? Tanyakan: "kriteria instrumen mana yang gagal bila ini tidak ada?" Bila tidak ada jawabannya, jangan dirancang.
+
+Contoh penerapan: bagian "Cakupan rancangan" di brief Tata Kelola (branch `febriyan-skripsi`). Rancangan Tata Kelola di tag `rancangan-tatkel-v1` adalah contoh ujung **lengkap**: pakai sebagai contoh format dan cara berpikir, bukan sebagai ukuran cakupan.
+
 ## 2. Modul, pemegang, dan identitas
 
 | Modul | Pemegang | Branch | Slug file | Addon (usulan) | Prefiks ID drawio | Prefiks kode KF/UC/AB | Warna (fill / stroke) |
@@ -105,6 +123,7 @@ Rancangan tidak boleh dimulai tanpa brief modul dan analisis setiap PKG-nya. Ked
 ### Langkah 1: Keputusan pembimbing dan scope
 - Catat arahan bimbingan terbaru di brief modul. Bila bertentangan dengan brief lama, tandai dan perbarui brief (bagian batasan masalah).
 - Brief dan analisis sudah dipastikan ada di Langkah 0; di sini cukup diperbarui sesuai arahan terbaru.
+- Tetapkan **cakupan rancangan** di brief (prinsip *sweet spot*, bagian 1): tabel per area dengan lapis Inti dan Pelengkap, plus daftar "tidak dirancang" di batasan masalah. Semua langkah berikutnya tidak boleh keluar dari cakupan ini tanpa persetujuan pengguna.
 
 ### Langkah 2: Studi dokumen
 - Bedah setiap dokumen lab yang relevan: bagian dokumen → field → model → PKG/kriteria → **Dasar** (Instrumen / ISO / Format saja).
@@ -116,7 +135,7 @@ Rancangan tidak boleh dimulai tanpa brief modul dan analisis setiap PKG-nya. Ked
 - Master bersama dan mixin **sudah dirancang** di modul Tata Kelola (bagian 6). Pakai yang ada. Bila butuh perubahan, usulkan ke pemiliknya; jangan membuat versi sendiri.
 
 ### Langkah 4: Kebutuhan
-- Tabel aktor (peran, grup akses usulan) dan kebutuhan fungsional `KF-<P>-nn` dengan kolom: kebutuhan, aktor, model, kriteria instrumen, prioritas (W = wajib MVP, O = opsional). Ditambah kebutuhan nonfungsional dan tabel keterlacakan **masalah → tujuan → KF**.
+- Tabel aktor (peran, grup akses usulan) dan kebutuhan fungsional `KF-<P>-nn` dengan kolom: kebutuhan, aktor, model, kriteria instrumen, prioritas (W = lapis Inti, O = lapis Pelengkap). Kebutuhan di luar cakupan brief tidak ditulis sebagai KF. Ditambah kebutuhan nonfungsional dan tabel keterlacakan **masalah → tujuan → KF**.
 
 ### Langkah 5: Proses bisnis (activity + state machine)
 - **Activity** hanya untuk proses nontrivial (multi-aktor, bercabang, beraturan). Konsep yang hanya dikelola (CRUDL) tidak digambar (§3.4).
@@ -239,6 +258,7 @@ Dirancang di modul Tata Kelola (design class diagram di tag `rancangan-tatkel-v1
 | Field dari draf GPT dipakai tanpa dasar instrumen | Kebutuhan palsu | Kolom "Dasar" di bedah dokumen |
 | Konteks pribadi satu anggota di CLAUDE.md bersama | Claude anggota lain salah konteks | Konteks pribadi di brief modul atau file konteks per branch |
 | Rancangan dimulai tanpa brief dan analisis PKG | Kebutuhan tidak berdasar instrumen | Langkah 0: cek, laporkan, susun dulu |
+| Rancangan dibuat selengkap mungkin (semua varian, master, pengingat, tahap persetujuan) | Terlalu rumit dipahami dan dibangun; harus dipangkas ulang (Tata Kelola, November 2026) | Tetapkan cakupan Inti + Pelengkap di brief sebelum langkah 4 (bagian 1, prinsip *sweet spot*) |
 
 ## 9. Pemetaan ke proposal (Pedoman TA FIK 2025, Prototipe/Proyek)
 
