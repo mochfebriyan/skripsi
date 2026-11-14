@@ -55,7 +55,7 @@ Baris lain dengan nomor yang sama **bukan** scope modul ini. Contohnya Pengelola
 | 14 Nov 2026 | Febriyan | **Rekaman bukti tidak dihapus, hanya dikoreksi.** Rapat, evaluasi, distribusi, sosialisasi, tinjau ulang, realisasi, dan tinjauan yang sudah dicatat hanya bisa dikoreksi, dan koreksinya terlacak | Aturan bisnis (expanded use case) |
 | 14 Nov 2026 | Febriyan | **Lokasi penggunaan SOP/IK = Ruang (master Core)**, tanpa "portal". **Wewenang** = tabel anak Jabatan (tindakan menyusun/mengesahkan × jenis dokumen) | Conceptual model dan DCD |
 | 14 Nov 2026 | Febriyan | **Dokumen Induk, Versi, dan KPI tetap di `labfik_org`**; dipindah ke `labfik_core` hanya bila modul lain terkonfirmasi memakainya (kandidat: PKG-09, PKG-21). `labfik.controlled.mixin` tidak dipakai | Kontrak Core **[KONFIRMASI kelompok]** |
-| 14 Nov 2026 | Febriyan | **Asisten lab = `hr.employee`** dengan jenis *asisten*. `labfik.controlled.mixin` **tidak dipakai** (final). Modul lain yang butuh relasi ke Dokumen Induk/KPI memakai modul jembatan | Kontrak Core di CLAUDE.md bagian 6 diperbarui |
+| 14 Nov 2026 | Febriyan | **Asisten lab = `hr.employee`** dengan jenis personel *asisten* dan jabatan (`hr.job`) **Asisten Praktikum**. `labfik.controlled.mixin` **tidak dipakai** (final). Modul lain yang butuh relasi ke Dokumen Induk/KPI memakai modul jembatan | Kontrak Core di CLAUDE.md bagian 6 diperbarui |
 | 14 Nov 2026 | Bimbingan Pak Widi | Lihat addon yang bisa di-*extend* (OCA, Cybro, OpenEduCat, dll.), utamakan lisensi LGPL | Bagian [Platform dan addon yang diperluas](#platform-dan-addon-yang-diperluas) |
 | 14 Nov 2026 | Febriyan | Personel dan Jabatan meng-*extend* `hr.employee` dan `hr.job`; master bersama dan mixin di addon `labfik_core` yang **terpisah** dari `labfik_org` | Perlu disepakati kelompok **[KONFIRMASI]** |
 | 14 Nov 2026 | Febriyan | **Pihak eksternal bukan aktor dan bukan Personel.** Vendor, tamu, dan pihak luar lain tidak dicatat di sistem; tidak ada master pihak luar (`res.partner`) untuk modul ini | Personel hanya mencakup orang internal FIK; pertanyaan terbuka tinggal soal asisten (mahasiswa) |
@@ -167,7 +167,7 @@ Hasil survei awal (cabang 17.0, dicek 14 November 2026):
 | Addon | Lisensi | Untuk | Keputusan |
 |---|---|---|---|
 | Odoo CE `mail` | LGPL-3 | Riwayat perubahan, aktivitas, notifikasi | **Dipakai** |
-| Odoo CE `hr` (`hr.employee`, `hr.job`, `hr.department`) | LGPL-3 | Personel dan Jabatan | **Dipakai**, di-*extend* di `labfik_core`. Asisten lab (mahasiswa) dicatat sebagai `hr.employee` dengan jenis *asisten* (keputusan Febriyan, 14 November 2026). Pihak eksternal tidak dicatat |
+| Odoo CE `hr` (`hr.employee`, `hr.job`, `hr.department`) | LGPL-3 | Personel dan Jabatan | **Dipakai**, di-*extend* di `labfik_core`. Asisten lab (mahasiswa) dicatat sebagai `hr.employee` dengan jenis personel *asisten* dan jabatan (`hr.job`) **Asisten Praktikum** (keputusan Febriyan, 14 November 2026). Pihak eksternal tidak dicatat |
 | OCA `dms` | LGPL-3 | Penyimpanan berkas, folder, hak akses | **Opsional** untuk penyimpanan PDF. Versi berlaku, pengesahan, distribusi, dan tinjau ulang tetap dibuat sendiri **[USULAN PENULIS]** |
 | OCA `base_tier_validation` | AGPL-3 | Persetujuan bertingkat | **Tidak dipakai** (AGPL; alur bertingkat tidak sesuai pengesahan satu tahap dengan PDF bertanda tangan). Pembanding di studi terkait |
 | OCA `mgmtsystem`, `mgmtsystem_review`, `mgmtsystem_manual`, `document_page_approval` | AGPL-3 | Sistem manajemen ISO, tinjauan manajemen, prosedur | **Tidak dipakai** (AGPL). Pembanding di studi terkait |
@@ -274,7 +274,7 @@ Kebijakannya:
 - [ ] Data kebutuhan kurikulum/CPMK, riset, dan PkM untuk analisis gap didapat dari mana?
 
 **Untuk kelompok (Zahir, Herrens)**
-- [ ] Setuju Personel = `hr.employee` dan Jabatan = `hr.job` yang diperluas di `labfik_core` (lihat [Platform dan addon yang diperluas](#platform-dan-addon-yang-diperluas))? (Asisten lab = `hr.employee` jenis asisten; pihak eksternal tidak dicatat. Keputusan 14 November 2026.)
+- [ ] Setuju Personel = `hr.employee` dan Jabatan = `hr.job` yang diperluas di `labfik_core` (lihat [Platform dan addon yang diperluas](#platform-dan-addon-yang-diperluas))? (Asisten lab = `hr.employee` dengan jenis personel *asisten* dan jabatan (`hr.job`) **Asisten Praktikum**; pihak eksternal tidak dicatat. Keputusan 14 November 2026.)
 - [ ] Apakah setiap modul juga mensurvei addon LGPL yang bisa di-*extend* untuk modulnya (mis. `hr` untuk SDM)?
 - [ ] Setuju master bersama dan mekanisme pengesahan ditempatkan di `labfik_core` yang terpisah dari `labfik_org`?
 - [ ] Field syarat kompetensi minimum di Jabatan: dikelola di Tata Kelola atau di SDM?

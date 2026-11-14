@@ -287,5 +287,5 @@ Versi sebelumnya ada di tag `rancangan-tatkel-v1` (DCD 1/3–3/3).
 
 - [x] `labfik.controlled.mixin` dihapus dari kontrak Core (keputusan 14 November 2026)
 - [ ] Dokumen Induk/Versi (PKG-09) dan KPI (PKG-21) dipakai modul lain? Bila ya, pakai modul jembatan (mis. `labfik_safety_org`) atau pindahkan ke `labfik_core` **[KONFIRMASI kelompok]**
-- [x] Asisten lab sebagai `hr.employee` jenis asisten (keputusan 14 November 2026)
+- [x] Asisten lab sebagai `hr.employee` dengan jenis personel *asisten* dan jabatan (`hr.job`) **Asisten Praktikum** (keputusan 14 November 2026)
 - [ ] Tampilan diagram belum dicek di draw.io **[VALIDASI]**
