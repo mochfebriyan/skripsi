@@ -51,6 +51,8 @@ Baris lain dengan nomor yang sama **bukan** scope modul ini. Contohnya Pengelola
 | 14 Nov 2026 | Febriyan | **Memeriksa dan mengesahkan adalah satu kesatuan.** Pejabat yang mengesahkan dianggap sudah memeriksa isi dokumen; catatan pengesahan menjadi buktinya | Tidak ada tahap pemeriksaan terpisah. Kolom "Diperiksa" di blok tanda tangan dokumen cetak tetap di kertas saja |
 | 14 Nov 2026 | Febriyan | **Renstra berlaku 5 tahun** (draf lab: 2027–2031), jadi cukup diunggah dan disahkan, tidak diisi lewat form | Rencana kerja tahunan merujuk Renstra lewat teks |
 | 14 Nov 2026 | Febriyan | Cakupan rancangan proposal = lapis **Inti + Pelengkap** | Bagian [Cakupan rancangan](#cakupan-rancangan) |
+| 14 Nov 2026 | Bimbingan Pak Widi | Lihat addon yang bisa di-*extend* (OCA, Cybro, OpenEduCat, dll.), utamakan lisensi LGPL | Bagian [Platform dan addon yang diperluas](#platform-dan-addon-yang-diperluas) |
+| 14 Nov 2026 | Febriyan | Personel dan Jabatan meng-*extend* `hr.employee` dan `hr.job`; master bersama dan mixin di addon `labfik_core` yang **terpisah** dari `labfik_org` | Perlu disepakati kelompok **[KONFIRMASI]** |
 
 ## Pola bersama di dalam modul
 
@@ -152,14 +154,14 @@ Sebaliknya, **gap kompetensi** dari Pengembangan 13 bisa menjadi masukan kebutuh
 
 Arahan Pak Widi: lihat addon yang sudah ada (OCA, CybroAddons, OpenHRMS, EducationalERP, OpenEduCat, dll.) untuk di-*extend*, dengan mengutamakan lisensi **LGPL**.
 
-Modul ini tetap berupa addon sendiri (`labfik_org`). Addon itu bergantung (`depends`) pada addon yang sudah ada dan memperluasnya lewat `_inherit`, tanpa mengubah kode addon lain. Model baru dibuat hanya untuk konsep yang tidak punya padanan.
+Modul ini tetap berupa addon sendiri (`labfik_org`, `depends: ['labfik_core']`). Master bersama, perluasan `hr`, dan mixin bersama ada di addon **`labfik_core`** yang terpisah (keputusan 14 November 2026, [KONFIRMASI kelompok]). Kedua addon bergantung (`depends`) pada addon yang sudah ada dan memperluasnya lewat `_inherit`, tanpa mengubah kode addon lain. Model baru dibuat hanya untuk konsep yang tidak punya padanan.
 
 Hasil survei awal (cabang 17.0, dicek 14 November 2026):
 
 | Addon | Lisensi | Untuk | Keputusan |
 |---|---|---|---|
 | Odoo CE `mail` | LGPL-3 | Riwayat perubahan, aktivitas, notifikasi | **Dipakai** |
-| Odoo CE `hr` (`hr.employee`, `hr.job`, `hr.department`) | LGPL-3 | Personel dan Jabatan | **Kandidat utama untuk di-*extend*.** Asisten (mahasiswa) dan pihak eksternal bukan pegawai, jadi perlu disepakati kelompok **[KONFIRMASI]** |
+| Odoo CE `hr` (`hr.employee`, `hr.job`, `hr.department`) | LGPL-3 | Personel dan Jabatan | **Dipakai**, di-*extend* di `labfik_core`. Asisten (mahasiswa) dan pihak eksternal bukan pegawai; cara mencatatnya perlu disepakati kelompok **[KONFIRMASI]** |
 | OCA `dms` | LGPL-3 | Penyimpanan berkas, folder, hak akses | **Opsional** untuk penyimpanan PDF. Versi berlaku, pengesahan, distribusi, dan tinjau ulang tetap dibuat sendiri **[USULAN PENULIS]** |
 | OCA `base_tier_validation` | AGPL-3 | Persetujuan bertingkat | **Tidak dipakai** (AGPL; alur bertingkat tidak sesuai pengesahan satu tahap dengan PDF bertanda tangan). Pembanding di studi terkait |
 | OCA `mgmtsystem`, `mgmtsystem_review`, `mgmtsystem_manual`, `document_page_approval` | AGPL-3 | Sistem manajemen ISO, tinjauan manajemen, prosedur | **Tidak dipakai** (AGPL). Pembanding di studi terkait |
@@ -266,9 +268,9 @@ Kebijakannya:
 - [ ] Data kebutuhan kurikulum/CPMK, riset, dan PkM untuk analisis gap didapat dari mana?
 
 **Untuk kelompok (Zahir, Herrens)**
-- [ ] Model Personel memakai opsi yang mana (`hr.employee`, model sendiri, atau model Rafika)? Lihat tabel opsi di analisis Pengelolaan 3. Arahan Pak Widi untuk meng-*extend* addon LGPL menguatkan opsi `hr.employee` + `hr.job` (lihat [Platform dan addon yang diperluas](#platform-dan-addon-yang-diperluas)).
+- [ ] Setuju Personel = `hr.employee` dan Jabatan = `hr.job` yang diperluas di `labfik_core` (lihat [Platform dan addon yang diperluas](#platform-dan-addon-yang-diperluas))? Bagaimana asisten (mahasiswa) dan pihak eksternal dicatat?
 - [ ] Apakah setiap modul juga mensurvei addon LGPL yang bisa di-*extend* untuk modulnya (mis. `hr` untuk SDM)?
-- [ ] Apakah master bersama dan mekanisme pengesahan ditempatkan di addon Core sendiri (`labfik_core`) atau di addon Tata Kelola?
+- [ ] Setuju master bersama dan mekanisme pengesahan ditempatkan di `labfik_core` yang terpisah dari `labfik_org`?
 - [ ] Field syarat kompetensi minimum di Jabatan: dikelola di Tata Kelola atau di SDM?
 - [ ] Apakah gap kompetensi Pengembangan 13 dipakai sebagai masukan Pengembangan 14?
 
