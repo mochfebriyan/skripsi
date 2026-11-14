@@ -64,6 +64,8 @@ Periode 2024/2025 Genap tidak punya tab alokasi, jadi pencocokan rencana ↔ lap
 | A13 | Lembar Pelaksanaan Asistensi POB 2025 memuat: pertemuan, hari/tanggal, nama dosen, nama asisten, paraf dosen, paraf asisten, topik, modul, waktu mulai, ruang, jumlah, kendala; ditandatangani Koordinator Prodi, Dosen Koordinator, dan KaLab. Lembar Monitoring Alokasi dan Pelaksanaan mencatat A (alokasi) dan L (laporan) per pertemuan, diparaf laboran | POB 2025 lampiran |
 | A14 | Presensi rinci per praktikan dicatat dosen di **SIMPEL**; penilaian di **LeADS**. Keduanya tidak terhubung ke laporan sesi | Brief bersama, Kondisi saat ini **[KONFIRMASI: tampilan dan hak akses role dosen/KaLab]** |
 | A15 | Lembar kegiatan kertas diisi bersamaan dengan formulir, hanya sebagai bukti fisik pengajuan honor; isinya tidak memuat rincian kegiatan sehingga tidak bisa dipakai sebagai *log book* | `brief-role-3.md` (commit `d6fcc5c`) **[KONFIRMASI: sumber pernyataan]** |
+| A16 | Lembar Pelaksanaan Asistensi POB 2025 hanya punya kolom **waktu mulai**, tanpa waktu selesai, sehingga durasi tidak bisa dihitung dari lembar itu | POB 2025 lampiran (studi dokumen, [bedah-dokumen-praktikum.md](bedah-dokumen-praktikum.md) A15) |
+| A17 | Rekap keterlaksanaan sudah dibutuhkan tetapi dibuat manual: lembar Monitoring Alokasi dan Pelaksanaan (A vs L per pertemuan, diparaf laboran) dan tab rekap "Per Pertemuan", "Per Asisten", "Per Mata Kuliah" di sheet respons formulir | POB 2025 lampiran; Google Form (studi dokumen A16) |
 
 ---
 
@@ -122,7 +124,7 @@ Catatan aturan:
 | **Jurnal Sesi** | [T] | 1 per Sesi | Jam mulai dan selesai aktual, pertemuan ke-, topik, Versi Modul yang dipakai, jumlah praktikan hadir, tautan presensi SIMPEL (opsional), kendala, foto, pengisi, status (draf → dikirim). Anak: **presensi petugas** (personel, peran: dosen/asisten/laboran, kehadiran: penuh/sebagian/tidak), ***log book*** (waktu, uraian kegiatan), dan **catatan penilaian** bila sesi berisi asesmen (milik PKG-19, lihat [analisis-data-evaluasi-19.md](analisis-data-evaluasi-19.md)) | Satu Sesi satu jurnal. Siapa pengisinya (asisten, dosen, atau laboran) **[KONFIRMASI wawancara P10, P13]** |
 | **Perubahan Sesi** | [T] | 1 pengajuan perubahan | Sesi asal, jenis (pindah jadwal, pindah ruang, daring, batal dan diganti), alasan, pengaju, status (diajukan → disetujui/ditolak), penyetuju, Sesi pengganti | Bila disetujui dan ada pengganti, Sesi pengganti dibangkitkan dengan rujukan ke Sesi asal |
 | **Daftar Sesi Tidak Memenuhi** | [R] | — | Sesi beserta cek C1–C5 yang gagal | Dasar persentase |
-| **Rekap Keterlaksanaan per Kelas** (+) | [R] | — | Jumlah sesi rencana, terlaksana, memenuhi per kelas per periode | Pengganti sheet "Ketercakupan Praktikum" yang sekarang dibuat manual (`brief-role-3.md`) |
+| **Rekap Keterlaksanaan per Kelas** (+) | [R] | — | Jumlah sesi rencana, terlaksana, memenuhi per kelas per periode | Pengganti rekap manual yang sekarang dibuat (A17) |
 
 Riwayat perubahan memakai `mail.thread` + *tracking* bawaan Odoo. Tidak perlu tabel tambahan.
 

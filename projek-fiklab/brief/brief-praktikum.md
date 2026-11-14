@@ -57,6 +57,10 @@ PKG-20 Survei + Evaluasi Survei (berdiri sendiri, hanya Core)
 
 ## Kondisi saat ini (ringkas)
 
+Rincian lengkap (22 temuan, pelaku, dan bedah per bagian dokumen) ada di [studi dokumen](../analisis/bedah-dokumen-praktikum.md).
+
+**Rumusan *as-is* ringkas:** LabFIK sudah punya prosedur praktikum dan lebih dari seribu laporan pelaksanaan, tetapi rekaman itu dibuat untuk honor asisten, bukan sebagai bukti mutu. Jadwal tidak bertanggal, modul tidak berversi, kesiapan dinilai asisten sesudah sesi, perubahan sesi tidak tercatat, kelas tanpa asisten tidak terekam, bukti penilaian dan kepuasan tidak ada di lab, dan prosedurnya belum disahkan.
+
 Sumber: POB Manajemen Praktikum dan Asistensi FIK 2025 (nyata, belum disahkan), sheet "Alokasi Pertemuan Asisten Praktikum", dan Google Form "Pelaksanaan Asistensi Praktikum" (1.147 laporan, 4 periode; diolah 14 Nov 2026, hanya angka agregat). Paket dokumen praktikum 2026 dan Paket Dokumen Monev di Drive LabFIK adalah **draf** (kemungkinan GPT) dan hanya dipakai sebagai contoh format.
 
 | Area | Kondisi | Rujukan |
