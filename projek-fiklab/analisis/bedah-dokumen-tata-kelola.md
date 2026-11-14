@@ -271,7 +271,7 @@ Blok yang sama muncul berkali-kali di dokumen sumber:
 
 | Blok | Muncul di | Jadi |
 |---|---|---|
-| Kode, revisi, tanggal berlaku, unit pemilik, periode tinjauan | D1, D2, D3, D4 | `labfik.controlled.mixin` |
+| Kode, revisi, tanggal berlaku, unit pemilik, periode tinjauan | D1, D2, D3, D4 | ~~`labfik.controlled.mixin`~~ tidak dipakai (keputusan 14 November 2026): kode dan siklus tinjau di Dokumen Induk, revisi dan tanggal tinjau di Versi Dokumen |
 | Disusun / Disahkan (jabatan, nama, tanggal) + status draf → disahkan. Kolom "Diperiksa" hanya di kertas | D1, D2, D3, D4, D6 | `labfik.approval.mixin` |
 | Riwayat revisi (revisi, tanggal, uraian, pengesahan) | D1, D2, D4 | `revisi_dari_id` di tiap model + laporan `[R]` |
 | Periode berlaku (2027, 2027–2031, masa SK) | D1, D2, D6 | `labfik.period.mixin` |
@@ -282,9 +282,11 @@ Blok yang sama muncul berkali-kali di dokumen sumber:
 
 Semua mixin adalah `models.AbstractModel` (tidak membuat tabel sendiri). Model konkret memakainya lewat `_inherit = [...]`.
 
+**Catatan (14 November 2026):** tabel ini usulan awal hasil studi dokumen. Rancangan final ada di [design-class-tata-kelola.md](../rancangan/design-class-tata-kelola.md). `labfik.controlled.mixin` **tidak dipakai**, karena kode dan revisi hanya ada di Dokumen Induk/Versi dan SK dengan makna berbeda. Tanggal tinjau pindah ke `labfik.document.version`, dan `mail.activity.mixin` tidak dipakai (tanpa pengingat terjadwal).
+
 | Mixin | Field | Method | Dipakai oleh |
 |---|---|---|---|
-| `labfik.controlled.mixin` | `kode_dokumen`, `revisi`, `tanggal_berlaku`, `unit_pemilik`, `periode_tinjau_bulan`, `tanggal_tinjau_berikutnya` (compute), `is_perlu_tinjau` (compute) | `_compute_tanggal_tinjau()` | `labfik.document.version`, `labfik.plan`, `labfik.assignment` |
+| ~~`labfik.controlled.mixin`~~ (tidak dipakai) | `kode_dokumen`, `revisi`, `tanggal_berlaku`, `unit_pemilik`, `periode_tinjau_bulan`, `tanggal_tinjau_berikutnya` (compute), `is_perlu_tinjau` (compute) | `_compute_tanggal_tinjau()` | `labfik.document.version`, `labfik.plan`, `labfik.assignment` |
 | `labfik.approval.mixin` (turunan `mail.thread`, `mail.activity.mixin`) | `state` (draf, diajukan, disahkan, diganti, dicabut, kedaluwarsa), `penyusun_id`, `pengesah_id`, `tanggal_ajukan`, `tanggal_sah`, `file_ttd` | `action_ajukan()`, `action_kembalikan()`, `action_sahkan()` (memeriksa wewenang jabatan dan keberadaan `file_ttd`), `action_cabut()`, `_cek_kelengkapan()` (di-*override* per model) | `labfik.document.version`, `labfik.plan`, `labfik.assignment` |
 | `labfik.period.mixin` | `periode_id` (Periode, Core), `tanggal_mulai`, `tanggal_selesai`, `is_berlaku` (compute) | `_compute_is_berlaku()` | `labfik.plan`, `labfik.assignment`, `labfik.tinjauan` |
 | `labfik.evidence.mixin` | `tanggal`, `pelapor_id`, `bukti_ids` (lampiran), `keterangan` | — | `labfik.realisasi`, `labfik.tinjauan`, `labfik.meeting`, `labfik.org.evaluation`, distribusi, sosialisasi, tinjau ulang dokumen |
