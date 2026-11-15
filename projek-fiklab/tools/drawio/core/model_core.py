@@ -1,4 +1,4 @@
-"""Katalog model Core (labfik_core): mixin dan master bersama.
+"""Katalog model Core (labfik_core): mixin, master, dan transaksi.
 
 Pemakaian:
     python3 -I projek-fiklab/tools/drawio/core/model_core.py projek-fiklab/rancangan/model-core.drawio
@@ -138,7 +138,38 @@ ROWS = [
           "+ jumlah_mahasiswa: Integer", "+ dosen_koordinator_id: hr.employee", "+ dosen_ids: hr.employee [*]",
           "<i>unique(mata_kuliah_id, periode_id, name)</i>", "<i>tipe field: [USULAN PENULIS]</i>"], []),
     ]),
+    ("Baris 4 · Transaksi Core: riwayat pengesahan dan sesi praktikum", [
+        ("log", "baru", header("«Core» model baru [T]", "labfik.approval.log", "Riwayat Pengesahan", "Tata Kelola",
+                               "{_name baru; ditulis approval.mixin}"),
+         ["+ res_model: Char", "+ res_id: Integer", "+ kejadian: Selection {diajukan, dikembalikan,",
+          I + "berkas_diunggah, disahkan, diganti, dicabut, kedaluwarsa}", "+ waktu: Datetime",
+          "+ pelaku_id: res.users [0..1]", "+ pengesah_id: hr.employee [0..1]", "+ alasan: Text [0..1]",
+          "+ berkas: Binary [0..1]"],
+         ["+ write() «override» (selalu ditolak)", "+ unlink() «override» (selalu ditolak)"]),
+        ("ses", "baru", header("«Core» model baru [T]", "labfik.sesi", "Sesi Praktikum", "Praktikum",
+                               "{_name baru; tidak mewarisi op.session}"),
+         ["+ kelas_id: labfik.kelas", "+ pertemuan_ke: Integer", "+ jenis_pertemuan: Selection {praktikum, uts, uas}",
+          "+ moda: Selection {luring, daring}", "+ tanggal: Date", "+ jam_mulai: Float", "+ jam_selesai: Float",
+          "+ ruang_id: labfik.ruang", "+ state: Selection {terjadwal, terlaksana, batal}",
+          "+ sesi_asal_id: labfik.sesi [0..1] (bila pengganti)",
+          "+ is_terpublikasi, is_ditunda, is_diganti: Boolean {compute}", "<i>tipe field: [USULAN PENULIS]</i>"], []),
+    ]),
 ]
+
+SESI = ("<b>Aturan pakai bersama transaksi Core</b><br><br>"
+        "<b>labfik.sesi</b> [USULAN PENULIS; KONFIRMASI kelompok]<br>"
+        "• Dibangkitkan hanya oleh PKG-15 (Praktikum), atau sebagai sesi pengganti lewat Perubahan Sesi PKG-18.<br>"
+        "• Satu Sesi asli per (kelas, pertemuan).<br>"
+        "• Hanya modul Praktikum yang mengubah <code>state</code>.<br>"
+        "• Modul lain <b>tidak menambah field</b> ke <code>labfik.sesi</code>; buat model sendiri yang merujuk "
+        "<code>sesi_id</code> (mis. penugasan petugas di SDM).<br>"
+        "• Sesi yang sudah punya jurnal atau penugasan tidak boleh dihapus.<br>"
+        "• Status lain dihitung, tidak disimpan: terpublikasi = jadwal periode disahkan; ditunda = ada perubahan "
+        "yang belum diputuskan; diganti = ada sesi yang merujuk sesi ini lewat <code>sesi_asal_id</code>.<br><br>"
+        "<b>labfik.approval.log</b><br>"
+        "• Tidak diisi langsung oleh modul: setiap baris dibuat <code>approval.mixin</code> saat status dokumen berubah.<br>"
+        "• Satu tabel untuk semua dokumen yang disahkan (<code>res_model</code> + <code>res_id</code>); "
+        "tidak bisa diubah atau dihapus.")
 
 grid_w = 4 * W + 3 * GX
 y = Y0
@@ -146,8 +177,13 @@ for r, (lbl, boxes) in enumerate(ROWS):
     v(f"row{r + 1}", lbl, ROWLBL, X0, y, grid_w, 24)
     y += 30
     h = max(size(a, m)[3] for _, _, _, a, m in boxes)
+    if len(boxes) < 4:
+        h = max(h, 330)  # beri ruang untuk catatan aturan pakai
     for c, (id, kind, title, attrs, methods) in enumerate(boxes):
         cls(id, title, attrs, methods, X0 + c * (W + GX), y, h, kind)
+    if len(boxes) < 4:  # sisa kolom baris transaksi diisi catatan aturan pakai
+        x = X0 + len(boxes) * (W + GX)
+        v("sesi-aturan", SESI, NOTE, x, y, X0 + grid_w - x, h)
     y += h + GY
 
 LEG = ("<b>Notasi</b> (UML class diagram, Wazlawick 2024 §13.6)<br>"
@@ -160,7 +196,7 @@ LEG = ("<b>Notasi</b> (UML class diagram, Wazlawick 2024 §13.6)<br>"
        "<code>[0..1]</code> = boleh kosong.<br>"
        "• <code>+</code> publik, <code>#</code> internal. {abstract} = wajib diisi model turunan; {hook} = boleh diisi; "
        "«override» = mengganti method bawaan; {compute}/{related} = dihitung, tidak diisi pengguna.<br>"
-       "• [M] master. Sesi dan Riwayat Pengesahan adalah transaksi [T] Core dan tidak digambar di halaman ini.")
+       "• [M] master, [T] transaksi. Sesi adalah satu-satunya transaksi bisnis di Core; Riwayat Pengesahan adalah log teknis milik approval.mixin.")
 USE = ("<b>Cara memakai Core</b><br>"
        "• Addon modul cukup <code>depends: ['labfik_core']</code>; <code>labfik_core</code> sendiri hanya <code>depends: ['hr', 'mail']</code>.<br>"
        "• Pakai, warisi, atau perluas dari addon modulmu; <b>jangan membuat versi sendiri</b> dan jangan mengubah Core. "
@@ -170,27 +206,37 @@ USE = ("<b>Cara memakai Core</b><br>"
        "• Pengesahan: isi {abstract}/{hook}, jangan override <code>action_ajukan()</code>/<code>action_sahkan()</code>. "
        "Wewenang lewat <code>labfik.jabatan.wewenang</code> (tambah <code>jenis_dokumen</code> dengan <code>selection_add</code>).<br>"
        "• Tidak ada di Core: <code>labfik.controlled.mixin</code> (dihapus); Dokumen Induk, Versi, KPI (di <code>labfik_org</code>, "
-       "pakai modul jembatan bila perlu).<br>"
-       "• Grup akses Core: <code>labfik_pengguna</code> ⊂ <code>labfik_laboran</code> ⊂ <code>labfik_kalab</code>.")
+       "pakai modul jembatan bila perlu).")
+GRP = ("<b>Grup akses Core</b> (<code>res.groups</code>, data XML <code>labfik_core</code>; bukan model)<br><br>"
+       "<code>base.group_user</code><br>"
+       "&nbsp;└ <b>labfik_pengguna</b>: membaca dokumen yang sudah <i>disahkan</i><br>"
+       "&nbsp;&nbsp;&nbsp;&nbsp;└ <b>labfik_laboran</b>: mencatat dokumen, realisasi, rekaman bukti<br>"
+       "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└ <b>labfik_kalab</b>: semua master; mengembalikan, mengesahkan, mencabut<br><br>"
+       "• Grup lebih tinggi mewarisi hak grup di bawahnya (<code>implied_ids</code>).<br>"
+       "• Grup ≠ jabatan. Siapa yang berwenang <b>mengesahkan sebagai pejabat</b> diatur "
+       "<code>labfik.jabatan.wewenang</code>, bukan grup; karena itu Dekan tidak perlu akun.<br>"
+       "• Aturan penempatan: grup masuk Core bila dirujuk kode Core atau dipakai lebih dari satu modul; "
+       "selain itu di modul pemakainya. Contoh: <code>labfik_dosen</code>, <code>labfik_asisten</code> ada di "
+       "<code>labfik_praktikum</code>, bukan Core.")
 SRC = ("<b>Sumber</b>: rancangan/kontrak-core.md (rangkuman branch febriyan-, herrens-, zahir-skripsi) · "
        "15 November 2026 · disusun Febriyan<br>"
-       "Model rancangan Tata Kelola sudah final (DCD). Mata Kuliah dan Kelas dari Praktikum: nama field ditetapkan, "
+       "Model rancangan Tata Kelola sudah final (DCD). Mata Kuliah, Kelas, dan Sesi dari Praktikum: nama field ditetapkan, "
        "tipe field <b>[USULAN PENULIS]</b> sampai DCD Praktikum.<br>"
        "<b>[KONFIRMASI kelompok]</b> penempatan semua model ini di <code>labfik_core</code>. "
        "Tampilan belum dicek di draw.io; struktur lolos validate.py.")
 
-nw = (grid_w - 2 * GX) / 3
-nh = 250
-for k, (id, txt) in enumerate([("leg", LEG), ("use", USE), ("src", SRC)]):
+nw = (grid_w - 3 * GX) / 4
+nh = 360
+for k, (id, txt) in enumerate([("leg", LEG), ("use", USE), ("grp", GRP), ("src", SRC)]):
     v(id, txt, NOTE, X0 + k * (nw + GX), y, nw, nh)
 y += nh + 40
 
-v("frame", "MODEL CORE · labfik_core (master dan mixin)", FRAME, X0 - 30, 20, grid_w + 60, y - 20)
+v("frame", "MODEL CORE · labfik_core (mixin, master, dan transaksi)", FRAME, X0 - 30, 20, grid_w + 60, y - 20)
 cells.insert(0, cells.pop())  # bingkai digambar paling belakang
 
 page_w, page_h = grid_w + 2 * X0 + 20, y + 40
 xml = ('<mxfile host="app.diagrams.net" type="device">'
-       f'<diagram id="{P}1" name="Model Core (1-1) - Master dan Mixin"><mxGraphModel dx="1600" dy="900" grid="1" '
+       f'<diagram id="{P}1" name="Model Core (1-1) - Mixin, Master, dan Transaksi"><mxGraphModel dx="1600" dy="900" grid="1" '
        'gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" '
        f'pageWidth="{page_w:.0f}" pageHeight="{page_h:.0f}" math="0" shadow="0"><root><mxCell id="0"/>'
        '<mxCell id="1" parent="0"/>' + "".join(cells) + "</root></mxGraphModel></diagram></mxfile>")
