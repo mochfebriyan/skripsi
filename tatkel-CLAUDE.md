@@ -25,7 +25,7 @@ Modul ini juga mengelola master bersama **Personel, Jabatan, Dokumen Induk, dan 
 |---|---|
 | `projek-fiklab/brief/` | Dua brief di atas |
 | `projek-fiklab/analisis/` | Pedoman pengisian sheet, pemetaan package, dan panduan wawancara umum (ketiganya **bersama kelompok**), serta analisis Pengelolaan 1–3, Pengembangan 13, dan panduan wawancara Tata Kelola (milik Febriyan) |
-| `projek-fiklab/rancangan/` | Rancangan TO-BE modul Tata Kelola (Bab II 2.3), langkah 4–10 selesai 14 November 2026: kebutuhan, proses bisnis, use case, expanded use case, SSD, conceptual model, design class diagram (`.md` + `.drawio`) |
+| `projek-fiklab/rancangan/` | Rancangan TO-BE modul Tata Kelola (Bab II 2.3), langkah 4–10 selesai 14 November 2026: kebutuhan, proses bisnis, use case, expanded use case, SSD, conceptual model, design class diagram (`.md` + `.drawio`). Juga **bersama kelompok**: `kontrak-core.md` dan `model-core.drawio` (kontrak Core dari tiga branch, keputusan I-1–I-9, 15 November 2026) |
 | `projek-fiklab/docs/` | Rujukan: Instrumen Monev xlsx (tab *Analysis*), SNI ISO/IEC 17025:2017, Pedoman TA FIK 2025, daftar dosen FIK |
 | `projek-fiklab/pendahuluan/reference/` | Rujukan Bab 1: kumpulan Bab 1 dari judul-judul terkait, daftar judul skripsi terkait |
 | `projek-fiklab/pendahuluan/draft/` | Draf Bab 1 Febriyan (mulai dari latar belakang). Permasalahan awal mengikuti "Permasalahan bersama untuk Bab 1" di brief-seluruh-projek |
@@ -51,4 +51,4 @@ Bila ada yang bertentangan, ikuti sumber yang lebih kiri, lalu sebutkan konflikn
 
 - **Data pribadi tidak boleh masuk repo:** nama asisten/mahasiswa, NIM, nomor HP, rekening/KTP, nilai. Data demo dan seed harus fiktif.
 - **Paket Dokumen Monev di Drive LabFIK** (M01–M21) adalah draf hasil generate GPT. Paket ini **bukan** sumber kebutuhan dan bukan bukti kondisi nyata.
-- File bersama (`brief-seluruh-projek.md`, `pedoman-pengisian-sheet-analisis.md`, `pemetaan-package-instrumen.*`, `panduan-wawancara-umum.md`, `docs/`) juga dipakai kelompok. Perubahan di sana sebaiknya disampaikan ke Zahir dan Herrens.
+- File bersama (`brief-seluruh-projek.md`, `pedoman-pengisian-sheet-analisis.md`, `pemetaan-package-instrumen.*`, `panduan-wawancara-umum.md`, `kontrak-core.md`, `model-core.drawio`, `docs/`) juga dipakai kelompok. Perubahan di sana sebaiknya disampaikan ke Zahir dan Herrens. Ubah di `main` dulu, lalu salin ke ketiga branch (`git checkout main -- <file>`); branch `shared-to-aset-safety` tidak ikut disalin.

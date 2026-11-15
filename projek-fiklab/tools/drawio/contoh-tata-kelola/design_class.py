@@ -210,7 +210,7 @@ S["mee"] = (cm("labfik.meeting", "Rapat Koordinasi [T]", "evidence"), ["+ agenda
 S["oev"] = (cm("labfik.org.evaluation", "Evaluasi Struktur [T]", "evidence"), ["+ temuan_beban_kerja: Text", "+ efektivitas_koordinasi: Text",
                                                                                "+ keputusan: Text", "+ struktur_diubah: Boolean"],
             ["+ action_tautkan_revisi(sk, jabatan)"], 320, "c")
-S["rng"] = (core("labfik.ruang", "Ruang Lab [M]"), ["+ kode: Char", "+ name: Char"], [], 220, "core")
+S["rng"] = (core("labfik.ruang", "Ruang Lab [M]"), ["+ kode: Char", "+ name: Char", "+ kapasitas: Integer"], [], 220, "core")
 bottom = stack(p, [(40, ["emp", "asl", "rng"]), (420, ["job", "tgs", "wwn"]), (840, ["asg", "mee", "oev"])], S)
 p.e("n-emp-job", "emp", "job", NAV, "*", "job_id 0..1 (bawaan)", exit=(1, 0.3), entry=(0, 0.3))
 p.e("n-job-atas", "job", "job", NAV, "bawahan *", "atasan_id 0..1", exit=(1, 0.15), entry=(1, 0.05))
@@ -242,7 +242,7 @@ S["doc"] = (cm("labfik.document", "Dokumen Induk [M]", "mail.thread"), [
     "+ siklus_tinjau_bulan: Integer", "+ active: Boolean = True", "+ memenuhi: Boolean {compute}"],
     ["+ get_info_versi(): dict", "+ cek_monev(tanggal_tutup): dict (S1–S5)", "@model + hitung_persentase(tanggal_tutup): dict",
      "# _compute_versi_berlaku()", "+ unlink() «override» (AB-23)"], 360, "c")
-S["rng"] = (core("labfik.ruang", "Ruang Lab [M]"), ["+ kode: Char", "+ name: Char"], [], 220, "core")
+S["rng"] = (core("labfik.ruang", "Ruang Lab [M]"), ["+ kode: Char", "+ name: Char", "+ kapasitas: Integer"], [], 220, "core")
 S["ver"] = (cm("labfik.document.version", "Versi Dokumen SOP/IK [T]", "approval, mail.thread"), [
     "+ revisi: Char", "+ berkas: Binary", "+ tanggal_efektif: Date", "+ bagian_diubah: Text [0..1]", "+ ringkasan_perubahan: Text [0..1]",
     "+ alasan_revisi: Text [0..1]", "+ tanggal_tinjau_berikutnya: Date {compute, store}", "+ perlu_ditinjau: Boolean {compute, search}",

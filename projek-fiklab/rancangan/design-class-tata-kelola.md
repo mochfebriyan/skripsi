@@ -37,10 +37,13 @@ Sumber: [conceptual-model-tata-kelola.md](conceptual-model-tata-kelola.md) (CM-1
 | `labfik.criteria.mixin` | AbstractModel | — | `/kriteria_tertinggi` | Kriteria K1–K4 berurutan; `_cek_k1()`–`_cek_k4()` {abstract} |
 | `labfik.evidence.mixin` | AbstractModel | — | RekamanBukti | Tanggal, pelapor, bukti; koreksi terlacak, tidak bisa dihapus |
 | `hr.employee` (diperluas) | Model Odoo | [M] | Personel | + `jenis_personel`, `unit`. Bawaan: `name`, `job_id`, `user_id` |
-| `hr.job` (diperluas) | Model Odoo | [M] | Jabatan | + `unit`, `is_eksternal`, `atasan_id`, `pengganti_id`, `syarat_kompetensi`, `tugas_ids`, `wewenang_ids`. Data awal (fiktif, seed): Kepala Laboratorium, Laboran, Teknisi, **Asisten Praktikum**, dan jabatan eksternal Dekan, Ketua Jurusan |
+| `hr.job` (diperluas) | Model Odoo | [M] | Jabatan | + `unit`, `is_eksternal`, `atasan_id`, `pengganti_id`, `syarat_kompetensi`, `tugas_ids`, `wewenang_ids`. `syarat_kompetensi` (Text) adalah uraian naratif; modul SDM menambah `syarat_kompetensi_ids` (Many2many) dari `labfik_sdm` untuk perhitungan (I-2). Data awal (fiktif, seed): Kepala Laboratorium, Laboran, Teknisi, **Asisten Praktikum**, dan jabatan eksternal Dekan, Ketua Jurusan |
 | `labfik.jabatan.tugas` | Model | [M] | Tugas | Anak `hr.job` |
-| `labfik.jabatan.wewenang` | Model | [M] | Wewenang | Anak `hr.job`; unik per (jabatan, tindakan, jenis dokumen) |
-| `labfik.ruang`, `labfik.periode` | Model | [M] | Ruang, Periode | Master Core (sudah dikontrakkan) |
+| `labfik.jabatan.wewenang` | Model | [M] | Wewenang | Anak `hr.job`; unik per (jabatan, tindakan, jenis dokumen). `tindakan` tetap {menyusun, mengesahkan}; "menyetujui"/"menetapkan" di modul lain = mengesahkan (I-4). Modul lain menambah `jenis_dokumen` dengan `selection_add` |
+| `labfik.ruang`, `labfik.periode` | Model | [M] | Ruang, Periode | Master Core. Ruang: `kode`, `name`, `kapasitas` (usulan Praktikum, disetujui 15 November 2026, I-3) |
+| Grup `labfik_pengguna` ⊂ `labfik_laboran` ⊂ `labfik_kalab` | `res.groups` (data XML) | — | — | Didefinisikan di `labfik_core` karena `approval.mixin` memeriksa `labfik_kalab` (bagian 7, I-5) |
+
+Core juga memuat `labfik.mata.kuliah`, `labfik.kelas`, dan `labfik.sesi` [T] yang dirancang modul Praktikum. Ketiganya tidak dipakai Tata Kelola sehingga tidak digambar di DCD ini. Rincian semua model Core dan keputusan I-1 s.d. I-9 ada di [kontrak-core.md](kontrak-core.md) dan [model-core.drawio](model-core.drawio).
 
 ### 2.2 Addon `labfik_org` (`depends: ['labfik_core']`)
 
@@ -266,6 +269,8 @@ Semua 25 AB terpetakan.
 | `labfik_laboran` | `labfik_pengguna` | Membuat dan mengubah Dokumen Induk, versi, distribusi, sosialisasi, tinjau ulang; mengisi realisasi item miliknya; melihat laporan pengendalian dokumen |
 | `labfik_kalab` | `labfik_laboran` | Semua master, rencana, SK, rapat, evaluasi, tinjauan; **mengembalikan, mengesahkan, mencabut**; status monev |
 
+Ketiga grup didefinisikan di addon **`labfik_core`**, bukan `labfik_org`, karena `approval.mixin` (Core) memeriksa `labfik_kalab` dan modul lain juga memakainya. Grup yang hanya dipakai satu modul (mis. `labfik_dosen`, `labfik_asisten` di Praktikum) tinggal di modul itu (keputusan I-5, [kontrak-core.md](kontrak-core.md)).
+
 Grup ini tidak sama dengan aktor (Wazlawick §4.2). Wewenang **mengesahkan sebagai pejabat** diatur oleh `labfik.jabatan.wewenang`, bukan oleh grup. Karena itu Dekan tidak membutuhkan akun.
 
 ---
@@ -283,6 +288,8 @@ Versi sebelumnya ada di tag `rancangan-tatkel-v1` (DCD 1/3–3/3).
 | `mail.activity.mixin`, pengingat | Tidak dipakai | Prinsip "hitung, bukan jadwalkan" |
 | `labfik.plan` jenis strategis dan IKU | `labfik.renstra` terpisah (unggahan); IKU dihapus | Keputusan 14 Nov 2026 |
 | — | `labfik.org.monev` (layanan status monev), `labfik.tinjauan.manfaat`, `labfik.plan.gap` dirinci | Langkah 7–9 |
+
+**Penyesuaian dengan kontrak Core bersama (15 November 2026):** `labfik.ruang` + `kapasitas` (I-3); grup akses ditempatkan di `labfik_core` (I-5); catatan `syarat_kompetensi_ids` dari SDM (I-2) dan `tindakan` wewenang tetap dua pilihan (I-4). Diagram DCD-2 dan DCD-3 dibuat ulang.
 
 **Perubahan kontrak Core (keputusan Febriyan, 14 November 2026):** `labfik.controlled.mixin` dihapus dari daftar mixin Core; CLAUDE.md bagian 6 sudah diperbarui. Bila modul lain membutuhkannya, mixin itu bisa diusulkan kembali tanpa mengubah rancangan ini.
 
