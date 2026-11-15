@@ -25,12 +25,13 @@ hr, mail (Odoo 17 CE, LGPL-3)
    └── labfik_core     master bersama, perluasan hr, 4 mixin, approval.log, grup akses,
         │              mata kuliah, kelas, sesi
         ├── labfik_org         Tata Kelola (Febriyan)      depends: labfik_core
-        ├── labfik_praktikum   Praktikum (Herrens)         depends: labfik_core, survey
-        │     └── labfik_sdm   SDM & Kompetensi (Zahir)    depends: labfik_core, labfik_praktikum (I-7)
+        ├── labfik_sdm         SDM & Kompetensi (Zahir)    depends: labfik_core
+        │     └── labfik_praktikum   Praktikum (Herrens)   depends: labfik_core, labfik_sdm, survey (I-7)
         └── kelompok lain (aset, safety); modul jembatan bila butuh model labfik_org
 ```
 
-- Arah SDM → Praktikum (keputusan Febriyan, 15 November 2026, I-7): SDM mengolah penugasan asisten ke kelas dan sesi yang dihasilkan Praktikum, dan mencocokkannya dengan presensi petugas di Jurnal Sesi. Karena itu `labfik_praktikum` **tidak boleh** bergantung ke `labfik_sdm`, supaya tidak terjadi dependensi melingkar.
+- Arah Praktikum → SDM (keputusan Febriyan, 15 November 2026, I-7; sama dengan brief awal di pemetaan bersama). Urutan kerjanya memang Praktikum membangkitkan Sesi → SDM menugaskan petugas → Praktikum mengisi jurnal, tetapi itu **dependensi data**, bukan dependensi addon: Sesi dan Kelas ada di Core, jadi SDM menugaskan petugas cukup dengan merujuk `labfik.sesi`/`labfik.kelas` tanpa bergantung ke `labfik_praktikum`.
+- Satu-satunya titik yang menyentuh kedua modul adalah pencocokan petugas yang ditugaskan dengan petugas yang hadir. Pencocokan itu dilakukan **di Praktikum** saat jurnal diisi (PKG-18), karena Praktikum yang memakai datanya. Karena itu `labfik_praktikum` bergantung ke `labfik_sdm`, dan `labfik_sdm` **tidak boleh** bergantung ke `labfik_praktikum`, supaya tidak melingkar.
 
 - `labfik_core` hanya `depends: ['hr', 'mail']`. Tidak bergantung ke OpenEduCat (`op.session` tidak dipakai) dan tidak ke modul fungsional mana pun.
 - Dokumen Induk, Versi Dokumen, dan KPI ada di `labfik_org`, **bukan** Core. Modul lain yang butuh relasi ke model itu memakai modul jembatan (mis. `labfik_safety_org`) atau mengusulkan pemindahan ke Core.
@@ -290,7 +291,7 @@ Sistem hanya menunjukkan kriteria tertinggi yang **lengkap secara data**; skor a
 | Grup | Tempat | Alasan |
 |---|---|---|
 | `labfik_pengguna`, `labfik_laboran`, `labfik_kalab` | `labfik_core` | `approval.mixin` (Core) memeriksa `labfik_kalab`; ketiga modul memakai KaLab dan Laboran |
-| `labfik_dosen`, `labfik_asisten` (mewarisi `labfik_pengguna`) | `labfik_praktikum` | Hanya Praktikum yang punya aktor Dosen dan Asisten yang login (mengisi jurnal, menerbitkan modul), lengkap dengan *record rule* per kelas. Di SDM, asisten hanya **objek** yang dicatat (diseleksi, ditugaskan), bukan pengguna. Karena SDM bergantung ke Praktikum (I-7), SDM tetap bisa merujuk grup ini bila nanti perlu |
+| `labfik_dosen`, `labfik_asisten` (mewarisi `labfik_pengguna`) | `labfik_praktikum` | Hanya Praktikum yang punya aktor Dosen dan Asisten yang login (mengisi jurnal, menerbitkan modul), lengkap dengan *record rule* per kelas. Di SDM, asisten hanya **objek** yang dicatat (diseleksi, ditugaskan), bukan pengguna. SDM tidak bergantung ke Praktikum (I-7), jadi bila nanti SDM juga butuh grup ini, grupnya dipindah ke Core |
 
 Grup tetap tidak sama dengan jabatan: hak **mengesahkan** diatur `labfik.jabatan.wewenang`, bukan grup.
 
@@ -335,7 +336,7 @@ Keputusan Febriyan sebagai pemilik Core, 15 November 2026. Yang masih menunggu d
 | I-4 | Pilihan `tindakan` wewenang | Herrens menambah `menyetujui`, `menetapkan` | **Tidak diperluas.** Menyetujui/menetapkan = `mengesahkan`, sejalan dengan dihapusnya tahap pemeriksaan di Tata Kelola. Modul hanya menambah `jenis_dokumen` |
 | I-5 | Lokasi grup akses | Belum ditulis; Herrens menambah dosen dan asisten | **Tiga grup dasar di Core**; `labfik_dosen` dan `labfik_asisten` di `labfik_praktikum` (aturan di bagian G) |
 | I-6 | Masa berlaku perorangan | SDM tidak memakai `period.mixin` untuk Otorisasi, Bukti Kompetensi, Penugasan (K-3) | Sesuai; tidak mengubah Core |
-| I-7 | Arah dependensi Praktikum–SDM | Zahir: Praktikum → SDM; Herrens: Praktikum tanpa SDM | **SDM → Praktikum.** `labfik_sdm` depends `labfik_praktikum`; Praktikum tidak boleh bergantung ke SDM. Pencocokan penugasan dengan presensi dilakukan di SDM |
+| I-7 | Arah dependensi Praktikum–SDM | Zahir: Praktikum → SDM; Herrens: Praktikum tanpa SDM | **Praktikum → SDM** (brief awal). `labfik_praktikum` depends `labfik_sdm`; SDM hanya bergantung ke Core karena Sesi dan Kelas ada di Core. Pencocokan penugasan dengan presensi dilakukan di Praktikum saat jurnal diisi. Keputusan sebelumnya (SDM → Praktikum) dibatalkan |
 | I-8 | Petugas di Jurnal Sesi | Herrens menulis "personel" tanpa tipe | **Wajib `employee_id`: Many2one `hr.employee`** di baris presensi petugas, bukan teks |
 | I-9 | Pihak eksternal | Brief Praktikum menulis "masih terbuka" | **Sudah diputuskan:** bukan Personel dan bukan aktor (CLAUDE.md bagian 6) |
 
@@ -346,9 +347,9 @@ Keputusan Febriyan sebagai pemilik Core, 15 November 2026. Yang masih menunggu d
 | `herrens-skripsi` | `proses-bisnis-praktikum.md` + `activity-state-praktikum.drawio` (S1 Sesi), bagian 4.4 | Status Sesi menjadi 3 (I-1); Rencana/Terpublikasi/Ditunda/Diganti menjadi atribut hitung |
 | `herrens-skripsi` | `kebutuhan-praktikum.md` KF-PRK-45, 46 | Bukan transisi status lagi; cukup dicatat sebagai perilaku hitung (I-1) |
 | `herrens-skripsi` | `brief-praktikum.md` Kontrak Core bagian c | Wewenang memakai tindakan `mengesahkan` saja (I-4); hapus "pihak eksternal masih terbuka" (I-9); bagian d: nilai `state` (I-1) |
-| `herrens-skripsi` | `brief-praktikum.md` "Yang dipakai" baris Penugasan PKG-04; `analisis-data-proses-18.md` | Praktikum tidak memakai data SDM (I-7) |
+| `herrens-skripsi` | `brief-praktikum.md` "Yang dipakai" baris Penugasan PKG-04 dan "Dampak ke rencana addon"; `analisis-data-proses-18.md` | `labfik_praktikum` depends `labfik_sdm`; presensi petugas di jurnal dicocokkan dengan penugasan SDM (I-7) |
 | `herrens-skripsi` | `kebutuhan-praktikum.md` KF-PRK-23; `analisis-data-proses-18.md` Jurnal Sesi | Presensi petugas merujuk `hr.employee` (I-8) |
-| `zahir-skripsi` | `kontrak-core-sdm.md` K-5 (nilai `state`), bagian 4–5 (arah addon) | `state` {terjadwal, terlaksana, batal} sudah sesuai; ubah diagram dependensi menjadi `labfik_sdm` → `labfik_praktikum` (I-7) |
+| `zahir-skripsi` | `kontrak-core-sdm.md` K-5 (nilai `state`), bagian 4–5 (arah addon) | `state` {terjadwal, terlaksana, batal} dan arah addon (Praktikum → SDM) sudah sesuai; tidak ada perubahan (I-1, I-7) |
 | `zahir-skripsi` | `kontrak-core-sdm.md` KC-1, KC-3, KC-4, KC-5 | Terjawab oleh I-2, I-5, I-1, I-8 |
 | `febriyan-skripsi` | `design-class-tata-kelola.md` bagian 7 | Sebut bahwa tiga grup ada di `labfik_core` (I-5) |
 | `febriyan-skripsi` | `design_class.py` → `class-tata-kelola.drawio` (DCD-2, DCD-3), `design-class-tata-kelola.md` bagian 2.1 | `labfik.ruang` + `kapasitas: Integer` (I-3) |
