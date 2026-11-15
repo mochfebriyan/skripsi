@@ -2,7 +2,9 @@
 
 1 November 2026 · Febriyan · Menggantikan versi 26 Oktober 2026. Pembagian "Role 1–3" dan scope "8 indikator siklus mutu praktikum" di versi itu **sudah tidak berlaku**.
 
-Dokumen ini menjelaskan proyek secara keseluruhan. Brief dan analisis per modul disimpan di branch pemegangnya. Untuk Tata Kelola & Dokumen: [brief-tata-kelola-dokumen.md](https://github.com/mochfebriyan/skripsi/blob/febriyan-skripsi/projek-fiklab/brief/brief-tata-kelola-dokumen.md) di branch `febriyan-skripsi`.
+Dokumen ini menjelaskan proyek secara keseluruhan, dan lebih difokuskan pada analisis dan brief untuk kelompok Febriyan, Zahir, Herrens. Brief dan analisis per modul disimpan di branch pemegangnya. Untuk Tata Kelola & Dokumen: [brief-tata-kelola-dokumen.md](https://github.com/mochfebriyan/skripsi/blob/febriyan-skripsi/projek-fiklab/brief/brief-tata-kelola-dokumen.md) di branch `febriyan-skripsi`.
+
+Untuk kelompok Wisnu dan Patih, diharapkan bisa membangun brief projeknya sendiri, dengan konteks dan struktur yang diselaraskan dengan brief projek kelompok ini.
 
 ## Ringkasan
 
