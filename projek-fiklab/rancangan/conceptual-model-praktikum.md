@@ -47,7 +47,7 @@ Sumber: kamus DTO dan katalog operasi di [ssd-praktikum.md](ssd-praktikum.md) ba
 | **PemakaianLab** | Turunan Pengajuan | `keperluan`, `nama_pemohon`, `unit_pemohon`, `tanggal`, `jam`; `ruang` 1. Pemohon tanpa akun; `pengaju` = laboran yang mencatat |
 | **PerubahanSesi** | Turunan Pengajuan | `jenis` {pindah, daring, batal}, `alasan`; `sesi` 1 (sesi asal) |
 | **UsulanPengganti** | Bagian PerubahanSesi | `tanggal`, `jam`, `ruang`. Ada hanya untuk jenis pindah, jadi dipisah supaya PerubahanSesi tidak punya atribut opsional bergantung jenis (§11.2) |
-| **KeputusanPengajuan** | Kejadian | `tanggal_putus`, `hasil` {disetujui, ditolak}, `alasan`; peran `pemutus` (KaLab, AB-PRK-10) dan `sesi_pengganti` 0..1 |
+| **KeputusanPengajuan** | Kejadian | `tanggal_putus`, `hasil` {disetujui, ditolak}, `alasan`, `karena_bentrok` (KF-PRK-09); peran `pemutus` (KaLab, AB-PRK-10) dan `sesi_pengganti` 0..1 |
 | **Penarikan (O)** | Kejadian | `tanggal` (KF-PRK-47, AB-PRK-11) |
 | Interval&lt;T&gt; | «primitive» | `awal`, `akhir`, invarian `awal < akhir` |
 
@@ -65,7 +65,7 @@ Stub: Periode, Ruang, Personel (Core), DokumenDisahkan (Tata Kelola).
 | **ButirUtilitas** | Turunan butir | `kategori` {jaringan, listrik, proyektor_audio} |
 | **ButirStasiunKerja** | Turunan butir | `jumlah_berfungsi`, `/jumlah_dibutuhkan` (S2) |
 | **ButirSoftware** | Turunan butir | `lisensi_sah` (S3); `kebutuhan` 1 |
-| **ButirBahan** | Turunan butir | `jumlah_tersedia`, `kondisi_baik`, `berlabel`, `/jumlah_dibutuhkan` (PKG-17 B1–B2); `kebutuhan` 1 |
+| **ButirBahan** | Turunan butir | `jumlah_tersedia`, `kondisi_baik`, `berlabel`, `tanggal_kedaluwarsa` [0..1] (KF-PRK-19), `/jumlah_dibutuhkan` (PKG-17 B1–B2); `kebutuhan` 1 |
 | **SubstitusiBahan** | Kejadian | `alasan`, `/status_persetujuan`; `bahan_pengganti` 1 (B3) |
 | **PersetujuanSubstitusi** | Kejadian | `waktu`; `penyetuju` = dosen kelas (AB-PRK-16) |
 
@@ -118,7 +118,7 @@ Stub: Periode, Ruang, Personel (Core), DokumenDisahkan (Tata Kelola).
 | **PenetapanJadwal menurun dari DokumenDisahkan** Tata Kelola | Pengesahan jadwal memakai alur Tata Kelola (UC-01–05); tidak digambar ulang | §9.2.1 |
 | **PengaturanPraktikum sebagai «singleton»** tanpa asosiasi | Nilai ambang adalah variabel sistem yang dibaca atribut turunan (seperti `Sismob.assessment_term()` di Gambar 8–3), bukan informasi tentang konsep lain | §8.2.2, §8.3.2 |
 | **Status monev tidak menjadi konsep** | Hanya hasil hitung: `/memenuhi_pkg15…18` per Sesi, `/berbukti` per Kelas, `/lengkap` per baris nilai, `/kriteria_tertinggi` per Survei; persentase dihitung saat dibaca (`status_monev()`) | §8.2.3 |
-| **Rekaman konflik tidak menjadi konsep** | Mengikuti asumsi SSD bagian 7: laporan konflik dihitung dari data (penolakan pengajuan, Sesi yang diganti). **[ASUMSI; KONFIRMASI pembimbing]** (isu SSD bagian 8) | — |
+| **Rekaman konflik tidak menjadi konsep** | Laporan KF-PRK-11 disusun dari Keputusan ditolak dengan `karena_bentrok` (KF-PRK-09) dan PerubahanSesi yang disetujui. Bentrok yang ditolak saat impor tidak tersimpan karena Sesi belum dibuat **[ASUMSI; KONFIRMASI pembimbing]** | — |
 | **Koreksi rekaman tidak menjadi konsep** | Cukup dilacak sebagai riwayat perubahan (KNF-PRK-07), sama dengan Tata Kelola | — |
 | **Petugas yang ditugaskan dibaca dari SDM sebagai asosiasi turunan**, bukan penugasan per sesi | SDM menugaskan asisten per kelas dan laboran per ruang dengan rentang berlaku (KF-SDM-10, 12). Menyalin penugasan ke setiap Sesi akan menjadi asosiasi redundan (Gambar 8–16). Dosen dibaca dari Kelas.dosen, karena SDM tidak menugaskan dosen | §8.4.3 |
 | **Pola mingguan kelas tidak disimpan** | Hanya dipakai saat impor untuk membangkitkan 16 tanggal; setelah itu Sesi yang bertanggal adalah sumber kebenaran | — |
@@ -188,6 +188,7 @@ Setiap isi kamus DTO di [ssd-praktikum.md](ssd-praktikum.md) bagian 4 harus puny
 | 4 | `dto_kelas.dosen` tidak membedakan dosen koordinator dan dosen kelas, padahal kontrak Core C-8 punya keduanya dan AB-PRK-09 memakai keduanya | Model memakai dua peran. DTO cukup dibaca sebagai keduanya; tidak mengubah operasi |
 | 5 | Matriks CRUDL use case memakai nama "Rencana Pemakaian Lab"; SSD dan model memakai "PemakaianLab" | Nama baku: **Pemakaian Lab**. Matriks use case tidak diubah (hanya label); dicatat di sini |
 | 6 | Versi awal CM-3 menulis stub "PenugasanPetugas" sebagai penugasan **per sesi**. Rancangan SDM menugaskan asisten per kelas dan laboran per ruang dengan rentang berlaku (bagian 5.3) | **Dibetulkan:** stub BarisPenugasan + asosiasi turunan `/petugas_ditugaskan` di Sesi. Kesalahan sendiri, ditemukan lewat cek silang |
+| 8 | Saat menyusun DCD ditemukan dua isian KF Inti yang tidak tertangkap di CM versi pertama: penanda penolakan **karena bentrok** (KF-PRK-09, bahan laporan konflik KF-PRK-11) dan **tanggal kedaluwarsa** bahan (KF-PRK-19). Keduanya juga tidak ada di kamus DTO | Ditambahkan: `KeputusanPengajuan.karena_bentrok`, `ButirBahan.tanggal_kedaluwarsa [0..1]`. Kesalahan sendiri (langkah 8–9) |
 | 7 | Teks "petugas yang ditugaskan (dari SDM)" di `dto_konteks_jurnal` dan AB-PRK-20 tidak menyebut cara pencocokannya | Kini jelas: asisten lewat kelas sesi, laboran lewat ruang sesi, berlaku pada tanggal sesi. AB-PRK-20 tidak berubah bunyinya |
 
 Tidak ada nomor KF, UC, AB, atau operasi yang berubah.
@@ -236,7 +237,7 @@ Belum ada versi sebelumnya untuk modul ini.
 
 ## 8. Isu terbuka
 
-- [ ] Rekaman konflik (PKG-15 bukti 5) dihitung dari data, bukan konsep **[ASUMSI; KONFIRMASI pembimbing]** (lanjutan isu SSD)
+- [ ] Rekaman konflik (PKG-15 bukti 5) disusun dari penolakan `karena_bentrok` dan perubahan sesi; bentrok saat impor tidak tersimpan **[ASUMSI; KONFIRMASI pembimbing]**
 - [ ] Kontrak Core C-9 menyebut `is_terpublikasi`, `is_ditunda`, `is_terlewat` sebagai field hitung di `labfik.sesi`, dan bagian 5 menyebut *hook* `_setelah_disahkan()` "menandai Sesi terpublikasi". Keduanya perlu disesuaikan: field itu ditambahkan `labfik_praktikum` sebagai pemilik Sesi, dan *hook* tidak lagi diperlukan karena `is_terpublikasi` dihitung (DCD Tata Kelola pun tidak mengisi *hook* itu). Disampaikan ke Febriyan sebagai pemilik [kontrak-core.md](kontrak-core.md) **[KONFIRMASI Febriyan]**
 - [ ] Master Bahan (C-13) disetujui masuk Core; bila tidak, KebutuhanBahan kembali memakai teks **[KONFIRMASI kelompok]**
 - [ ] Aturan "Praktikum mengecek PC/alat lewat `labfik.alat`" di kontrak Core (temuan 5.2 no. 2) **[KONFIRMASI kelompok]**

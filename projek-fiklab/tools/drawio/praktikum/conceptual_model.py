@@ -129,7 +129,7 @@ p.stub("rng", "Ruang", ["master Core: kode, nama, kapasitas"], 400, 800, 240)
 p.stub("dd", "DokumenDisahkan", ["abstrak; status, pengesahan, riwayat:", "CM-1 Tata Kelola"], 820, 50, 260)
 p.cls("pj", "PenetapanJadwal", ["/tanggal_publikasi: Date", "/jumlah_sesi: Natural"], 820, 230, 260)
 p.cls("aju", "Pengajuan", ["tanggal_ajukan: Date", "/status: StatusPengajuan"], 1200, 470, 260, "abs")
-p.cls("kep", "KeputusanPengajuan", ["tanggal_putus: Date", "hasil: HasilKeputusan", "alasan: Text [0..1]"], 1560, 380, 240)
+p.cls("kep", "KeputusanPengajuan", ["tanggal_putus: Date", "hasil: HasilKeputusan", "alasan: Text [0..1]", "karena_bentrok: Boolean = false"], 1560, 380, 240)
 p.cls("tar", "Penarikan (O)", ["tanggal: Date"], 1560, 560, 240)
 p.cls("pml", "PemakaianLab", ["keperluan: Text", "nama_pemohon: String", "unit_pemohon: String", "tanggal: Date",
                               "jam: Interval&lt;Jam&gt;"], 820, 650, 260)
@@ -188,7 +188,7 @@ p.v("n3", "<b>Invarian</b><br>"
     "• UsulanPengganti ada ⇔ jenis = pindah; sesi_pengganti ada ⇔ disetujui ∧ pindah (AB-PRK-12).",
     NOTE, 1340, ny, 500, 160)
 p.v("n4", "<b>Pengaju</b> PemakaianLab = laboran yang mencatat; pemohon (tanpa akun) hanya nama dan unit. "
-    "<b>Rekaman konflik</b> (PKG-15 bukti 5) bukan konsep: dihitung dari data [ASUMSI, KONFIRMASI pembimbing]. "
+    "<b>Rekaman konflik</b> (PKG-15 bukti 5, KF-PRK-11) bukan konsep: laporan dari Keputusan ditolak karena_bentrok dan PerubahanSesi disetujui. "
     "Jam = jam dalam hari.", NOTE, 40, 1370, 640, 64)
 p.v("n5", SRC, NOTE, 700, 1405, 1140, 42)
 pages.append((p, 1880, 1470))
@@ -204,7 +204,7 @@ p.cls("bp", "ButirPemeriksaan", ["hasil: HasilButir", "keterangan: Text [0..1]"]
 p.cls("bu", "ButirUtilitas", ["kategori: KategoriUtilitas"], 40, 420, 190)
 p.cls("bsk", "ButirStasiunKerja", ["jumlah_berfungsi: Natural", "/jumlah_dibutuhkan: Natural"], 250, 420, 200)
 p.cls("bbh", "ButirBahan", ["jumlah_tersedia: Real", "kondisi_baik: Boolean", "berlabel: Boolean",
-                            "/jumlah_dibutuhkan: Real"], 470, 420, 230)
+                            "tanggal_kedaluwarsa: Date [0..1]", "/jumlah_dibutuhkan: Real"], 470, 420, 230)
 p.cls("bsw", "ButirSoftware", ["lisensi_sah: Boolean [0..1]"], 720, 420, 190)
 p.cls("sub", "SubstitusiBahan", ["alasan: Text", "/status_persetujuan: {menunggu,", "&nbsp;&nbsp;&nbsp;disetujui}"],
       470, 580, 230)
@@ -230,7 +230,7 @@ p.e("bsk-bp", "bsk", "bp", GEN, pts=[(350, 380), (452, 380)], exit=(0.5, 0), ent
 p.e("bbh-bp", "bbh", "bp", GEN, pts=[(585, 380), (522, 380)], exit=(0.5, 0), entry=(0.65, 1))
 p.e("bsw-bp", "bsw", "bp", GEN, pts=[(777, 380), (592, 380)], exit=(0.3, 0), entry=(0.9, 1))
 p.e("bsw-ksw", "bsw", "ksw", ASSOC, "*", "1 kebutuhan", exit=(0.5, 0), entry=(0.42, 1))
-p.e("bbh-kbh", "bbh", "kbh", ASSOC, "*", "1 kebutuhan", pts=[(1060, 499), (1060, 445)], exit=(1, 0.85), entry=(0, 0.5))
+p.e("bbh-kbh", "bbh", "kbh", ASSOC, "*", "1 kebutuhan", pts=[(1060, 513), (1060, 445)], exit=(1, 0.85), entry=(0, 0.5))
 p.e("bbh-sub", "bbh", "sub", COMP, "1", "0..1 substitusi", exit=(0.5, 1), entry=(0.5, 0))
 p.e("sub-pst", "sub", "pst", COMP, "1", "0..1 persetujuan", exit=(0.5, 1), entry=(0.5, 0))
 p.e("sub-bhn", "sub", "bhn", ASSOC, "*", "1 bahan_pengganti", pts=[(1520, 612)], exit=(1, 0.5), entry=(0.5, 1))

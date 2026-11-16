@@ -75,7 +75,7 @@ Katalog ini mencakup **semua** use case. Operasi untuk use case tanpa SSD dituru
 | `ajukan_perubahan(sesi, dto_perubahan, user_id)` | C | UC-PRK-14 | AB-PRK-12 | Sesi terbaca `is_ditunda` |
 | `dto_pengajuan_ringkas* = daftar_pengajuan(filter, user_id)` | Q | UC-PRK-08, 09, 15 | — | `filter` ∈ {`pemakaian_diajukan`, `perubahan_diajukan`, `pengajuan_saya`} |
 | `dto_rincian_pengajuan = rincian_pengajuan(pengajuan)` | Q | UC-PRK-07, 08, 09, 14, 15 | — | |
-| `putuskan_pengajuan(pengajuan, keputusan, alasan, dto_pengganti, user_id)` | C | UC-PRK-08, 15 | AB-PRK-01, 10, 12 | `dto_pengganti` hanya untuk perubahan berjenis pindah. Efek per jenis: pemakaian → jadwal terpadu; perubahan → Sesi `batal` + pengganti, atau moda daring |
+| `putuskan_pengajuan(pengajuan, keputusan, alasan, karena_bentrok, dto_pengganti, user_id)` | C | UC-PRK-08, 15 | AB-PRK-01, 10, 12 | `karena_bentrok` menandai penolakan yang menjadi rekaman konflik (KF-PRK-09; parameter ditambahkan 16 Nov 2026 di langkah 10). `dto_pengganti` hanya untuk perubahan berjenis pindah. Efek per jenis: pemakaian → jadwal terpadu; perubahan → Sesi `batal` + pengganti, atau moda daring |
 | `tarik_pengajuan(pengajuan, user_id)` | C | UC-PRK-09 (O) | AB-PRK-11 | |
 
 ### 3.4 Kesiapan (PKG-16, 17)
@@ -192,14 +192,14 @@ Notasi: `‹…›` = gabungan data, `*` = koleksi, `(O)` = hanya bila KF Peleng
 | `dto_perubahan` | ‹jenis_perubahan (pindah / daring / batal), alasan, usulan_pengganti: dto_waktu_ruang› |
 | `dto_pengganti` | `dto_waktu_ruang` untuk Sesi pengganti (boleh berbeda dari usulan) |
 | `dto_pengajuan_ringkas` | ‹pengajuan, jenis_pengajuan (pemakaian / perubahan), pengaju, tanggal_ajukan, ringkasan, status› |
-| `dto_rincian_pengajuan` | ‹dto_pengajuan_ringkas, sesi_asal: dto_sesi_ringkas, dto_pemakaian atau dto_perubahan, keputusan, alasan_tolak, pemutus, tanggal_putus, sesi_pengganti› |
+| `dto_rincian_pengajuan` | ‹dto_pengajuan_ringkas, sesi_asal: dto_sesi_ringkas, dto_pemakaian atau dto_perubahan, keputusan, alasan_tolak, karena_bentrok (KF-PRK-09, ditambahkan 16 Nov 2026), pemutus, tanggal_putus, sesi_pengganti› |
 
 ### 4.4 Kesiapan
 
 | DTO | Isi |
 |---|---|
 | `dto_form_kesiapan` | ‹sesi: dto_sesi_ringkas, jumlah_mahasiswa, butir*: ‹kategori (stasiun kerja / jaringan / listrik / proyektor / software / bahan), nama, versi_atau_jumlah_dibutuhkan, berbayar›› |
-| `dto_hasil_butir` | ‹butir, hasil (baik / diperbaiki / bermasalah), keterangan; stasiun kerja: jumlah_berfungsi; software berbayar: lisensi_sah; bahan: jumlah_tersedia, kondisi (baik / tidak), berlabel, bahan_pengganti (master Bahan Core), alasan_substitusi› |
+| `dto_hasil_butir` | ‹butir, hasil (baik / diperbaiki / bermasalah), keterangan; stasiun kerja: jumlah_berfungsi; software berbayar: lisensi_sah; bahan: jumlah_tersedia, kondisi (baik / tidak), berlabel, tanggal_kedaluwarsa (bila relevan, KF-PRK-19), bahan_pengganti (master Bahan Core), alasan_substitusi› |
 | `dto_pemeriksaan` | ‹sesi, pemeriksa, waktu_periksa, tepat_waktu, keputusan (siap / siap setelah perbaikan / tunda), butir*: dto_hasil_butir, substitusi_menunggu*› |
 | `dto_substitusi` | ‹butir, sesi, bahan, bahan_pengganti, alasan_substitusi, status_persetujuan› |
 
