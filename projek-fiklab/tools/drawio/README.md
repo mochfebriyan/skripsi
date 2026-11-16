@@ -1,6 +1,6 @@
 # Alat diagram draw.io
 
-Semua diagram rancangan TO-BE dibuat sebagai file `.drawio`. Diagram modul Tata Kelola dibuat lewat skrip Python di [contoh-tata-kelola/](contoh-tata-kelola/), bukan digambar tangan. Hasilnya: prefiks ID, warna, notasi, dan tata letak konsisten, serta diagram bisa dibuat ulang setelah isinya berubah.
+Semua diagram rancangan TO-BE dibuat sebagai file `.drawio`. Diagram modul Tata Kelola dibuat lewat skrip Python di [contoh-tata-kelola/](contoh-tata-kelola/), bukan digambar tangan. Hasilnya: prefiks ID, gaya, notasi, dan tata letak konsisten, serta diagram bisa dibuat ulang setelah isinya berubah.
 
 ## Isi folder
 
@@ -17,7 +17,7 @@ Semua diagram rancangan TO-BE dibuat sebagai file `.drawio`. Diagram modul Tata 
 
 1. Salin skrip contoh yang sesuai ke folder kerja sementara (bukan ke `contoh-tata-kelola/`).
 2. Ganti **data**-nya (daftar node, kelas, pesan, aktor) dengan isi modulmu. Fungsi gambar (`cls`, `n`, `e`, `msg`, `pkg`, …) tidak perlu diubah.
-3. Ganti **prefiks ID** (`tk-…`) dengan prefiks modulmu, dan **warna modul** sesuai tabel di `CLAUDE.md`.
+3. Ganti **prefiks ID** (`tk-…`) dengan prefiks modulmu. Gaya (polos hitam-putih, Times New Roman, catatan di halaman terakhir) **jangan diubah**; aturannya di `CLAUDE.md` bagian 5.
 4. Jalankan dengan argumen file keluaran:
    ```
    python3 -I skrip.py projek-fiklab/rancangan/<jenis>-<slug-modul>.drawio

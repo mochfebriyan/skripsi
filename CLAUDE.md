@@ -53,7 +53,7 @@ Contoh penerapan: bagian "Cakupan rancangan" di brief Tata Kelola (branch `febri
 | Safety Management (PKG-06, 09, 11) | Kelompok lain | — | `safety` | — | `saf-` | `KF-SAF-01`, … | `#FFF0F0` / `#B85450` |
 | Core (master bersama) | Bersama | `main` | `core` | `labfik_core` | `core-` | `KF-CORE-01`, … | `#F2F2F2` / `#666666` |
 
-- Warna diambil dari diagram bersama [pemetaan-package-instrumen.drawio](projek-fiklab/analisis/pemetaan-package-instrumen.drawio). Pakai warna modulmu untuk batas sistem, package, lajur, dan bingkai.
+- Warna diambil dari diagram bersama [pemetaan-package-instrumen.drawio](projek-fiklab/analisis/pemetaan-package-instrumen.drawio) dan **hanya dipakai di diagram bersama itu**. Diagram rancangan modul (activity, state machine, use case, SSD, conceptual model, design class) memakai gaya polos hitam-putih (bagian 5).
 - Prefiks ID wajib untuk **semua** elemen drawio, supaya diagram semua orang bisa digabung ke satu file drawio tanpa bentrok.
 - Modul Tata Kelola dikerjakan sebelum konvensi prefiks kode dibuat; kodenya tanpa prefiks. Modul lain **wajib** memakai prefiks agar tidak ada dua "UC-21" di dokumen gabungan.
 
@@ -191,28 +191,30 @@ Rancangan tidak boleh dimulai tanpa brief modul dan analisis setiap PKG-nya. Ked
 - Hanya shape **UML** (atau Archimate). Bukan BPMN, bukan flowchart bebas.
 - Nama halaman: `<Jenis> TO-BE (n-m) - <isi>`, misalnya `UC TO-BE (1-3) - Pengesahan Dokumen`.
 - **Semua** ID berawalan prefiks modul + jenis diagram, misalnya `sdm-uc1-…`, `sdm-act-a2-…`, `sdm-ssd3-…`, `sdm-cm2-…`, `sdm-dcd1-…`.
-- Setiap halaman punya: judul, **catatan legenda notasi** (kotak kuning `shape=note`, `#FFF2CC` / `#D6B656`), catatan sumber (dari dokumen mana, tanggal, nama penyusun), dan [KONFIRMASI] yang relevan.
+- **Gaya polos hitam-putih**, supaya diagram menyatu dengan naskah skripsi: semua kotak berisi putih dengan garis hitam, huruf Times New Roman, **tanpa warna isi dan tanpa warna garis**. Jenis elemen dibedakan lewat **stereotype** dan notasi UML (nama miring, bentuk panah), bukan warna. Garis putus-putus **hanya** dipakai bila notasi UML memintanya (*return* di SSD, «include»/«extend», *dependency*, field turunan `{compute}`).
+- **Halaman diagram hanya berisi diagram**, tanpa judul dan tanpa catatan, agar ringkas saat diekspor ke naskah (judul gambar ditulis sebagai keterangan gambar di naskah). Judul, **legenda notasi**, catatan sumber (dokumen asal, tanggal, penyusun), dan [KONFIRMASI] yang relevan dikumpulkan di **satu halaman catatan** di akhir file, bernama `Catatan <Jenis> TO-BE (bahan kerja)`. Catatan boleh berupa kotak kuning `shape=note` karena halaman itu tidak disisipkan ke naskah.
+- **Rapatkan tata letak**: node di lajur atau kolom berbeda yang berurutan diletakkan sebaris dengan panah mendatar; baris untuk keputusan, gabungan, awal, dan akhir dibuat lebih pendek. Usahakan satu diagram muat satu halaman A4 dengan huruf yang masih terbaca.
 - Buat diagram lewat **skrip Python** (contoh di [projek-fiklab/tools/drawio/](projek-fiklab/tools/drawio/)), lalu jalankan `validate.py` dengan prefiks modul. Laporkan ke pengguna bahwa tampilan visual belum dicek bila draw.io tidak tersedia.
 
 **Activity diagram**
-- Swimlane per aktor + lajur **Sistem**. Tugas: **«user»** (putih), **«service»** (abu-abu `#EEEEEE`, otomatis), **«manual»** (krem `#FFF8E7`, putus-putus, di luar sistem), **«call behavior»** (ungu, memanggil activity lain).
+- Swimlane per aktor + lajur **Sistem**. Tugas dibedakan hanya lewat stereotype: **«user»** (aktor memakai sistem), **«service»** (dikerjakan sistem otomatis), **«manual»** (di luar sistem), **«call behavior»** (memanggil activity lain, ditambah simbol garpu ⋔ di ujung nama tugas).
 - Nama tugas = kata kerja + objek domain, tanpa "dan/atau". Keputusan ◇ tanpa nama; kondisi `[guard]` di panah. Menunggu waktu ⧗ (`shape=collate`). Paralel = bar hitam.
 
 **State machine**
-- Transisi `event [guard] / efek`. Status akhir abu-abu. Transisi yang baru ditemukan lewat tabel status × transisi ditandai garis merah (`#9B2C44`) dan dicatat.
+- Transisi `event [guard] / efek`. Status akhir terlihat dari panahnya ke simpul akhir ◉. Transisi yang baru ditemukan lewat tabel status × transisi ditandai **\*** di akhir labelnya, dengan keterangan di bawah diagram, dan dicatat.
 
 **Use case**
-- Batas sistem bergaris warna modul; use case dikelompokkan dalam **package** (`shape=folder`). Label use case: stereotype (bila ada), kode tebal, nama.
-- Aktor abstrak bernama miring dengan generalisasi segitiga kosong; aktor «system» abu-abu.
+- Batas sistem bergaris hitam; use case dikelompokkan dalam **package** (`shape=folder`). Label use case: stereotype (bila ada), kode tebal, nama.
+- Aktor abstrak bernama miring dengan generalisasi segitiga kosong; aktor pemicu waktu ditandai «system» pada namanya.
 
 **System sequence diagram**
-- `shape=umlLifeline` dengan `participant=umlActor / umlBoundary / umlControl`. Event: panah penuh hitam; return: putus-putus; command/query: panah ungu kepala segitiga. Fragmen `shape=umlFrame` (`opt`, `ref`).
+- `shape=umlLifeline` dengan `participant=umlActor / umlBoundary / umlControl`. Event: panah hitam kepala terbuka; return: panah putus-putus; command/query: panah hitam kepala segitiga penuh. Fragmen `shape=umlFrame` (`opt`, `ref`).
 
 **Conceptual model**
-- Kelas tanpa kompartemen method. Asosiasi tanpa arah, label peran + multiplisitas di ujung. Komposisi belah ketupat hitam; generalisasi segitiga kosong; enumerasi «enumeration» abu-abu; kelas yang dirinci di halaman lain = kotak putus-putus.
+- Kelas tanpa kompartemen method. Asosiasi tanpa arah, label peran + multiplisitas di ujung. Komposisi belah ketupat hitam; generalisasi segitiga kosong; enumerasi ditandai «enumeration»; kelas yang dirinci di halaman lain diberi atribut *rincian: CM-n* (tanpa garis putus-putus).
 
 **Design class diagram**
-- Mixin «AbstractModel» ungu (`#E1D5E7` / `#9673A6`), nama miring. Model Odoo bawaan «Odoo» abu-abu; Core «Core» abu-abu putus-putus; model baru hasil desain bertepi merah.
+- Jenis kelas dibedakan hanya lewat stereotype: mixin **«AbstractModel»** dengan nama miring, model bawaan **«Odoo»**, master bersama **«Core»**. Model baru milik modul tanpa stereotype.
 - Header kelas: nama teknis, nama manusiawi + [M]/[T], dan `{inherit: …}` bila mewarisi mixin. Field warisan **tidak** ditulis ulang.
 - Asosiasi **berarah** (Many2one/Many2many) dengan label nama field + multiplisitas; komposisi = One2many + Many2one; turunan = garis putus-putus `{compute}`. Hanya model bawaan Odoo yang boleh ditulis sebagai atribut bertipe.
 - Method: `+` publik (`action_*`, `get_*`), `#` internal (`_cek_*`, `_compute_*`), `@model`, `«override»`, `{abstract}`, `{hook}`.
