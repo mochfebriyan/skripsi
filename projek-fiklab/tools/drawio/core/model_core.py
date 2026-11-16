@@ -4,7 +4,8 @@ Pemakaian:
     python3 -I projek-fiklab/tools/drawio/core/model_core.py projek-fiklab/rancangan/model-core.drawio
     python3 -I projek-fiklab/tools/drawio/validate.py projek-fiklab/rancangan/model-core.drawio core-
 
-Sumber isi: projek-fiklab/rancangan/kontrak-core.md (15 November 2026).
+Sumber isi: projek-fiklab/rancangan/kontrak-core.md (15 November 2026; master aset dari kelompok Aset & Safety
+digabung 16 November 2026).
 """
 import sys
 from xml.sax.saxutils import escape
@@ -96,15 +97,16 @@ ROWS = [
          ["+ kriteria_tertinggi: Integer {compute}"],
          ["+ get_kriteria(tanggal_acuan): dict", "# _compute_kriteria_tertinggi()",
           "# _cek_k1(tanggal) … _cek_k4(tanggal) {abstract}"]),
-        ("evi", "mixin", header("«AbstractModel»", "<i>labfik.evidence.mixin</i>", "Rekaman bukti kegiatan", "Tata Kelola",
+        ("evi", "mixin", header("«AbstractModel»", "<i>labfik.evidence.mixin</i>", "Rekaman bukti kegiatan & hasil uji", "Tata Kelola",
                                 "{tanpa _inherit}"),
          ["+ tanggal: Date", "+ pelapor_id: hr.employee", "+ bukti_ids: ir.attachment [*]", "+ keterangan: Text [0..1]"],
          ["+ action_koreksi(nilai, alasan)", "+ unlink() «override» (selalu ditolak)", "# _boleh_dikoreksi(): bool {hook}"]),
     ]),
     ("Baris 2 · Personel dan Jabatan: dua model bawaan Odoo diperluas, plus dua tabel anak Jabatan", [
-        ("emp", "odoo", header("«Odoo» diperluas [M]", "hr.employee", "Personel", "Tata Kelola",
+        ("emp", "odoo", header("«Odoo» diperluas [M]", "hr.employee", "Personel", "Tata Kelola & Aset",
                                "{extend: _inherit = 'hr.employee', tanpa _name baru}"),
          ["+ jenis_personel: Selection {dosen, laboran_plp,", I + "teknisi, asisten, petugas_k3}", "+ unit: Selection",
+          "+ aset_dikelola_ids: labfik.alat [*]", I + "(kebalikan alat.penanggung_jawab_id)",
           "<i>bawaan dipakai: name, job_id, user_id [0..1]</i>"],
          ["+ unlink() «override» (ditolak bila dirujuk)"]),
         ("job", "odoo", header("«Odoo» diperluas [M]", "hr.job", "Jabatan", "Tata Kelola",
@@ -121,12 +123,16 @@ ROWS = [
         ("wwn", "baru", header("«Core» model baru [M]", "labfik.jabatan.wewenang", "Wewenang Jabatan", "Tata Kelola",
                                "{_name baru; anak hr.job}"),
          ["+ jabatan_id: hr.job", "+ tindakan: Selection {menyusun, mengesahkan}",
-          "+ jenis_dokumen: Selection", I + "(modul lain menambah lewat selection_add)",
+          "+ jenis_dokumen: Selection {sop_ik, renstra,", I + "rencana_tahunan, rencana_pengembangan, sk_penetapan}",
+          I + "modul lain menambah lewat selection_add,", I + "mis. Aset: baso, usulan_disposal, program_pemeliharaan",
           "<i>unique(jabatan_id, tindakan, jenis_dokumen)</i>"], []),
     ]),
     ("Baris 3 · Master bersama: ruang, periode, mata kuliah, kelas", [
-        ("rng", "baru", header("«Core» model baru [M]", "labfik.ruang", "Ruang Lab", "Tata Kelola", "{_name baru}"),
-         ["+ kode: Char", "+ name: Char", "+ kapasitas: Integer"], []),
+        ("rng", "baru", header("«Core» model baru [M]", "labfik.ruang", "Ruang Lab", "Tata Kelola, Praktikum & Aset",
+                               "{_name baru}"),
+         ["+ kode: Char «unique»", "+ name: Char", "+ kapasitas: Integer (kursi mahasiswa)",
+          "+ penanggung_jawab_id: hr.employee [0..1]", "+ alat_ids: labfik.alat [*]",
+          "+ workstation_count: Integer {compute} (jumlah PC)"], []),
         ("per", "baru", header("«Core» model baru [M]", "labfik.periode", "Periode", "Tata Kelola", "{_name baru}"),
          ["+ name: Char", "+ jenis: Selection {semester, tahun_anggaran}", "+ tanggal_mulai: Date",
           "+ tanggal_selesai: Date"], []),
@@ -138,7 +144,35 @@ ROWS = [
           "+ jumlah_mahasiswa: Integer", "+ dosen_koordinator_id: hr.employee", "+ dosen_ids: hr.employee [*]",
           "<i>unique(mata_kuliah_id, periode_id, name)</i>", "<i>tipe field: [USULAN PENULIS]</i>"], []),
     ]),
-    ("Baris 4 · Transaksi Core: riwayat pengesahan dan sesi praktikum", [
+    ("Baris 4 · Master bersama domain aset dan fasilitas (usulan kelompok Aset & Safety, digabung 16 November 2026)", [
+        ("alt", "baru", header("«Core» model baru [M]", "labfik.alat", "Peralatan Lab (inventaris per unit)", "Aset (PKG-07)",
+                               "{_name baru}"),
+         ["+ kode_operasional: Char «unique» (QR unit)", "+ kode_bmn: Char [0..1]", "+ nup: Integer [0..1]", "+ name: Char",
+          "+ kategori_id: labfik.alat.kategori", "+ ruang_id: labfik.ruang",
+          "+ lokasi_simpan_id: labfik.lokasi.simpan [0..1]", "+ serial_number: Char [0..1]",
+          "+ kondisi: Selection {baik, rusak_ringan, rusak_berat}",
+          "+ status: Selection {tersedia, dipinjam, perbaikan, afkir}", "+ penanggung_jawab_id: hr.employee",
+          "+ is_perlu_kalibrasi: Boolean (awal dari kategori)", "+ tgl_terakhir_verifikasi: Date [0..1]"],
+         ["+ action_set_tersedia()", "+ action_set_perbaikan()", "+ check_ketersediaan_sesi(sesi): bool {hook}"]),
+        ("kat", "baru", header("«Core» model baru [M]", "labfik.alat.kategori", "Kategori Peralatan", "Aset (PKG-07/08)",
+                               "{_name baru}"),
+         ["+ kode: Char «unique»", "+ name: Char",
+          "+ jenis: Selection {hardware_pc, instrumen_ukur,", I + "jaringan, mesin_lab, multimedia}",
+          "+ rasio_per_mahasiswa: Float (standar PKG-08)", "+ interval_pemeliharaan_bulan: Integer",
+          "+ butuh_kalibrasi_internal: Boolean"], []),
+        ("lks", "baru", header("«Core» model baru [M]", "labfik.lokasi.simpan", "Sub-Lokasi Simpan (rak/meja)",
+                               "Aset & Safety", "{_name baru; anak labfik.ruang}"),
+         ["+ ruang_id: labfik.ruang (induk)", "+ kode: Char", "+ name: Char",
+          "+ jenis: Selection {meja_workstation, rak_penyimpanan,", I + "lemari_alat, lemari_b3, laci}",
+          "+ kapasitas_tampung: Integer", "+ keterangan: Text [0..1]", "<i>unique(ruang_id, kode)</i>"], []),
+        ("bhn", "baru", header("«Core» model baru [M]", "labfik.bahan", "Bahan Praktikum (habis pakai)",
+                               "Aset & Safety (PKG-07/11)", "{_name baru}"),
+         ["+ kode: Char «unique»", "+ name: Char", "+ satuan: Char (pcs, roll, box, ml)",
+          "+ jenis: Selection {elektronika, kabel_konektor,", I + "cairan_kimia, reagen, atki}",
+          "+ stok_minimum: Float", "+ lokasi_simpan_id: labfik.lokasi.simpan", "+ is_berbahaya_b3: Boolean (dipakai Safety)",
+          "<i>stok berjalan di addon Aset, bukan Core</i>"], []),
+    ]),
+    ("Baris 5 · Transaksi Core: riwayat pengesahan dan sesi praktikum", [
         ("log", "baru", header("«Core» model baru [T]", "labfik.approval.log", "Riwayat Pengesahan", "Tata Kelola",
                                "{_name baru; ditulis approval.mixin}"),
          ["+ res_model: Char", "+ res_id: Integer", "+ kejadian: Selection {diajukan, dikembalikan,",
@@ -196,7 +230,7 @@ LEG = ("<b>Notasi</b> (UML class diagram, Wazlawick 2024 §13.6)<br>"
        "<code>[0..1]</code> = boleh kosong.<br>"
        "• <code>+</code> publik, <code>#</code> internal. {abstract} = wajib diisi model turunan; {hook} = boleh diisi; "
        "«override» = mengganti method bawaan; {compute}/{related} = dihitung, tidak diisi pengguna.<br>"
-       "• [M] master, [T] transaksi. Sesi adalah satu-satunya transaksi bisnis di Core; Riwayat Pengesahan adalah log teknis milik approval.mixin.")
+       "• [M] master, [T] transaksi. Model aset (Baris 4) master saja; transaksinya di addon Aset/Safety. Sesi adalah satu-satunya transaksi bisnis di Core; Riwayat Pengesahan adalah log teknis milik approval.mixin.")
 USE = ("<b>Cara memakai Core</b><br>"
        "• Addon modul cukup <code>depends: ['labfik_core']</code>; <code>labfik_core</code> sendiri hanya <code>depends: ['hr', 'mail']</code>.<br>"
        "• Pakai, warisi, atau perluas dari addon modulmu; <b>jangan membuat versi sendiri</b> dan jangan mengubah Core. "
@@ -218,8 +252,17 @@ GRP = ("<b>Grup akses Core</b> (<code>res.groups</code>, data XML <code>labfik_c
        "• Aturan penempatan: grup masuk Core bila dirujuk kode Core atau dipakai lebih dari satu modul; "
        "selain itu di modul pemakainya. Contoh: <code>labfik_dosen</code>, <code>labfik_asisten</code> ada di "
        "<code>labfik_praktikum</code>, bukan Core.")
-SRC = ("<b>Sumber</b>: rancangan/kontrak-core.md (rangkuman branch febriyan-, herrens-, zahir-skripsi) · "
-       "15 November 2026 · disusun Febriyan<br>"
+ASET = ("<b>Aturan pakai bersama domain aset</b> [KONFIRMASI kelompok Aset & Safety]<br>"
+        "• Praktikum (PKG-15/18) mengecek ketersediaan PC/alat lewat <code>labfik.alat</code> di ruang terkait, tanpa tabel duplikat.<br>"
+        "• Safety (PKG-11/17) memakai <code>labfik.alat</code> untuk inspeksi K3 berkala (APAR, kelistrikan) dan "
+        "<code>labfik.lokasi.simpan</code> untuk lemari B3.<br>"
+        "• Hanya addon Aset yang mengubah <code>status</code> alat; modul lain hanya membaca.<br>"
+        "• <code>check_ketersediaan_sesi()</code> di Core hanya memeriksa <code>status</code> dan <code>ruang_id</code>; "
+        "addon Aset meng-<i>override</i>-nya untuk menambah cek peminjaman.<br>"
+        "• Kalibrasi internal oleh laboran; hasil uji dicatat lewat <code>evidence.mixin</code>.<br>"
+        "• Berita acara (BASO, usulan afkir) disahkan lewat <code>approval.mixin</code>.")
+SRC = ("<b>Sumber</b>: rancangan/kontrak-core.md (rangkuman branch febriyan-, herrens-, zahir-skripsi, ditambah usulan kelompok "
+       "Aset & Safety) · 15 November 2026, diperbarui 16 November 2026 · disusun Febriyan<br>"
        "Model rancangan Tata Kelola sudah final (DCD). Mata Kuliah, Kelas, dan Sesi dari Praktikum: nama field ditetapkan, "
        "tipe field <b>[USULAN PENULIS]</b> sampai DCD Praktikum.<br>"
        "<b>[KONFIRMASI kelompok]</b> penempatan semua model ini di <code>labfik_core</code>. "
@@ -227,16 +270,18 @@ SRC = ("<b>Sumber</b>: rancangan/kontrak-core.md (rangkuman branch febriyan-, he
 
 nw = (grid_w - 3 * GX) / 4
 nh = 360
-for k, (id, txt) in enumerate([("leg", LEG), ("use", USE), ("grp", GRP), ("src", SRC)]):
+for k, (id, txt) in enumerate([("leg", LEG), ("use", USE), ("grp", GRP), ("aset-aturan", ASET)]):
     v(id, txt, NOTE, X0 + k * (nw + GX), y, nw, nh)
-y += nh + 40
+y += nh + GY
+v("src", SRC, NOTE, X0, y, grid_w, 80)
+y += 80 + 40
 
-v("frame", "MODEL CORE · labfik_core (mixin, master, dan transaksi)", FRAME, X0 - 30, 20, grid_w + 60, y - 20)
+v("frame", "MODEL CORE · labfik_core (mixin, master, master aset, dan transaksi)", FRAME, X0 - 30, 20, grid_w + 60, y - 20)
 cells.insert(0, cells.pop())  # bingkai digambar paling belakang
 
 page_w, page_h = grid_w + 2 * X0 + 20, y + 40
 xml = ('<mxfile host="app.diagrams.net" type="device">'
-       f'<diagram id="{P}1" name="Model Core (1-1) - Mixin, Master, dan Transaksi"><mxGraphModel dx="1600" dy="900" grid="1" '
+       f'<diagram id="{P}1" name="Model Core (1-1) - Mixin, Master, Aset, dan Transaksi"><mxGraphModel dx="1600" dy="900" grid="1" '
        'gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" '
        f'pageWidth="{page_w:.0f}" pageHeight="{page_h:.0f}" math="0" shadow="0"><root><mxCell id="0"/>'
        '<mxCell id="1" parent="0"/>' + "".join(cells) + "</root></mxGraphModel></diagram></mxfile>")
