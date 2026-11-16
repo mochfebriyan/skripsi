@@ -4,7 +4,7 @@
 
 **Status: DRAF.** Langkah 5 alur rancangan TO-BE ([CLAUDE.md](../../CLAUDE.md) bagian 4). **Masuk proposal** Bab II 2.3 (activity diagram dan state machine diagram).
 
-Diagram: [activity-state-tata-kelola.drawio](activity-state-tata-kelola.drawio), 6 halaman (A1–A4, S1–S2). Dibuat dengan skrip [activity_state.py](../tools/drawio/contoh-tata-kelola/activity_state.py) dan lolos `validate.py` dengan prefiks `tk-`. **Tampilan visual belum dicek di draw.io**, karena draw.io tidak tersedia saat diagram dibuat.
+Diagram: [activity-state-tata-kelola.drawio](activity-state-tata-kelola.drawio), 6 halaman diagram (A1–A4, S1–S2) + 1 halaman catatan kerja. Gaya polos hitam-putih tanpa warna isi dan garis putus-putus; jenis tugas dibedakan lewat stereotype, catatan dipindah ke halaman terakhir agar diagram ringkas saat disisipkan ke naskah (keputusan Febriyan, 16 November 2026). Dibuat dengan skrip [activity_state.py](../tools/drawio/contoh-tata-kelola/activity_state.py) dan lolos `validate.py` dengan prefiks `tk-`. **Tampilan visual belum dicek di draw.io**, karena draw.io tidak tersedia saat diagram dibuat.
 
 Sumber: [kebutuhan-tata-kelola.md](kebutuhan-tata-kelola.md) (KF-01–45, aktor), [brief-tata-kelola-dokumen.md](../brief/brief-tata-kelola-dokumen.md) (cakupan Inti + Pelengkap, keputusan 13–14 November 2026), dan analisis PKG-01, 02, 03, 13.
 
@@ -189,7 +189,7 @@ Baris = status asal, kolom = status tujuan. Sel kosong ditanyakan: apakah ada ke
 | **Dicabut** | ✗ (8) | ✗ | ✗ | ✗ | — | ✗ |
 | **Kedaluwarsa** | ✗ (8) | ✗ | ✗ | ✗ | ✗ | — |
 
-Huruf tebal = transisi yang tidak ada di analisis mana pun dan ditemukan lewat tabel ini (garis merah di diagram). Ditambah *hapus draf* ke status akhir.
+Huruf tebal = transisi yang tidak ada di analisis mana pun dan ditemukan lewat tabel ini (ditandai * di diagram). Ditambah *hapus draf* ke status akhir.
 
 Jawaban untuk sel kosong:
 1. Draf tidak bisa langsung disahkan. Pengesahan harus lewat pengajuan agar kelengkapan dicek.

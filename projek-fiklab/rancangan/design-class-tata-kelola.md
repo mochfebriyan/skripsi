@@ -21,7 +21,7 @@ Sumber: [conceptual-model-tata-kelola.md](conceptual-model-tata-kelola.md) (CM-1
 | Perilaku bersama sebagai *mixin* `AbstractModel`; model turunan memakai `_inherit` | Arahan Pak Widi 13 Nov 2026; CLAUDE.md langkah 10 | Empat mixin di `labfik_core` |
 | Urutan baku yang tidak boleh terlewat ditulis sebagai **Template Method** dengan **hook** | CLAUDE.md bagian 8 ("override `action_sahkan()` langsung" adalah kesalahan) | `action_ajukan()` dan `action_sahkan()` |
 | Model bawaan diperluas, bukan disalin | Keputusan 14 Nov 2026 | `hr.employee`, `hr.job` dengan `_inherit` tanpa `_name` baru |
-| Notasi DCD proyek | CLAUDE.md bagian 5 | Mixin ungu, «Odoo» abu-abu, «Core» abu-abu putus-putus, model hasil desain bertepi merah, `+`/`#`, «override», {abstract}, {hook} |
+| Notasi DCD proyek | CLAUDE.md bagian 5 | Gaya polos hitam-putih; jenis kelas lewat stereotype: «AbstractModel» (nama miring), «Odoo», «Core», model baru tanpa stereotype, `+`/`#`, «override», {abstract}, {hook} |
 
 ---
 

@@ -16,7 +16,7 @@ Sumber: [expanded-use-case-tata-kelola.md](expanded-use-case-tata-kelola.md) (al
 |---|---|---|
 | Lifeline `:Aktor`, `:Antarmuka` (*boundary*), `:Kontroler` (*façade controller*). Aktor hanya berkomunikasi dengan antarmuka | §7.2, §7.4 | Semua SSD |
 | *System event* (aktor → antarmuka) dan *system return* (antarmuka → aktor) berupa informasi, bukan pemanggilan operasi | §7.3 | Panah hitam penuh dan putus-putus |
-| **Command** `op(args)` mengubah data dan tidak mengembalikan nilai; **query** `dto = op(args)` hanya membaca (CQS) | §7.1, §7.4 | Panah ungu; kolom "Jenis" di katalog |
+| **Command** `op(args)` mengubah data dan tidak mengembalikan nilai; **query** `dto = op(args)` hanya membaca (CQS) | §7.1, §7.4 | Panah hitam kepala segitiga penuh; kolom "Jenis" di katalog |
 | Data majemuk lebih dari tiga elemen ditulis sebagai `dto_x` dan didefinisikan di kamus; `*` = koleksi; *terpilih* = pilihan dari daftar | §7.3 | Bagian 4 |
 | **Stateless**: kontroler tidak mengingat apa pun di antara operasi; `user_id` dan rekaman terpilih dikirim ulang ke setiap operasi | §7.5 | Semua operasi yang butuh identitas pengguna |
 | Alur alternatif sebagai `opt «exception»` / `opt «variant»`; use case lain sebagai `ref` | §7.6 | Fragmen di setiap SSD |
