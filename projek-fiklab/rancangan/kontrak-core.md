@@ -1,6 +1,6 @@
 # Kontrak Core Bersama (`labfik_core`)
 
-15 November 2026 · Febriyan (rangkuman dari tiga branch) · Core, dipakai PKG-01–21
+15 November 2026, diperbarui 16 November 2026 · Febriyan (rangkuman dari tiga branch + usulan kelompok Aset & Safety) · Core, dipakai PKG-01–21
 
 **Status: DRAF.** Bahan kerja bersama, bukan bagian proposal. Dokumen ini merangkum **semua model dan mixin Core** yang sudah dirancang atau diusulkan di pekerjaan masing-masing, beserta model Odoo yang diperluas, atribut, dan method-nya. Tabel ringkas di [CLAUDE.md](../../CLAUDE.md) bagian 6 tetap berlaku sebagai ringkasan; rinciannya ada di sini.
 
@@ -11,10 +11,11 @@
 | `febriyan-skripsi` (`27f8956`) | Tata Kelola & Dokumen | [design-class-tata-kelola.md](https://github.com/mochfebriyan/skripsi/blob/febriyan-skripsi/projek-fiklab/rancangan/design-class-tata-kelola.md) bagian 2.1, 4, 6, 7; skrip `design_class.py` (DCD-1, DCD-2) | Perancang mixin, `hr.employee`/`hr.job`, `labfik.jabatan.*`, `labfik.ruang`, `labfik.periode`. Sudah sampai Langkah 10 (DCD) |
 | `herrens-skripsi` (`e0a8bee`) | Pelaksanaan Praktikum | `brief-praktikum.md` bagian "Kontrak Core (Langkah 3)" a–f; `proses-bisnis-praktikum.md` bagian 3.1 dan 4.4 | Perancang Mata Kuliah, Kelas, Sesi; usulan `kapasitas` ruang dan wewenang baru. Sudah sampai Langkah 5 |
 | `zahir-skripsi` (`5b04786`) | SDM & Kompetensi | `kontrak-core-sdm.md` (K-1–K-6, KC-1–KC-7) | Pemakai Core; perluasan `hr.job`, `hr.employee`, `jabatan.wewenang` dari `labfik_sdm`. Sudah sampai Langkah 3 |
+| Kelompok Aset & Safety (berkas, 16 November 2026) | Asset Management, Safety Management | `model-core.drawio` halaman "Model Core (Update) - Master Bersama & Aset", Baris 4 dan catatan "Aturan Pakai Bersama Domain Aset" | Usulan master aset ke Core, digabung ke diagram lewat skrip `tools/drawio/core/model_core.py`: `labfik.alat`, `labfik.alat.kategori`, `labfik.lokasi.simpan`, `labfik.bahan`; tambahan field di `hr.employee`, `labfik.ruang`, `labfik.jabatan.wewenang`. Tahap rancangan kelompok itu belum diketahui **[VALIDASI]** |
 
 `git fetch` tidak bisa dijalankan saat penyusunan, jadi yang dibaca adalah salinan branch terakhir di laptop penyusun. Perubahan yang di-*push* sesudahnya belum tercakup **[VALIDASI]**.
 
-**Tingkat kepastian atribut.** Hanya model rancangan Tata Kelola yang sudah melewati Langkah 10, sehingga tipe field-nya sudah final menurut rancangan. Model dari Praktikum (Mata Kuliah, Kelas, Sesi) baru sampai Langkah 3–5: nama field sudah ditetapkan pemiliknya, tetapi tipenya ditandai **[USULAN PENULIS]** dan baru ditetapkan di Langkah 10 Praktikum.
+**Tingkat kepastian atribut.** Hanya model rancangan Tata Kelola yang sudah melewati Langkah 10, sehingga tipe field-nya sudah final menurut rancangan. Model dari Praktikum (Mata Kuliah, Kelas, Sesi) baru sampai Langkah 3–5: nama field sudah ditetapkan pemiliknya, tetapi tipenya ditandai **[USULAN PENULIS]** dan baru ditetapkan di Langkah 10 Praktikum. Model aset (C-10–C-13) dan field tambahan dari kelompok Aset & Safety sudah **digabung** dengan isi Core yang ada (bagian 6, I-10–I-16); penempatannya di Core masih [KONFIRMASI kelompok].
 
 ---
 
@@ -23,7 +24,7 @@
 ```
 hr, mail (Odoo 17 CE, LGPL-3)
    └── labfik_core     master bersama, perluasan hr, 4 mixin, approval.log, grup akses,
-        │              mata kuliah, kelas, sesi
+        │              mata kuliah, kelas, sesi, master aset (alat, kategori, lokasi simpan, bahan)
         ├── labfik_org         Tata Kelola (Febriyan)      depends: labfik_core
         ├── labfik_sdm         SDM & Kompetensi (Zahir)    depends: labfik_core
         │     └── labfik_praktikum   Praktikum (Herrens)   depends: labfik_core, labfik_sdm, survey (I-7)
@@ -56,12 +57,17 @@ hr, mail (Odoo 17 CE, LGPL-3)
 | M-3 | `labfik.period.mixin` | AbstractModel | — | — | Febriyan | Final |
 | M-4 | `labfik.criteria.mixin` | AbstractModel | — | — | Febriyan | Final |
 | M-5 | `labfik.evidence.mixin` | AbstractModel | — | — | Febriyan | Final |
+| C-10 | `labfik.alat` | Model baru | [M] | — | Aset (PKG-07) | Digabung 16 November 2026 [KONFIRMASI kelompok] |
+| C-11 | `labfik.alat.kategori` | Model baru | [M] | — | Aset (PKG-07/08) | Digabung 16 November 2026 [KONFIRMASI kelompok] |
+| C-12 | `labfik.lokasi.simpan` | Model baru | [M] | — (anak `labfik.ruang`) | Aset & Safety | Digabung 16 November 2026 [KONFIRMASI kelompok] |
+| C-13 | `labfik.bahan` | Model baru | [M] | — | Aset & Safety (PKG-07/11) | Digabung 16 November 2026 [KONFIRMASI kelompok] |
 | G | Grup akses `labfik_pengguna` ⊂ `labfik_laboran` ⊂ `labfik_kalab` | `res.groups` | — | `labfik_pengguna` mewarisi `base.group_user` | Febriyan | Di `labfik_core` (I-5); grup dosen dan asisten di `labfik_praktikum` |
 
 **Tidak ada di Core:**
 - `labfik.controlled.mixin`: dihapus (keputusan Febriyan, 14 November 2026). Ketiga modul sudah mencatatnya sebagai tidak dipakai.
 - Mahasiswa: tercantum di pemetaan sebagai master Core, tetapi tidak dipakai modul mana pun. Praktikum mencatat praktikan hanya sebagai jumlah, atau NIM di baris nilai bila impor nilai dipakai (Pelengkap).
-- Lokasi Penyimpanan, Mitra Eksternal, Indikator Monev: usulan kelompok Aset/Safety di pemetaan, belum dirancang.
+- Mitra Eksternal, Indikator Monev: usulan kelompok Aset/Safety di pemetaan, belum dirancang. Lokasi Penyimpanan sudah diusulkan sebagai `labfik.lokasi.simpan` (C-12).
+- Transaksi aset (peminjaman, pemeliharaan, kalibrasi, afkir, stok bahan) tetap di addon Aset/Safety, bukan Core. Core hanya menyimpan masternya [ASUMSI].
 
 ---
 
@@ -77,6 +83,7 @@ Isinya: semua orang **internal FIK** yang punya peran di lab, yaitu dosen, labor
 |---|---|---|
 | `jenis_personel` | Selection {`dosen`, `laboran_plp`, `teknisi`, `asisten`, `petugas_k3`} | Ditambahkan Core |
 | `unit` | Selection | Ditambahkan Core |
+| `aset_dikelola_ids` | One2many `labfik.alat` | Kebalikan `labfik.alat.penanggung_jawab_id`. Usulan Aset (16 November 2026); tipe dibetulkan dari {related} (I-11) |
 | *`name`*, *`job_id`* → `hr.job`, *`user_id`* → `res.users` [0..1] | bawaan | Pejabat fakultas (mis. Dekan) = `hr.employee` **tanpa** `user_id` |
 | `unlink()` «override» | — | Ditolak bila masih dirujuk; arsip lewat `active` (AB-23) |
 
@@ -114,7 +121,7 @@ Data awal (*seed*, fiktif): Kepala Laboratorium, Laboran, Teknisi, **Asisten Pra
 |---|---|---|
 | `jabatan_id` | Many2one `hr.job` (induk) | |
 | `tindakan` | Selection {`menyusun`, `mengesahkan`} | Tetap dua pilihan. "Menyetujui" dan "menetapkan" di modul lain = `mengesahkan` (I-4) |
-| `jenis_dokumen` | Selection | Nilai dasar dari Tata Kelola: `sop_ik`, `renstra`, `rencana_tahunan`, `rencana_pengembangan`, `sk_penetapan`. Modul lain menambah lewat `selection_add` (bagian 4) |
+| `jenis_dokumen` | Selection | Nilai dasar dari Tata Kelola: `sop_ik`, `renstra`, `rencana_tahunan`, `rencana_pengembangan`, `sk_penetapan`. Modul lain menambah lewat `selection_add` (bagian 4), termasuk Aset: `baso`, `usulan_disposal`, `program_pemeliharaan` (I-10) |
 | — | `_sql_constraints` | unique(`jabatan_id`, `tindakan`, `jenis_dokumen`) |
 
 Wewenang **mengesahkan sebagai pejabat** diatur di sini, bukan oleh grup akses. Karena itu Dekan tidak butuh akun.
@@ -123,9 +130,12 @@ Wewenang **mengesahkan sebagai pejabat** diatur di sini, bukan oleh grup akses. 
 
 | Field | Tipe | Keterangan |
 |---|---|---|
-| `kode` | Char | |
+| `kode` | Char «unique» | «unique» ditambahkan di diagram 16 November 2026 |
 | `name` | Char | |
-| `kapasitas` | Integer | Usulan Herrens, **disetujui** Febriyan 15 November 2026 (I-3). Untuk cek kapasitas PKG-15 C3; juga dipakai PKG-08 (Aset) |
+| `kapasitas` | Integer | Jumlah kursi mahasiswa. Usulan Herrens, **disetujui** Febriyan 15 November 2026 (I-3). Untuk cek kapasitas PKG-15 C3; juga dipakai PKG-08 (Aset) |
+| `penanggung_jawab_id` | Many2one `hr.employee` [0..1] | Usulan Aset (16 November 2026) [KONFIRMASI kelompok] |
+| `alat_ids` | One2many `labfik.alat` | Kebalikan `labfik.alat.ruang_id`. Usulan Aset |
+| `workstation_count` | Integer {compute} | Jumlah PC. Usulan Aset; cara hitung ditetapkan Aset (I-12) |
 
 Isi awal yang diusulkan Herrens: 8 ruang (FIKLAB-201, 301–304, 401–403) **[VALIDASI]**.
 
@@ -199,6 +209,76 @@ Transisi KF-PRK-45 (jadwal dicabut → kembali Rencana) dan KF-PRK-46 (perubahan
 - Modul lain **tidak menambah field** ke `labfik.sesi`. Mereka membuat model sendiri yang merujuk `sesi_id`. SDM sudah menyatakan tidak menulis ke Mata Kuliah, Kelas, dan Sesi.
 - Sesi yang sudah punya jurnal atau penugasan tidak boleh dihapus; perubahan jadwal lewat Perubahan Sesi.
 
+### C-10 `labfik.alat` [M]
+
+Usulan kelompok Aset (PKG-07), 16 November 2026 [KONFIRMASI kelompok]. Satu baris = satu unit alat.
+
+| Field / method | Tipe | Keterangan |
+|---|---|---|
+| `kode_operasional` | Char «unique» | Kode QR per unit |
+| `kode_bmn` | Char [0..1] | Kode barang milik negara |
+| `nup` | Integer [0..1] | Nomor urut pendaftaran BMN |
+| `name` | Char | |
+| `kategori_id` | Many2one `labfik.alat.kategori` | |
+| `ruang_id` | Many2one `labfik.ruang` | |
+| `lokasi_simpan_id` | Many2one `labfik.lokasi.simpan` [0..1] | |
+| `serial_number` | Char [0..1] | |
+| `kondisi` | Selection {`baik`, `rusak_ringan`, `rusak_berat`} | |
+| `status` | Selection {`tersedia`, `dipinjam`, `perbaikan`, `afkir`} | Hanya addon Aset yang mengubah; modul lain membaca (I-13) |
+| `penanggung_jawab_id` | Many2one `hr.employee` | |
+| `is_perlu_kalibrasi` | Boolean | Nilai awal dari `kategori_id.butuh_kalibrasi_internal`, bisa diubah per unit (I-14) |
+| `tgl_terakhir_verifikasi` | Date [0..1] | |
+| `+ action_set_tersedia()`, `+ action_set_perbaikan()` | method | |
+| `+ check_ketersediaan_sesi(sesi): bool` | method {hook} | Dipakai Praktikum (PKG-15/18). Versi Core hanya memeriksa `status` dan `ruang_id`; addon Aset meng-*override* untuk menambah cek peminjaman, karena data peminjaman tidak terlihat dari Core (I-16) |
+
+### C-11 `labfik.alat.kategori` [M]
+
+Usulan kelompok Aset (PKG-07/08), 16 November 2026 [KONFIRMASI kelompok].
+
+| Field | Tipe | Keterangan |
+|---|---|---|
+| `kode` | Char «unique» | |
+| `name` | Char | |
+| `jenis` | Selection {`hardware_pc`, `instrumen_ukur`, `jaringan`, `mesin_lab`, `multimedia`} | |
+| `rasio_per_mahasiswa` | Float | Standar instrumen Monev PKG-08 |
+| `interval_pemeliharaan_bulan` | Integer | |
+| `butuh_kalibrasi_internal` | Boolean | Nilai awal untuk `labfik.alat.is_perlu_kalibrasi` (I-14) |
+
+### C-12 `labfik.lokasi.simpan` [M]
+
+Usulan kelompok Aset & Safety, 16 November 2026 [KONFIRMASI kelompok]. Sub-lokasi di dalam ruang (rak, meja, lemari).
+
+| Field | Tipe | Keterangan |
+|---|---|---|
+| `ruang_id` | Many2one `labfik.ruang` (induk) | |
+| `kode` | Char | |
+| `name` | Char | |
+| `jenis` | Selection {`meja_workstation`, `rak_penyimpanan`, `lemari_alat`, `lemari_b3`, `laci`} | `lemari_b3` dipakai Safety |
+| `kapasitas_tampung` | Integer | |
+| `keterangan` | Text [0..1] | |
+| — | `_sql_constraints` | unique(`ruang_id`, `kode`) |
+
+### C-13 `labfik.bahan` [M]
+
+Usulan kelompok Aset & Safety (PKG-07/11), 16 November 2026 [KONFIRMASI kelompok]. Bahan habis pakai.
+
+| Field | Tipe | Keterangan |
+|---|---|---|
+| `kode` | Char «unique» | |
+| `name` | Char | |
+| `satuan` | Char | pcs, roll, box, ml |
+| `jenis` | Selection {`elektronika`, `kabel_konektor`, `cairan_kimia`, `reagen`, `atki`} | |
+| `stok_minimum` | Float | Stok berjalan dan mutasi bahan di addon Aset/Safety (I-15) |
+| `lokasi_simpan_id` | Many2one `labfik.lokasi.simpan` | |
+| `is_berbahaya_b3` | Boolean | Penanda untuk Safety |
+
+**Aturan pakai bersama domain aset** (dari diagram, kelompok Aset & Safety, [KONFIRMASI kelompok]):
+- Praktikum (PKG-15/18) mengecek ketersediaan PC/alat lewat `labfik.alat` di ruang terkait, tanpa tabel duplikat.
+- Hanya addon Aset yang mengubah `labfik.alat.status` (I-13); `check_ketersediaan_sesi()` diperluas Aset (I-16).
+- Safety (PKG-11/17) memakai `labfik.alat` untuk inspeksi K3 berkala (APAR, kelistrikan) dan `labfik.lokasi.simpan` untuk lemari B3.
+- Kalibrasi alat dilakukan internal oleh laboran. Bukti hasil uji dicatat lewat `labfik.evidence.mixin`, tanpa vendor luar.
+- Pengesahan berita acara (BASO, usulan afkir) memakai `labfik.approval.mixin`, dengan wewenang di `labfik.jabatan.wewenang`.
+
 ### M-1 `labfik.approval.mixin` (AbstractModel, `_inherit = 'mail.thread'`)
 
 | Field | Tipe |
@@ -268,6 +348,8 @@ Sistem hanya menunjukkan kriteria tertinggi yang **lengkap secara data**; skor a
 
 ### M-5 `labfik.evidence.mixin` (AbstractModel)
 
+Dipakai juga untuk hasil uji/kalibrasi internal alat (usulan Aset, 16 November 2026).
+
 | Field / method | Tipe |
 |---|---|
 | `tanggal` | Date |
@@ -308,6 +390,8 @@ Grup tetap tidak sama dengan jabatan: hak **mengesahkan** diatur `labfik.jabatan
 | Praktikum | `labfik.jabatan.wewenang.jenis_dokumen` | `selection_add` (hanya `jenis_dokumen`; `tindakan` tidak diperluas) | Pasangan wewenang: (`mengesahkan`, `jadwal_praktikum`), (`mengesahkan`, `pemakaian_lab`), (`mengesahkan`, `perubahan_sesi`), (`mengesahkan`, `survei_kepuasan`) (I-4) |
 | Praktikum | `res.groups` | Data XML `labfik_praktikum` | `labfik_dosen`, `labfik_asisten` (I-5) |
 | Praktikum | `survey.survey` (Odoo) | `_inherit` + `labfik.criteria.mixin` | Paket survei kepuasan per periode (PKG-20) |
+| Aset | `labfik.jabatan.wewenang.jenis_dokumen` | `selection_add` | `baso`, `usulan_disposal`, `program_pemeliharaan` (I-10) |
+| Aset | `labfik.alat` | `_inherit` | *Override* `check_ketersediaan_sesi()` untuk menambah cek peminjaman (I-16) |
 
 ---
 
@@ -321,6 +405,8 @@ Grup tetap tidak sama dengan jabatan: hak **mengesahkan** diatur `labfik.jabatan
 | `evidence` | Rapat, Evaluasi Struktur, Distribusi, Sosialisasi, Tinjau Ulang, Realisasi, Tinjauan | Bukti Kompetensi, Kebutuhan Petugas, Seleksi, Asesmen, Evaluasi Otorisasi, Realisasi Pelatihan, Evaluasi Pelatihan | Pemeriksaan Kesiapan, Jurnal Sesi, Evaluasi Survei, RTL |
 
 Nama model SDM dan Praktikum masih sementara sampai Langkah 10 di modul masing-masing. Pola nama: `labfik.sdm.*`, `labfik.praktikum.*`.
+
+Kelompok Aset & Safety baru menyebut pemakaian `approval` (BASO, usulan afkir) dan `evidence` (hasil uji/kalibrasi, inspeksi K3). Nama model transaksinya belum ada di diagram [VALIDASI].
 
 ---
 
@@ -339,6 +425,13 @@ Keputusan Febriyan sebagai pemilik Core, 15 November 2026. Yang masih menunggu d
 | I-7 | Arah dependensi Praktikum–SDM | Zahir: Praktikum → SDM; Herrens: Praktikum tanpa SDM | **Praktikum → SDM** (brief awal). `labfik_praktikum` depends `labfik_sdm`; SDM hanya bergantung ke Core karena Sesi dan Kelas ada di Core. Pencocokan penugasan dengan presensi dilakukan di Praktikum saat jurnal diisi. Keputusan sebelumnya (SDM → Praktikum) dibatalkan |
 | I-8 | Petugas di Jurnal Sesi | Herrens menulis "personel" tanpa tipe | **Wajib `employee_id`: Many2one `hr.employee`** di baris presensi petugas, bukan teks |
 | I-9 | Pihak eksternal | Brief Praktikum menulis "masih terbuka" | **Sudah diputuskan:** bukan Personel dan bukan aktor (CLAUDE.md bagian 6) |
+| I-10 | Pilihan `jenis_dokumen` wewenang | Diagram Aset (16 November 2026) menulis daftar tertutup {`sop_ik`, `renstra`, `baso`, `usulan_disposal`, `program_pemeliharaan`}; nilai Tata Kelola lain, SDM, dan Praktikum hilang | **Digabung:** semua nilai berlaku. Nilai dasar Tata Kelola di Core; tiga nilai Aset ditambahkan lewat `selection_add` dari addon Aset, sama seperti SDM dan Praktikum |
+| I-11 | `hr.employee.aset_dikelola_ids` | Diagram menulis {related}; tidak ada jalur field dari `hr.employee` ke alat, jadi {related} tidak bisa jalan | **Dibetulkan:** One2many `labfik.alat`, kebalikan `penanggung_jawab_id`. Isinya sama dengan maksud Aset |
+| I-12 | `labfik.ruang.workstation_count` dan `kapasitas` | Dua angka kapasitas di ruang | **Digabung, keduanya dipakai:** `kapasitas` = kursi mahasiswa (Praktikum, PKG-15), `workstation_count` = jumlah PC {compute}. Rumus hitung ditetapkan Aset [KONFIRMASI Aset] |
+| I-13 | Pengubah `labfik.alat.status` | Belum ditulis | **Ditambahkan aturan:** hanya addon Aset yang mengubah `status`; modul lain hanya membaca (pola sama dengan `labfik.sesi.state`) |
+| I-14 | Penanda kalibrasi ganda | `labfik.alat.is_perlu_kalibrasi` dan `labfik.alat.kategori.butuh_kalibrasi_internal` | **Digabung, keduanya dipakai:** nilai kategori menjadi nilai awal, bisa diubah per unit |
+| I-15 | Stok bahan | Ada `stok_minimum`, tanpa stok berjalan | **Digabung:** `stok_minimum` di Core; stok berjalan dan mutasi bahan di addon Aset/Safety |
+| I-16 | `labfik.alat.check_ketersediaan_sesi()` di Core | Data peminjaman nanti ada di addon Aset, yang bergantung ke Core; Core tidak bisa membacanya | **Dibetulkan:** versi Core hanya memeriksa `status` dan `ruang_id` {hook}; addon Aset meng-*override* lewat `_inherit` untuk menambah cek peminjaman |
 
 ### 6.1 Perubahan yang perlu dilakukan di tiap branch
 
@@ -364,3 +457,5 @@ Keputusan Febriyan sebagai pemilik Core, 15 November 2026. Yang masih menunggu d
 | 2 | Siapa yang menulis kode `labfik_core` saat implementasi, dan di branch mana? | Kelompok |
 | 3 | Dokumen Induk (PKG-09) dan KPI (PKG-21) dipakai kelompok Safety/Aset? Bila ya, modul jembatan atau pindah ke Core | Kelompok lain |
 | 4 | Isi awal ruang (8 ruang) dan nilai `unit`/`prodi` sesuai kondisi FIK? | KaLab **[VALIDASI]** |
+| 5 | Master aset (C-10–C-13) disetujui masuk `labfik_core`, dan hasil penggabungan I-10–I-16 diterima? Rumus `workstation_count` (I-12) | Kelompok Aset & Safety |
+| 6 | Nama addon Aset dan Safety, serta model transaksinya (peminjaman, pemeliharaan, kalibrasi, inspeksi K3) | Kelompok Aset & Safety |
