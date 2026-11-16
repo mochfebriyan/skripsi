@@ -31,11 +31,11 @@ Kode AB-PRK dipakai oleh eksepsi di bagian 3–5. **Lapis**: W = Inti, O = Pelen
 
 | AB | Aturan | Sumber | UC | Lapis |
 |---|---|---|---|---|
-| AB-PRK-01 | **Tidak boleh bentrok:** dua Sesi berstatus `terjadwal`, atau Sesi dan pemakaian lab berstatus Disetujui, tidak boleh memakai ruang yang sama pada waktu yang tumpang tindih | PKG-15 C2; KF-PRK-04 | UC-PRK-03, 07, 08, 15 | W |
+| AB-PRK-01 | **Tidak boleh bentrok:** dua Sesi berstatus `terjadwal` bermoda **luring**, atau Sesi seperti itu dan pemakaian lab berstatus Disetujui, tidak boleh memakai ruang yang sama pada waktu yang tumpang tindih. Sesi daring tidak memakai ruang (diperjelas saat audit 16 Nov 2026) | PKG-15 C2; KF-PRK-04 | UC-PRK-03, 07, 08, 15 | W |
 | AB-PRK-02 | **Satu Sesi asli per (kelas, pertemuan ke-).** Setiap kelas dibangkitkan 16 pertemuan dari pola mingguan; pertemuan 8 berjenis UTS, 16 berjenis UAS, sisanya praktikum | Kontrak Core C-9; keterangan Herrens 14 Nov 2026 | UC-PRK-03 | W |
 | AB-PRK-03 | **Kapasitas:** bila jumlah mahasiswa kelas > kapasitas ruang, sistem memperingatkan; Sesi tetap tersimpan tetapi tidak memenuhi C3 | PKG-15 C3; KF-PRK-05 | UC-PRK-03, 26 | W |
-| AB-PRK-04 | Sesi suatu kelas hanya dapat **diganti lewat impor ulang** selama Penetapan Jadwal periode itu belum disahkan dan Sesi belum punya jurnal; setelah itu perubahan hanya lewat Perubahan Sesi | Kontrak Core C-9 (aturan pakai bersama); S1 *hapus* | UC-PRK-03 | W |
-| AB-PRK-05 | **Satu Penetapan Jadwal per periode.** Dapat diajukan hanya bila setiap kelas periode itu punya Sesi. Pengesahan memakai wewenang (`mengesahkan`, `jadwal_praktikum`) dan berkas bertanda tangan (AB-04, AB-05 Tata Kelola) | PKG-15 C1; kontrak Core I-4 | UC-PRK-04 + UC-01–05 Tata Kelola | W |
+| AB-PRK-04 | **Impor jadwal** suatu periode (termasuk kelas baru) hanya dapat dilakukan selama periode itu **tidak** punya Penetapan Jadwal berstatus Diajukan atau Disahkan; Sesi kelas yang sudah punya jurnal tidak diganti. Di luar itu, perubahan hanya lewat Perubahan Sesi. Dengan begitu setiap Sesi asli yang terbaca terpublikasi pasti tercantum di jadwal yang ditandatangani (diperketat saat audit 16 Nov 2026) | Kontrak Core C-9 (aturan pakai bersama); S1 *hapus*; PKG-15 C1; AB-01 Tata Kelola (isi dokumen hanya berubah saat Draf) | UC-PRK-03 | W |
+| AB-PRK-05 | **Satu Penetapan Jadwal aktif per periode:** paling banyak satu yang berstatus Draf, Diajukan, atau Disahkan; yang Dicabut tidak dihitung, sehingga jadwal yang dicabut dapat disusun ulang (diperjelas saat audit 16 Nov 2026). Dapat diajukan hanya bila setiap kelas periode itu punya Sesi. Pengesahan memakai wewenang (`mengesahkan`, `jadwal_praktikum`) dan berkas bertanda tangan (AB-04, AB-05 Tata Kelola) | PKG-15 C1; kontrak Core I-4; KF-PRK-45 | UC-PRK-04 + UC-01–06 Tata Kelola | W |
 | AB-PRK-06 | `is_terpublikasi` Sesi = Penetapan Jadwal periodenya berstatus Disahkan; **tanggal publikasi** = tanggal sah. Bila jadwal dicabut, Sesi terbaca belum terpublikasi | PKG-15 C1, bukti 4; KF-PRK-06, 45 | (hitung) | W |
 
 ### 2.2 Versi Modul (PKG-15, dipakai 16, 17, 19)
@@ -59,7 +59,7 @@ Kode AB-PRK dipakai oleh eksepsi di bagian 3–5. **Lapis**: W = Inti, O = Pelen
 | AB | Aturan | Sumber | UC | Lapis |
 |---|---|---|---|---|
 | AB-PRK-13 | **Satu Pemeriksaan Kesiapan per Sesi**, untuk Sesi yang terpublikasi. Pemeriksaan yang waktu periksanya ≥ jam mulai Sesi tetap tersimpan tetapi tidak memenuhi S1 | PKG-16 S1 | UC-PRK-11 | W |
-| AB-PRK-14 | Butir *software* dan bahan dibentuk dari **Versi Modul berlaku** pada tanggal Sesi; butir kategori tetap (PC, jaringan, listrik, proyektor) selalu ada. *Software* berbayar wajib bertanda **lisensi sah** agar butirnya berhasil baik | PKG-16 S2–S3; PKG-17 B1 | UC-PRK-11 | W |
+| AB-PRK-14 | Butir *software* dan bahan dibentuk dari **Versi Modul berlaku** pada tanggal Sesi; butir kategori tetap (PC, jaringan, listrik, proyektor) selalu ada. *Software* berbayar wajib bertanda **lisensi sah** agar butirnya berhasil baik. Data master Alat (Core C-10) di ruang Sesi **hanya dibaca** lewat `check_ketersediaan_sesi()`: menjadi peringatan dan isian awal, bukan hasil butir; hasil tetap ditetapkan laboran, dan Praktikum tidak mengubah status alat (kontrak Core I-13). Bagian Alat ini lapis Pelengkap (KF-PRK-52) | PKG-16 S2–S3; PKG-17 B1 | UC-PRK-11 | W (bagian Alat: O) |
 | AB-PRK-15 | Keputusan **siap** hanya bila tidak ada butir *bermasalah*; butir yang sudah diperbaiki sebelum sesi menghasilkan *siap setelah perbaikan*; selain itu keputusan **tunda** | PKG-16 S4 | UC-PRK-11 | W |
 | AB-PRK-16 | **Substitusi bahan** wajib mencatat bahan pengganti dan alasan, dan baru sah setelah **disetujui dosen kelas** Sesi itu | PKG-17 B3 | UC-PRK-11, 12 | W |
 
@@ -110,7 +110,7 @@ Semua use case selain «CRUDL» dan «report». Tanda ★ = alurnya dirinci di b
 | UC | Tujuan | Aktor | Prakondisi | Pascakondisi sukses | Eksepsi |
 |---|---|---|---|---|---|
 | UC-PRK-03 ★ Impor Jadwal Kelas | Membangkitkan Sesi bertanggal semua kelas satu periode dari berkas jadwal fakultas | Laboran | Periode, Ruang Lab, dan Personel dosen terdaftar | Mata Kuliah dan Kelas yang belum ada tercatat; 16 Sesi `terjadwal` per kelas; peringatan kapasitas tercatat | AB-PRK-01, 02, 03, 04 |
-| UC-PRK-04 Susun Penetapan Jadwal | Menyiapkan dokumen jadwal periode untuk disahkan | Laboran | Ada Sesi untuk periode itu | Penetapan Jadwal berstatus Draf dengan daftar Sesi; selanjutnya diajukan dan disahkan lewat use case Tata Kelola | AB-PRK-05 |
+| UC-PRK-04 Susun Penetapan Jadwal | Menyiapkan dokumen jadwal periode untuk disahkan | Laboran | Ada Sesi untuk periode itu | Penetapan Jadwal berstatus Draf dengan daftar Sesi; selanjutnya diajukan dan disahkan lewat use case Tata Kelola | AB-PRK-05 (sudah ada penetapan aktif untuk periode itu) |
 | UC-PRK-05 Terbitkan Versi Modul | Menyediakan modul berlaku sebelum sesi | Dosen | Dosen mengampu MK itu di periode tersebut | Versi baru berlaku; versi lama Diganti | AB-PRK-07, 08, 09 |
 | UC-PRK-06 Baca Modul Berlaku | Membaca modul yang berlaku untuk MK yang diampu atau diasistensi | Petugas Praktikum | — | Tidak ada perubahan data | — |
 | UC-PRK-07 Ajukan Pemakaian Lab | Mencatat permintaan pemakaian ruang di luar praktikum | Laboran | — | Pengajuan berstatus Diajukan; KaLab diberi tahu (O) | AB-PRK-01 |
@@ -149,8 +149,8 @@ Dipilih karena mengubah status, membangkitkan data, atau memuat banyak aturan. M
 - **V1 Tanpa berkas (jalan pengganti).** V1.1 Laboran menyerahkan satu kelas beserta pola mingguannya (hari, jam mulai, jam selesai, ruang) dan tanggal pertemuan pertama. V1.2 Kembali ke langkah 2.
 
 **Eksepsi**
-- **E1 Bentrok ruang (AB-PRK-01).** E1.1 Sistem menampilkan pasangan yang bentrok (kelas, tanggal, jam, ruang) sebagai rekaman konflik. E1.2 Use case gagal untuk kelas yang bentrok; laboran menyampaikan bentrok ke fakultas (di luar sistem).
-- **E2 Kelas sudah punya Sesi dan jadwal periode sudah disahkan, atau Sesi sudah punya jurnal (AB-PRK-04).** E2.1 Sistem menampilkan kelas yang terkunci. E2.2 Kelas itu dilewati; perubahan lewat UC-PRK-14.
+- **E1 Bentrok ruang (AB-PRK-01).** E1.1 Sistem menampilkan pasangan yang bentrok (kelas, tanggal, jam, ruang); karena Sesinya tidak dibangkitkan, bentrok ini tidak tersimpan sebagai rekaman konflik **[ASUMSI; KONFIRMASI pembimbing]**. E1.2 Use case gagal untuk kelas yang bentrok; laboran menyampaikan bentrok ke fakultas (di luar sistem).
+- **E2 Jadwal periode sudah diajukan atau disahkan, atau Sesi kelas sudah punya jurnal (AB-PRK-04).** E2.1 Sistem menampilkan kelas yang terkunci. E2.2 Kelas itu dilewati; perubahan Sesi yang ada lewat UC-PRK-14. Kelas baru setelah jadwal disahkan menunggu jadwal dicabut lalu disusun ulang (UC-06 Tata Kelola, UC-PRK-04).
 - **E3 Baris tidak valid** (ruang atau dosen tidak dikenal, jam selesai ≤ jam mulai). E3.1 Sistem menampilkan baris dan kolom bermasalah. E3.2 Kembali ke langkah 1.
 
 Catatan: peringatan kapasitas (AB-PRK-03) tidak menggagalkan impor.
@@ -161,7 +161,7 @@ Catatan: peringatan kapasitas (AB-PRK-03) tidak menggagalkan impor.
 1. Laboran meminta daftar Sesi hari ini.
 2. Sistem menampilkan daftar Sesi terpublikasi hari ini: MK, kelas, jam mulai, ruang, dan ada tidaknya pemeriksaan.
 3. Laboran memilih satu Sesi.
-4. Sistem menampilkan butir pemeriksaan: kategori tetap (PC/stasiun kerja, jaringan, listrik, proyektor/audio), *software* dan bahan dari Versi Modul berlaku (nama, versi atau jumlah dibutuhkan), serta jumlah mahasiswa kelas. [E1]
+4. Sistem menampilkan butir pemeriksaan: kategori tetap (PC/stasiun kerja, jaringan, listrik, proyektor/audio), *software* dan bahan dari Versi Modul berlaku (nama, versi atau jumlah dibutuhkan), serta jumlah mahasiswa kelas. Bila master Alat ruang sudah terisi (O, KF-PRK-52), butir kategori juga menampilkan alat yang tidak tersedia (perbaikan / dipinjam / afkir) dan jumlah PC tersedia sebagai isian awal jumlah stasiun kerja berfungsi. [E1]
 5. Laboran menyerahkan hasil setiap butir (baik / diperbaiki sebelum sesi / bermasalah, keterangan), jumlah stasiun kerja berfungsi, tanda lisensi sah untuk *software* berbayar, dan untuk bahan: jumlah tersedia, kondisi, berlabel. [V1]
 6. Sistem menampilkan keputusan yang dapat dipilih sesuai hasil butir. 
 7. Laboran menyerahkan keputusan (siap / siap setelah perbaikan / tunda). [E2, E3]
@@ -194,7 +194,7 @@ Catatan: bila keputusan *tunda*, laboran melanjutkan dengan UC-PRK-14 (use case 
 - **V1 Simpan sebagai draf.** V1.1 Petugas Praktikum menyimpan isian. V1.2 Sistem menampilkan jurnal berstatus draf. V1.3 Use case berhasil; dapat dilanjutkan kemudian dari langkah 5.
 
 **Eksepsi**
-- **E1 Sesi belum terpublikasi, belum berlangsung, atau sudah punya jurnal terkirim (AB-PRK-17).** E1.1 Sistem menampilkan alasannya. E1.2 Use case gagal.
+- **E1 Sesi tidak `terjadwal` (mis. batal), belum terpublikasi, belum berlangsung, atau sudah punya jurnal terkirim (AB-PRK-17).** E1.1 Sistem menampilkan alasannya. E1.2 Use case gagal.
 - **E2 Jam selesai ≤ jam mulai (AB-PRK-18).** E2.1 Sistem menampilkan jam yang bermasalah. E2.2 Kembali ke langkah 5.
 - **E3 Isian wajib belum lengkap (AB-PRK-19):** presensi dosen atau laboran, jumlah hadir, Versi Modul, *log book*, atau presensi asisten pada Sesi berasisten. E3.1 Sistem menampilkan bagian yang kurang. E3.2 Kembali ke langkah 5.
 
@@ -258,7 +258,7 @@ Catatan: bila keputusan *tunda*, laboran melanjutkan dengan UC-PRK-14 (use case 
 
 | UC | Filter | Isi | Aturan |
 |---|---|---|---|
-| UC-PRK-10 Lihat Laporan Jadwal | Periode, ruang, minggu | Jadwal terpadu per ruang (Sesi + pemakaian disetujui); rekaman konflik (bentrok terdeteksi saat impor atau pengajuan, penolakan beralasan bentrok) | AB-PRK-01 |
+| UC-PRK-10 Lihat Laporan Jadwal | Periode, ruang, minggu | Jadwal terpadu per ruang (Sesi + pemakaian disetujui); rekaman konflik (pemakaian ditolak beralasan bentrok dan Sesi yang diganti; bentrok saat impor atau pencatatan hanya ditampilkan, tidak disimpan) | AB-PRK-01 |
 | UC-PRK-16 Lihat Laporan Pelaksanaan (O) | Periode, kelas, ruang | Rekap kesiapan per ruang (butir bermasalah per kategori, keputusan tunda); rekap keterlaksanaan per kelas (rencana, terlaksana, memenuhi) | AB-PRK-13–22 |
 | UC-PRK-25 Lihat Laporan Survei | Survei, periode | Responden, *response rate*, rerata per aspek dan butir, jawaban terbuka, perbandingan antarperiode per aspek, RTL dan efektivitasnya | AB-PRK-29, 30 |
 | UC-PRK-26 Lihat Status Monev Praktikum | Periode, tanggal acuan | PKG-15–18: persentase, skor, daftar unit tidak memenuhi dan cek yang gagal. PKG-19: kelas berbukti; per praktikan bila diimpor. PKG-20: kriteria tertinggi K1–K4 dan tautan bukti | AB-PRK-32, 33, 34 |
@@ -295,6 +295,7 @@ Setiap AB-PRK dirujuk minimal satu use case (kolom UC di bagian 2). AB-PRK-06 da
 | Batas lulus PKG-19 belum ada di pengaturan (KF-PRK-43 hanya menyebut ambang durasi, batas hari, sesi daring) | Ditambahkan ke isi UC-PRK-28; KF-PRK-43 sudah diperbarui |
 | Jurnal Sesi butuh jumlah mahasiswa dan petugas yang ditugaskan untuk ditampilkan | Sudah tersedia lewat Kelas (Core) dan SDM (kontrak Core I-7) |
 | UC-PRK-04 butuh syarat "setiap kelas punya Sesi" sebelum diajukan | Dicatat sebagai AB-PRK-05; mengisi *hook* kelengkapan `approval.mixin` di langkah 10 |
+| **Audit 16 Nov 2026.** (a) Setelah Penetapan Jadwal dicabut (KF-PRK-45), "satu per periode" memblokir penyusunan ulang: jalan buntu. (b) Kelas baru masih bisa diimpor setelah jadwal disahkan, sehingga Sesinya terbaca terpublikasi tanpa ada di jadwal bertanda tangan (PKG-15 C1). (c) Sesi daring ikut dihitung bentrok padahal tidak memakai ruang | AB-PRK-05 menjadi "satu aktif per periode"; AB-PRK-04 mengunci impor seluruh periode selama jadwal Diajukan/Disahkan; AB-PRK-01 hanya Sesi luring. Nomor AB tidak berubah |
 
 ---
 

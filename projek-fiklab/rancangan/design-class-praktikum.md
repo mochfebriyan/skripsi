@@ -48,7 +48,7 @@ Sumber: [conceptual-model-praktikum.md](conceptual-model-praktikum.md) (CM-1–4
 | `labfik.praktikum.perubahan` | pengajuan | [T] | PerubahanSesi + UsulanPengganti | DCD-2 |
 | `labfik.praktikum.modul` | mail.thread | [T] | VersiModul | DCD-3 |
 | `labfik.praktikum.modul.software`, `.modul.bahan` | — | [T] | KebutuhanSoftware, KebutuhanBahan | DCD-3 |
-| `labfik.praktikum.kesiapan` | evidence | [T] | PemeriksaanKesiapan | DCD-3 |
+| `labfik.praktikum.kesiapan` | evidence | [T] | PemeriksaanKesiapan; Sesi `/alat_tidak_tersedia` dipindah ke sini sebagai `alat_tidak_tersedia_ids` {compute} karena hanya dipakai formulir pemeriksaan (O) | DCD-3 |
 | `labfik.praktikum.kesiapan.butir` | — | [T] | ButirPemeriksaan + 4 turunan + SubstitusiBahan + PersetujuanSubstitusi | DCD-3 |
 | `labfik.praktikum.jurnal` | evidence | [T] | JurnalSesi + PengirimanJurnal | DCD-4 |
 | `labfik.praktikum.jurnal.petugas`, `.jurnal.logbook` | — | [T] | PresensiPetugas, EntriLogBook | DCD-4 |
@@ -133,7 +133,7 @@ Nama model mengikuti pola `labfik.praktikum.*` (kontrak Core bagian 5) dan nama 
 |---|---|---|
 | `labfik.praktikum.jadwal` (approval) | `_jenis_dokumen()` | `jadwal_praktikum` |
 | | `_cek_kelengkapan()` | setiap Kelas periode itu punya Sesi (AB-PRK-05) |
-| | `_dokumen_diganti()` | tidak diisi (satu per periode, `_cek_satu_per_periode()`) |
+| | `_dokumen_diganti()` | tidak diisi (satu aktif per periode, `_cek_satu_aktif_per_periode()`; jadwal yang dicabut disusun ulang sebagai rekaman baru) |
 | | `_setelah_disahkan()` | **tidak diisi**: `is_terpublikasi` Sesi dihitung dari `state` jadwal |
 | `kesiapan`, `jurnal`, `penilaian`, `evaluasi.survei` (evidence) | `_boleh_dikoreksi()` | kesiapan dan penilaian selalu boleh; jurnal hanya bila belum terkirim atau oleh grup laboran/KaLab **[USULAN PENULIS; menunggu P11]** |
 | `survey.survey` (criteria) | `_cek_k1()`–`_cek_k4()` | K1 `penetap_id` + `tanggal_tetap < tanggal_buka`; K2 `get_kekurangan_penetapan()` kosong; K3 ada respons, `response_rate`, evaluasi tercatat; K4 setiap RTL punya `efektif` (AB-PRK-34) |
@@ -146,13 +146,13 @@ Nama model mengikuti pola `labfik.praktikum.*` (kontrak Core bagian 5) dan nama 
 
 | Operasi SSD | Method / ORM |
 |---|---|
-| `pratinjau_impor` | `labfik.praktikum.impor.jadwal.action_pratinjau()`: `_baca_berkas()` → baris; isi `status`/`pesan` per baris (bentrok `cari_bentrok`, `_cek_terkunci`, baris salah, kapasitas). Tidak membuat Sesi |
+| `pratinjau_impor` | `labfik.praktikum.impor.jadwal.action_pratinjau()`: `_baca_berkas()` → baris; isi `status`/`pesan` per baris (bentrok `cari_bentrok`, `_cek_terkunci(periode, kelas)`, baris salah, kapasitas). Tidak membuat Sesi |
 | `impor_jadwal` | `action_impor()` → `_bangkitkan_sesi(kelas, baris)` untuk baris `siap` (AB-PRK-01–04) |
 | `ringkasan_jadwal` | `labfik.praktikum.jadwal.get_ringkasan()` / `impor.jadwal.ringkasan` {compute} |
-| `cek_bentrok` | `@model labfik.sesi.cari_bentrok(ruang, tanggal, jam_mulai, jam_selesai, kecuali)` (memeriksa Sesi `terjadwal` dan pemakaian `disetujui`) |
+| `cek_bentrok` | `@model labfik.sesi.cari_bentrok(ruang, tanggal, jam_mulai, jam_selesai, kecuali)` (memeriksa Sesi `terjadwal` bermoda `luring` dan pemakaian `disetujui`) |
 | `daftar_sesi(filter)` | `labfik.sesi.search_read()` dengan domain per filter (`is_terpublikasi`, `tanggal`, `jurnal`, `kelas_id.dosen_ids`/penugasan) |
 | `status_sesi` | `read(['state', 'is_terpublikasi', 'is_ditunda', 'is_diganti', …])` |
-| `buat_penetapan_jadwal` | `labfik.praktikum.jadwal.create()`; pengajuan dan pengesahan memakai `action_ajukan()`, `action_terbitkan()`, `action_unggah_ttd()`, `action_sahkan()` (Core) |
+| `buat_penetapan_jadwal` | `labfik.praktikum.jadwal.create()` (`_cek_satu_aktif_per_periode()`); pengajuan dan pengesahan memakai `action_ajukan()`, `action_terbitkan()`, `action_unggah_ttd()`, `action_kembalikan()`, `action_sahkan()`, `action_cabut()` (Core) |
 | `rincian_penetapan_jadwal` | `search_read([('periode_id', '=', …)])` |
 | `laporan_jadwal` | QWeb report dari `labfik.sesi` + `labfik.praktikum.pemakaian` (`state = disetujui`; ditolak `karena_bentrok` + Sesi `is_diganti` sebagai rekaman konflik) |
 
@@ -180,7 +180,7 @@ Nama model mengikuti pola `labfik.praktikum.*` (kontrak Core bagian 5) dan nama 
 
 | Operasi SSD | Method / ORM |
 |---|---|
-| `form_kesiapan` | `@model labfik.praktikum.kesiapan.get_form(sesi)` |
+| `form_kesiapan` | `@model labfik.praktikum.kesiapan.get_form(sesi)`; bagian Alat (O, KF-PRK-52) dari `_compute_ketersediaan_alat()` → `alat_tidak_tersedia_ids`, `jumlah_pc_tersedia`; `workstation_count` dibaca dari `labfik.ruang` |
 | `keputusan_tersedia` | `@model get_keputusan_tersedia(hasil_butir)` |
 | `catat_pemeriksaan` | `@model catat(sesi, hasil_butir, keputusan)` → `create()` dengan `butir_ids`; `_cek_keputusan()` |
 | `rincian_pemeriksaan` | `search_read([('sesi_id', '=', …)])` |
@@ -246,11 +246,11 @@ Semua 21 command, 32 query khusus, 6 operasi pola «CRUDL», dan 2 operasi penga
 
 | AB | Mekanisme | Tempat |
 |---|---|---|
-| AB-PRK-01 | `cari_bentrok()` dipanggil `action_pratinjau()`, `_cek_jam_bentrok()` @constrains, dan *hook* `_sebelum_disetujui()` | `labfik.sesi` (perluasan), impor, pemakaian, perubahan |
+| AB-PRK-01 | `cari_bentrok()` (Sesi `terjadwal` bermoda `luring` + pemakaian `disetujui`) dipanggil `action_pratinjau()`, `_cek_jam_bentrok()` @constrains, dan *hook* `_sebelum_disetujui()` | `labfik.sesi` (perluasan), impor, pemakaian, perubahan |
 | AB-PRK-02 | `_cek_pertemuan_unik()` @constrains (Sesi tanpa `sesi_asal_id`); `_bangkitkan_sesi()` memberi jenis UTS/UAS pada pertemuan 8 dan 16 | `labfik.sesi` (Core), impor |
 | AB-PRK-03 | `melebihi_kapasitas` {compute}; status baris impor | `labfik.sesi` (perluasan), impor |
-| AB-PRK-04 | `_cek_terkunci(kelas)`; `unlink()` «override» Sesi | impor, `labfik.sesi` (perluasan) |
-| AB-PRK-05 | `_cek_kelengkapan()` + `_cek_satu_per_periode()`; wewenang lewat `approval.mixin` | `labfik.praktikum.jadwal` |
+| AB-PRK-04 | `_cek_terkunci(periode, kelas)`: terkunci bila periode punya jadwal `diajukan`/`disahkan` atau Sesi kelas sudah berjurnal; `unlink()` «override» Sesi | impor, `labfik.sesi` (perluasan) |
+| AB-PRK-05 | `_cek_kelengkapan()` + `_cek_satu_aktif_per_periode()` @constrains (paling banyak satu jadwal berstatus `draf`/`diajukan`/`disahkan` per periode); wewenang lewat `approval.mixin` | `labfik.praktikum.jadwal` |
 | AB-PRK-06 | `is_terpublikasi` {compute, search}; `tanggal_publikasi` {related} | `labfik.sesi` (perluasan), jadwal |
 | AB-PRK-07 | `action_terbitkan()` mengganti versi `berlaku` lama | `labfik.praktikum.modul` |
 | AB-PRK-08 | `_cek_isi()` @constrains + `_sql_constraints` unique(MK, periode, nomor_versi) | `labfik.praktikum.modul` |
@@ -258,8 +258,8 @@ Semua 21 command, 32 query khusus, 6 operasi pola «CRUDL», dan 2 operasi penga
 | AB-PRK-10 | `_cek_wewenang()` + alasan wajib di `action_putuskan()` | pengajuan mixin |
 | AB-PRK-11 (O) | `action_tarik()`: pengaju (atau laboran pencatat), hanya saat `diajukan` | pengajuan mixin |
 | AB-PRK-12 | `_cek_usulan()` @constrains; `_sebelum_disetujui()`; `_efek_disetujui()` | `labfik.praktikum.perubahan` |
-| AB-PRK-13 | `_sql_constraints` unique(sesi_id); `tepat_waktu` {compute, store} | `labfik.praktikum.kesiapan` |
-| AB-PRK-14 | `get_form()` dari `sesi.get_modul_berlaku()`; `_cek_isian_kategori()` (lisensi software berbayar) | kesiapan, butir |
+| AB-PRK-13 | `_sql_constraints` unique(sesi_id); `_cek_sesi()` @constrains (Sesi `terjadwal` dan `is_terpublikasi`; ditambahkan saat audit 16 Nov 2026); `tepat_waktu` {compute, store} | `labfik.praktikum.kesiapan` |
+| AB-PRK-14 | `get_form()` dari `sesi.get_modul_berlaku()`; `_cek_isian_kategori()` (lisensi software berbayar); bagian Alat (O): `_compute_ketersediaan_alat()` hanya memanggil `labfik.alat.check_ketersediaan_sesi()` dan tidak menulis ke `labfik.alat` (I-13) | kesiapan, butir |
 | AB-PRK-15 | `_cek_keputusan()` @constrains; `get_keputusan_tersedia()` | `labfik.praktikum.kesiapan` |
 | AB-PRK-16 | `_cek_substitusi()` @constrains; `action_setujui_substitusi()` hanya dosen kelas; `_cek_keputusan()` | butir, kesiapan |
 | AB-PRK-17 | `_sql_constraints` unique(sesi_id); `_cek_sesi()` | `labfik.praktikum.jurnal` |
@@ -309,6 +309,18 @@ Belum ada DCD sebelumnya untuk modul ini. Perubahan pada langkah sebelumnya yang
 | [conceptual-model-praktikum.md](conceptual-model-praktikum.md) + diagram | + `KeputusanPengajuan.karena_bentrok`, + `ButirBahan.tanggal_kedaluwarsa` | KF-PRK-09 dan KF-PRK-19 (lapis Inti) belum tertangkap di CM versi pertama (temuan 5.2 no. 8 di dokumen CM) |
 | [ssd-praktikum.md](ssd-praktikum.md) + SSD-4 | `putuskan_pengajuan(…, karena_bentrok, …)`; `dto_rincian_pengajuan` + `karena_bentrok`; `dto_hasil_butir` + `tanggal_kedaluwarsa` | Sama. Nama dan jumlah operasi tidak berubah |
 
+**Revisi audit lintas-branch, 16 Nov 2026** ([audit-praktikum.md](audit-praktikum.md)):
+
+| Bagian | Sebelum | Sesudah | Alasan |
+|---|---|---|---|
+| `labfik.praktikum.jadwal` (DCD-1) | `_cek_satu_per_periode()` | `_cek_satu_aktif_per_periode()`: jadwal `dicabut` tidak dihitung | Jalan buntu: setelah jadwal dicabut (KF-PRK-45) jadwal baru tidak bisa disusun (AB-PRK-05) |
+| Impor jadwal (DCD-1) | `_cek_terkunci(kelas)`: kelas yang sudah punya Sesi saat jadwal disahkan | `_cek_terkunci(periode, kelas)`: seluruh periode terkunci selama jadwal `diajukan`/`disahkan` | Kelas baru yang diimpor setelah pengesahan akan terbaca terpublikasi tanpa ada di jadwal bertanda tangan (PKG-15 C1, AB-PRK-04) |
+| `labfik.sesi.cari_bentrok()` (DCD-1) | Semua Sesi `terjadwal` | Hanya Sesi `terjadwal` bermoda `luring` | Sesi daring tidak memakai ruang (AB-PRK-01) |
+| `labfik.praktikum.kesiapan` (DCD-3) | Tanpa cek Sesi | + `_cek_sesi()` @constrains | Bagian "untuk Sesi yang terpublikasi" di AB-PRK-13 belum punya mekanisme |
+| `labfik.praktikum.kesiapan` (DCD-3), pengecekan ulang alat dan bahan Core | `labfik.alat` tidak dipakai | + `alat_tidak_tersedia_ids` Many2many `labfik.alat` {compute}, `jumlah_pc_tersedia` Integer {compute}, `_compute_ketersediaan_alat()` (O); stub «Core» `labfik.alat` | Aturan pakai domain aset di kontrak Core (Praktikum mengecek PC/alat lewat `labfik.alat`); KF-PRK-52. Hanya membaca, tanpa tabel baru dan tanpa dependensi ke addon Aset |
+| Bagian 5.1 | Operasi Tata Kelola tanpa kembalikan dan cabut | + `action_kembalikan()`, `action_cabut()` | Pencabutan jadwal dipakai KF-PRK-45 |
+| Isu 10 no. 6 | Rekomendasi SDM memakai `is_terpublikasi` (lewat CM) | SDM cukup `state` Core | `is_terpublikasi` ada di `labfik_praktikum`, tidak terbaca SDM (I-7) |
+
 ---
 
 ## 9. Cek silang akhir
@@ -320,7 +332,7 @@ Belum ada DCD sebelumnya untuk modul ini. Perubahan pada langkah sebelumnya yang
 | Setiap AB punya mekanisme | Ya, 34 dari 34 (bagian 6) |
 | Status sama dengan state machine | Sesi {terjadwal, terlaksana, batal} (S1, I-1); pengajuan {diajukan, disetujui, ditolak, ditarik} (S2); survei {draf, ditetapkan, dievaluasi, siklus_selesai} (S3); versi modul {draf, berlaku, diganti}; jurnal {draf, terkirim} |
 | Field warisan tidak ditulis ulang | Ya; field `evidence`/`approval`/`criteria` hanya disebut sebagai catatan miring (mis. `pelapor_id (warisan) = pemeriksa`) |
-| Kontrak Core | Field Sesi Core tidak ditambah dari modul lain; perluasan oleh pemilik (Praktikum). Wewenang hanya `selection_add` `jenis_dokumen`. `labfik.bahan` dipakai (C-13). `labfik.alat` tidak dipakai |
+| Kontrak Core | Field Sesi Core tidak ditambah dari modul lain; perluasan oleh pemilik (Praktikum). Wewenang hanya `selection_add` `jenis_dokumen`. `labfik.bahan` dipakai (C-13). `labfik.alat` (C-10) hanya dibaca lewat `check_ketersediaan_sesi()` (O, KF-PRK-52); `status` alat tidak ditulis (I-13) |
 | Kriteria instrumen | PKG-15 C1–C4, 16 S1–S4, 17 B1–B3, 18 C1–C5 → `labfik.sesi.get_cek_monev(pkg)`; PKG-19 → `penilaian.berbukti`, `baris.lengkap`; PKG-20 K1–K4 → `survey._cek_k*()` |
 | Data pribadi | Tidak ada nama orang, NIM, atau nomor HP di rancangan; baris nilai hanya NIM dari berkas impor saat dipakai (tidak di repo) |
 
@@ -333,4 +345,5 @@ Belum ada DCD sebelumnya untuk modul ini. Perubahan pada langkah sebelumnya yang
 - [ ] `_boleh_dikoreksi()` jurnal terkirim: siapa yang boleh mengoreksi **[USULAN PENULIS; KONFIRMASI P11]**
 - [ ] Nama field `survey.survey` bawaan Odoo 17 (`answer_done_count`, `access_mode`, `_create_answer`) perlu dicocokkan dengan kode sumber saat implementasi **[VALIDASI]**
 - [ ] Rekaman konflik dari impor tidak tersimpan **[ASUMSI; KONFIRMASI pembimbing]**
-- [ ] `kontrak-core-sdm.md` masih memakai 6 status Sesi **[KONFIRMASI Zahir]** (isu CM no. 7)
+- [ ] `kontrak-core-sdm.md` bagian 2.3 masih memakai 6 status Sesi. SDM cukup membaca `state` (Core); `is_terpublikasi` dan atribut hitung lain berada di `labfik_praktikum` dan tidak terbaca SDM **[KONFIRMASI Zahir]** (isu CM no. 7)
+- [ ] Data wewenang Praktikum (Kepala Laboratorium, `mengesahkan`, empat `jenis_dokumen`) dan grup `labfik_dosen`/`labfik_asisten` sudah tercatat di kontrak Core bagian 4; kontrak Core bagian 5 masih menulis *hook* `_setelah_disahkan()` "menandai Sesi terpublikasi" **[KONFIRMASI Febriyan]**

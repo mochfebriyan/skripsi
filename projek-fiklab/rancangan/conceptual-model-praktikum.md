@@ -60,7 +60,7 @@ Stub: Periode, Ruang, Personel (Core), DokumenDisahkan (Tata Kelola).
 | **VersiModul** | Transaksi | `nomor_versi`, `berkas`, `tautan_leads`, `rubrik`, `tanggal_terbit`, `status` {draf, berlaku, diganti}; `mata_kuliah` 1, `periode` 1, `penerbit` 1. MataKuliah punya `/versi_berlaku [periode]` (AB-PRK-07) |
 | **KebutuhanSoftware** | Bagian VersiModul | `nama`, `versi`, `berbayar` (PKG-16 S3) |
 | **KebutuhanBahan** | Bagian VersiModul | `jumlah_per_mahasiswa`; `bahan` 1 → master **Bahan** Core (C-13) |
-| **PemeriksaanKesiapan** | Turunan RekamanBukti | 0..1 per Sesi (AB-PRK-13). `waktu_periksa`, `keputusan`, `/tepat_waktu` (S1). Pemeriksa = `pelapor` warisan |
+| **PemeriksaanKesiapan** | Turunan RekamanBukti | 0..1 per Sesi (AB-PRK-13). `waktu_periksa`, `keputusan`, `/tepat_waktu` (S1), `/jumlah_pc_tersedia` (O, isian awal `jumlah_berfungsi`). Pemeriksa = `pelapor` warisan |
 | ***ButirPemeriksaan*** | Abstrak, bagian Pemeriksaan | `hasil` {baik, diperbaiki, bermasalah}, `keterangan` |
 | **ButirUtilitas** | Turunan butir | `kategori` {jaringan, listrik, proyektor_audio} |
 | **ButirStasiunKerja** | Turunan butir | `jumlah_berfungsi`, `/jumlah_dibutuhkan` (S2) |
@@ -68,6 +68,7 @@ Stub: Periode, Ruang, Personel (Core), DokumenDisahkan (Tata Kelola).
 | **ButirBahan** | Turunan butir | `jumlah_tersedia`, `kondisi_baik`, `berlabel`, `tanggal_kedaluwarsa` [0..1] (KF-PRK-19), `/jumlah_dibutuhkan` (PKG-17 B1–B2); `kebutuhan` 1 |
 | **SubstitusiBahan** | Kejadian | `alasan`, `/status_persetujuan`; `bahan_pengganti` 1 (B3) |
 | **PersetujuanSubstitusi** | Kejadian | `waktu`; `penyetuju` = dosen kelas (AB-PRK-16) |
+| Alat | Stub (Core C-10, diisi kelompok Aset) | Hanya dibaca (O, KF-PRK-52). Sesi mendapat `/alat_tidak_tersedia` (turunan): alat di ruang sesi yang tidak tersedia untuk sesi itu. Menjadi peringatan pada butir kategori padanannya, bukan butir sendiri (ditambahkan 16 Nov 2026, temuan 5.2 no. 2) |
 
 ### CM-3 · Pelaksanaan sesi (PKG-18) dan penilaian individual (PKG-19)
 
@@ -150,7 +151,7 @@ Setiap isi kamus DTO di [ssd-praktikum.md](ssd-praktikum.md) bagian 4 harus puny
 | `dto_versi_modul`, `dto_info_modul` | VersiModul, KebutuhanSoftware, KebutuhanBahan, Bahan; `riwayat_versi` = `{ordered} versi`; `pengguna_mengampu` dihitung dari Kelas.dosen | **Berubah:** `nama` dan `satuan` bahan dari master Bahan Core (temuan 5.2 no. 1) |
 | `dto_pemakaian`, `dto_perubahan`, `dto_pengganti` | PemakaianLab, PerubahanSesi, UsulanPengganti; `dto_pengganti` = Sesi pengganti yang dibangkitkan | |
 | `dto_pengajuan_ringkas`, `dto_rincian_pengajuan` | Pengajuan + turunannya, KeputusanPengajuan; `ringkasan` dihitung | |
-| `dto_form_kesiapan` | Dihitung dari /versi_berlaku dan kategori tetap; `jumlah_mahasiswa` dari Kelas | Tidak disimpan sampai `catat_pemeriksaan()` |
+| `dto_form_kesiapan` | Dihitung dari /versi_berlaku dan kategori tetap; `jumlah_mahasiswa` dari Kelas; (O) `alat_tidak_tersedia` = Sesi `/alat_tidak_tersedia` → Alat (Core), `jumlah_pc_tersedia` = PemeriksaanKesiapan `/jumlah_pc_tersedia`; `workstation_count` dari Ruang (Core) | Tidak disimpan sampai `catat_pemeriksaan()`. Bagian Alat ditambahkan 16 Nov 2026 (KF-PRK-52) |
 | `dto_hasil_butir`, `dto_pemeriksaan`, `dto_substitusi` | ButirPemeriksaan dan turunannya, SubstitusiBahan, PersetujuanSubstitusi, PemeriksaanKesiapan; `substitusi_menunggu` dihitung | `kondisi` → `kondisi_baik: Boolean` (analisis PKG-17: baik/tidak). `bahan_pengganti` → Bahan |
 | `dto_konteks_jurnal` | Sesi, /versi_berlaku, `/petugas_ditugaskan` (dari BarisPenugasan SDM), Kelas, `/berasisten` | `peran` petugas = peran di baris penugasan |
 | `dto_jurnal`, `dto_rincian_jurnal` | JurnalSesi, PresensiPetugas, EntriLogBook, PengirimanJurnal; `foto` = `bukti` warisan; `petugas_tidak_sesuai` = presensi dengan /sesuai_penugasan salah | |
@@ -183,10 +184,10 @@ Setiap isi kamus DTO di [ssd-praktikum.md](ssd-praktikum.md) bagian 4 harus puny
 | No | Temuan | Tindakan |
 |---|---|---|
 | 1 | Kontrak Core 16 November menambah master **Bahan** (C-13) dari kelompok Aset & Safety. Kamus DTO masih menulis bahan sebagai teks (`nama`, `satuan`) di `dto_versi_modul` dan `bahan_pengganti` di `dto_hasil_butir` | KebutuhanBahan dan SubstitusiBahan merujuk Bahan. Kamus DTO di [ssd-praktikum.md](ssd-praktikum.md) diperbarui. Bila master Bahan tidak disetujui masuk Core, kembali ke teks bebas **[KONFIRMASI kelompok]** |
-| 2 | Aturan pakai bersama domain aset di kontrak Core menulis bahwa Praktikum mengecek ketersediaan PC/alat lewat `labfik.alat`. Aturan itu sejalan dengan pemetaan bersama (Alat dipakai PKG-16, 17), tetapi analisis PKG-16 mempersempitnya: pemeriksaan per kategori di tingkat ruang, Alat **tidak dipakai**, dan tidak ada KF Praktikum untuknya | Tidak dimodelkan (prinsip *sweet spot*: tidak ada kriteria yang gagal tanpanya). Disampaikan ke kelompok Aset & Safety dan Febriyan agar aturan itu ditulis sebagai kemungkinan, bukan kewajiban **[KONFIRMASI kelompok]**. Bila nanti dipakai, cukup sebagai nilai awal `jumlah_berfungsi` lewat `check_ketersediaan_sesi()` (Pelengkap) |
+| 2 | Aturan pakai bersama domain aset di kontrak Core menulis bahwa Praktikum mengecek ketersediaan PC/alat lewat `labfik.alat` (C-10, `check_ketersediaan_sesi()`). Versi awal model ini tidak memakai Alat karena analisis PKG-16 memeriksa per kategori di tingkat ruang | **Diubah 16 Nov 2026** (keputusan Herrens: ikuti ketentuan Core dengan prinsip *sweet spot*): Alat dimodelkan sebagai stub master Core yang **hanya dibaca**, lewat asosiasi turunan Sesi `/alat_tidak_tersedia` dan atribut turunan `/jumlah_pc_tersedia` (lapis Pelengkap, KF-PRK-52). Butir tetap per kategori; tidak ada butir per unit, dan hasil tetap ditetapkan laboran (I-13) |
 | 3 | `kondisi` bahan di kamus DTO belum punya nilai | Mengikuti analisis PKG-17 (baik/tidak): `kondisi_baik: Boolean` |
 | 4 | `dto_kelas.dosen` tidak membedakan dosen koordinator dan dosen kelas, padahal kontrak Core C-8 punya keduanya dan AB-PRK-09 memakai keduanya | Model memakai dua peran. DTO cukup dibaca sebagai keduanya; tidak mengubah operasi |
-| 5 | Matriks CRUDL use case memakai nama "Rencana Pemakaian Lab"; SSD dan model memakai "PemakaianLab" | Nama baku: **Pemakaian Lab**. Matriks use case tidak diubah (hanya label); dicatat di sini |
+| 5 | Matriks CRUDL use case memakai nama "Rencana Pemakaian Lab"; SSD dan model memakai "PemakaianLab" | Nama baku: **Pemakaian Lab**. Label matriks use case dan judul state machine S2 disamakan saat audit 16 Nov 2026; analisis PKG-15 (Langkah 0) tetap memakai nama lama sebagai riwayat |
 | 6 | Versi awal CM-3 menulis stub "PenugasanPetugas" sebagai penugasan **per sesi**. Rancangan SDM menugaskan asisten per kelas dan laboran per ruang dengan rentang berlaku (bagian 5.3) | **Dibetulkan:** stub BarisPenugasan + asosiasi turunan `/petugas_ditugaskan` di Sesi. Kesalahan sendiri, ditemukan lewat cek silang |
 | 8 | Saat menyusun DCD ditemukan dua isian KF Inti yang tidak tertangkap di CM versi pertama: penanda penolakan **karena bentrok** (KF-PRK-09, bahan laporan konflik KF-PRK-11) dan **tanggal kedaluwarsa** bahan (KF-PRK-19). Keduanya juga tidak ada di kamus DTO | Ditambahkan: `KeputusanPengajuan.karena_bentrok`, `ButirBahan.tanggal_kedaluwarsa [0..1]`. Kesalahan sendiri (langkah 8–9) |
 | 7 | Teks "petugas yang ditugaskan (dari SDM)" di `dto_konteks_jurnal` dan AB-PRK-20 tidak menyebut cara pencocokannya | Kini jelas: asisten lewat kelas sesi, laboran lewat ruang sesi, berlaku pada tanggal sesi. AB-PRK-20 tidak berubah bunyinya |
@@ -204,15 +205,15 @@ Dibaca setelah `git fetch`, tanpa mengubah apa pun di branch itu: `origin/febriy
 | *Hook* `_setelah_disahkan()` untuk jadwal | Tata Kelola: `design-class-tata-kelola.md` bagian 4 | *Hook* itu "tidak diisi model mana pun"; tetap disediakan untuk modul lain | `/is_terpublikasi` dihitung, tidak butuh *hook*. Yang perlu dibetulkan hanya tabel kontrak Core bagian 5 (isu 2) |
 | RekamanBukti dan DokumenDisahkan | Tata Kelola: `design-class-tata-kelola.md` bagian 2 | Masing-masing menjadi `evidence.mixin` dan `approval.mixin`; atribut RekamanBukti = tanggal, pelapor, bukti, keterangan | Sama dengan stub di CM-1 s.d. CM-4 |
 | Master Bahan | `main`: `tools/drawio/core/model_core.py` | `labfik.bahan` diberi label "Bahan Praktikum (habis pakai)" | Memperkuat keputusan KebutuhanBahan → Bahan (temuan 1) |
-| Alat untuk PKG-16 | `main`: `pemetaan-package-instrumen.md` dan brief bersama ("Alat, Bahan · PKG-07 → 05, 07, 08, 10, 11, 12, 16, 17, 21") | Pemetaan memang mencatat PKG-16 memakai Alat | Temuan 2 diperhalus: bukan konflik, tetapi cakupan Praktikum lebih sempit |
-| Status Sesi di SDM | SDM `kontrak-core-sdm.md` versi 2: `state` 6 nilai (S1 lama Praktikum) dan asumsi "sesi `terpublikasi` yang tanggalnya lewat dianggap terlaksana" | Bertentangan dengan keputusan Core I-1 (3 nilai) | Tidak mengubah model ini. Perlu disampaikan ke Zahir (isu 7) |
+| Alat untuk PKG-16 | `main`: `pemetaan-package-instrumen.md` dan brief bersama ("Alat, Bahan · PKG-07 → 05, 07, 08, 10, 11, 12, 16, 17, 21") | Pemetaan memang mencatat PKG-16 memakai Alat | Temuan 2 diperhalus: bukan konflik. Sejak 16 Nov 2026 Alat dibaca sebagai Pelengkap (stub di CM-2) |
+| Status Sesi di SDM | SDM `kontrak-core-sdm.md` bagian 2.3: `state` 6 nilai (S1 lama Praktikum) dan asumsi "sesi `terpublikasi` yang tanggalnya lewat dianggap terlaksana". `kebutuhan-sdm.md` KF-SDM-12 sudah memakai "sesi terjadwal yang tanggalnya lewat" | Tabel di `kontrak-core-sdm.md` bertentangan dengan keputusan Core I-1 (3 nilai) | Tidak mengubah model ini. Perlu disampaikan ke Zahir (isu 7; rekomendasi dibetulkan saat audit 16 Nov 2026) |
 | Rekaman konflik, jenis responden survei | Semua branch | Tidak ada jawaban | Tetap terbuka |
 
 ---
 
 ## 6. Perubahan dibanding versi sebelumnya
 
-Belum ada versi sebelumnya untuk modul ini.
+Belum ada versi sebelumnya untuk modul ini. Revisi audit 16 Nov 2026 ([audit-praktikum.md](audit-praktikum.md)): invarian CM-1 menjadi "paling banyak satu PenetapanJadwal yang tidak dicabut per Periode" (AB-PRK-05); isu 7 dibetulkan (SDM tidak dapat membaca `is_terpublikasi`). Konsep dan asosiasi tidak berubah.
 
 ---
 
@@ -240,8 +241,8 @@ Belum ada versi sebelumnya untuk modul ini.
 - [ ] Rekaman konflik (PKG-15 bukti 5) disusun dari penolakan `karena_bentrok` dan perubahan sesi; bentrok saat impor tidak tersimpan **[ASUMSI; KONFIRMASI pembimbing]**
 - [ ] Kontrak Core C-9 menyebut `is_terpublikasi`, `is_ditunda`, `is_terlewat` sebagai field hitung di `labfik.sesi`, dan bagian 5 menyebut *hook* `_setelah_disahkan()` "menandai Sesi terpublikasi". Keduanya perlu disesuaikan: field itu ditambahkan `labfik_praktikum` sebagai pemilik Sesi, dan *hook* tidak lagi diperlukan karena `is_terpublikasi` dihitung (DCD Tata Kelola pun tidak mengisi *hook* itu). Disampaikan ke Febriyan sebagai pemilik [kontrak-core.md](kontrak-core.md) **[KONFIRMASI Febriyan]**
 - [ ] Master Bahan (C-13) disetujui masuk Core; bila tidak, KebutuhanBahan kembali memakai teks **[KONFIRMASI kelompok]**
-- [ ] Aturan "Praktikum mengecek PC/alat lewat `labfik.alat`" di kontrak Core (temuan 5.2 no. 2) **[KONFIRMASI kelompok]**
+- [ ] Kontrak Core C-10 menulis pemakai pemeriksaan kesiapan sebagai "PKG-15/18"; pemeriksaan kesiapan adalah PKG-16. Rumus `workstation_count` ditetapkan kelompok Aset; `/jumlah_pc_tersedia` di model ini hanya menghitung alat jenis PC yang tersedia (temuan 5.2 no. 2) **[KONFIRMASI Febriyan; KONFIRMASI kelompok Aset]**
 - [ ] Nilai `JenisResponden` {praktikan, dosen, asisten} **[ASUMSI]**; analisis PKG-20 baru menyebut "jenis responden sasaran"
 - [ ] Pembatalan penetapan survei (O) menghapus PenetapanSurvei tanpa riwayat kejadian; riwayatnya cukup di pelacakan perubahan **[USULAN PENULIS]**
-- [ ] `kontrak-core-sdm.md` (branch Zahir) masih memakai 6 status Sesi dan asumsi status `terpublikasi`. Menurut keputusan Core I-1: `state` {terjadwal, terlaksana, batal}, terpublikasi = atribut hitung. Asumsi pengganti untuk SDM: sesi `terjadwal` yang tanggalnya lewat dan `is_terpublikasi` dianggap terlaksana. Disampaikan ke Zahir **[KONFIRMASI Zahir]**
+- [ ] `kontrak-core-sdm.md` bagian 2.3 (branch Zahir) masih memakai 6 status Sesi dan asumsi status `terpublikasi`. Menurut keputusan Core I-1: `state` {terjadwal, terlaksana, batal}. SDM cukup membaca `state = terlaksana` (field Core) sebagai penyebut PKG-04; asumsi pengganti bila PKG-18 belum terisi: sesi `terjadwal` yang tanggalnya lewat dianggap terlaksana (sudah demikian di `kebutuhan-sdm.md` KF-SDM-12). SDM **tidak** dapat memakai `is_terpublikasi`, karena field itu ditambahkan `labfik_praktikum` dan SDM tidak boleh bergantung ke Praktikum (I-7). *Versi sebelumnya isu ini menyarankan `is_terpublikasi`; keliru, dibetulkan saat audit 16 Nov 2026.* Disampaikan ke Zahir **[KONFIRMASI Zahir]**
 - [ ] Asisten pengganti mendadak (tidak ada di Surat Tugas) hadir di sesi: cukup ditandai `/sesuai_penugasan` = salah (AB-PRK-20), tidak menolak jurnal. Sejalan dengan pertanyaan SDM KB-3 **[KONFIRMASI KaLab]**

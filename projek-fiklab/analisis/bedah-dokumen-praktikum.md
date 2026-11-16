@@ -231,7 +231,7 @@ Kolom tabel: **Bagian** (sumber) · **Field (usulan)** · **Model** · **PKG/kri
 
 | Kolom formulir | Field (usulan) | Model | PKG/kriteria | Dasar |
 |---|---|---|---|---|
-| Timestamp | `tanggal_kirim` (otomatis saat status → dikirim) | `labfik.praktikum.jurnal` | 18 (peringatan keterlambatan) | ISO 7.5.1 |
+| Timestamp | `waktu_kirim` (otomatis saat status → terkirim; nama disamakan dengan DCD, 16 Nov 2026) | `labfik.praktikum.jurnal` | 18 (peringatan keterlambatan) | ISO 7.5.1 |
 | Nama Asisten, NIM Asisten, Email Address | Pengisi = pengguna yang masuk (`create_uid` → Personel) | `labfik.praktikum.jurnal` | 18 | Analisis PKG-18 |
 | Periode, Nama Mata Kuliah, Kelas, Tanggal, Hari, Ruang, Pertemuan Ke | **Tidak diketik ulang**: diambil dari Sesi (`sesi_id`) | `labfik.sesi` | 18 C2 | Analisis PKG-18 (A5, A7) |
 | Waktu Mulai, Waktu Akhir | `jam_mulai_aktual`, `jam_selesai_aktual` dengan validasi akhir > mulai | `labfik.praktikum.jurnal` | 18 C3 | Instr PKG-18 (durasi) |

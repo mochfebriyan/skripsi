@@ -2,7 +2,7 @@
 
 14 November 2026 · Herrens · PKG-15, 16, 17, 18, 19, 20 · Bagian dari proyek LabFIK Compliance (lihat [brief-seluruh-projek.md](brief-seluruh-projek.md))
 
-**Status: DRAF.** Hasil Langkah 0 (prasyarat rancangan). Bahan Bab I dan 2.2. Belum dikonfirmasi ke Pak Widi dan KaLab.
+**Status: DRAF.** Hasil Langkah 0 dan 1 (prasyarat dan cakupan rancangan), diperbarui sampai Langkah 10 (16 Nov 2026). Bahan Bab I dan 2.2. Belum dikonfirmasi ke Pak Widi dan KaLab. Audit lintas-branch 16 Nov 2026: [audit-praktikum.md](../rancangan/audit-praktikum.md).
 
 ## Ringkasan
 
@@ -16,7 +16,7 @@
   - PKG-20 Evaluasi 20 (kepuasan pengguna)
 - **Peran di Core:** modul ini **membangkitkan Sesi**, satu-satunya transaksi di `labfik_core`, yang dipakai juga oleh PKG-04 (SDM) dan PKG-08 (kelompok Aset). Karena itu PKG-15 adalah hulu modul ini dan sebagian modul lain.
 - **Benang merah:** setiap sesi praktikum bisa ditelusuri dari **rencana → kesiapan → pelaksanaan → penilaian**, direkam saat terjadi oleh orang yang bertugas, bukan dikumpulkan menjelang monev atau untuk keperluan honor saja.
-- **Status:** keenam package sudah dianalisis (Langkah 0 selesai). Belum ada rancangan teknis maupun kode.
+- **Status:** keenam package sudah dianalisis (Langkah 0) dan rancangan TO-BE sudah sampai Langkah 10 (design class diagram, 16 Nov 2026). Belum ada kode. Wawancara KaLab dan laboran belum dilakukan.
 - **Usulan judul (draf, perlu persetujuan Pak Widi):** Kustomisasi Modul Odoo untuk Pengelolaan Pelaksanaan Praktikum Berbasis Instrumen Monev Laboratorium (Studi Kasus: Laboratorium FIK UPN "Veteran" Jakarta) **[KONFIRMASI]**
 
 ## Indikator yang dipegang
@@ -36,13 +36,13 @@ Acuan ISO/IEC 17025 yang dirujuk instrumen: 6.4.4 (PKG-16), 6.4 dan 6.6 (PKG-17)
 
 ## Pola bersama di dalam modul
 
-Keenam package bertumpu pada **dua objek** dan **dua cara menumpang**, sehingga jumlah tabel baru kecil: 8 transaksi milik modul (PKG-15: 3, PKG-16: 1, PKG-18: 2, PKG-20: 2, salah satunya perluasan `survey.survey`), 0 master lokal.
+Keenam package bertumpu pada **dua objek** dan **satu cara menumpang**, sehingga jumlah tabel baru kecil: 9 transaksi milik modul (PKG-15: 3, PKG-16: 1, PKG-18: 2, PKG-19: 1, PKG-20: 2, salah satunya perluasan `survey.survey`), 0 master lokal (rincian di [design-class-praktikum.md](../rancangan/design-class-praktikum.md) bagian 2).
 
 | Pola | Dipakai oleh | Isi |
 |---|---|---|
 | **A. Sesi sebagai tulang punggung** | 15, 16, 17, 18 | Sesi bertanggal (Core) dibangkitkan PKG-15, diperiksa kesiapannya (16, 17), dilaporkan pelaksanaannya (18). Indikator 15, 16, 17, dan 18 adalah **persentase sesi** |
 | **B. Versi Modul sebagai daftar kebutuhan** | 15, 16, 17, 19 | Dosen menerbitkan modul berversi (tanpa pengesahan) yang memuat berkas modul, **daftar *software***, **daftar bahan per pertemuan**, dan **rubrik**. Pemeriksaan dan penilaian merujuk ke daftar ini, bukan ke master baru |
-| **C. Menumpang sebagai tabel anak** | 17 → 16, 19 → 18 | Bahan menjadi kategori butir di Pemeriksaan Kesiapan (16); penilaian menjadi catatan di Jurnal Sesi (18). Satu package = satu indikator tetap terpenuhi tanpa tabel sendiri |
+| **C. Menumpang sebagai tabel anak** | 17 → 16 | Bahan menjadi kategori butir di Pemeriksaan Kesiapan (16). Satu package = satu indikator tetap terpenuhi tanpa tabel sendiri. PKG-19 **tidak** lagi menumpang di Jurnal Sesi: sejak keputusan 14 Nov 2026 penilaian dicatat per kelas (Penilaian Kelas, tautan LeADS) |
 | **D. Paket bertangga K1–K4** | 20 | Survei (addon `survey` Odoo) + Evaluasi Survei dengan Rencana Tindak Lanjut, memakai `labfik.criteria.mixin` dari Core |
 
 ```
@@ -88,9 +88,23 @@ Wawancara KaLab dan laboran (sheet "Wawancara FIKLAB Compliance", bagian Pelaksa
 | Kepuasan (PKG-20) | Survei per periode yang ditetapkan (populasi, target respons, enam aspek), respons anonim, rekap per aspek, evaluasi dan rencana tindak lanjut, perbandingan antarperiode |
 | Status monev | Persentase PKG-15–19 beserta daftar unit yang tidak memenuhi; kriteria tertinggi K1–K4 PKG-20 |
 
-## Cakupan rancangan (usulan awal)
+## Arahan pembimbing dan keputusan (Langkah 1)
 
-Ditetapkan di Langkah 1 setelah arahan pembimbing; tabel ini usulan dari hasil analisis **[USULAN PENULIS]**. Prinsipnya mengikuti CLAUDE.md bagian 1: lantai ditentukan instrumen, langit-langit ditentukan kejelasan.
+Rangkuman keputusan yang sudah tercatat di dokumen modul ini dan kontrak Core. Ditambahkan saat audit 16 Nov 2026 supaya keputusan tidak tersebar; isinya tidak baru.
+
+| Tanggal | Sumber | Keputusan |
+|---|---|---|
+| Nov 2026 | Pak Widi (bimbingan bersama, CLAUDE.md bagian 1) | Prioritaskan rancangan TO-BE; UML yang cocok dengan Odoo; class dirancang dengan *inheritance*; observasi *as-is* boleh dari studi dokumen dan ISO |
+| 14 Nov 2026 | Herrens | Keenam PKG (15–20) masuk lingkup. Sesi, Mata Kuliah, Kelas di `labfik_core`, Sesi tanpa `op.session`. Asisten = `hr.employee` berjabatan Asisten Praktikum |
+| 14 Nov 2026 | Herrens | Jadwal disusun tim jadwal fakultas (pola mingguan per kelas), diimpor laboran; pertemuan 8 dan 16 tetap dibangkitkan sebagai UTS/UAS; jadwal periode **harus ditandatangani** (pengesahan Tata Kelola) |
+| 14 Nov 2026 | Herrens | Pemakaian lab dan perubahan sesi disetujui **KaLab**. Versi modul diterbitkan dosen tanpa pengesahan; praktikan mengakses modul lewat LeADS |
+| 14 Nov 2026 | Herrens | PKG-19 dibuktikan lewat tautan LeADS per kelas (impor nilai = Pelengkap). PKG-20 memakai addon `survey`. RTL tetap di modul Praktikum |
+| 15 Nov 2026 | Febriyan (pemilik Core), [kontrak-core.md](../rancangan/kontrak-core.md) bagian 6 | I-1 `labfik.sesi.state` 3 nilai; I-3 `kapasitas` ruang disetujui; I-4 wewenang hanya `mengesahkan` + `selection_add` jenis dokumen; I-5 grup dosen dan asisten di `labfik_praktikum`; I-7 `labfik_praktikum` depends `labfik_sdm`; I-8 presensi petugas `hr.employee`; I-9 pihak eksternal bukan aktor |
+| 16 Nov 2026 | Herrens | Pengguna lab di luar praktikum tidak punya akun Odoo; pengajuannya dicatat laboran. Pemetaan 6 status Sesi lama ke 3 status (I-1) diterima |
+
+## Cakupan rancangan (Langkah 1)
+
+Tabel ini menjadi batas rancangan Langkah 4–10 **[USULAN PENULIS; KONFIRMASI Pak Widi]**. Prinsipnya mengikuti CLAUDE.md bagian 1: lantai ditentukan instrumen, langit-langit ditentukan kejelasan.
 
 | Area | Inti (W) | Pelengkap (O) |
 |---|---|---|
@@ -110,7 +124,8 @@ Yang **tidak dirancang** tercantum di batasan masalah.
 |---|---|---|
 | **Sesi** (dibangkitkan dan dipublikasikan) | PKG-04 (SDM), PKG-08 (kelompok Aset), 16, 17, 18, 19 | Model `labfik.sesi` di `labfik_core`, tidak mewarisi `op.session` (keputusan 14 Nov 2026) |
 | Isi Mata Kuliah dan Kelas (impor dari alokasi, jumlah mahasiswa) | Semua pemakai Kelas | Model di Core; modul ini yang pertama mengisinya |
-| Presensi petugas per sesi (Jurnal Sesi) | PKG-04 (opsional, untuk mencocokkan dengan penugasan) | — |
+| Presensi petugas per sesi (Jurnal Sesi) | Dipakai di modul ini sendiri | Pencocokan dengan penugasan SDM dilakukan **di Praktikum** (KF-PRK-51), bukan di SDM, karena `labfik_sdm` tidak boleh bergantung ke `labfik_praktikum` (kontrak Core I-7) |
+| `labfik.sesi.state` (`terjadwal`, `terlaksana`, `batal`) | PKG-04 (SDM: penyebut = Sesi `terlaksana`), PKG-08 | Field Core, diisi hanya oleh Praktikum. Atribut hitung (`is_terpublikasi`, `is_ditunda`, `is_terlewat`) ada di `labfik_praktikum`, jadi **tidak** terbaca oleh SDM [KONFIRMASI Febriyan] |
 
 **Yang dipakai modul ini:**
 
@@ -123,6 +138,8 @@ Yang **tidak dirancang** tercantum di batasan masalah.
 | `labfik.evidence.mixin` | Core | Wajib (Pemeriksaan Kesiapan, Jurnal Sesi, Evaluasi Survei) | — |
 | Addon `survey` | Odoo 17 CE (LGPL-3) | Wajib (PKG-20, keputusan 14 Nov 2026) | Google Form + impor |
 | Penugasan petugas per sesi | PKG-04 (SDM) | Addon wajib (`labfik_praktikum` depends `labfik_sdm`, kontrak Core I-7); datanya opsional | Presensi petugas tetap dicatat; tanpa penugasan, pencocokan (KF-PRK-51) tidak menampilkan apa pun |
+| Master Bahan `labfik.bahan` | Core C-13 (usulan kelompok Aset & Safety) | Dipakai daftar bahan Versi Modul dan substitusi | Bila tidak disetujui masuk Core, kembali ke nama dan satuan sebagai teks **[KONFIRMASI kelompok]** |
+| Master Alat `labfik.alat` + `check_ketersediaan_sesi(sesi)` | Core C-10 (usulan kelompok Aset) | Opsional, **hanya dibaca** (Pelengkap, KF-PRK-52): peringatan alat tidak tersedia dan isian awal jumlah PC berfungsi di Pemeriksaan Kesiapan | Laboran mengisi jumlah stasiun kerja berfungsi sendiri, tanpa peringatan |
 | Status kalibrasi alat | PKG-05 (kelompok Aset) | Opsional | Dianggap tidak berlaku untuk lab komputer |
 | Kartu stok bahan | PKG-07 (kelompok Aset) | Opsional | Jumlah tersedia dicatat saat pemeriksaan |
 
@@ -137,7 +154,7 @@ Yang **tidak dirancang** tercantum di batasan masalah.
 | Personel (`hr.employee` diperluas) | Dosen, laboran, teknisi, asisten: pengisi jurnal, petugas hadir, pemeriksa kesiapan, penyusun modul, penyetuju, PIC RTL. **Praktikan tidak dicatat sebagai Personel** | 15–20 |
 | Jabatan (`hr.job` diperluas) + `cari_pemegang_berwenang(tindakan, jenis)` | Jabatan yang dipakai: Kepala Laboratorium, Laboran/PLP, Teknisi, Dosen, **Asisten Praktikum**. Untuk menentukan siapa boleh mengesahkan jadwal, menyetujui pemakaian lab dan perubahan sesi, menetapkan survei, dan mengisi jurnal | 15, 18, 20 |
 | ~~`labfik.controlled.mixin`~~ | `labfik.controlled.mixin` tidak dipakai lagi (keputusan Febriyan di `main`, 14 Nov 2026); nomor versi Versi Modul menjadi field biasa | 15 |
-| `labfik.approval.mixin` + `labfik.approval.log` (ajukan → kembalikan / unggah PDF bertanda tangan → sahkan → cabut; cek wewenang; riwayat; hook `_setelah_disahkan()`) | Penetapan Jadwal: **jadwal harus ditandatangani** (keputusan Herrens, 14 Nov 2026). Hook `_setelah_disahkan()` mengisi tanggal publikasi dan menandai Sesi periode itu sebagai terpublikasi | 15 |
+| `labfik.approval.mixin` + `labfik.approval.log` (ajukan → kembalikan / unggah PDF bertanda tangan → sahkan → cabut; cek wewenang; riwayat) | Penetapan Jadwal: **jadwal harus ditandatangani** (keputusan Herrens, 14 Nov 2026). Tanggal publikasi = tanggal sah {related}; Sesi periode itu terbaca terpublikasi lewat `is_terpublikasi` {compute}. *Hook* `_setelah_disahkan()` **tidak diisi** (DCD bagian 4.3) | 15 |
 | `labfik.evidence.mixin` (tanggal, pelapor, bukti, keterangan; rekaman tidak dihapus) | Pemeriksaan Kesiapan, Jurnal Sesi, Evaluasi Survei | 16, 18, 20 |
 | `labfik.criteria.mixin` (`kriteria_tertinggi` {compute}, `get_kriteria(tanggal_acuan)`, `_cek_k1()`–`_cek_k4()` {abstract}; versi kontrak Core terbaru) | Perluasan `survey.survey` sebagai paket per periode | 20 |
 
@@ -148,13 +165,14 @@ Yang **tidak dirancang** tercantum di batasan masalah.
 | `labfik.approval.mixin` untuk Versi Modul, Survei, Rencana Pemakaian Lab, Perubahan Sesi | Modul cukup diterbitkan (keputusan 14 Nov 2026); survei cukup "ditetapkan"; pemakaian lab dan perubahan sesi cukup disetujui. Ketiganya memakai status sederhana + cek wewenang lewat Jabatan, tanpa berkas bertanda tangan |
 | `labfik.period.mixin` | Tidak ada objek Praktikum yang "kedaluwarsa" berdasarkan periode; cukup `periode_id` biasa |
 | Mahasiswa (Core, di pemetaan) | Tidak dipakai. Bila impor nilai dipakai (PKG-19, Pelengkap), praktikan cukup dicatat dengan NIM pada baris nilai per kelas |
+| Butir pemeriksaan per unit `labfik.alat` (Core C-10) | Pemeriksaan kesiapan PKG-16 tetap per kategori di tingkat ruang (analisis PKG-16). Master Alat **dipakai secara baca saja** lewat `check_ketersediaan_sesi()` (Pelengkap, KF-PRK-52; keputusan Herrens 16 Nov 2026, mengikuti aturan pakai domain aset di kontrak Core), tetapi tidak dijadikan satu butir per unit karena tidak ada kriteria yang membutuhkannya dan laboran harus memeriksa puluhan PC per ruang. Field Alat lain (kalibrasi, BMN, lokasi simpan) tidak dipakai |
 
 **c. Usulan perubahan ke Core (perlu disetujui pemiliknya)**
 
 | Model | Usulan | Untuk | Kepada |
 |---|---|---|---|
-| `labfik.ruang` | Field `kode`, `name`, **`kapasitas`** (Integer). Isi awal 8 ruang: FIKLAB-201, 301–304, 401–403 | PKG-15 C3 (sesuai kapasitas); PKG-08 kelompok Aset juga memakainya | Kelompok (Core bersama) **[KONFIRMASI kelompok]** |
-| `labfik.periode` | Field `name`, `jenis` (semester / tahun anggaran), **`tanggal_mulai`, `tanggal_selesai`** | Batas pembagi PKG-15–19; sesi pengganti harus selesai sebelum periode ditutup (PKG-18) | Kelompok (Core bersama) **[KONFIRMASI kelompok]** |
+| `labfik.ruang` | Field `kode`, `name`, **`kapasitas`** (Integer). Isi awal 8 ruang: FIKLAB-201, 301–304, 401–403 | PKG-15 C3 (sesuai kapasitas); PKG-08 kelompok Aset juga memakainya | **Disetujui** (kontrak Core I-3, 15 Nov 2026). Isi awal 8 ruang **[VALIDASI KaLab]** |
+| `labfik.periode` | Field `name`, `jenis` (semester / tahun anggaran), **`tanggal_mulai`, `tanggal_selesai`** | Batas pembagi PKG-15–19; sesi pengganti harus selesai sebelum periode ditutup (PKG-18) | **Sudah terpenuhi** oleh rancangan Core (kontrak Core C-6) |
 | `labfik.jabatan.wewenang` | **Disetujui dengan penyesuaian** (kontrak Core I-4, 15 Nov 2026): tindakan tetap `mengesahkan` saja; Praktikum menambah `jenis_dokumen` lewat `selection_add`: `jadwal_praktikum`, `pemakaian_lab`, `perubahan_sesi`, `survei_kepuasan` | Cek wewenang PKG-15, 18, 20 | Febriyan (pemilik Jabatan) |
 | Personel | Asisten (mahasiswa) dicatat sebagai `hr.employee` dengan Jabatan **Asisten Praktikum** (`hr.job`) — **diputuskan** (Herrens, 14 Nov 2026) dan dicatat di CLAUDE.md bagian 6. Alasannya: asisten perlu jabatan untuk cek wewenang dan syarat kompetensi (SDM), dan jabatan selalu menempel pada Personel. Pihak eksternal bukan Personel dan bukan aktor (kontrak Core I-9) | Presensi asisten, pengisi jurnal | Kelompok (diberi tahu) |
 
@@ -185,7 +203,7 @@ Yang **tidak dirancang** tercantum di batasan masalah.
 1. **Indikator:** PKG-15 s.d. 20. Baris "Ketercapaian CPMK praktikum dianalisis" (Evaluasi 19 yang lain) tidak dicakup.
 2. **Tanpa integrasi** dengan SIAKAD, SIMPEL, LeADS, atau sistem jadwal fakultas. Data kelas diimpor dari berkas; presensi rinci dan bukti penilaian berupa tautan.
 3. **Data per praktikan dibatasi:** presensi praktikan berupa jumlah. Penilaian (PKG-19) cukup berupa tautan LeADS per kelas; bila impor nilai dipakai, yang disimpan hanya NIM dan status/nilai, **tanpa nama**, dengan akses terbatas (dosen kelas, KaLab, pengimpor).
-4. **Tanpa master baru** untuk *software* dan bahan: keduanya ditulis per modul. Master Alat, Bahan, dan stok adalah wilayah kelompok Aset.
+4. **Tanpa master baru** untuk *software* dan bahan: *software* ditulis per Versi Modul; bahan merujuk master Bahan Core (`labfik.bahan`, C-13, usulan kelompok Aset & Safety **[KONFIRMASI kelompok]**; bila tidak disetujui, ditulis per modul sebagai teks). Master Alat dan stok adalah wilayah kelompok Aset.
 5. **Rekap honor asisten** (tarif, rekening, pengajuan) tidak dirancang.
 6. **Tidak dirancang:** penjadwalan otomatis, kalender libur, pengingat (modul, jurnal, lisensi, survei), pemeriksaan per unit PC, register insiden, saluran pengaduan tersendiri, alur remediasi, *snapshot* tren skor.
 7. **PKG-17 bersyarat:** berlaku hanya untuk sesi yang modulnya mencantumkan bahan; N/A untuk periode tanpa sesi semacam itu.
@@ -243,8 +261,9 @@ Yang **tidak dirancang** tercantum di batasan masalah.
 
 ## Langkah berikutnya
 
-1. Wawancara KaLab dan laboran untuk bagian Pelaksanaan Praktikum; perbarui temuan *as-is* di setiap analisis.
-2. Konfirmasi judul dan dua aturan skor (PKG-19, PKG-20) ke Pak Widi.
-3. **Langkah 1:** catat arahan pembimbing dan tetapkan cakupan rancangan (Inti/Pelengkap) di brief ini.
-4. **Langkah 2:** bedah dokumen (POB 2025, sheet alokasi, formulir asistensi, kuesioner) menjadi `bedah-dokumen-praktikum.md`.
-5. **Langkah 4:** kebutuhan sistem `kebutuhan-praktikum.md` dengan kode `KF-PRK-nn`.
+Langkah 0–10 sudah selesai (14–16 Nov 2026): [studi dokumen](../analisis/bedah-dokumen-praktikum.md), [kebutuhan](../rancangan/kebutuhan-praktikum.md), [proses bisnis](../rancangan/proses-bisnis-praktikum.md), [use case](../rancangan/use-case-praktikum.md), [expanded use case](../rancangan/expanded-use-case-praktikum.md), [SSD](../rancangan/ssd-praktikum.md), [conceptual model](../rancangan/conceptual-model-praktikum.md), [design class diagram](../rancangan/design-class-praktikum.md). Yang tersisa:
+
+1. Wawancara KaLab dan laboran untuk bagian Pelaksanaan Praktikum (P1–P19); perbarui temuan *as-is* dan asumsi yang ditandai di rancangan.
+2. Konfirmasi judul, cakupan rancangan, dan dua aturan skor (PKG-19, PKG-20) ke Pak Widi.
+3. Sampaikan usulan perubahan ke Febriyan (kontrak Core) dan Zahir (kontrak SDM) dari [audit-praktikum.md](../rancangan/audit-praktikum.md) bagian I.
+4. Bab II 2.1 Observasi (as-is) dan 2.4 Rencana Pengujian dari eksepsi expanded use case dan AB-PRK.

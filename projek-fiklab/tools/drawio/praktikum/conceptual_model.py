@@ -154,7 +154,7 @@ p.e("ses-asal", "ses", "ses", DER, None, "0..1 /sesi_asal", pts=[(370, 425), (37
     exit=(0, 0.85), entry=(0.2, 1))
 p.e("pj-dd", "pj", "dd", GEN, exit=(0.5, 0), entry=(0.5, 1))
 p.e("pj-per", "pj", "per", ASSOC, "0..1", "1", pts=[(760, 249), (760, 85)], exit=(0, 0.3), entry=(1, 0.5))
-p.e("pml-aju", "pml", "aju", GEN, exit=(0.5, 0), entry=(0.3, 1))
+p.e("pml-aju", "pml", "aju", GEN, pts=[(950, 575), (1278, 575)], exit=(0.5, 0), entry=(0.3, 1))
 p.e("pbs-aju", "pbs", "aju", GEN, exit=(0.5, 0), entry=(0.7, 1))
 p.e("aju-kep", "aju", "kep", COMP, "1", "0..1 keputusan", exit=(1, 0.3), entry=(0, 0.5))
 p.e("aju-tar", "aju", "tar", COMP, "1", "0..1 penarikan", exit=(1, 0.8), entry=(0, 0.5))
@@ -162,7 +162,7 @@ p.e("aju-psl", "aju", "psl", ASSOC, "*", "1 pengaju", pts=[(1150, 534), (1150, 9
 p.e("kep-psl", "kep", "psl", ASSOC, "*", "1 pemutus", pts=[(1840, 420), (1840, 1015)], exit=(1, 0.5), entry=(1, 0.7))
 p.e("kep-ses", "kep", "ses", ASSOC, "0..1", "0..1 sesi_pengganti", pts=[(1680, 330)], exit=(0.5, 0), entry=(1, 0.43))
 p.e("pml-rng", "pml", "rng", ASSOC, "*", "1 ruang", pts=[(760, 705), (760, 815)], exit=(0, 0.5), entry=(1, 0.3))
-p.e("pbs-ses", "pbs", "ses", ASSOC, "*", "1 sesi", pts=[(1239, 600), (720, 600), (720, 391)], exit=(0.15, 0), entry=(1, 0.7))
+p.e("pbs-ses", "pbs", "ses", ASSOC, "*", "1 sesi", pts=[(1239, 625), (720, 625), (720, 391)], exit=(0.15, 0), entry=(1, 0.7))
 p.e("pbs-usl", "pbs", "usl", COMP, "1", "0..1 usulan", exit=(0.5, 1), entry=(0.5, 0))
 p.e("usl-rng", "usl", "rng", ASSOC, "*", "1 ruang", pts=[(1100, 852), (1100, 840)], exit=(0, 0.5), entry=(1, 0.8))
 
@@ -183,7 +183,7 @@ p.v("n3", "<b>Invarian</b><br>"
     "• Kelas unik per (mata kuliah, periode, nama).<br>"
     "• Satu sesi asli per (kelas, pertemuan_ke); pertemuan 8 = uts, 16 = uas (AB-PRK-02).<br>"
     "• Dua Sesi terjadwal, atau Sesi dan PemakaianLab disetujui, di ruang sama tidak beririsan waktu (AB-PRK-01).<br>"
-    "• Paling banyak satu PenetapanJadwal per Periode (AB-PRK-05).<br>"
+    "• Paling banyak satu PenetapanJadwal yang tidak dicabut per Periode (AB-PRK-05).<br>"
     "• Hasil ditolak ⇒ alasan terisi (AB-PRK-10). Keputusan dan Penarikan tidak keduanya ada.<br>"
     "• UsulanPengganti ada ⇔ jenis = pindah; sesi_pengganti ada ⇔ disetujui ∧ pindah (AB-PRK-12).",
     NOTE, 1340, ny, 500, 160)
@@ -196,10 +196,10 @@ pages.append((p, 1880, 1470))
 # ============================================================ CM-2
 p = Page(2, pname(2, "Versi Modul dan Kesiapan Sesi"),
          "CM-2 · Conceptual model: versi modul dan kesiapan sesi (PKG-15 C4, PKG-16, PKG-17)")
-p.stub("ses", "Sesi", ["rincian: CM-1"], 40, 60, 240)
+p.stub("ses", "Sesi", ["rincian: CM-1"], 40, 60, 180)
 p.stub("rb", "RekamanBukti", ["abstrak: tanggal, bukti [*], keterangan;", "peran pelapor. CM-1 Tata Kelola"], 40, 170, 240)
-p.cls("pk", "PemeriksaanKesiapan", ["waktu_periksa: DateTime", "keputusan: KeputusanKesiapan", "/tepat_waktu: Boolean"],
-      340, 60, 280)
+p.cls("pk", "PemeriksaanKesiapan", ["waktu_periksa: DateTime", "keputusan: KeputusanKesiapan", "/tepat_waktu: Boolean",
+                                     "/jumlah_pc_tersedia: Natural (O)"], 340, 60, 280)
 p.cls("bp", "ButirPemeriksaan", ["hasil: HasilButir", "keterangan: Text [0..1]"], 340, 230, 280, "abs")
 p.cls("bu", "ButirUtilitas", ["kategori: KategoriUtilitas"], 40, 420, 190)
 p.cls("bsk", "ButirStasiunKerja", ["jumlah_berfungsi: Natural", "/jumlah_dibutuhkan: Natural"], 250, 420, 200)
@@ -217,6 +217,7 @@ p.stub("mk", "MataKuliah", ["rincian: CM-1"], 1180, 50, 200)
 p.stub("per", "Periode", ["master Core"], 1180, 170, 200)
 p.stub("psl", "Personel", ["master Core"], 1400, 300, 220)
 p.stub("bhn", "Bahan", ["master Core (C-13): kode, nama,", "satuan, jenis [KONFIRMASI kelompok]"], 1400, 420, 240)
+p.stub("alt", "Alat", ["master Core (C-10), diisi kelompok", "Aset; hanya dibaca (O, KF-PRK-52)"], 40, 285, 240)
 p.enum("e1", "StatusVersiModul", ["draf", "berlaku", "diganti"], 40, 580, 190)
 p.enum("e2", "KeputusanKesiapan", ["siap", "siap_setelah_perbaikan", "tunda"], 250, 580, 200)
 p.enum("e3", "HasilButir", ["baik", "diperbaiki", "bermasalah"], 40, 720, 190)
@@ -224,6 +225,8 @@ p.enum("e4", "KategoriUtilitas", ["jaringan", "listrik", "proyektor_audio"], 250
 
 p.e("ses-pk", "ses", "pk", ASSOC, "1", "0..1 pemeriksaan", exit=(1, 0.5), entry=(0, 0.3))
 p.e("pk-rb", "pk", "rb", GEN, exit=(0, 0.85), entry=(1, 0.3))
+p.e("ses-alt", "ses", "alt", DER, None, "* /alat_tidak_tersedia", pts=[(20, 86), (20, 262), (64, 262)],
+    exit=(0, 0.5), entry=(0.1, 0))
 p.e("pk-bp", "pk", "bp", COMP, "1", "1..* butir", exit=(0.5, 1), entry=(0.5, 0))
 p.e("bu-bp", "bu", "bp", GEN, pts=[(135, 380), (382, 380)], exit=(0.5, 0), entry=(0.15, 1))
 p.e("bsk-bp", "bsk", "bp", GEN, pts=[(350, 380), (452, 380)], exit=(0.5, 0), entry=(0.4, 1))
@@ -260,10 +263,13 @@ p.v("n3", "<b>Turunan dan invarian</b><br>"
     "• Butir software dan bahan dibentuk dari /versi_berlaku pada tanggal sesi (AB-PRK-14).<br>"
     "• keputusan = siap ⇒ tidak ada butir bermasalah dan semua substitusi disetujui (AB-PRK-15, 16).<br>"
     "• VersiModul: berkas atau tautan_leads terisi; nomor_versi unik per (MK, periode) (AB-PRK-08).<br>"
-    "• penyetuju = dosen kelas sesi itu; penerbit = dosen pengampu MK (AB-PRK-09, 16).",
-    NOTE, 1280, ny, 420, 190)
+    "• penyetuju = dosen kelas sesi itu; penerbit = dosen pengampu MK (AB-PRK-09, 16).<br>"
+    "• (O) Sesi <code>/alat_tidak_tersedia</code> = alat di ruang sesi yang tidak tersedia untuk sesi itu menurut master Alat Core; "
+    "<code>/jumlah_pc_tersedia</code> = jumlah PC di ruang sesi yang tersedia. Hanya peringatan dan isian awal "
+    "<code>jumlah_berfungsi</code>; hasil butir tetap dari laboran, status alat tidak diubah (AB-PRK-14, KF-PRK-52).",
+    NOTE, 1280, ny, 420, 260)
 p.v("n4", SRC, NOTE, 40, 1085, 1220, 42)
-pages.append((p, 1720, 1150))
+pages.append((p, 1720, 1170))
 
 # ============================================================ CM-3
 p = Page(3, pname(3, "Pelaksanaan Sesi dan Penilaian"),

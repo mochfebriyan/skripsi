@@ -57,6 +57,7 @@ Kolom **Lapis**: W = Inti, O = Pelengkap. Lapis hanya dicatat di tabel ini; diag
 | UC-PRK-04 | Susun Penetapan Jadwal | — | Laboran | A1 *Susun penetapan jadwal* | 06 | W |
 | UC-PRK-10 | Lihat Laporan Jadwal | «report» | Laboran, KaLab, Petugas Praktikum | KF | 10, 11 | W |
 | (Tata Kelola) UC-01, 02, 03, 05 | Ajukan / Terbitkan Dokumen Resmi / Unggah Dokumen Bertanda Tangan / Sahkan Dokumen | — | Laboran, KaLab | A1 «call behavior» *Sahkan dokumen* | 06, 07 | W |
+| (Tata Kelola) UC-04, 06 | Kembalikan Dokumen / Cabut Dokumen | — | KaLab | S1 Tata Kelola *kembalikan*, *cabut* (berlaku untuk semua dokumen `approval.mixin`) | 06, 45 | W |
 | **Paket Modul (PKG-15, dipakai 16, 17, 19)** (halaman 1/3) | | | | | | |
 | UC-PRK-05 | Terbitkan Versi Modul | — | Dosen | A1 *Terbitkan versi modul* (+ «service» ganti versi lama) | 12, 13 | W |
 | UC-PRK-06 | Baca Modul Berlaku | — | Petugas Praktikum | KF | 14 | W |
@@ -65,7 +66,7 @@ Kolom **Lapis**: W = Inti, O = Pelengkap. Lapis hanya dicatat di tabel ini; diag
 | UC-PRK-08 | Putuskan Pemakaian Lab | — | KaLab | A2 *Tinjau*, *Setujui/Tolak pemakaian*; S2 *setujui*, *tolak* | 09, 49 | W |
 | UC-PRK-09 | Tarik Pengajuan | — | Petugas Praktikum (laboran untuk pengajuan pemakaian) | S2 *tarik kembali* | 47 | O |
 | **Paket Kesiapan (PKG-16, 17)** (halaman 2/3) | | | | | | |
-| UC-PRK-11 | Periksa Kesiapan Sesi | — | Laboran | A3 *Mulai pemeriksaan*, *Isi hasil butir*, *Tetapkan keputusan* (+ «service» buat butir) | 15, 16, 17, 18, 19 | W |
+| UC-PRK-11 | Periksa Kesiapan Sesi | — | Laboran | A3 *Mulai pemeriksaan*, *Isi hasil butir*, *Tetapkan keputusan* (+ «service» buat butir) | 15, 16, 17, 18, 19, 52 | W |
 | UC-PRK-12 | Setujui Substitusi Bahan | — | Dosen | A3 *Setujui substitusi bahan* | 20 | W |
 | **Paket Pelaksanaan Sesi (PKG-18)** (halaman 2/3) | | | | | | |
 | UC-PRK-13 | Kirim Jurnal Sesi | — | Petugas Praktikum | A3 *Isi jurnal*, *Catat presensi*, *Catat log book*, *Kirim*, *Perbaiki* (+ «service» validasi, ubah status); S1 *kirim jurnal* | 22, 23, 24, 25, 26, 30, 51 | W |
@@ -88,7 +89,7 @@ Kolom **Lapis**: W = Inti, O = Pelengkap. Lapis hanya dicatat di tabel ini; diag
 | UC-PRK-27 | Terbitkan Laporan Bukti | — | KaLab | KF | 42 | W |
 | UC-PRK-28 | Kelola Pengaturan Praktikum | «CRUDL» | KaLab | KF | 43 | W |
 
-**Jumlah:** 28 use case (24 W, 4 O: UC-PRK-09, 16, 18, 21), ditambah 4 use case pengesahan milik Tata Kelola yang dipakai ulang.
+**Jumlah:** 28 use case (24 W, 4 O: UC-PRK-09, 16, 18, 21), ditambah 6 use case pengesahan milik Tata Kelola yang dipakai ulang (UC-01–06; UC-04 dan 06 ditambahkan saat audit 16 Nov 2026 karena pencabutan jadwal dipakai KF-PRK-45).
 
 ---
 
@@ -100,7 +101,7 @@ Kolom **Lapis**: W = Inti, O = Pelengkap. Lapis hanya dicatat di tabel ini; diag
 |---|---|---|---|
 | A1 | Impor jadwal kelas (Laboran) | UC-PRK-03 | «service» bangkitkan sesi, periksa bentrok, periksa kapasitas langsung menyusul |
 | A1 | Susun penetapan jadwal (Laboran) | UC-PRK-04 | Bisa hari lain setelah bentrok diselesaikan fakultas |
-| A1 | «call behavior» Sahkan dokumen (KaLab) | UC-01, 03, 05 Tata Kelola | Dipakai ulang, beda aktor dan hari |
+| A1 | «call behavior» Sahkan dokumen (KaLab) | UC-01–06 Tata Kelola | Dipakai ulang, beda aktor dan hari |
 | A1 | Terbitkan versi modul (Dosen) | UC-PRK-05 | Jalur paralel, aktor lain |
 | A2 | Catat pengajuan pemakaian, Ubah waktu pemakaian (Laboran) | UC-PRK-07 | Ubah waktu terjadi di sesi yang sama saat bentrok ditemukan; *Minta pemakaian lab* dan *Sampaikan keputusan* adalah «manual» |
 | A2 | Tinjau, Setujui/Tolak pemakaian (KaLab) | UC-PRK-08 | Satu sesi keputusan |
@@ -122,7 +123,7 @@ Tugas «manual» (susun jadwal kelas dan kirim berkas oleh fakultas, sampaikan b
 | State machine | Event | Use case |
 |---|---|---|
 | S1 Sesi | bangkitkan | UC-PRK-03 |
-| S1 Sesi | hapus [jadwal belum disahkan ∧ belum ada jurnal] | UC-PRK-03 (impor ulang menggantikan sesi kelas itu) |
+| S1 Sesi | hapus [jadwal tidak diajukan/disahkan ∧ belum ada jurnal] | UC-PRK-03 (impor ulang menggantikan sesi kelas itu) |
 | S1 Sesi | kirim jurnal [valid ∧ is_terpublikasi] | UC-PRK-13 |
 | S1 Sesi | perubahan disetujui [pengganti / batal / daring]; bangkitkan pengganti | UC-PRK-15 |
 | S2 Pengajuan | ajukan | UC-PRK-07, 14 |
@@ -166,7 +167,7 @@ C = create, R = retrieve, U = update, D = delete, L = list. **X** = tidak diizin
 | Sesi | UC-03, 15 | UC-10 | UC-13, 15 (state, moda) | UC-03 (2) | UC-10 | UC-11, 13, 14, 16, 26 |
 | Penetapan Jadwal | UC-04 | UC-04 | UC-04 (draf) | UC-04 (draf) | UC-04 | Pengesahan Tata Kelola, UC-10, 26 |
 | Versi Modul (+ *software*, bahan) | UC-05 | UC-06 | UC-05 (draf) | UC-05 (draf) | UC-06 | UC-11 (butir), 13 (modul dipakai), 17 (rubrik), 26 |
-| Rencana Pemakaian Lab | UC-07 | UC-08 | UC-08, 09 (status) | X (3) | UC-10 | UC-10, 26 |
+| Pemakaian Lab | UC-07 | UC-08 | UC-08, 09 (status) | X (3) | UC-10 | UC-10, 26 |
 | Pemeriksaan Kesiapan (+ butir) | UC-11 | UC-16 | UC-11, 12 (substitusi) | X (3) | UC-16 | UC-26, 27 |
 | Jurnal Sesi (+ petugas, *log book*) | UC-13 | UC-16 | UC-13 (draf, koreksi) | X (3) | UC-16 | UC-26, 27 |
 | Perubahan Sesi | UC-14 | UC-15 | UC-15, 09 (status) | X (3) | UC-15 | UC-16, 26 |
@@ -178,7 +179,7 @@ C = create, R = retrieve, U = update, D = delete, L = list. **X** = tidak diizin
 
 Catatan:
 1. Mata Kuliah dan Kelas hanya bisa dihapus bila belum dipakai Sesi; selebihnya diarsipkan.
-2. Sesi hanya terhapus lewat impor ulang selama jadwal periode belum disahkan dan belum ada jurnal (aturan pakai bersama Sesi, kontrak Core C-9).
+2. Sesi hanya terhapus lewat impor ulang selama jadwal periode tidak sedang diajukan atau disahkan dan Sesi belum punya jurnal (AB-PRK-04; aturan pakai bersama Sesi, kontrak Core C-9).
 3. Rekaman bukti tidak dihapus, hanya dikoreksi, dan setiap koreksi terlacak (KNF-PRK-07, KF-PRK-44).
 4. Respons survei anonim tidak diubah atau dihapus oleh lab.
 
@@ -199,7 +200,7 @@ Penomoran UC di matriks disingkat (UC-01 = UC-PRK-01).
 | 03 | UC-PRK-03 | 29 | UC-PRK-16 |
 | 04 | UC-PRK-03, 07, 15 (*hidden*) | 30 | UC-PRK-13 (*hidden*) |
 | 05 | UC-PRK-03 (*hidden*) | 31 | UC-PRK-17 |
-| 06 | UC-PRK-04 + pengesahan Tata Kelola | 32 | UC-PRK-26 |
+| 06 | UC-PRK-04 + pengesahan Tata Kelola (UC-01–06) | 32 | UC-PRK-26 |
 | 07 | UC-02 Tata Kelola (Terbitkan Dokumen Resmi) | 33 | UC-PRK-19 |
 | 08 | UC-PRK-07 | 34 | UC-PRK-20 |
 | 09 | UC-PRK-08 | 35 | UC-PRK-22 |
@@ -210,14 +211,15 @@ Penomoran UC di matriks disingkat (UC-01 = UC-PRK-01).
 | 15, 17, 18, 19 | UC-PRK-11 | 42 | UC-PRK-27 |
 | 16 | UC-PRK-11 (*hidden*) | 43 | UC-PRK-28 |
 | 20 | UC-PRK-12 | 44 | Perilaku sistem di semua use case (`mail.thread`, `evidence.mixin`) |
-| 21 | UC-PRK-16 | 45, 46 | Perilaku hitung Sesi (`is_terpublikasi`, `is_ditunda`), terbaca di UC-PRK-10, 13, 26 |
+| 21 | UC-PRK-16 | 45, 46 | Perilaku hitung Sesi (`is_terpublikasi`, `is_ditunda`), terbaca di UC-PRK-10, 13, 26; pemicu 45 = UC-06 Cabut Dokumen (Tata Kelola), pemicu 46 = UC-PRK-15 |
 | 22, 23, 24, 25 | UC-PRK-13 | 47 | UC-PRK-09 |
 | 26 | UC-PRK-13, 15 (*hidden*) | 48 | UC-PRK-21 |
 | | | 49 | UC-PRK-07, 08, 14, 15 (*hidden*) |
 | | | 50 | UC-PRK-18 |
 | | | 51 | UC-PRK-13 (*hidden*) |
+| | | 52 | UC-PRK-11 (*hidden*, O; ditambahkan 16 Nov 2026) |
 
-Semua 51 KF tertutup oleh use case atau dicatat sebagai perilaku sistem.
+Semua 52 KF tertutup oleh use case atau dicatat sebagai perilaku sistem.
 
 ### 7.2 Pemeriksaan lain
 
@@ -227,12 +229,13 @@ Semua 51 KF tertutup oleh use case atau dicatat sebagai perilaku sistem.
 | Setiap kriteria instrumen punya kebutuhan dan use case | Ya, lewat tabel 7.1 dan bagian 5 kebutuhan |
 | Setiap transisi state machine punya use case | Ya (bagian 4.2). Tidak ada Penjadwal |
 | Status dan nama konsep sama di semua dokumen | Ya setelah penyesuaian kontrak Core 16 Nov 2026 (Sesi 3 status) |
-| Rujukan nomor | KF-PRK-01–51 tidak digeser; UC baru bernomor UC-PRK-01–28 |
+| Rujukan nomor | KF-PRK-01–52 tidak digeser; UC baru bernomor UC-PRK-01–28 |
 
 ### 7.3 Ketidaksesuaian dengan langkah sebelumnya
 
 - Activity A3–A4 memakai nama lajur "Pengisi Jurnal" dan "Pengaju"; di use case keduanya menjadi aktor abstrak **Petugas Praktikum**. Nama lajur di activity dibiarkan karena menjelaskan peran pada proses itu.
 - Kebutuhan dan brief sebelumnya menulis aktor *Pengisi Jurnal*; **sudah disamakan** menjadi *Petugas Praktikum* (16 Nov 2026).
+- **Audit 16 Nov 2026:** use case Tata Kelola UC-04 *Kembalikan Dokumen* dan UC-06 *Cabut Dokumen* belum dirujuk, padahal KF-PRK-45 bergantung pada pencabutan Penetapan Jadwal; kini ditambahkan (bagian 3 dan catatan diagram halaman 1). Label matriks CRUDL "Rencana Pemakaian Lab" disamakan menjadi **Pemakaian Lab** (nama baku conceptual model). Aktor *Admin* di kebutuhan dinyatakan bukan aktor modul (grup `base.group_system` bawaan).
 
 ---
 

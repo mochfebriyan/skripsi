@@ -54,7 +54,7 @@ Katalog ini mencakup **semua** use case. Operasi untuk use case tanpa SSD dituru
 | `dto_konflik* = cek_bentrok(dto_waktu_ruang, kecuali)` | Q | UC-PRK-03, 07, 08, 15 | AB-PRK-01 | Satu query bentrok untuk impor, pemakaian, dan sesi pengganti. `kecuali` = rekaman yang diabaikan (mis. Sesi asal) |
 | `dto_sesi_ringkas* = daftar_sesi(filter, user_id)` | Q | UC-PRK-11, 13, 14 | AB-PRK-06 | `filter` ∈ {`kesiapan_hari_ini`, `belum_berjurnal`, `terjadwal_saya`}. Memuat atribut hitung `is_terpublikasi`, `is_ditunda`, `is_terlewat` |
 | `dto_status_sesi = status_sesi(sesi)` | Q | UC-PRK-13, 15 | AB-PRK-06 | Dibaca setelah setiap command yang mengubah Sesi |
-| `buat_penetapan_jadwal(periode, user_id)` | C | UC-PRK-04 | AB-PRK-05 | Penetapan Jadwal Draf berisi daftar Sesi periode. Pengajuan, berkas bertanda tangan, dan pengesahan memakai operasi Tata Kelola (`ajukan_dokumen`, `terbitkan_dokumen`, `unggah_berkas_ttd`, `sahkan_dokumen`) |
+| `buat_penetapan_jadwal(periode, user_id)` | C | UC-PRK-04 | AB-PRK-05 | Penetapan Jadwal Draf berisi daftar Sesi periode. Pengajuan, berkas bertanda tangan, pengesahan, pengembalian, dan pencabutan memakai operasi Tata Kelola (`ajukan_dokumen`, `terbitkan_dokumen`, `unggah_berkas_ttd`, `kembalikan_dokumen`, `sahkan_dokumen`, `cabut_dokumen`) |
 | `dto_penetapan_jadwal = rincian_penetapan_jadwal(periode)` | Q | UC-PRK-04 | — | Rekaman dibaca lewat kunci alami (satu per periode, AB-PRK-05) |
 | `dto_laporan_jadwal = laporan_jadwal(filter)` | Q | UC-PRK-10 | AB-PRK-01 | «report»; jadwal terpadu + rekaman konflik |
 
@@ -82,7 +82,7 @@ Katalog ini mencakup **semua** use case. Operasi untuk use case tanpa SSD dituru
 
 | Operasi | Jenis | UC | AB | Keterangan |
 |---|---|---|---|---|
-| `dto_form_kesiapan = form_kesiapan(sesi)` | Q | UC-PRK-11 | AB-PRK-13, 14 | Butir dihitung dari kategori tetap + Versi Modul berlaku, belum disimpan |
+| `dto_form_kesiapan = form_kesiapan(sesi)` | Q | UC-PRK-11 | AB-PRK-13, 14 | Butir dihitung dari kategori tetap + Versi Modul berlaku, belum disimpan. (O, KF-PRK-52) Alat ruang Sesi dibaca lewat `check_ketersediaan_sesi()` Core untuk peringatan dan isian awal jumlah PC |
 | `keputusan_boleh* = keputusan_tersedia(sesi, dto_hasil_butir*)` | Q | UC-PRK-11 | AB-PRK-15, 16 | Keputusan yang sah untuk hasil butir itu |
 | `catat_pemeriksaan(sesi, dto_hasil_butir*, keputusan, user_id)` | C | UC-PRK-11 | AB-PRK-13, 14, 15, 16 | Menyimpan pemeriksaan, butir, dan waktu periksa |
 | `dto_pemeriksaan = rincian_pemeriksaan(sesi)` | Q | UC-PRK-11 | AB-PRK-13 | Kunci alami: satu pemeriksaan per Sesi |
@@ -198,7 +198,7 @@ Notasi: `‹…›` = gabungan data, `*` = koleksi, `(O)` = hanya bila KF Peleng
 
 | DTO | Isi |
 |---|---|
-| `dto_form_kesiapan` | ‹sesi: dto_sesi_ringkas, jumlah_mahasiswa, butir*: ‹kategori (stasiun kerja / jaringan / listrik / proyektor / software / bahan), nama, versi_atau_jumlah_dibutuhkan, berbayar›› |
+| `dto_form_kesiapan` | ‹sesi: dto_sesi_ringkas, jumlah_mahasiswa, butir*: ‹kategori (stasiun kerja / jaringan / listrik / proyektor / software / bahan), nama, versi_atau_jumlah_dibutuhkan, berbayar, alat_tidak_tersedia* (O)›, jumlah_pc_tersedia (O), workstation_count (O)› |
 | `dto_hasil_butir` | ‹butir, hasil (baik / diperbaiki / bermasalah), keterangan; stasiun kerja: jumlah_berfungsi; software berbayar: lisensi_sah; bahan: jumlah_tersedia, kondisi (baik / tidak), berlabel, tanggal_kedaluwarsa (bila relevan, KF-PRK-19), bahan_pengganti (master Bahan Core), alasan_substitusi› |
 | `dto_pemeriksaan` | ‹sesi, pemeriksa, waktu_periksa, tepat_waktu, keputusan (siap / siap setelah perbaikan / tunda), butir*: dto_hasil_butir, substitusi_menunggu*› |
 | `dto_substitusi` | ‹butir, sesi, bahan, bahan_pengganti, alasan_substitusi, status_persetujuan› |
@@ -261,7 +261,8 @@ Notasi: `‹…›` = gabungan data, `*` = koleksi, `(O)` = hanya bila KF Peleng
 | **Rekaman baru dibaca lewat kunci alami**, mis. `rincian_pemeriksaan(sesi)`, `rincian_jurnal(sesi)` | Command tidak mengembalikan ID (CQS). Satu pemeriksaan dan satu jurnal per Sesi (AB-PRK-13, 17) membuat Sesi menjadi kunci yang cukup. Penyimpangan `create()` Odoo diterima di langkah 10, sama dengan Tata Kelola |
 | **Operasi survei responden tanpa `user_id`** | Respons anonim (AB-PRK-28, KNF-PRK-04); dilayani addon `survey` lewat token tautan |
 | **`terbitkan_laporan_bukti()` adalah query** | Menghasilkan PDF tanpa mengubah data |
-| **Pengesahan jadwal tidak digambar ulang** | Memakai SSD Tata Kelola (UC-01–05) lewat `labfik.approval.mixin` |
+| **Pengesahan jadwal tidak digambar ulang** | Memakai SSD Tata Kelola (UC-01–06) lewat `labfik.approval.mixin` |
+| **Audit 16 Nov 2026** | `cek_bentrok()` hanya menghitung Sesi luring (AB-PRK-01); `pratinjau_impor()`/`impor_jadwal()` mengunci seluruh periode selama jadwal diajukan atau disahkan (AB-PRK-04, teks E2 SSD-1 diperbarui); `buat_penetapan_jadwal()` mengizinkan penyusunan ulang setelah dicabut (AB-PRK-05). Nama, jumlah, dan argumen operasi tidak berubah |
 
 ---
 

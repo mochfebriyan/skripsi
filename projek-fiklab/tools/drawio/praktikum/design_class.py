@@ -188,7 +188,7 @@ S = {
              ["+ is_terpublikasi: Boolean {compute, search}", "+ is_ditunda: Boolean {compute}",
               "+ is_terlewat: Boolean {compute, search}", "+ berasisten: Boolean {compute}",
               "+ melebihi_kapasitas: Boolean {compute}", "+ memenuhi_pkg15 … pkg18: Boolean {compute}"],
-             ["@model + cari_bentrok(ruang, tanggal, jam_mulai,", "&nbsp;&nbsp;&nbsp;jam_selesai, kecuali): list (AB-PRK-01)",
+             ["@model + cari_bentrok(ruang, tanggal, jam_mulai,", "&nbsp;&nbsp;&nbsp;jam_selesai, kecuali): list (AB-PRK-01, luring)",
               "+ get_petugas_ditugaskan(): hr.employee [*]", "+ get_modul_berlaku(): labfik.praktikum.modul",
               "+ get_cek_monev(pkg): list", "# _tandai_terlaksana()", "# _ganti(tanggal, jam, ruang): labfik.sesi",
               "+ unlink() «override» (AB-PRK-04)"], 380, "new"),
@@ -196,11 +196,11 @@ S = {
     "jdw": (cm("labfik.praktikum.jadwal", "Penetapan Jadwal [T]", "approval"),
             ["+ jumlah_sesi: Integer {compute}", "+ tanggal_publikasi: Date {related: tanggal_sah}"],
             ["+ get_ringkasan(): dict", "# _jenis_dokumen() «override» → jadwal_praktikum",
-             "# _cek_kelengkapan() «override» (AB-PRK-05)", "# _cek_satu_per_periode() @constrains"], 330, "c"),
+             "# _cek_kelengkapan() «override» (AB-PRK-05)", "# _cek_satu_aktif_per_periode() @constrains"], 330, "c"),
     "imp": (cm("labfik.praktikum.impor.jadwal", "Impor Jadwal [wizard]", stereo="«TransientModel»"),
             ["+ tanggal_pertemuan_pertama: Date", "+ berkas: Binary [0..1]", "+ ringkasan: Text {compute}"],
             ["+ action_pratinjau()", "+ action_impor() (AB-PRK-01–04)", "# _baca_berkas(): baris_ids",
-             "# _bangkitkan_sesi(kelas, baris)", "# _cek_terkunci(kelas): bool (AB-PRK-04)"], 330, "new"),
+             "# _bangkitkan_sesi(kelas, baris)", "# _cek_terkunci(periode, kelas): bool (AB-PRK-04)"], 330, "new"),
     "impb": (cm("labfik.praktikum.impor.jadwal.baris", "Baris Impor [wizard]", stereo="«TransientModel»"),
              ["+ kode_mk, nama_mk, prodi, nama_kelas: Char", "+ hari: Selection", "+ jam_mulai, jam_selesai: Float",
               "+ kode_ruang: Char", "+ dosen_id: hr.employee [0..1]", "+ jumlah_mahasiswa: Integer [0..1]",
@@ -218,7 +218,7 @@ p.e("ses-self", "ses", "ses", NAV, "pengganti 0..1", "sesi_asal_id 0..1",
 p.e("sesx-ses", "sesx", "ses", EXT, None, "«_inherit»", exit=(0, 0.3), entry=(1, 0.5))
 p.e("jdw-apv", "jdw", "apv", GEN, exit=(0.5, 0), entry=(0.5, 1))
 xb = bottom - 20
-p.e("jdw-per", "jdw", "per", NAV, "*", "periode_id 1 (unik)", pts=[(p.pt("jdw", 0.3, 1)[0], xb), (p.pt("per", 0.7, 1)[0], xb)],
+p.e("jdw-per", "jdw", "per", NAV, "*", "periode_id 1", pts=[(p.pt("jdw", 0.3, 1)[0], xb), (p.pt("per", 0.7, 1)[0], xb)],
     exit=(0.3, 1), entry=(0.7, 1))
 p.e("imp-impb", "imp", "impb", COMP, "1", "baris_ids *", exit=(0.5, 1), entry=(0.5, 0))
 p.e("imp-per", "imp", "per", NAV, "*", "periode_id 1", pts=[(p.pt("imp", 0.97, 0)[0], 40), (1240, 40), (1240, xb + 15),
@@ -310,11 +310,14 @@ S = {
     "evi": EVI,
     "ksp": (cm("labfik.praktikum.kesiapan", "Pemeriksaan Kesiapan [T]", "evidence"),
             ["+ waktu_periksa: Datetime", "+ keputusan: Selection {siap,", "&nbsp;&nbsp;&nbsp;siap_setelah_perbaikan, tunda}",
-             "+ tepat_waktu: Boolean {compute, store}", "<i>pelapor_id (warisan) = pemeriksa</i>",
+             "+ tepat_waktu: Boolean {compute, store}", "+ jumlah_pc_tersedia: Integer {compute} (O)",
+             "<i>pelapor_id (warisan) = pemeriksa</i>",
              "<i>_sql_constraints: unique(sesi_id)</i>"],
             ["@model + get_form(sesi): list", "@model + get_keputusan_tersedia(hasil_butir): list",
-             "@model + catat(sesi, hasil_butir, keputusan)", "# _cek_keputusan() @constrains (AB-PRK-15, 16)",
-             "# _compute_tepat_waktu() (AB-PRK-13)", "# _boleh_dikoreksi() «override»"], 340, "c"),
+             "@model + catat(sesi, hasil_butir, keputusan)", "# _cek_sesi() @constrains (AB-PRK-13)",
+             "# _cek_keputusan() @constrains (AB-PRK-15, 16)",
+             "# _compute_tepat_waktu() (AB-PRK-13)", "# _compute_ketersediaan_alat() (O, KF-PRK-52)",
+             "# _boleh_dikoreksi() «override»"], 340, "c"),
     "but": (cm("labfik.praktikum.kesiapan.butir", "Butir Pemeriksaan [T]"),
             ["+ kategori: Selection {stasiun_kerja, jaringan,", "&nbsp;&nbsp;&nbsp;listrik, proyektor_audio, software, bahan}",
              "+ hasil: Selection {baik, diperbaiki, bermasalah}", "+ keterangan: Text [0..1]",
@@ -341,10 +344,14 @@ S = {
     "per": (core("labfik.periode", "Periode [M]"), ["<i>rincian: DCD-1</i>"], [], 240, "core"),
     "bhn": (core("labfik.bahan", "Bahan Praktikum [M] (C-13)"), ["+ kode, name, satuan: Char", "+ jenis: Selection"],
             [], 240, "core"),
+    "alt": (core("labfik.alat", "Alat Lab [M] (C-10) · hanya dibaca"),
+            ["+ name: Char", "+ status: Selection (diubah Aset, I-13)", "<i>ruang_id, kategori_id.jenis</i>"],
+            ["+ check_ketersediaan_sesi(sesi): bool {hook}"], 270, "core"),
 }
-bottom = stack(p, [(40, ["ses"]), (440, ["ksp", "but"]), (900, ["mod", "msw", "mbh"]), (1340, ["mk", "per", "bhn"])], S)
+bottom = stack(p, [(40, ["ses", "alt"]), (440, ["ksp", "but"]), (900, ["mod", "msw", "mbh"]), (1340, ["mk", "per", "bhn"])], S)
 p.e("ksp-ses", "ksp", "ses", NAV, "0..1", "sesi_id 1", exit=(0, 0.1), entry=(1, 0.5))
 p.e("ksp-but", "ksp", "but", COMP, "1", "butir_ids 1..*", exit=(0.5, 1), entry=(0.5, 0))
+p.e("ksp-alt", "ksp", "alt", DER, None, "{compute} (O)<br>alat_tidak_tersedia_ids *", exit=(0, 0.55), entry=(1, 0.3))
 p.e("but-msw", "but", "msw", NAV, "*", "modul_software_id 0..1", exit=(1, 0.3), entry=(0, 0.5))
 p.e("but-mbh", "but", "mbh", NAV, "*", "modul_bahan_id 0..1", exit=(1, 0.5), entry=(0, 0.5))
 p.e("but-bhn", "but", "bhn", NAV, "*", "bahan_pengganti_id 0..1",
@@ -358,17 +365,21 @@ p.e("mod-per", "mod", "per", NAV, "*", "periode_id 1", exit=(1, 0.5), entry=(0, 
 p.e("mbh-bhn", "mbh", "bhn", NAV, "*", "bahan_id 1", pts=[(1300, p.pt("mbh", 1, 0.5)[1]), (1300, p.pt("bhn", 0, 0.7)[1])],
     exit=(1, 0.5), entry=(0, 0.7))
 ny = bottom + 10
-p.v("n0", LEG, NOTE, 40, ny, 760, 170)
+p.v("n0", LEG, NOTE, 40, ny, 760, 210)
 p.v("n1", "<b>Kunci</b><br>• <b>Butir: satu model, bukan empat subkelas.</b> Generalisasi CM (ButirUtilitas, StasiunKerja, "
     "Software, Bahan) diwujudkan dengan <code>kategori</code> + <code>_cek_isian_kategori()</code> (field wajib per kategori) "
     "dan tampilan per kategori. Subkelas Odoo (<code>_inherits</code>) akan membuat lima tabel untuk satu daftar butir.<br>"
     "• SubstitusiBahan dan PersetujuanSubstitusi (kejadian 0..1) menjadi field di butir; "
     "<code>action_setujui_substitusi()</code> hanya untuk dosen kelas Sesi itu (AB-PRK-16).<br>"
     "• <code>get_form(sesi)</code> membentuk butir dari <code>sesi.get_modul_berlaku()</code> + kategori tetap (AB-PRK-14), "
-    "tanpa menyimpan. <code>/versi_berlaku</code> CM → <code>get_berlaku(mata_kuliah, tanggal)</code>.",
-    NOTE, 820, ny, 760, 170)
-p.v("n2", SRC, NOTE, 40, ny + 190, 1540, 34)
-pages.append((p, 1640, ny + 250))
+    "tanpa menyimpan. <code>/versi_berlaku</code> CM → <code>get_berlaku(mata_kuliah, tanggal)</code>.<br>"
+    "• (O, KF-PRK-52) <code>_compute_ketersediaan_alat()</code> membaca alat di <code>sesi_id.ruang_id</code> dan memanggil "
+    "<code>check_ketersediaan_sesi()</code> Core: yang salah → <code>alat_tidak_tersedia_ids</code> (peringatan pada butir "
+    "kategori padanannya); PC yang benar → <code>jumlah_pc_tersedia</code> (isian awal <code>jumlah_berfungsi</code>). "
+    "Hanya membaca; status alat tidak diubah (I-13), hasil tetap dari laboran (AB-PRK-14).",
+    NOTE, 820, ny, 760, 210)
+p.v("n2", SRC, NOTE, 40, ny + 230, 1540, 34)
+pages.append((p, 1640, ny + 290))
 
 # ===================================================================== DCD-4
 p = Page(4, "Jurnal, Penilaian, Pengaturan", "DCD 4/5 · Jurnal sesi (PKG-18), penilaian kelas (PKG-19), pengaturan · labfik_praktikum")

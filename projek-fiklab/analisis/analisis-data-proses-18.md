@@ -92,7 +92,7 @@ Satu sesi rencana (Sesi dari PKG-15) dinyatakan **memenuhi** bila kelima cek lol
 
 | Cek | Arti | Cek oleh sistem | Cek oleh penilai |
 |---|---|---|---|
-| C1 Terlaksana | Ada jurnal sesi yang sudah dikirim | Jurnal sesi berstatus *dikirim* | — |
+| C1 Terlaksana | Ada jurnal sesi yang sudah dikirim | Jurnal sesi berstatus *terkirim* (nama status disamakan dengan rancangan, 16 Nov 2026) | — |
 | C2 Sesuai jadwal | Dilaksanakan pada tanggal dan ruang rencana, atau ada perubahan yang disetujui | Tanggal dan ruang jurnal = Sesi, **atau** ada Perubahan Sesi berstatus *disetujui* | Keabsahan penyetuju |
 | C3 Sesuai durasi | Durasi aktual tidak kurang dari ambang yang ditetapkan KaLab | Durasi aktual ≥ ambang × durasi rencana | — |
 | C4 Sesuai modul dan tujuan | Modul yang dipakai adalah versi berlaku, dan topik sesuai pertemuan | Jurnal merujuk Versi Modul yang berlaku pada tanggal sesi (PKG-15); topik terisi; pertemuan ke- = Sesi | **Kesesuaian topik dengan tujuan sesi** |

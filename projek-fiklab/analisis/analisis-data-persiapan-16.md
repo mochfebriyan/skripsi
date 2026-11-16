@@ -119,7 +119,7 @@ Riwayat perubahan memakai `mail.thread` + *tracking* bawaan Odoo.
 | Sesi, Ruang Lab | Sesi yang diperiksa, ruang | Core | — |
 | Kelas | Jumlah mahasiswa untuk cek stasiun kerja (S2) | Core | Cek stasiun kerja dilewati |
 | Personel | Laboran pemeriksa | `hr.employee` diperluas | — |
-| Alat | **Tidak dipakai** di cakupan ini. Pemeriksaan dilakukan per kategori di tingkat ruang, bukan per unit alat | Core (dikelola PKG-07 kelompok Aset) | — |
+| Alat (`labfik.alat`, Core C-10) | **Hanya dibaca** (Pelengkap, diperbarui 16 Nov 2026 mengikuti aturan pakai domain aset di kontrak Core). Butir tetap per kategori di tingkat ruang, bukan per unit. Saat form dibuka, sistem memanggil `check_ketersediaan_sesi(sesi)` untuk alat di ruang Sesi: alat yang tidak tersedia (perbaikan, dipinjam, afkir) ditampilkan sebagai peringatan pada butir kategori padanannya (PC → stasiun kerja, jaringan → jaringan, multimedia → proyektor/audio), dan jumlah PC tersedia menjadi isian awal jumlah stasiun kerja berfungsi. Hasil butir tetap ditetapkan laboran setelah memeriksa | Core (dikelola PKG-07 kelompok Aset) | Peringatan tidak muncul; jumlah stasiun kerja berfungsi diisi laboran (cara semula) |
 
 PKG-16 **tidak punya master lokal**. Master *Software* yang diusulkan di sheet tidak dibuat (keputusan Herrens, 14 Nov 2026): tidak ada kriteria instrumen yang gagal tanpanya, karena kebutuhan *software* sudah ditulis per modul dan keabsahan lisensi dinyatakan laboran saat pemeriksaan (prinsip "teks bebas sebelum master baru").
 
@@ -135,8 +135,9 @@ Pilihan tetap: kategori butir, hasil butir, keputusan, jenis lisensi.
 | Daftar *software* per modul | PKG-15 (Versi Modul) | Wajib untuk S3 | Butir *software* diisi manual oleh laboran |
 | Sesi dilaksanakan (pembagi) | PKG-18 Proses 18 (Jurnal Sesi) | Wajib untuk pembagi | Pembagi = sesi rencana yang tidak ditunda |
 | Status kalibrasi alat | PKG-05 Pengelolaan 5 (kelompok Aset) | Opsional | Dianggap tidak berlaku (A8) |
+| Ketersediaan alat di ruang | Master Alat Core (C-10), diisi kelompok Aset | Opsional (Pelengkap) | Peringatan tidak muncul; laboran mengisi jumlah stasiun kerja berfungsi sendiri |
 
-Dibanding [pemetaan](pemetaan-package-instrumen.md#pkg-16--persiapan-16-kesiapan-alat-dan-software): master Alat tidak lagi dibutuhkan, sehingga PKG-16 tidak bergantung pada kelompok Aset kecuali untuk kalibrasi yang opsional.
+Dibanding [pemetaan](pemetaan-package-instrumen.md#pkg-16--persiapan-16-kesiapan-alat-dan-software): master Alat dibaca dari Core (bukan dari addon Aset), sehingga PKG-16 tetap tidak bergantung pada addon kelompok Aset. Kalibrasi tetap opsional: Core hanya punya penanda `is_perlu_kalibrasi` dan `tgl_terakhir_verifikasi`, tanpa masa berlaku, jadi "status kalibrasi berlaku" belum bisa dihitung dari Core.
 
 **Keluar:** PKG-17 Persiapan 17 (bahan) menumpang di Pemeriksaan Kesiapan sebagai butir berkategori bahan. Keputusan *tunda* memicu Perubahan Sesi di PKG-18.
 

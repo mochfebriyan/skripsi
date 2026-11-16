@@ -78,11 +78,11 @@ class Page:
 
 
 LEGEND = ("<b>Notasi</b> (Wazlawick 2024, §4.2–4.3)<br>"
-          "• Aktor miring biru = <b>aktor abstrak</b>; panah segitiga kosong = generalisasi (turunan mewarisi use case induk)<br>"
+          "• Aktor bernama miring (kepala biru muda) = <b>aktor abstrak</b>; panah segitiga kosong = generalisasi (turunan mewarisi use case induk)<br>"
           "• «CRUDL» = kelola data (buat, lihat, ubah, hapus, daftar) dengan satu pola; «report» = hanya membaca<br>"
           "• Tanpa «include»/«extend»: setiap use case satu sesi dan berdiri sendiri (§4.3.1, §4.5)<br>"
           "• Tidak ada aktor «system» Penjadwal: status yang bergantung waktu dihitung, tidak dijadwalkan")
-SRC = ("Diturunkan dari activity A1–A5 dan state machine S1–S3 (proses-bisnis-praktikum.md), kebutuhan KF-PRK-01–51. "
+SRC = ("Diturunkan dari activity A1–A5 dan state machine S1–S3 (proses-bisnis-praktikum.md), kebutuhan KF-PRK-01–52. "
        "Rincian: use-case-praktikum.md · Draf 16 Nov 2026 · Herrens")
 SYS = "Sistem LabFIK Compliance · Modul Pelaksanaan Praktikum"
 pages = []
@@ -96,7 +96,8 @@ p.pkg("p2", "Pemakaian Lab (PKG-15)", 410, 520, 380, [7, 8, 9], 470)
 p.pkg("p3", "Modul (PKG-15, dipakai 16, 17, 19)", 850, 100, 380, [5, 6], 910)
 p.v("n3", "<b>Pengesahan jadwal</b> memakai use case milik <b>Tata Kelola</b>, tidak dibuat ulang: "
     "<i>Ajukan Dokumen</i> (UC-01), <i>Terbitkan Dokumen Resmi</i> (UC-02), <i>Unggah Dokumen Bertanda Tangan</i> (UC-03), "
-    "<i>Sahkan Dokumen</i> (UC-05) oleh KaLab, lewat <code>labfik.approval.mixin</code>. UC-PRK-04 menyiapkan dokumennya.", NOTE, 660, 990, 600, 90)
+    "<i>Kembalikan Dokumen</i> (UC-04), <i>Sahkan Dokumen</i> (UC-05), dan <i>Cabut Dokumen</i> (UC-06) oleh KaLab, "
+    "lewat <code>labfik.approval.mixin</code>. UC-PRK-04 menyiapkan dokumennya.", NOTE, 660, 990, 600, 110)
 p.actor("lab", "Laboran", 150, 180)
 p.actor("kal", "KaLab", 150, 420)
 p.actor("dos", "Dosen", 1330, 130)
@@ -111,7 +112,7 @@ p.v("n1", "<b>Cara baca</b><br>• <i>Petugas Praktikum</i> = asisten, dosen, at
     "(laboran turunan Petugas Praktikum).", NOTE, 660, 830, 600, 140)
 p.v("n2", "<b>Bukan aktor</b>: pengguna lab di luar praktikum (tanpa akun; dicatat laboran), tim jadwal fakultas (berkasnya diimpor laboran), Dekan, penilai monev (menerima PDF), pihak eksternal. "
     + SRC, NOTE, 40, 990, 600, 90)
-pages.append((p, 1500, 1110))
+pages.append((p, 1500, 1130))
 
 # ---------- halaman 2: pelaksanaan sesi (PKG-16, 17, 18)
 p = Page(2, "UC TO-BE (2-3) - Pelaksanaan Sesi")
@@ -136,7 +137,8 @@ p.v("n0", LEGEND, NOTE, 40, 650, 600, 120)
 p.v("n1", "<b>Cara baca</b><br>• UC-PRK-13 dalam satu sesi kerja: isi jurnal, presensi petugas (merujuk <code>hr.employee</code>), "
     "<i>log book</i>, lalu kirim; sistem memvalidasi, mengubah Sesi menjadi <i>terlaksana</i>, dan menandai petugas yang tidak sesuai penugasan SDM.<br>"
     "• Pengisi jurnal kelas tanpa asisten = dosen yang mengajar <b>[ASUMSI]</b>.<br>"
-    "• UC-PRK-11 dilakukan sebelum jam mulai; keputusan <i>tunda</i> dilanjutkan dengan UC-PRK-14 (sesi lain, tidak di-«include»).<br>"
+    "• UC-PRK-11 dilakukan sebelum jam mulai; keputusan <i>tunda</i> dilanjutkan dengan UC-PRK-14 (sesi lain, tidak di-«include»). "
+    "Alat ruang (master Core) hanya dibaca sebagai peringatan dan isian awal (O).<br>"
     "• UC-PRK-15 membangkitkan sesi pengganti bila disetujui dengan pengganti.", NOTE, 660, 650, 600, 160)
 p.v("n2", SRC, NOTE, 40, 830, 1220, 40)
 pages.append((p, 1650, 900))
