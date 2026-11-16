@@ -238,7 +238,7 @@ Kolom "Fitur" masih tingkat kebutuhan. Rinciannya ditetapkan saat rancangan (Bab
 
 ## Referensi
 
-Daftar pustaka yang dipakai dan status verifikasinya ada di [draf latar belakang](../pendahuluan/draft/latar-belakang-tata-kelola.md#daftar-pustaka).
+Daftar pustaka yang dipakai dan status verifikasinya ada di [draf latar belakang](../penulisan-skripsi/draft/latar-belakang-tata-kelola.md#daftar-pustaka).
 
 Kebijakannya:
 - Utamakan jurnal (2022 ke atas), standar, dan regulasi.

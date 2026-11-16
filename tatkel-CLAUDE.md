@@ -27,8 +27,8 @@ Modul ini juga mengelola master bersama **Personel, Jabatan, Dokumen Induk, dan 
 | `projek-fiklab/analisis/` | Pedoman pengisian sheet, pemetaan package, dan panduan wawancara umum (ketiganya **bersama kelompok**), serta analisis Pengelolaan 1–3, Pengembangan 13, dan panduan wawancara Tata Kelola (milik Febriyan) |
 | `projek-fiklab/rancangan/` | Rancangan TO-BE modul Tata Kelola (Bab II 2.3), langkah 4–10 selesai 14 November 2026: kebutuhan, proses bisnis, use case, expanded use case, SSD, conceptual model, design class diagram (`.md` + `.drawio`). Juga **bersama kelompok**: `kontrak-core.md` dan `model-core.drawio` (kontrak Core dari tiga branch, keputusan I-1–I-9, 15 November 2026) |
 | `projek-fiklab/docs/` | Rujukan: Instrumen Monev xlsx (tab *Analysis*), SNI ISO/IEC 17025:2017, Pedoman TA FIK 2025, daftar dosen FIK |
-| `projek-fiklab/pendahuluan/reference/` | Rujukan Bab 1: kumpulan Bab 1 dari judul-judul terkait, daftar judul skripsi terkait |
-| `projek-fiklab/pendahuluan/draft/` | Draf Bab 1 Febriyan (mulai dari latar belakang). Permasalahan awal mengikuti "Permasalahan bersama untuk Bab 1" di brief-seluruh-projek |
+| `projek-fiklab/penulisan-skripsi/reference/` | Rujukan Bab 1 dan Bab 2: kumpulan Bab 1 dan Bab 2 (skripsi jenis Proyek) dari judul-judul terkait, daftar judul skripsi terkait |
+| `projek-fiklab/penulisan-skripsi/draft/` | Draf Bab 1 Febriyan (mulai dari latar belakang). Permasalahan awal mengikuti "Permasalahan bersama untuk Bab 1" di brief-seluruh-projek |
 | `skripsi_rafika/` | Kode skripsi Rafika Anandar (2026), modul `PendaftaranAsisten` di atas OpenEduCat. **Hanya acuan; jangan diubah** |
 
 ## Urutan sumber kebenaran

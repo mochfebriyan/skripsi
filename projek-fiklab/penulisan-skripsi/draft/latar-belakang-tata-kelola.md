@@ -11,7 +11,7 @@
 **Kebijakan rujukan:**
 - Utamakan jurnal, standar, dan regulasi.
 - Skripsi hanya satu, yaitu Anandar (2026), karena menjadi satu-satunya rujukan penerapan Odoo di LabFIK.
-- Bab 1 judul-judul terkait di `pendahuluan/reference/` hanya dipakai sebagai contoh pola penulisan, tidak disitasi.
+- Bab 1 judul-judul terkait di `penulisan-skripsi/reference/` hanya dipakai sebagai contoh pola penulisan, tidak disitasi.
 
 ---
 
