@@ -32,8 +32,8 @@ Sumber:
 | **Laboran** | Laboran/PLP, Teknisi | Mengelola Mata Kuliah dan Kelas, membangkitkan Sesi, menyusun dan mengajukan Penetapan Jadwal, memeriksa kesiapan, hadir dan mengisi jurnal bila bertugas | `labfik_laboran` |
 | **Dosen** | Dosen (koordinator, kelas, tandem) | Menerbitkan Versi Modul beserta rubrik, daftar *software*, dan daftar bahan; menyetujui substitusi bahan; mengisi jurnal bila bertugas (kelas tanpa asisten); mencatat tautan penilaian LeADS kelasnya | `labfik_dosen` |
 | **Asisten** | Asisten Praktikum (`hr.employee` dengan jabatan Asisten Praktikum) | Mengisi jurnal sesi; mengajukan perubahan sesi | `labfik_asisten` |
-| ***Pengisi Jurnal*** (abstrak) | Asisten yang bertugas; untuk kelas tanpa asisten, **dosen yang mengajar** kelas itu **[ASUMSI dari keterangan Herrens, 14 Nov 2026; KONFIRMASI wawancara P10, P13]** | Mengisi Jurnal Sesi, presensi petugas, dan *log book* | — (generalisasi di Langkah 6) |
-| **Pengguna Lab** | Dosen, peneliti, atau unit yang memakai ruang di luar praktikum | Mengajukan Rencana Pemakaian Lab | `labfik_pengguna` |
+| ***Petugas Praktikum*** (abstrak; dulu "Pengisi Jurnal") | Asisten, dosen, atau laboran yang bertugas di sesi; pengisi jurnal adalah asisten yang bertugas; untuk kelas tanpa asisten, **dosen yang mengajar** kelas itu **[ASUMSI dari keterangan Herrens, 14 Nov 2026; KONFIRMASI wawancara P10, P13]** | Mengisi Jurnal Sesi, presensi petugas, dan *log book* | — (generalisasi di Langkah 6) |
+| ~~Pengguna Lab~~ | Dosen, peneliti, atau unit yang memakai ruang di luar praktikum | **Bukan aktor sistem**: tidak punya akun Odoo (keterangan Herrens, 16 Nov 2026). Permintaannya disampaikan ke laboran, yang mencatat pengajuan | — |
 | **Responden** | Praktikan, dosen, asisten (sesuai populasi survei) | Mengisi survei kepuasan lewat tautan, tanpa nama | Publik (tautan survei bawaan addon `survey`) |
 | **Admin** | Pengelola sistem | Mengelola pengaturan dan grup akses | `labfik_admin` |
 
@@ -58,9 +58,9 @@ Catatan:
 | KF-PRK-03 | Laboran dapat **mengimpor berkas jadwal kelas** dari tim jadwal fakultas (kode MK, kelas, hari, jam mulai–selesai, ruang, dosen), lalu sistem **membangkitkan Sesi** bertanggal untuk semua pertemuan dalam periode. Jadwal berupa **pola mingguan tetap per kelas** selama satu semester (satu baris per kelas; mis. Senin 13.00 untuk 16 pertemuan; keterangan Herrens, 14 Nov 2026). Pertemuan 8 (UTS) dan 16 (UAS) **tetap dibangkitkan** sebagai Sesi berjenis UTS/UAS, karena tetap berlangsung di kelas pada jadwal yang sama (ujian atau presentasi proyek; keterangan Herrens, 14 Nov 2026). Jalan pengganti: laboran mengisi pola mingguan per kelas. **[ASUMSI]** impor berkas Excel/CSV, tanpa API | Laboran | `labfik.sesi` (Core) | PKG-15 pembagi, PKG-18 pembagi | E | W |
 | KF-PRK-04 | Sistem **menolak** Sesi atau pemakaian lab yang tumpang tindih ruang dan waktu dengan Sesi lain atau pemakaian yang disetujui, dan menyebutkan bentroknya | Sistem | `labfik.sesi`, `labfik.praktikum.pemakaian` | PKG-15 C2 | H | W |
 | KF-PRK-05 | Sistem **memperingatkan** bila jumlah mahasiswa kelas melebihi kapasitas ruang Sesi, dan menandai Sesi itu tidak memenuhi C3 | Sistem | `labfik.sesi` | PKG-15 C3 | H | W |
-| KF-PRK-06 | Laboran dapat menyusun **Penetapan Jadwal** periode dan mengajukannya; KaLab mengunggah PDF jadwal bertanda tangan lalu **mengesahkannya** (wewenang `mengesahkan`, `jadwal_praktikum` dipegang Jabatan KaLab **[ASUMSI dari keterangan Herrens; KONFIRMASI P5]**); saat disahkan, tanggal publikasi tercatat dan Sesi periode itu ditandai terpublikasi | Laboran, KaLab | `labfik.praktikum.jadwal` (+ `labfik.approval.mixin`) | PKG-15 C1, bukti 4 | E | W |
+| KF-PRK-06 | Laboran dapat menyusun **Penetapan Jadwal** periode dan mengajukannya; KaLab mengunggah PDF jadwal bertanda tangan lalu **mengesahkannya** (wewenang `mengesahkan`, `jadwal_praktikum` dipegang Jabatan KaLab **[ASUMSI dari keterangan Herrens; KONFIRMASI P5]**); saat disahkan, tanggal publikasi tercatat dan Sesi periode itu terbaca terpublikasi (`is_terpublikasi`, kontrak Core C-9) | Laboran, KaLab | `labfik.praktikum.jadwal` (+ `labfik.approval.mixin`) | PKG-15 C1, bukti 4 | E | W |
 | KF-PRK-07 | Sistem dapat **mengekspor jadwal periode ke PDF** untuk ditandatangani | KaLab | [R] QWeb | PKG-15 C1 | E | W |
-| KF-PRK-08 | Pengguna Lab dapat **mengajukan pemakaian lab** di luar praktikum (jenis kegiatan, ruang, tanggal, jam, keperluan) | Pengguna Lab | `labfik.praktikum.pemakaian` | PKG-15 bukti 1–2 | E | W |
+| KF-PRK-08 | Laboran dapat **mencatat pengajuan pemakaian lab** atas permintaan pengguna lab di luar praktikum (jenis kegiatan, ruang, tanggal, jam, keperluan) | Laboran | `labfik.praktikum.pemakaian` | PKG-15 bukti 1–2 | E | W |
 | KF-PRK-09 | KaLab (penyetuju yang ditetapkan, keputusan Herrens 14 Nov 2026) dapat **menyetujui atau menolak** pemakaian lab dengan alasan; penolakan karena bentrok tercatat sebagai rekaman konflik | KaLab | `labfik.praktikum.pemakaian` | PKG-15 bukti 2, 5 | E | W |
 | KF-PRK-10 | Sistem menampilkan **jadwal terpadu** per ruang: Sesi dan pemakaian yang disetujui | KaLab, Laboran, Dosen, Asisten | [R] | PKG-15 bukti 1 | E | W |
 | KF-PRK-11 | Sistem menampilkan **rekaman konflik jadwal**: tumpang tindih yang terdeteksi dan penyelesaiannya | KaLab | [R] | PKG-15 bukti 5 | E | W |
@@ -91,12 +91,12 @@ Akses modul oleh praktikan: **lewat LeADS UPNVJ** (keterangan Herrens, 14 Nov 20
 
 | ID | Kebutuhan | Aktor | Model | Kriteria | Jenis | Prio |
 |---|---|---|---|---|---|---|
-| KF-PRK-22 | Pengisi Jurnal dapat mengisi **Jurnal Sesi** untuk satu Sesi: jam mulai dan selesai aktual, topik, Versi Modul yang dipakai, jumlah praktikan hadir, tautan presensi SIMPEL (opsional), kendala, foto. Identitas sesi (MK, kelas, tanggal, ruang, pertemuan) diambil dari Sesi, tidak diketik | Pengisi Jurnal | `labfik.praktikum.jurnal` | PKG-18 C1–C4, bukti 2, 4 | E | W |
-| KF-PRK-23 | Pengisi Jurnal mencatat **presensi petugas**: dosen, asisten, laboran, dengan tingkat kehadiran penuh / sebagian / tidak hadir | Pengisi Jurnal | `labfik.praktikum.jurnal.petugas` | PKG-18 C5, bukti 3 | E | W |
-| KF-PRK-24 | Pengisi Jurnal mencatat **entri *log book*** (waktu, uraian kegiatan) | Pengisi Jurnal | `labfik.praktikum.jurnal.logbook` | PKG-18 C5, bukti 5 | E | W |
-| KF-PRK-25 | Pengisi Jurnal **mengirim** jurnal; sistem menolak bila jam selesai ≤ jam mulai, bila Sesi sudah punya jurnal terkirim, atau bila presensi dosen dan laboran belum diisi | Pengisi Jurnal, Sistem | `labfik.praktikum.jurnal` | PKG-18 C1, C3, C5 | E | W |
-| KF-PRK-26 | Sistem **memperbarui status Sesi** dari jurnal terkirim, keputusan tunda, dan perubahan yang disetujui (nama status ditetapkan di state machine Langkah 5) | Sistem | `labfik.sesi` | PKG-18 C1–C2 | H | W |
-| KF-PRK-27 | Dosen pengampu (pengaju utama: kelas jadi daring atau jadwal diubah; keterangan Herrens, 14 Nov 2026), Pengisi Jurnal, atau Laboran dapat **mengajukan Perubahan Sesi** (pindah jadwal, pindah ruang, daring, batal dan diganti) dengan alasan dan usulan waktu/ruang pengganti | Pengisi Jurnal, Dosen, Laboran | `labfik.praktikum.perubahan` | PKG-18 bukti 6–7 | E | W |
+| KF-PRK-22 | Petugas Praktikum dapat mengisi **Jurnal Sesi** untuk satu Sesi: jam mulai dan selesai aktual, topik, Versi Modul yang dipakai, jumlah praktikan hadir, tautan presensi SIMPEL (opsional), kendala, foto. Identitas sesi (MK, kelas, tanggal, ruang, pertemuan) diambil dari Sesi, tidak diketik | Petugas Praktikum | `labfik.praktikum.jurnal` | PKG-18 C1–C4, bukti 2, 4 | E | W |
+| KF-PRK-23 | Petugas Praktikum mencatat **presensi petugas**: dosen, asisten, laboran (setiap baris merujuk `hr.employee`, kontrak Core I-8), dengan tingkat kehadiran penuh / sebagian / tidak hadir | Petugas Praktikum | `labfik.praktikum.jurnal.petugas` | PKG-18 C5, bukti 3 | E | W |
+| KF-PRK-24 | Petugas Praktikum mencatat **entri *log book*** (waktu, uraian kegiatan) | Petugas Praktikum | `labfik.praktikum.jurnal.logbook` | PKG-18 C5, bukti 5 | E | W |
+| KF-PRK-25 | Petugas Praktikum **mengirim** jurnal; sistem menolak bila jam selesai ≤ jam mulai, bila Sesi sudah punya jurnal terkirim, atau bila presensi dosen dan laboran belum diisi | Petugas Praktikum, Sistem | `labfik.praktikum.jurnal` | PKG-18 C1, C3, C5 | E | W |
+| KF-PRK-26 | Sistem **memperbarui status Sesi** dari jurnal terkirim, keputusan tunda, dan perubahan yang disetujui ke `terlaksana` atau `batal` (`labfik.sesi.state` = terjadwal/terlaksana/batal, kontrak Core I-1); status lain dihitung (`is_terpublikasi`, `is_ditunda`, `is_diganti`, `is_terlewat`) | Sistem | `labfik.sesi` | PKG-18 C1–C2 | H | W |
+| KF-PRK-27 | Dosen pengampu (pengaju utama: kelas jadi daring atau jadwal diubah; keterangan Herrens, 14 Nov 2026), Petugas Praktikum, atau Laboran dapat **mengajukan Perubahan Sesi** (pindah jadwal, pindah ruang, daring, batal dan diganti) dengan alasan dan usulan waktu/ruang pengganti | Petugas Praktikum, Dosen, Laboran | `labfik.praktikum.perubahan` | PKG-18 bukti 6–7 | E | W |
 | KF-PRK-28 | KaLab (penyetuju yang ditetapkan, keputusan Herrens 14 Nov 2026) dapat **menyetujui atau menolak** Perubahan Sesi; bila disetujui dengan pengganti, sistem membangkitkan Sesi pengganti yang merujuk Sesi asal (dengan cek konflik KF-PRK-04) | KaLab | `labfik.praktikum.perubahan`, `labfik.sesi` | PKG-18 C2, bukti 6–7 | E | W |
 | KF-PRK-29 | Sistem menampilkan **rekap keterlaksanaan per kelas** (sesi rencana, terlaksana, memenuhi) | KaLab, Laboran | [R] | — (pemantauan; menggantikan rekap manual) | E | O |
 | KF-PRK-30 | Sistem **menandai jurnal terlambat** (dikirim lebih dari batas hari setelah sesi) | Sistem | `labfik.praktikum.jurnal` | ISO 7.5.1 | H | O |
@@ -127,7 +127,7 @@ Akses modul oleh praktikan: **lewat LeADS UPNVJ** (keterangan Herrens, 14 Nov 20
 | KF-PRK-40 | Sistem menghitung **persentase kelas berbukti** PKG-19 (kelas dengan tautan dan rubrik ÷ seluruh kelas); bila nilai diimpor (KF-PRK-50), juga **persentase per praktikan** (Σ lengkap P1–P4 ÷ Σ dinilai). Skor PKG-19 tanpa impor ditetapkan penilai | Sistem | [R] | PKG-19 | H | W |
 | KF-PRK-41 | Sistem menampilkan **kriteria tertinggi K1–K4** PKG-20 yang lengkap secara data, dengan tautan bukti | Sistem | `labfik.criteria.mixin` | PKG-20 | H | W |
 | KF-PRK-42 | KaLab dapat **menerbitkan laporan bukti** per indikator per periode sebagai PDF (ringkasan skor/kriteria, daftar unit, tautan rekaman) untuk diserahkan ke penilai | KaLab | [R] QWeb | Semua ("bukti dapat diverifikasi") | E | W |
-| KF-PRK-43 | KaLab dapat mengatur **pengaturan modul**: ambang durasi minimal sesi, batas hari pengisian jurnal, sah tidaknya sesi daring | KaLab | Pengaturan | PKG-18 C3 | E | W |
+| KF-PRK-43 | KaLab dapat mengatur **pengaturan modul**: ambang durasi minimal sesi, batas hari pengisian jurnal, sah tidaknya sesi daring, batas lulus PKG-19 (awal 60; ditambahkan 16 Nov 2026 dari Langkah 7) | KaLab | Pengaturan | PKG-18 C3 | E | W |
 | KF-PRK-44 | Sistem mencatat **jejak audit** perubahan field penting dan menolak penghapusan rekaman bukti | Sistem | `mail.thread`, `labfik.evidence.mixin` | Keterlacakan bukti | H | W |
 
 ### H. Ditemukan di Langkah 5 (tabel status × transisi)
@@ -136,14 +136,15 @@ Ditambahkan 14 November 2026 dari [proses-bisnis-praktikum.md](proses-bisnis-pra
 
 | ID | Kebutuhan | Aktor | Model | Kriteria | Jenis | Prio |
 |---|---|---|---|---|---|---|
-| KF-PRK-45 | Saat Penetapan Jadwal **dicabut**, Sesi periode itu yang belum punya jurnal kembali ke status Rencana | Sistem | `labfik.sesi` | PKG-15 C1 (jadwal sah) | H | W **[KONFIRMASI]** |
-| KF-PRK-46 | Saat Perubahan Sesi atas Sesi yang **ditunda ditolak**, Sesi kembali Terpublikasi | Sistem | `labfik.sesi` | PKG-18 C1–C2 | H | W |
-| KF-PRK-47 | Pengaju dapat **menarik kembali** pengajuan pemakaian lab atau perubahan sesi sebelum diputuskan | Pengguna Lab, Pengaju | `labfik.praktikum.pemakaian`, `.perubahan` | — | E | O |
+| KF-PRK-45 | Saat Penetapan Jadwal **dicabut**, Sesi periode itu terbaca **belum terpublikasi** (`is_terpublikasi` dihitung dari status Penetapan Jadwal); state tidak berubah (kontrak Core I-1, 16 Nov 2026) | Sistem | `labfik.sesi` | PKG-15 C1 (jadwal sah) | H | W |
+| KF-PRK-46 | Saat Perubahan Sesi **ditolak**, Sesi tidak lagi terbaca **ditunda** (`is_ditunda` dihitung dari Perubahan Sesi yang masih diajukan); state tidak berubah (kontrak Core I-1) | Sistem | `labfik.sesi` | PKG-18 C1–C2 | H | W |
+| KF-PRK-47 | Pengaju dapat **menarik kembali** pengajuan pemakaian lab atau perubahan sesi sebelum diputuskan | Petugas Praktikum (termasuk laboran yang mencatat pengajuan pemakaian) | `labfik.praktikum.pemakaian`, `.perubahan` | — | E | O |
 | KF-PRK-48 | KaLab dapat **membatalkan penetapan survei** sebelum tanggal buka | KaLab | `survey.survey` | PKG-20 K1 | E | O |
 | KF-PRK-49 | Sistem **memberi notifikasi** kepada penyetuju saat ada pengajuan, dan kepada pengaju saat ada keputusan (pemakaian lab, perubahan sesi) | Sistem | `mail.activity`, `mail.thread` | — | H | O |
 | KF-PRK-50 | Laboran (atau dosen) dapat **mengimpor nilai kelas** dari ekspor Excel LeADS (bila tersedia) yang disusun ke templat baku: per praktikan NIM, jumlah tugas individual dinilai, nilai akhir, ada umpan balik, diremediasi; berkas asli dilampirkan. **[ASUMSI]** tanpa API | Laboran, Dosen | `labfik.praktikum.penilaian.baris` | PKG-19 P1–P4 | E | O |
+| KF-PRK-51 | Sistem **menandai petugas hadir yang tidak ada di penugasan** SDM (PKG-04) untuk sesi itu, dan petugas yang ditugaskan tetapi tidak hadir; hanya peringatan, tidak menolak jurnal (kontrak Core I-7: pencocokan dilakukan di Praktikum) | Sistem | `labfik.praktikum.jurnal.petugas` | — (pemantauan; mendukung PKG-04) | H | O |
 
-**Jumlah:** 50 KF (41 W, 9 O). Rincian 44 KF awal: 39 W, 5 O. KF-PRK-50 ditambahkan 14 Nov 2026 (impor nilai sebagai lapis Pelengkap PKG-19).
+**Jumlah:** 51 KF (41 W, 10 O). Rincian 44 KF awal: 39 W, 5 O. KF-PRK-50 ditambahkan 14 Nov 2026; KF-PRK-51 ditambahkan 16 Nov 2026 (pencocokan penugasan, kontrak Core I-7).
 
 ---
 
@@ -151,7 +152,7 @@ Ditambahkan 14 November 2026 dari [proses-bisnis-praktikum.md](proses-bisnis-pra
 
 | ID | Kebutuhan | Jenis (§4.7.3–4.7.5) | Kategori 25010 (§4.7.7) |
 |---|---|---|---|
-| KNF-PRK-01 | Berjalan di **Odoo 17 Community**, `depends: ['labfik_core', 'survey']`, tanpa OpenEduCat dan tanpa addon Enterprise | Suplementer, teknologis | Compatibility |
+| KNF-PRK-01 | Berjalan di **Odoo 17 Community**, `depends: ['labfik_core', 'labfik_sdm', 'survey']` (kontrak Core bagian 1, I-7), tanpa OpenEduCat dan tanpa addon Enterprise | Suplementer, teknologis | Compatibility |
 | KNF-PRK-02 | Hak akses berbasis **grup Odoo** (bagian 1) dan *record rule*: dosen hanya menerbitkan modul MK yang diampu; asisten dan dosen hanya mengisi jurnal Sesi kelasnya; responden survei tanpa akun. Akun pengguna memakai `hr.employee.user_id` → `res.users` bawaan Odoo (brief, Kontrak Core f) | Suplementer, teknologis | Security (confidentiality, integrity) |
 | KNF-PRK-03 | Data per praktikan **dibatasi**: presensi praktikan berupa jumlah; penilaian cukup tautan LeADS; bila impor dipakai, hanya NIM dan status/nilai, **tanpa nama**, dan hanya dosen kelas, KaLab, dan pengimpor yang dapat melihatnya | Suplementer, logis | Security (confidentiality) |
 | KNF-PRK-04 | Survei **anonim**: respons tidak menyimpan identitas responden | Nonfungsional (KF-PRK-35) | Security (confidentiality) |
@@ -204,7 +205,7 @@ Kebutuhan *hidden* (H) yang tidak berdiri sebagai *use case* sendiri: KF-PRK-04,
 ## 6. Pertanyaan terbuka
 
 - [ ] Pengesah jadwal = KaLab **[ASUMSI]**; dipastikan lewat wawancara P5 (KF-PRK-06)
-- [ ] Pengisi jurnal kelas tanpa asisten = dosen yang mengajar **[ASUMSI]**; dipastikan lewat wawancara P10, P13 (aktor Pengisi Jurnal)
+- [ ] Pengisi jurnal kelas tanpa asisten = dosen yang mengajar **[ASUMSI]**; dipastikan lewat wawancara P10, P13 (aktor Petugas Praktikum)
 - [ ] Pemeriksaan kesiapan per sesi (mengikuti instrumen) atau per ruang per hari? (KF-PRK-15; P8)
 - [x] Penyetuju pemakaian lab dan perubahan sesi: **KaLab** (keputusan 14 Nov 2026)
 - [x] Akses modul oleh praktikan: **lewat LeADS UPNVJ** (14 Nov 2026)

@@ -19,9 +19,10 @@ ST = {
     "final": "ellipse;html=1;shape=endState;fillColor=#000000;strokeColor=#000000;",
     "fork": "html=1;fillColor=#000000;strokeColor=none;",
     "time": "shape=collate;html=1;fillColor=#FFFFFF;strokeColor=#333333;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=6;fontSize=11;",
+    "time_l": "shape=collate;html=1;fillColor=#FFFFFF;strokeColor=#333333;labelPosition=left;verticalLabelPosition=middle;align=right;verticalAlign=middle;spacingRight=6;fontSize=11;",
 }
 SIZE = {"user": (200, 46), "service": (200, 46), "manual": (200, 46), "call": (200, 50), "dec": (34, 34),
-        "merge": (34, 34), "start": (24, 24), "final": (28, 28), "time": (22, 28)}
+        "merge": (34, 34), "start": (24, 24), "final": (28, 28), "time": (22, 28), "time_l": (22, 28)}
 STEREO = {"user": "«user»", "service": "«service»", "manual": "«manual»", "call": "«call behavior»"}
 EDGE = ("endArrow=open;endSize=9;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;fontSize=10;"
         "labelBackgroundColor=#FFFFFF;strokeColor=#333333;")
@@ -151,11 +152,10 @@ a.n("pk", "s", 9, "service", "Periksa kapasitas ruang")
 a.n("pj", "l", 10, "user", "Susun penetapan jadwal")
 a.n("a1", "k", 11, "call", "Sahkan dokumen (A1 Tata Kelola)<br>penyetuju: KaLab")
 a.n("tp", "s", 12, "service", "Catat tanggal publikasi")
-a.n("ts", "s", 13, "service", "Tandai sesi terpublikasi")
 a.n("tm", "d", 3, "user", "Terbitkan versi modul")
 a.n("gm", "s", 4, "service", "Ganti versi modul lama")
-a.n("jn", "s", 14, "fork")
-a.n("en", "s", 15, "final")
+a.n("jn", "s", 13, "fork")
+a.n("en", "s", 14, "final")
 a.e("1", "st", "fk"); a.e("2", "fk", "m0")
 a.e("2b", "fk", "tm", "", [(a.cx("d", None), a.cy(1))], exit=(1, 0.5), entry=(0.5, 0))
 a.e("3", "m0", "sj"); a.e("4", "sj", "kb")
@@ -168,14 +168,14 @@ a.e("11", "d1", "pk", "[tidak bentrok]")
 a.e("12", "pk", "pj", "", [(a.cx("s", None), a.cy(10))], exit=(0.5, 1), entry=(1, 0.5))
 a.e("13", "pj", "a1", "", [(a.cx("l", None), a.cy(11))], exit=(0.5, 1), entry=(0, 0.5))
 a.e("14", "a1", "tp", "", [(a.cx("k", None), a.cy(12))], exit=(0.5, 1), entry=(1, 0.5))
-a.e("15", "tp", "ts"); a.e("16", "ts", "jn")
+a.e("15", "tp", "jn")
 a.e("17", "tm", "gm", "", [(a.cx("d", None), a.cy(4))], exit=(0.5, 1), entry=(1, 0.5))
-a.e("18", "gm", "jn", "", [(a.lane_right("s", 16), a.cy(4)), (a.lane_right("s", 16), a.cy(14))], exit=(1, 0.5), entry=(1, 0.5))
+a.e("18", "gm", "jn", "", [(a.lane_right("s", 16), a.cy(4)), (a.lane_right("s", 16), a.cy(13))], exit=(1, 0.5), entry=(1, 0.5))
 a.e("19", "jn", "en")
-a.finish(16, [
+a.finish(15, [
     (LEGEND, 150),
     ("<b>Kaitan ke kriteria PKG-15</b><br>"
-     "C1 jadwal sah: <i>Sahkan dokumen (A1 Tata Kelola)</i> + <i>Catat tanggal publikasi</i> (KF-PRK-06)<br>"
+     "C1 jadwal sah: <i>Sahkan dokumen (A1 Tata Kelola)</i> + <i>Catat tanggal publikasi</i>; sesi periode itu terbaca terpublikasi (<i>is_terpublikasi</i>) (KF-PRK-06)<br>"
      "C2 tanpa bentrok: <i>Periksa bentrok ruang</i>; bentrok yang ditemukan menjadi rekaman konflik (KF-PRK-04, 11)<br>"
      "C3 kapasitas: <i>Periksa kapasitas ruang</i>, hanya peringatan (KF-PRK-05)<br>"
      "C4 modul berlaku: <i>Terbitkan versi modul</i> + <i>Ganti versi modul lama</i> (KF-PRK-12, 13)", 130),
@@ -195,42 +195,49 @@ pages.append(a)
 # ------------------------------------------------------------------ A2
 b = Activity("prk-act-a2", "Activity TO-BE (2-5) - Pemakaian Lab", "prk-act-a2-",
              "A2 · Pemakaian Lab di Luar Praktikum (PKG-15)",
-             [("p", "Pengguna Lab", 300, 1), ("s", "Sistem", 300, 1), ("k", "KaLab", 300, 1)])
+             [("p", "Pengguna Lab (tanpa akun)", 260, 1), ("l", "Laboran", 280, 1), ("s", "Sistem", 300, 1), ("k", "KaLab", 280, 1)])
 b.n("st", "p", 0, "start")
-b.n("m0", "p", 1, "merge")
-b.n("aj", "p", 2, "user", "Ajukan pemakaian lab")
-b.n("pb", "s", 3, "service", "Periksa bentrok ruang")
-b.n("d1", "s", 4, "dec")
-b.n("uw", "p", 4, "user", "Ubah waktu pemakaian")
-b.n("nt", "s", 5, "service", "Kirim notifikasi pengajuan")
-b.n("tj", "k", 6, "user", "Tinjau pengajuan pemakaian")
-b.n("d2", "k", 7, "dec")
-b.n("sp", "k", 8, "user", "Setujui pemakaian lab")
-b.n("jt", "s", 9, "service", "Perbarui jadwal terpadu")
-b.n("tl", "k", 10, "user", "Tolak pemakaian lab")
-b.n("m1", "s", 11, "merge")
-b.n("nk", "s", 12, "service", "Kirim notifikasi keputusan")
-b.n("en", "s", 13, "final")
-b.e("1", "st", "m0"); b.e("2", "m0", "aj")
-b.e("3", "aj", "pb", "", [(b.cx("p", None), b.cy(3))], exit=(0.5, 1), entry=(0, 0.5))
-b.e("4", "pb", "d1")
-b.e("5", "d1", "uw", "[bentrok]", exit=(0, 0.5), entry=(1, 0.5))
-b.e("6", "uw", "m0", "", [(b.lane_left("p", 18), b.cy(4)), (b.lane_left("p", 18), b.cy(1))], exit=(0, 0.5), entry=(0, 0.5))
-b.e("7", "d1", "nt", "[tidak bentrok]")
-b.e("8", "nt", "tj", "", [(b.cx("s", None), b.cy(6))], exit=(0.5, 1), entry=(0, 0.5))
-b.e("9", "tj", "d2"); b.e("10", "d2", "sp", "[disetujui]")
-b.e("11", "sp", "jt", "", [(b.cx("k", None), b.cy(9))], exit=(0.5, 1), entry=(1, 0.5))
-b.e("12", "d2", "tl", "[ditolak]", [(b.lane_right("k", 20), b.cy(7)), (b.lane_right("k", 20), b.cy(10))], exit=(1, 0.5), entry=(1, 0.5))
-b.e("13", "jt", "m1")
-b.e("14", "tl", "m1", "", [(b.cx("k", None), b.cy(11))], exit=(0.5, 1), entry=(1, 0.5))
-b.e("15", "m1", "nk"); b.e("16", "nk", "en")
-b.finish(14, [
+b.n("mp", "p", 1, "manual", "Minta pemakaian lab")
+b.n("m0", "l", 2, "merge")
+b.n("cp", "l", 3, "user", "Catat pengajuan pemakaian")
+b.n("pb", "s", 4, "service", "Periksa bentrok ruang")
+b.n("d1", "s", 5, "dec")
+b.n("uw", "l", 5, "user", "Ubah waktu pemakaian")
+b.n("nt", "s", 6, "service", "Kirim notifikasi pengajuan")
+b.n("tj", "k", 7, "user", "Tinjau pengajuan pemakaian")
+b.n("d2", "k", 8, "dec")
+b.n("sp", "k", 9, "user", "Setujui pemakaian lab")
+b.n("jt", "s", 10, "service", "Perbarui jadwal terpadu")
+b.n("tl", "k", 11, "user", "Tolak pemakaian lab")
+b.n("m1", "s", 12, "merge")
+b.n("nk", "s", 13, "service", "Kirim notifikasi keputusan")
+b.n("sk", "l", 14, "manual", "Sampaikan keputusan ke pengguna")
+b.n("en", "l", 15, "final")
+b.e("1", "st", "mp")
+b.e("2", "mp", "m0", "", [(b.cx("p", None), b.cy(2))], exit=(0.5, 1), entry=(0, 0.5))
+b.e("3", "m0", "cp")
+b.e("4", "cp", "pb", "", [(b.cx("l", None), b.cy(4))], exit=(0.5, 1), entry=(0, 0.5))
+b.e("5", "pb", "d1")
+b.e("6", "d1", "uw", "[bentrok]", exit=(0, 0.5), entry=(1, 0.5))
+b.e("7", "uw", "m0", "", [(b.lane_left("l", 18), b.cy(5)), (b.lane_left("l", 18), b.cy(2))], exit=(0, 0.5), entry=(0, 0.5))
+b.e("8", "d1", "nt", "[tidak bentrok]")
+b.e("9", "nt", "tj", "", [(b.cx("s", None), b.cy(7))], exit=(0.5, 1), entry=(0, 0.5))
+b.e("10", "tj", "d2"); b.e("11", "d2", "sp", "[disetujui]")
+b.e("12", "sp", "jt", "", [(b.cx("k", None), b.cy(10))], exit=(0.5, 1), entry=(1, 0.5))
+b.e("13", "d2", "tl", "[ditolak]", [(b.lane_right("k", 20), b.cy(8)), (b.lane_right("k", 20), b.cy(11))], exit=(1, 0.5), entry=(1, 0.5))
+b.e("14", "jt", "m1")
+b.e("15", "tl", "m1", "", [(b.cx("k", None), b.cy(12))], exit=(0.5, 1), entry=(1, 0.5))
+b.e("16", "m1", "nk")
+b.e("17", "nk", "sk", "", [(b.cx("s", None), b.cy(14))], exit=(0.5, 1), entry=(1, 0.5))
+b.e("18", "sk", "en")
+b.finish(16, [
     (LEGEND, 150),
     ("<b>Kaitan ke kriteria PKG-15</b><br>"
      "Bukti 1 jadwal terpadu: <i>Perbarui jadwal terpadu</i> (KF-PRK-10)<br>"
      "Bukti 2 persetujuan pemakaian: <i>Setujui / Tolak pemakaian lab</i> (KF-PRK-09)<br>"
      "Bukti 5 rekaman konflik: bentrok yang ditemukan <i>Periksa bentrok ruang</i> dan penolakan beralasan bentrok (KF-PRK-11)", 110),
-    ("<b>Penyetuju</b> = KaLab (keputusan Herrens, 14 Nov 2026). Status pengajuan mengikuti state machine S2.", 50),
+    ("<b>Pengguna lab tidak punya akun Odoo</b> (keterangan Herrens, 16 Nov 2026): permintaannya disampaikan langsung ke laboran, "
+     "laboran yang mencatat pengajuan dan menyampaikan keputusan. Penyetuju = KaLab. Status pengajuan mengikuti state machine S2.", 90),
     ("<b>[KONFIRMASI]</b> Jenis pemakaian di luar praktikum dan contoh kejadian bentrok (wawancara P3).", 50),
     (SRC, 50),
 ])
@@ -339,7 +346,7 @@ d.finish(16, [
      "C2 (atau perubahan sah): <i>Setujui perubahan sesi</i> (KF-PRK-28)<br>"
      "Bukti 6 perubahan disetujui, bukti 7 penggantian sesi: <i>Bangkitkan sesi pengganti</i> (rujuk sesi asal)<br>"
      "Sesi tertunda dihitung memenuhi hanya bila pengganti terlaksana sebelum periode ditutup", 110),
-    ("<b>Ubah status sesi asal</b>: dengan pengganti menjadi Diganti; batal menjadi Dibatalkan; daring: status tetap, moda menjadi daring (lihat S1).", 70),
+    ("<b>Ubah status sesi asal</b>: dengan pengganti atau batal menjadi <i>batal</i> (pengganti terbaca lewat <i>is_diganti</i>); daring: state tetap, moda menjadi daring (lihat S1).", 70),
     ("<b>Pengaju utama</b>: dosen pengampu (kelas jadi daring atau jadwal diubah; keterangan Herrens, 14 Nov 2026). Juga dipanggil dari A3 (keputusan tunda). Penyetuju = KaLab.", 60),
     ("<b>[KONFIRMASI]</b> Sesi daring dianggap sah? (pengaturan KaLab, KF-PRK-43; wawancara P12)", 50),
     (SRC, 50),
@@ -357,9 +364,9 @@ e.n("ts", "k", 3, "user", "Tetapkan survei")
 e.n("pk", "s", 4, "service", "Periksa kelengkapan survei")
 e.n("d1", "s", 5, "dec")
 e.n("ls", "k", 5, "user", "Lengkapi survei")
-e.n("tb", "s", 6, "time", "Tanggal buka survei")
+e.n("tb", "s", 6, "time_l", "Tanggal buka survei")
 e.n("is", "r", 7, "user", "Isi survei")
-e.n("tt", "s", 8, "time", "Tanggal tutup survei")
+e.n("tt", "s", 8, "time_l", "Tanggal tutup survei")
 e.n("hr", "s", 9, "service", "Hitung rekap per aspek")
 e.n("ce", "k", 10, "user", "Catat evaluasi survei")
 e.n("rt", "k", 11, "user", "Tetapkan rencana tindak lanjut")
@@ -411,50 +418,44 @@ STNOTE = ("<b>Notasi</b> (Wazlawick 2024, §3.3): <code>event [guard] / efek</co
 
 # S1 Sesi
 s1 = Page("prk-stm-s1", "State Machine TO-BE (1-3) - Sesi", "prk-stm-s1-")
-s1.v("title", "S1 · State machine Sesi praktikum (<code>labfik.sesi.state</code>, Core; status diubah hanya oleh modul Praktikum)",
+s1.v("title", "S1 · State machine Sesi praktikum (<code>labfik.sesi.state</code>, Core: terjadwal / terlaksana / batal)",
      TITLE, 40, 16, 1500, 40)
 s1.v("init", "", ST["start"], 50, 238, 24, 24)
-s1.v("ren", "Rencana", STATE, 130, 225, 150, 50)
-s1.v("init2", "", ST["start"], 583, 70, 24, 24)
-s1.v("pub", "Terpublikasi", STATE, 520, 225, 150, 50)
-s1.v("lak", "Terlaksana", STATE_T, 1000, 225, 150, 50)
-s1.v("tun", "Ditunda", STATE, 520, 470, 150, 50)
-s1.v("gan", "Diganti", STATE_T, 1000, 470, 150, 50)
-s1.v("bat", "Dibatalkan", STATE_T, 1000, 640, 150, 50)
-s1.v("f0", "", ST["final"], 191, 420, 28, 28)
-s1.v("f1", "", ST["final"], 1260, 236, 28, 28)
-s1.v("f2", "", ST["final"], 1260, 481, 28, 28)
-s1.v("f3", "", ST["final"], 1260, 651, 28, 28)
-s1.e("t0", "init", "ren", "bangkitkan (A1)", style=TR)
-s1.e("t0b", "init2", "pub", "bangkitkan pengganti (A4)", style=TR)
-s1.e("t1", "ren", "pub", "jadwal periode disahkan (A1)<br>/ catat tanggal_publikasi", style=TR, exit=(1, 0.3), entry=(0, 0.3))
-s1.e("t2", "pub", "ren", "jadwal periode dicabut<br>[belum ada jurnal]", style=TRN, exit=(0, 0.75), entry=(1, 0.75))
-s1.e("t3", "pub", "lak", "kirim jurnal [jurnal valid]<br>/ catat waktu kirim", style=TR, exit=(1, 0.5), entry=(0, 0.5))
-s1.e("t4", "pub", "tun", "tetapkan keputusan tunda (A3)", style=TR, exit=(0.3, 1), entry=(0.3, 0))
-s1.e("t5", "tun", "pub", "perubahan ditolak", style=TRN, exit=(0.7, 0), entry=(0.7, 1))
-s1.e("t6", "pub", "gan", "perubahan disetujui [dengan pengganti]<br>/ bangkitkan sesi pengganti", [(860, 260), (860, 485)], style=TR, exit=(1, 0.7), entry=(0, 0.3))
-s1.e("t7", "tun", "gan", "perubahan disetujui [dengan pengganti]<br>/ bangkitkan sesi pengganti", style=TR, exit=(1, 0.7), entry=(0, 0.7))
-s1.e("t8", "tun", "bat", "perubahan disetujui [batal tanpa pengganti]", [(595, 665)], style=TR, exit=(0.5, 1), entry=(0, 0.5))
-s1.e("t9", "pub", "pub", "perubahan disetujui [daring]<br>/ ubah moda", [(700, 215), (700, 190), (640, 190)], style=TR, exit=(1, 0.1), entry=(0.8, 0))
-s1.e("t10", "ren", "f0", "hapus [belum terpublikasi]", style=TR, exit=(0.5, 1), entry=(0.5, 0))
-s1.e("t11", "pub", "bat", "perubahan disetujui [batal tanpa pengganti]", [(470, 250), (470, 705), (1075, 705)], style=TR, exit=(0, 0.5), entry=(0.5, 1))
-for i, src in enumerate(["lak", "gan", "bat"], 1):
-    s1.e(f"tf{i}", src, f"f{i}", style=TR)
-s1.v("n1", STNOTE, NOTE, 40, 750, 560, 70)
-s1.v("n2", "<b>Status turunan, bukan state</b> (Wazlawick §9.3.1): <i>Terlewat</i> = Terpublikasi, tanggal sudah lewat, "
-     "belum ada jurnal, dihitung sebagai <code>is_terlewat</code> {compute}. Tidak dijadwalkan (prinsip hitung, bukan jadwalkan).", NOTE, 620, 750, 480, 80)
-s1.v("n3", "<b>Kaitan</b>: Terlaksana = PKG-18 C1. Diganti/Dibatalkan hanya lewat Perubahan Sesi yang disetujui (C2). "
-     "Sesi pengganti merujuk sesi asal (<code>sesi_asal_id</code>).", NOTE, 1120, 750, 400, 80)
-s1.v("n4", "<b>[KONFIRMASI]</b> Jadwal dicabut setelah disahkan: sesi kembali ke Rencana? Tunda lalu perubahan ditolak: sesi kembali "
-     "Terpublikasi untuk diperiksa ulang? " + SRC, NOTE, 40, 840, 760, 70)
-s1.w, s1.h = 1600, 950
+s1.v("init2", "", ST["start"], 323, 80, 24, 24)
+s1.v("jad", "Terjadwal<br><font style='font-size:10px;font-weight:normal'>/is_terpublikasi, /is_ditunda, /is_terlewat</font>", STATE, 230, 220, 210, 60)
+s1.v("lak", "Terlaksana", STATE_T, 780, 120, 150, 50)
+s1.v("bat", "Batal<br><font style='font-size:10px;font-weight:normal'>/is_diganti</font>", STATE_T, 780, 360, 150, 50)
+s1.v("f0", "", ST["final"], 321, 470, 28, 28)
+s1.v("f1", "", ST["final"], 1040, 131, 28, 28)
+s1.v("f2", "", ST["final"], 1040, 371, 28, 28)
+s1.e("t0", "init", "jad", "bangkitkan (A1)", style=TR)
+s1.e("t0b", "init2", "jad", "bangkitkan pengganti (A4)", style=TR)
+s1.e("t1", "jad", "lak", "kirim jurnal [jurnal valid ∧ is_terpublikasi]<br>/ catat waktu kirim", [(610, 240), (610, 145)], style=TR, exit=(1, 0.33), entry=(0, 0.5))
+s1.e("t2", "jad", "bat", "perubahan disetujui [dengan pengganti]<br>/ bangkitkan sesi pengganti (sesi_asal_id)", [(610, 260), (610, 375)], style=TR, exit=(1, 0.66), entry=(0, 0.3))
+s1.e("t3", "jad", "bat", "perubahan disetujui [batal tanpa pengganti]", [(335, 395)], style=TR, exit=(0.5, 1), entry=(0, 0.7))
+s1.e("t4", "jad", "jad", "perubahan disetujui [daring]<br>/ ubah moda", [(470, 230), (470, 190), (400, 190)], style=TR, exit=(1, 0.15), entry=(0.8, 0))
+s1.e("t5", "jad", "f0", "hapus [jadwal periode belum disahkan ∧ belum ada jurnal]", [(260, 485)], style=TR, exit=(0.15, 1), entry=(0, 0.5))
+s1.e("tf1", "lak", "f1", style=TR)
+s1.e("tf2", "bat", "f2", style=TR)
+s1.v("n1", "<b>Notasi</b> (Wazlawick 2024, §3.3): <code>event [guard] / efek</code>. Abu-abu = status akhir. "
+     "<code>/nama</code> = atribut turunan {compute}, bukan state.", NOTE, 40, 560, 560, 60)
+s1.v("n2", "<b>Atribut hitung, bukan state</b> (Wazlawick §9.3.1; kontrak Core C-9, keputusan I-1, 15 Nov 2026):<br>"
+     "• <i>is_terpublikasi</i> = Penetapan Jadwal periode itu disahkan (dulu Rencana/Terpublikasi)<br>"
+     "• <i>is_ditunda</i> = ada Perubahan Sesi yang masih diajukan<br>"
+     "• <i>is_terlewat</i> = tanggal lewat, belum ada jurnal<br>"
+     "• <i>is_diganti</i> = ada sesi lain dengan sesi_asal_id = sesi ini", NOTE, 620, 560, 520, 120)
+s1.v("n3", "<b>Akibatnya</b>: jadwal dicabut (KF-PRK-45) dan perubahan ditolak (KF-PRK-46) tidak lagi mengubah state; "
+     "keduanya terbaca otomatis dari <i>is_terpublikasi</i> dan <i>is_ditunda</i>. "
+     "Status disamakan dengan modul SDM; hanya Praktikum yang mengubah state.", NOTE, 40, 640, 560, 80)
+s1.v("n4", "Pemetaan 6 status → 3 status diterima Herrens, 16 Nov 2026. " + SRC, NOTE, 620, 700, 520, 50)
+s1.w, s1.h = 1250, 790
 pages.append(s1)
 
 # S2 Persetujuan sederhana
 s2 = Page("prk-stm-s2", "State Machine TO-BE (2-3) - Pengajuan Pemakaian dan Perubahan", "prk-stm-s2-")
 s2.v("title", "S2 · State machine pengajuan dengan persetujuan sederhana: Rencana Pemakaian Lab dan Perubahan Sesi", TITLE, 40, 16, 1400, 40)
 s2.v("init", "", ST["start"], 50, 238, 24, 24)
-s2.v("aju", "Diajukan", STATE, 160, 225, 150, 50)
+s2.v("aju", "Diajukan", STATE, 230, 225, 150, 50)
 s2.v("set", "Disetujui", STATE_T, 620, 110, 150, 50)
 s2.v("tol", "Ditolak", STATE_T, 620, 240, 150, 50)
 s2.v("tar", "Ditarik", STATE_T, 620, 370, 150, 50)
@@ -462,9 +463,9 @@ s2.v("f1", "", ST["final"], 880, 121, 28, 28)
 s2.v("f2", "", ST["final"], 880, 251, 28, 28)
 s2.v("f3", "", ST["final"], 880, 381, 28, 28)
 s2.e("t0", "init", "aju", "ajukan [tidak bentrok]", style=TR)
-s2.e("t1", "aju", "set", "setujui [jabatan berwenang: KaLab]<br>/ perbarui jadwal terpadu atau ubah Sesi (S1)", [(235, 135)], style=TR, exit=(0.5, 0), entry=(0, 0.5))
+s2.e("t1", "aju", "set", "setujui [jabatan berwenang: KaLab]<br>/ perbarui jadwal terpadu atau ubah Sesi (S1)", [(305, 135)], style=TR, exit=(0.5, 0), entry=(0, 0.5))
 s2.e("t2", "aju", "tol", "tolak [alasan terisi] / catat alasan", style=TR, exit=(1, 0.5), entry=(0, 0.5))
-s2.e("t3", "aju", "tar", "tarik kembali [oleh pengaju]", [(235, 395)], style=TRN, exit=(0.5, 1), entry=(0, 0.5))
+s2.e("t3", "aju", "tar", "tarik kembali [oleh pengaju]", [(305, 395)], style=TRN, exit=(0.5, 1), entry=(0, 0.5))
 for i, src in enumerate(["set", "tol", "tar"], 1):
     s2.e(f"tf{i}", src, f"f{i}", style=TR)
 s2.v("n1", STNOTE, NOTE, 40, 460, 560, 70)
@@ -486,8 +487,8 @@ s3.v("eva", "Dievaluasi<br><font style='font-size:10px;font-weight:normal'>(K3 l
 s3.v("sel", "Siklus Selesai<br><font style='font-size:10px;font-weight:normal'>(K4 lengkap)</font>", STATE_T, 1190, 225, 160, 50)
 s3.v("f1", "", ST["final"], 1256, 380, 28, 28)
 s3.e("t0", "init", "dra", "buat", style=TR)
-s3.e("t1", "dra", "tet", "tetapkan [enam aspek ∧ butir terbuka<br>∧ target respons ∧ jabatan berwenang]", style=TR, exit=(1, 0.3), entry=(0, 0.3))
-s3.e("t2", "tet", "dra", "batalkan penetapan<br>[sebelum tanggal buka]", style=TRN, exit=(0, 0.75), entry=(1, 0.75))
+s3.e("t1", "dra", "tet", "tetapkan [enam aspek ∧ butir terbuka<br>∧ target respons ∧ jabatan berwenang]", [(205, 170), (550, 170)], style=TR, exit=(0.5, 0), entry=(0.5, 0))
+s3.e("t2", "tet", "dra", "batalkan penetapan<br>[sebelum tanggal buka]", [(550, 330), (205, 330)], style=TRN, exit=(0.5, 1), entry=(0.5, 1))
 s3.e("t3", "tet", "eva", "catat evaluasi + RTL<br>[tanggal tutup terlewati]", style=TR, exit=(1, 0.5), entry=(0, 0.5))
 s3.e("t4", "eva", "sel", "nilai efektivitas semua RTL<br>[survei periode berikutnya dievaluasi]", style=TR, exit=(1, 0.5), entry=(0, 0.5))
 s3.e("t5", "sel", "f1", style=TR, exit=(0.5, 1), entry=(0.5, 0))

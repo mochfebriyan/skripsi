@@ -4,7 +4,7 @@
 
 **Status: DRAF. Diagram ini masuk proposal (Bab II 2.3).** Langkah 5 rancangan TO-BE.
 
-Diagram: [activity-state-praktikum.drawio](activity-state-praktikum.drawio), 8 halaman. Skrip pembuatnya: [tools/drawio/praktikum/activity_state.py](../tools/drawio/praktikum/activity_state.py) (salinan pola dari `contoh-tata-kelola/`, data diganti; dijalankan ulang bila isi berubah). `validate.py` dengan prefiks `prk-`: **OK** di kedelapan halaman. Tampilan visual **belum dicek di draw.io**.
+Diagram: [activity-state-praktikum.drawio](activity-state-praktikum.drawio), 8 halaman. Skrip pembuatnya: [tools/drawio/praktikum/activity_state.py](../tools/drawio/praktikum/activity_state.py) (salinan pola dari `contoh-tata-kelola/`, data diganti; dijalankan ulang bila isi berubah). `validate.py` dengan prefiks `prk-`: **OK** di kedelapan halaman. Pemeriksaan tampilan [cek_tampilan.py](../tools/drawio/praktikum/cek_tampilan.py) (garis yang menembus kotak lain): **0 temuan** (16 Nov 2026). Tampilan sudah dicek lewat ekspor PNG draw.io desktop (16 Nov 2026); label yang tertimpa dan garis yang menyilang sudah dirapikan.
 
 ## Posisi dalam metode
 
@@ -39,7 +39,7 @@ Input: [kebutuhan-praktikum.md](kebutuhan-praktikum.md) (KF-PRK-01 s.d. 44), [br
 ## 2. Ringkasan alur
 
 - **A1 Persiapan (sebelum semester).** Dua jalur paralel. Tim jadwal fakultas menyusun jadwal kelas praktikum dan mengirim berkasnya (di luar sistem); laboran mengimpor berkas itu, sistem membangkitkan Sesi untuk semua kelas dan memeriksa bentrok ruang. Bentrok dicatat sebagai rekaman konflik dan laboran menyampaikannya ke fakultas untuk diperbaiki; bila tidak ada bentrok, sistem memeriksa kapasitas lalu laboran menyusun penetapan jadwal yang disetujui (disahkan) KaLab lewat A1 Tata Kelola. Cara jadwal masuk ke Odoo (impor berkas, tanpa API) adalah **[ASUMSI]**; saat disahkan, sistem mencatat tanggal publikasi dan menandai Sesi terpublikasi. Sejajar, dosen menerbitkan versi modul (berkas, rubrik, daftar *software*, daftar bahan) dan sistem mengganti versi lama.
-- **A2 Pemakaian lab.** Pengguna lab mengajukan; bila bentrok, waktu diubah; KaLab menyetujui (jadwal terpadu diperbarui) atau menolak dengan alasan.
+- **A2 Pemakaian lab.** Pengguna lab (tanpa akun Odoo) meminta ke laboran; laboran mencatat pengajuan; bila bentrok, waktu diubah; KaLab menyetujui (jadwal terpadu diperbarui) atau menolak dengan alasan; laboran menyampaikan keputusan ke pengguna.
 - **A3 Satu sesi.** Sebelum jam mulai, laboran memeriksa kesiapan; butir *software* dan bahan dibuat dari modul; substitusi bahan disetujui dosen; keputusan tunda memanggil A4. Bila siap, praktikum berlangsung (di luar sistem), lalu Pengisi Jurnal mengisi jurnal, presensi petugas, dan *log book*, kemudian mengirim; sistem memvalidasi dan mengubah Sesi menjadi Terlaksana. Penilaian praktikan tidak dicatat per sesi; penilaian dilihat lewat tautan LeADS per kelas (KF-PRK-31), dengan impor Excel sebagai pelengkap (KF-PRK-50); tidak digambar karena hanya satu aktor dan satu langkah (§3.4).
 - **A4 Perubahan.** Jadwal tetap selama semester kecuali ada perubahan; pengaju utama adalah dosen pengampu (kelas jadi daring atau pindah jadwal). Pengaju mengajukan; KaLab menolak atau menyetujui; bila ada pengganti, sistem memeriksa bentrok lalu membangkitkan Sesi pengganti yang merujuk Sesi asal; status Sesi asal diubah (Diganti / Dibatalkan / tetap dengan moda daring).
 - **A5 Survei.** KaLab menyusun dan menetapkan survei (sistem memeriksa enam aspek, butir terbuka, target); responden mengisi selama survei dibuka; sistem menghitung rekap; KaLab mencatat evaluasi dan RTL; pada periode berikutnya KaLab menilai efektivitas RTL dan K4 menjadi lengkap.
@@ -50,22 +50,32 @@ Baris = status asal, kolom = status tujuan. Setiap sel kosong ditanyakan: "apaka
 
 ### 3.1 S1 Sesi
 
-| Dari \ Ke | Rencana | Terpublikasi | Ditunda | Terlaksana | Diganti | Dibatalkan |
-|---|---|---|---|---|---|---|
-| (awal) | bangkitkan (A1) | bangkitkan pengganti (A4) | | | | |
-| **Rencana** | | jadwal periode disahkan | | ? | | hapus (keluar) |
-| **Terpublikasi** | **jadwal dicabut [belum ada jurnal]** | perubahan disetujui [daring] | keputusan tunda | kirim jurnal [valid] | perubahan disetujui [pengganti] | perubahan disetujui [batal] |
-| **Ditunda** | | **perubahan ditolak** | | ? | perubahan disetujui [pengganti] | perubahan disetujui [batal] |
-| **Terlaksana** | | ? | | | | |
-| **Diganti** | | ? | | | | |
-| **Dibatalkan** | | ? | | | | |
+**Diperbarui 16 November 2026** mengikuti kontrak Core bersama (C-9, keputusan I-1): `labfik.sesi.state` cukup tiga nilai, sama dengan modul SDM. Versi 14 November memakai enam status (Rencana, Terpublikasi, Ditunda, Terlaksana, Diganti, Dibatalkan); empat di antaranya kini **atribut hitung** karena dapat diturunkan dari data lain (Wazlawick §9.3.1). Pemetaan ini diterima Herrens, 16 November 2026.
+
+| Status lama (14 Nov) | Sekarang | Cara membedakannya |
+|---|---|---|
+| Rencana, Terpublikasi | `terjadwal` | `is_terpublikasi` {compute} = Penetapan Jadwal periode itu disahkan |
+| Ditunda | `terjadwal` | `is_ditunda` {compute} = ada Perubahan Sesi yang masih diajukan |
+| Terlaksana | `terlaksana` | Jurnal Sesi terkirim dan valid |
+| Diganti | `batal` | `is_diganti` {compute} = ada sesi lain dengan `sesi_asal_id` = sesi ini |
+| Dibatalkan | `batal` | Tanpa sesi pengganti |
+
+| Dari \ Ke | Terjadwal | Terlaksana | Batal |
+|---|---|---|---|
+| (awal) | bangkitkan (A1); bangkitkan pengganti (A4) | | |
+| **Terjadwal** | perubahan disetujui [daring] / ubah moda | kirim jurnal [jurnal valid ∧ is_terpublikasi] | perubahan disetujui [dengan pengganti / batal] |
+| **Terlaksana** | ? | | |
+| **Batal** | ? | | |
+
+Ditambah transisi *hapus* dari Terjadwal (hanya bila jadwal periode belum disahkan dan belum ada jurnal).
 
 | Sel | Pertanyaan | Asumsi sementara |
 |---|---|---|
-| Rencana → Terlaksana | Bolehkah sesi yang jadwalnya belum disahkan dilaksanakan dan dilaporkan? | Tidak. Jurnal hanya bisa diisi untuk Sesi Terpublikasi; sesi semacam itu dihitung tidak memenuhi C1 PKG-15 |
-| Ditunda → Terlaksana | Bila sesi ditunda tetapi akhirnya tetap berjalan (kendala teratasi), bagaimana? | Lewat **perubahan ditolak** (kembali Terpublikasi), lalu jurnal dikirim |
-| Terlaksana → Terpublikasi | Jurnal terkirim ternyata salah: dibuka kembali? | Tidak mengubah status Sesi; koreksi isi jurnal tercatat di riwayat (`mail.thread`). Pengembalian jurnal oleh laboran menunggu P11 |
-| Diganti / Dibatalkan → Terpublikasi | Bisakah keputusan perubahan dibatalkan? | Tidak. Buat perubahan baru untuk Sesi pengganti |
+| Terlaksana → Terjadwal | Jurnal terkirim ternyata salah: dibuka kembali? | Tidak mengubah state; koreksi isi jurnal tercatat di riwayat (`mail.thread`). Pengembalian jurnal oleh laboran menunggu P11 |
+| Batal → Terjadwal | Bisakah keputusan perubahan dibatalkan? | Tidak. Buat perubahan baru untuk Sesi pengganti |
+| Terjadwal (belum terpublikasi) → Terlaksana | Bolehkah sesi yang jadwalnya belum disahkan dilaporkan? | Tidak; guard `is_terpublikasi` |
+
+Transisi merah versi 14 November (jadwal dicabut → Rencana; perubahan ditolak → Terpublikasi) **tidak lagi berupa transisi**: keduanya otomatis terbaca dari `is_terpublikasi` dan `is_ditunda` (KF-PRK-45, 46 menjadi perilaku hitung).
 
 ### 3.2 S2 Pengajuan dengan persetujuan sederhana
 
@@ -112,8 +122,8 @@ Ditambahkan ke [kebutuhan-praktikum.md](kebutuhan-praktikum.md) dengan nomor lan
 
 | KF | Asal | Kebutuhan | Prio |
 |---|---|---|---|
-| KF-PRK-45 | S1 Terpublikasi → Rencana | Saat Penetapan Jadwal dicabut, Sesi periode itu yang belum punya jurnal kembali ke Rencana | W (menjaga C1 tetap benar) **[KONFIRMASI]** |
-| KF-PRK-46 | S1 Ditunda → Terpublikasi | Saat Perubahan Sesi atas sesi yang ditunda ditolak, Sesi kembali Terpublikasi | W |
+| KF-PRK-45 | S1 (versi 14 Nov) Terpublikasi → Rencana | Saat Penetapan Jadwal dicabut, Sesi periode itu terbaca belum terpublikasi. **Sejak 16 Nov: perilaku hitung** (`is_terpublikasi`), bukan transisi | W |
+| KF-PRK-46 | S1 (versi 14 Nov) Ditunda → Terpublikasi | Saat Perubahan Sesi ditolak, Sesi tidak lagi terbaca ditunda. **Sejak 16 Nov: perilaku hitung** (`is_ditunda`), bukan transisi | W |
 | KF-PRK-47 | S2 Diajukan → Ditarik | Pengaju dapat menarik pengajuan pemakaian atau perubahan sebelum diputuskan | O |
 | KF-PRK-48 | S3 Ditetapkan → Draf | KaLab dapat membatalkan penetapan survei sebelum tanggal buka | O |
 
@@ -126,7 +136,7 @@ Tugas «user» yang berurutan tanpa jeda oleh aktor yang sama digabung menjadi s
 | Impor Jadwal Kelas (sistem membangkitkan Sesi; pola mingguan manual sebagai jalan pengganti) | A1 | Laboran |
 | Susun Penetapan Jadwal → lalu UC pengesahan milik Tata Kelola | A1 | Laboran; KaLab |
 | Terbitkan Versi Modul | A1 | Dosen |
-| Ajukan Pemakaian Lab | A2 | Pengguna Lab |
+| Ajukan Pemakaian Lab (dicatat laboran) | A2 | Laboran |
 | Putuskan Pemakaian Lab | A2, S2 | KaLab |
 | Periksa Kesiapan Sesi (mulai, isi butir, tetapkan keputusan) | A3 | Laboran |
 | Setujui Substitusi Bahan | A3 | Dosen |
@@ -134,7 +144,7 @@ Tugas «user» yang berurutan tanpa jeda oleh aktor yang sama digabung menjadi s
 | Catat Penilaian Kelas (tautan LeADS); Impor Nilai Kelas (Pelengkap) | — (satu aktor, tidak digambar) | Dosen, Laboran |
 | Ajukan Perubahan Sesi | A4, S1 | Pengaju |
 | Putuskan Perubahan Sesi (termasuk tentukan waktu pengganti) | A4, S1 | KaLab |
-| Tarik Pengajuan | S2 | Pengaju, Pengguna Lab |
+| Tarik Pengajuan | S2 | Petugas Praktikum |
 | Susun Survei; Tetapkan Survei; Batalkan Penetapan Survei | A5, S3 | KaLab |
 | Isi Survei | A5 | Responden |
 | Catat Evaluasi Survei (termasuk RTL) | A5, S3 | KaLab |
@@ -148,7 +158,7 @@ Tugas «user» yang berurutan tanpa jeda oleh aktor yang sama digabung menjadi s
 |---|---|---|
 | Periksa bentrok ruang / waktu pengganti | KF-PRK-04 | Bangkitkan Sesi, Ajukan Pemakaian, Putuskan Perubahan |
 | Periksa kapasitas ruang | KF-PRK-05 | Bangkitkan Sesi |
-| Catat tanggal publikasi; Tandai sesi terpublikasi | KF-PRK-06 (hook `_setelah_disahkan()`), 26 | Pengesahan (Tata Kelola) |
+| Catat tanggal publikasi (sesi terbaca terpublikasi lewat `is_terpublikasi`) | KF-PRK-06 (hook `_setelah_disahkan()`) | Pengesahan (Tata Kelola) |
 | Ganti versi modul lama | KF-PRK-13 | Terbitkan Versi Modul |
 | Buat butir pemeriksaan | KF-PRK-16 | Periksa Kesiapan Sesi |
 | Validasi jurnal; Ubah status sesi | KF-PRK-25, 26 | Kirim Jurnal Sesi |
@@ -160,7 +170,7 @@ Tugas «user» yang berurutan tanpa jeda oleh aktor yang sama digabung menjadi s
 ### 4.4 Dampak ke dokumen lain
 
 - **Kebutuhan:** KF-PRK-45–48 ditambahkan. **Notifikasi** pengajuan dan keputusan muncul di A2 dan A4 tetapi belum punya KF; ditambahkan sebagai **KF-PRK-49** (O, *hidden*, memakai `mail.activity`/`mail.thread` bawaan).
-- **Kontrak Core:** S1 Sesi menetapkan nilai `labfik.sesi.state` = Rencana, Terpublikasi, Ditunda, Terlaksana, Diganti, Dibatalkan, field `moda` (luring/daring), dan field `jenis_pertemuan` (praktikum/UTS/UAS; pertemuan 8 dan 16 tetap dibangkitkan). Perlu dicatat di kontrak Core bersama (brief, bagian d) **[KONFIRMASI kelompok]**.
+- **Kontrak Core** (sudah dirangkum Febriyan di [kontrak-core.md](kontrak-core.md) C-9, 15 Nov 2026): `labfik.sesi.state` = `terjadwal`, `terlaksana`, `batal` (I-1) ditambah atribut hitung `is_terpublikasi`, `is_ditunda`, `is_diganti`, `is_terlewat`; field `moda` (luring/daring), dan field `jenis_pertemuan` (praktikum/UTS/UAS; pertemuan 8 dan 16 tetap dibangkitkan). Perlu dicatat di kontrak Core bersama (brief, bagian d) **[KONFIRMASI kelompok]**.
 - **Tata Kelola:** A1 memanggil activity pengesahan milik Tata Kelola; jenis dokumen baru `jadwal_praktikum` perlu dikenali `_jenis_dokumen()` (diusulkan ke Febriyan, sudah tercatat di kontrak Core c).
 
 ## 5. Pertanyaan terbuka

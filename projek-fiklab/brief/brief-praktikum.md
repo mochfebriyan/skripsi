@@ -122,7 +122,7 @@ Yang **tidak dirancang** tercantum di batasan masalah.
 | `labfik.approval.mixin` + `labfik.approval.log` | Core | Wajib (Penetapan Jadwal; jadwal harus ditandatangani) | — |
 | `labfik.evidence.mixin` | Core | Wajib (Pemeriksaan Kesiapan, Jurnal Sesi, Evaluasi Survei) | — |
 | Addon `survey` | Odoo 17 CE (LGPL-3) | Wajib (PKG-20, keputusan 14 Nov 2026) | Google Form + impor |
-| Penugasan petugas per sesi | PKG-04 (SDM) | Opsional | Presensi petugas tanpa pencocokan |
+| Penugasan petugas per sesi | PKG-04 (SDM) | Addon wajib (`labfik_praktikum` depends `labfik_sdm`, kontrak Core I-7); datanya opsional | Presensi petugas tetap dicatat; tanpa penugasan, pencocokan (KF-PRK-51) tidak menampilkan apa pun |
 | Status kalibrasi alat | PKG-05 (kelompok Aset) | Opsional | Dianggap tidak berlaku untuk lab komputer |
 | Kartu stok bahan | PKG-07 (kelompok Aset) | Opsional | Jumlah tersedia dicatat saat pemeriksaan |
 
@@ -155,8 +155,8 @@ Yang **tidak dirancang** tercantum di batasan masalah.
 |---|---|---|---|
 | `labfik.ruang` | Field `kode`, `name`, **`kapasitas`** (Integer). Isi awal 8 ruang: FIKLAB-201, 301–304, 401–403 | PKG-15 C3 (sesuai kapasitas); PKG-08 kelompok Aset juga memakainya | Kelompok (Core bersama) **[KONFIRMASI kelompok]** |
 | `labfik.periode` | Field `name`, `jenis` (semester / tahun anggaran), **`tanggal_mulai`, `tanggal_selesai`** | Batas pembagi PKG-15–19; sesi pengganti harus selesai sebelum periode ditutup (PKG-18) | Kelompok (Core bersama) **[KONFIRMASI kelompok]** |
-| `labfik.jabatan.wewenang` | Tambah pasangan (tindakan, jenis): (`mengesahkan`, `jadwal_praktikum`), (`menyetujui`, `pemakaian_lab`), (`menyetujui`, `perubahan_sesi`), (`menetapkan`, `survei_kepuasan`) | Cek wewenang PKG-15, 18, 20 | Febriyan (pemilik Jabatan) |
-| Personel | Asisten (mahasiswa) dicatat sebagai `hr.employee` dengan Jabatan **Asisten Praktikum** (`hr.job`) — **diputuskan** (Herrens, 14 Nov 2026) dan dicatat di CLAUDE.md bagian 6. Alasannya: asisten perlu jabatan untuk cek wewenang dan syarat kompetensi (SDM), dan jabatan selalu menempel pada Personel. Pihak eksternal masih terbuka | Presensi asisten, pengisi jurnal | Kelompok (diberi tahu) |
+| `labfik.jabatan.wewenang` | **Disetujui dengan penyesuaian** (kontrak Core I-4, 15 Nov 2026): tindakan tetap `mengesahkan` saja; Praktikum menambah `jenis_dokumen` lewat `selection_add`: `jadwal_praktikum`, `pemakaian_lab`, `perubahan_sesi`, `survei_kepuasan` | Cek wewenang PKG-15, 18, 20 | Febriyan (pemilik Jabatan) |
+| Personel | Asisten (mahasiswa) dicatat sebagai `hr.employee` dengan Jabatan **Asisten Praktikum** (`hr.job`) — **diputuskan** (Herrens, 14 Nov 2026) dan dicatat di CLAUDE.md bagian 6. Alasannya: asisten perlu jabatan untuk cek wewenang dan syarat kompetensi (SDM), dan jabatan selalu menempel pada Personel. Pihak eksternal bukan Personel dan bukan aktor (kontrak Core I-9) | Presensi asisten, pengisi jurnal | Kelompok (diberi tahu) |
 
 **d. Model Core yang diisi modul ini** (keputusan 14 Nov 2026; kontraknya ditulis di sini karena Praktikum yang paling hulu)
 
@@ -164,7 +164,7 @@ Yang **tidak dirancang** tercantum di batasan masalah.
 |---|---|---|
 | `labfik.mata.kuliah` [M] | `kode` «unique», `name`, `prodi`, `semester` | Kode MK sebagai kunci impor (nama MK tidak seragam antarperiode) |
 | `labfik.kelas` [M] | `mata_kuliah_id`, `periode_id`, `name`, `jumlah_mahasiswa`, `dosen_koordinator_id`, `dosen_ids` | Unik per (MK, periode, nama kelas) |
-| `labfik.sesi` [T] | `kelas_id`, `pertemuan_ke`, `jenis_pertemuan` (praktikum / UTS / UAS), `moda` (luring / daring), `tanggal`, `jam_mulai`, `jam_selesai`, `ruang_id`, `state`, `sesi_asal_id` (bila pengganti) | Dibangkitkan hanya oleh PKG-15 (atau sebagai pengganti lewat Perubahan Sesi PKG-18). Satu Sesi asli per (kelas, pertemuan). Nama status ditetapkan di state machine (Langkah 5) |
+| `labfik.sesi` [T] | `kelas_id`, `pertemuan_ke`, `jenis_pertemuan` (praktikum / UTS / UAS), `moda` (luring / daring), `tanggal`, `jam_mulai`, `jam_selesai`, `ruang_id`, `state` {`terjadwal`, `terlaksana`, `batal`} + atribut hitung `is_terpublikasi`, `is_ditunda`, `is_diganti`, `is_terlewat` (kontrak Core C-9, I-1), `sesi_asal_id` (bila pengganti) | Dibangkitkan hanya oleh PKG-15 (atau sebagai pengganti lewat Perubahan Sesi PKG-18). Satu Sesi asli per (kelas, pertemuan). Nama status ditetapkan di state machine (Langkah 5) |
 
 **f. Keputusan modul (Herrens, 14 Nov 2026; tidak menunggu kelompok)**
 
@@ -178,7 +178,7 @@ Yang **tidak dirancang** tercantum di batasan masalah.
 - Hanya Praktikum yang mengubah status Sesi.
 - Sesi yang sudah punya jurnal atau penugasan tidak boleh dihapus; perubahan jadwal dilakukan lewat Perubahan Sesi.
 
-**Dampak ke rencana addon:** brief bersama mencatat `labfik_praktikum` bergantung pada `labfik_sdm`, ditambah jembatan `labfik_praktikum_aset` untuk PKG-16/17. Hasil analisis menunjukkan semua kaitan ke SDM dan Aset bersifat opsional. Usulan: `labfik_praktikum` cukup `depends: ['labfik_core', 'survey']`, dan addon jembatan tidak diperlukan **[KONFIRMASI kelompok]**.
+**Dampak ke rencana addon (diputuskan, kontrak Core I-7, 15 Nov 2026):** `labfik_praktikum` `depends: ['labfik_core', 'labfik_sdm', 'survey']`. Pencocokan penugasan petugas (SDM) dengan presensi di jurnal dilakukan di Praktikum (KF-PRK-51), sehingga Praktikum bergantung ke SDM, bukan sebaliknya. Addon jembatan ke Aset tidak diperlukan karena kaitan PKG-16/17 ke Aset opsional. Rangkuman lengkap kontrak Core ada di [kontrak-core.md](../rancangan/kontrak-core.md).
 
 ## Batasan masalah (usulan)
 
@@ -211,7 +211,7 @@ Yang **tidak dirancang** tercantum di batasan masalah.
 
 | Risiko | Mitigasi |
 |---|---|
-| Siapa mengisi jurnal untuk kelas tanpa asisten belum pasti; tanpa pengisi, PKG-18 tidak terbukti untuk 42–56% kelas | Dugaan: dosen yang mengajar kelas itu **[ASUMSI, 14 Nov 2026]**; dipastikan lewat wawancara P10, P13. Rancangan memakai aktor abstrak Pengisi Jurnal sehingga tidak terikat satu peran |
+| Siapa mengisi jurnal untuk kelas tanpa asisten belum pasti; tanpa pengisi, PKG-18 tidak terbukti untuk 42–56% kelas | Dugaan: dosen yang mengajar kelas itu **[ASUMSI, 14 Nov 2026]**; dipastikan lewat wawancara P10, P13. Rancangan memakai aktor abstrak Petugas Praktikum sehingga tidak terikat satu peran |
 | Pemeriksaan kesiapan per sesi terlalu berat untuk laboran | Siapkan opsi satu pemeriksaan per ruang per hari (wawancara P8) |
 | KaLab/penilai tidak bisa membuka *course* LeADS lewat tautan, atau LeADS tidak bisa diekspor ke Excel | Tanyakan di P15; cadangan: berkas ekspor dilampirkan di Penilaian Kelas |
 | Dosen tidak menerbitkan modul berversi atau rubrik | Mulai dari satu MK pilot; jalan pengganti berupa tautan berkas di jurnal |
@@ -237,7 +237,7 @@ Yang **tidak dirancang** tercantum di batasan masalah.
 - [ ] Fungsi kolom "Status" (TRUE/FALSE) di formulir asistensi (P11).
 
 **Untuk kelompok (Febriyan, Zahir)**
-- [ ] `labfik_praktikum` cukup `depends: ['labfik_core', 'survey']`, tanpa `labfik_sdm` dan tanpa addon jembatan Aset?
+- [x] Dependensi addon: **`labfik_core`, `labfik_sdm`, `survey`** (kontrak Core I-7). Status Sesi 3 nilai (I-1) diterima Herrens, 16 Nov 2026.
 - [x] Rencana Tindak Lanjut PKG-20: **tetap di modul Praktikum** (keputusan 14 Nov 2026, Kontrak Core f); calon entitas bersama untuk pengembangan berikutnya.
 - [ ] PKG-17 dinyatakan "dicakup terbatas" (menutup pertanyaan terbuka di brief bersama setelah wawancara P9)?
 
