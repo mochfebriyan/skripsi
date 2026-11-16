@@ -181,7 +181,7 @@ Notasi: `‹…›` = gabungan data, `*` = koleksi, `(O)` = hanya bila KF Peleng
 
 | DTO | Isi |
 |---|---|
-| `dto_versi_modul` | ‹mata_kuliah, periode, nomor_versi, berkas, tautan_leads, rubrik, software*: ‹nama, versi, berbayar›, bahan*: ‹nama, jumlah_per_mahasiswa, satuan›, tanggal_terbit, status› |
+| `dto_versi_modul` | ‹mata_kuliah, periode, nomor_versi, berkas, tautan_leads, rubrik, software*: ‹nama, versi, berbayar›, bahan*: ‹bahan, jumlah_per_mahasiswa›, tanggal_terbit, status›. `bahan` = master Bahan Core (C-13); nama dan satuan dibaca dari sana (diperbarui 16 Nov 2026 di langkah 9, [KONFIRMASI kelompok]) |
 | `dto_info_modul` | ‹mata_kuliah, periode, versi_berlaku: dto_versi_modul, riwayat_versi*: ‹nomor_versi, tanggal_terbit, status›, pengguna_mengampu› |
 
 ### 4.3 Pengajuan
@@ -199,7 +199,7 @@ Notasi: `‹…›` = gabungan data, `*` = koleksi, `(O)` = hanya bila KF Peleng
 | DTO | Isi |
 |---|---|
 | `dto_form_kesiapan` | ‹sesi: dto_sesi_ringkas, jumlah_mahasiswa, butir*: ‹kategori (stasiun kerja / jaringan / listrik / proyektor / software / bahan), nama, versi_atau_jumlah_dibutuhkan, berbayar›› |
-| `dto_hasil_butir` | ‹butir, hasil (baik / diperbaiki / bermasalah), keterangan; stasiun kerja: jumlah_berfungsi; software berbayar: lisensi_sah; bahan: jumlah_tersedia, kondisi, berlabel, bahan_pengganti, alasan_substitusi› |
+| `dto_hasil_butir` | ‹butir, hasil (baik / diperbaiki / bermasalah), keterangan; stasiun kerja: jumlah_berfungsi; software berbayar: lisensi_sah; bahan: jumlah_tersedia, kondisi (baik / tidak), berlabel, bahan_pengganti (master Bahan Core), alasan_substitusi› |
 | `dto_pemeriksaan` | ‹sesi, pemeriksa, waktu_periksa, tepat_waktu, keputusan (siap / siap setelah perbaikan / tunda), butir*: dto_hasil_butir, substitusi_menunggu*› |
 | `dto_substitusi` | ‹butir, sesi, bahan, bahan_pengganti, alasan_substitusi, status_persetujuan› |
 
@@ -207,7 +207,7 @@ Notasi: `‹…›` = gabungan data, `*` = koleksi, `(O)` = hanya bila KF Peleng
 
 | DTO | Isi |
 |---|---|
-| `dto_konteks_jurnal` | ‹sesi: dto_sesi_ringkas, versi_modul_berlaku, petugas_ditugaskan*: ‹personel, peran› (dari SDM, bila ada), jumlah_mahasiswa, berasisten› |
+| `dto_konteks_jurnal` | ‹sesi: dto_sesi_ringkas, versi_modul_berlaku, petugas_ditugaskan*: ‹personel, peran› (dari Surat Tugas SDM yang disahkan dan berlaku pada tanggal sesi: asisten lewat kelas, laboran lewat ruang; diperjelas 16 Nov 2026 di langkah 9), jumlah_mahasiswa, berasisten› |
 | `dto_jurnal` | ‹jam_mulai_aktual, jam_selesai_aktual, topik, versi_modul_dipakai, jumlah_hadir, tautan_presensi_simpel, kendala, foto, presensi*: ‹personel, peran, kehadiran (penuh / sebagian / tidak)›, log_book*: ‹waktu, uraian›› |
 | `dto_rincian_jurnal` | ‹dto_jurnal, status (draf / terkirim), waktu_kirim, terlambat (O), petugas_tidak_sesuai* (O)› |
 | `dto_kelengkapan` | ‹bagian, keterangan_kurang› (dipakai juga untuk survei) |
