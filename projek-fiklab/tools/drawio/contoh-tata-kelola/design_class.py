@@ -1,3 +1,12 @@
+"""Design class diagram modul Tata Kelola (langkah 10), 4 halaman + halaman catatan.
+
+Gaya polos hitam-putih (sama dengan activity_state.py). Jenis kelas dibedakan hanya lewat stereotype:
+«AbstractModel» (nama miring) = mixin, «Odoo» = model bawaan, «Core» = master bersama labfik_core.
+Garis putus-putus hanya untuk field turunan {compute}. Halaman diagram hanya berisi diagram;
+judul, legenda, dan catatan dikumpulkan di halaman catatan terakhir.
+
+Pemakaian: python3 -I design_class.py projek-fiklab/rancangan/class-tata-kelola.drawio
+"""
 import sys
 from xml.sax.saxutils import escape
 
@@ -9,18 +18,18 @@ def esc(s):
     return escape(s, {'"': "&quot;"})
 
 
-FILL = {"c": "fillColor=#FFFFFF;strokeColor=#333333;", "mixin": "fillColor=#E1D5E7;strokeColor=#9673A6;",
-        "odoo": "fillColor=#F5F5F5;strokeColor=#666666;", "core": "fillColor=#F5F5F5;strokeColor=#666666;dashed=1;",
-        "stub": "fillColor=#FAFAFA;strokeColor=#999999;dashed=1;", "new": "fillColor=#FFFFFF;strokeColor=#9B2C44;strokeWidth=2;"}
+FONT = "fontFamily=Times New Roman;"
+PLAIN = "fillColor=#FFFFFF;strokeColor=#000000;swimlaneFillColor=#FFFFFF;" + FONT
+FILL = {k: PLAIN for k in ("c", "mixin", "odoo", "core", "stub", "new")}  # jenis kelas dibedakan lewat stereotype, bukan warna
 TXT = ("text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;"
-       "rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=11;")
+       "rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=11;" + FONT)
 SEP = ("line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;"
        "rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;html=1;")
-GEN = "endArrow=block;endFill=0;endSize=14;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#6C4A87;"
-COMP = "endArrow=none;startArrow=diamondThin;startFill=1;startSize=16;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#333333;fontSize=10;"
-NAV = "endArrow=open;endFill=0;endSize=10;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#555555;fontSize=10;"
-DER = "endArrow=open;endFill=0;endSize=10;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#555555;dashed=1;fontSize=10;"
-BI = "endArrow=none;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#555555;fontSize=10;"
+GEN = "endArrow=block;endFill=0;endSize=14;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#000000;"
+COMP = "endArrow=none;startArrow=diamondThin;startFill=1;startSize=16;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#000000;fontSize=10;" + FONT
+NAV = "endArrow=open;endFill=0;endSize=10;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#000000;fontSize=10;" + FONT
+DER = "endArrow=open;endFill=0;endSize=10;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#000000;dashed=1;fontSize=10;" + FONT
+BI = "endArrow=none;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#000000;fontSize=10;" + FONT
 NOTE = ("shape=note;whiteSpace=wrap;html=1;size=14;align=left;verticalAlign=top;spacingLeft=6;spacingTop=4;"
         "fontSize=11;fillColor=#FFF2CC;strokeColor=#D6B656;")
 FRAME = ("rounded=1;arcSize=1;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingLeft=10;spacingTop=6;"
@@ -36,9 +45,11 @@ def height(title, attrs, methods):
 class Page:
     def __init__(self, n, name, title):
         self.P, self.n, self.name, self.cells, self.geo = f"tk-dcd{n}-", n, name, [], {}
-        self.v("title", title, TITLE, 40, 10, 1700, 34)
+        self.title, self.notes, self.maxx, self.maxy = title, [], 0, 0
 
     def v(self, id, val, style, x, y, w, h, parent="1"):
+        if parent == "1":
+            self.maxx, self.maxy = max(self.maxx, x + w), max(self.maxy, y + h)
         par = "1" if parent == "1" else self.P + parent
         self.cells.append(f'<mxCell id="{self.P}{id}" value="{esc(val)}" style="{style}" vertex="1" parent="{par}">'
                           f'<mxGeometry x="{x:.0f}" y="{y:.0f}" width="{w:.0f}" height="{h:.0f}" as="geometry"/></mxCell>')
@@ -71,10 +82,11 @@ class Page:
             if lbl:
                 self.cells.append(
                     f'<mxCell id="{eid}-l{k}" value="{esc(lbl)}" style="edgeLabel;resizable=0;html=1;align={align};verticalAlign=bottom;'
-                    f'fontSize=10;labelBackgroundColor=#FFFFFF;" connectable="0" vertex="1" parent="{eid}"><mxGeometry x="{xpos}" '
+                    f'fontSize=10;labelBackgroundColor=#FFFFFF;{FONT}" connectable="0" vertex="1" parent="{eid}"><mxGeometry x="{xpos}" '
                     f'relative="1" as="geometry"><mxPoint x="{8 if xpos < 0 else -8}" y="-2" as="offset"/></mxGeometry></mxCell>')
 
-    def xml(self, w, h):
+    def xml(self, w=None, h=None):
+        w, h = w or self.maxx + 40, h or self.maxy + 40
         return (f'<diagram id="tk-dcd{self.n}" name="{esc(self.name)}"><mxGraphModel dx="1600" dy="900" grid="1" gridSize="10" '
                 f'guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="{w:.0f}" pageHeight="{h:.0f}" '
                 'math="0" shadow="0"><root><mxCell id="0"/><mxCell id="1" parent="0"/>' + "".join(self.cells) + "</root></mxGraphModel></diagram>")
@@ -87,93 +99,23 @@ def am(name):
 def cm(name, label, inherit=None):
     t = f"<b>{name}</b><br><font style='font-size:10px'>{label}</font>"
     if inherit:
-        t += f"<br><font style='font-size:10px' color='#6C4A87'>{{inherit: {inherit}}}</font>"
+        t += f"<br><font style='font-size:10px'>{{inherit: {inherit}}}</font>"
     return t
 
 
-LEG = ("<b>Notasi</b> (Wazlawick 2024, §13.6; UML)<br>"
-       "• Segitiga kosong ungu = generalisasi; di Odoo <code>_inherit = [mixin, …]</code>. Kelas ungu «AbstractModel» tidak punya tabel sendiri.<br>"
-       "• Panah terbuka = asosiasi <b>berarah</b> (dapat dinavigasi dari pemilik field): Many2one atau Many2many. Label = nama field.<br>"
-       "• Belah ketupat hitam = komposisi: One2many di induk + Many2one di anak (dua arah, anak ikut terhapus).<br>"
-       "• Garis putus-putus = asosiasi turunan (field <code>compute</code>). Garis polos tanpa panah = dua arah (One2many + Many2one).<br>"
-       "• <code>+</code> publik, <code>#</code> internal (diawali garis bawah di Odoo). «override» = method warisan yang diisi ulang. "
-       "{abstract} = wajib diisi turunan. @model = method kelas (<code>@api.model</code>).<br>"
-       "• Referensi ke model bawaan Odoo (res.users, ir.attachment, res.currency) ditulis sebagai atribut bertipe.")
-SRC = ("Design class diagram (masuk proposal). Diturunkan dari conceptual model (CM-1–3) + katalog operasi SSD. "
-       "Rincian: rancangan/design-class-tata-kelola.md · Draf 13 Nov 2026 · Febriyan")
-pages = []
 
-# =================================================================== DCD-1
-p = Page(1, "DCD (1-3) Inheritance dan Pengesahan", "DCD 1/3 · Design class diagram: inheritance (mixin) dan mekanisme pengesahan")
-p.cls("mt", "«Odoo»<br><b>mail.thread</b>", ["+ message_ids: mail.message [0..*]"], ["+ message_post()"], 500, 60, 240, "odoo")
-p.cls("ma", "«Odoo»<br><b>mail.activity.mixin</b>", ["+ activity_ids: mail.activity [0..*]"], ["+ activity_schedule()"], 780, 60, 240, "odoo")
-p.cls("ctl", am("labfik.controlled.mixin"), ["+ kode_dokumen: Char", "+ revisi: Integer", "+ unit_pemilik: Char", "+ tanggal_dibuat: Date"],
-      [], 40, 260, 260, "mixin")
-p.cls("apv", am("labfik.approval.mixin"), [
-    "+ state: Selection {draf, diajukan, diperiksa,", "&nbsp;&nbsp;&nbsp;disahkan, diganti, dicabut, kedaluwarsa}",
-    "+ penyusun_id: labfik.personel", "+ pengesah_id: labfik.personel", "+ pencatat_id: labfik.personel",
-    "+ jabatan_pengesah_id: labfik.jabatan", "+ tanggal_ajukan: Datetime", "+ tanggal_sah: Date", "+ tanggal_berlaku: Date",
-    "+ file_ttd: Binary", "+ tanggal_ttd: Date", "+ nama_penanda_tangan: Char", "+ log_ids: labfik.approval.log [0..*]"],
-    ["+ action_ajukan()", "+ action_tarik(alasan)", "+ action_periksa(catatan)", "+ action_kembalikan(alasan)",
-     "+ action_catat_pengembalian(alasan, nama, jabatan)", "+ action_lampirkan_ttd(berkas, tanggal_ttd, nama)",
-     "+ action_sahkan(atas_nama=None)", "+ action_cabut(alasan)", "+ get_kelengkapan(): list",
-     "# _cek_kelengkapan(): list {abstract}", "# _jenis_dokumen(): str {abstract}", "# _cek_wewenang(user, tindakan): bool",
-     "# _catat_log(kejadian, **nilai)", "# _setelah_disahkan() {hook}"], 340, 260, 360, "mixin")
-p.cls("prd", am("labfik.period.mixin"), ["+ periode_id: labfik.periode", "+ tanggal_mulai: Date", "+ tanggal_selesai: Date",
-                                         "+ is_berlaku: Boolean {compute}"],
-      ["# _compute_is_berlaku()", "@model # _cron_kedaluwarsakan()"], 740, 260, 280, "mixin")
-p.cls("cri", am("labfik.criteria.mixin"), ["+ status_k1 … status_k4: Boolean {compute}", "+ kriteria_tertinggi: Integer {compute}"],
-      ["# _compute_kriteria()", "# _cek_k1() … _cek_k4() {abstract}"], 1060, 260, 280, "mixin")
-p.cls("evi", am("labfik.evidence.mixin"), ["+ tanggal: Date", "+ pelapor_id: labfik.personel", "+ bukti_ids: ir.attachment [0..*]",
-                                           "+ keterangan: Text"], [], 1380, 260, 280, "mixin")
-p.cls("log", "<b>labfik.approval.log</b><br><font style='font-size:10px'>Riwayat Pengesahan [T] (baru)</font>", [
-    "+ res_model: Char", "+ res_id: Integer", "+ kejadian: Selection {ajukan, tarik, periksa,",
-    "&nbsp;&nbsp;&nbsp;kembalikan, unggah_ttd, sahkan, cabut, kedaluwarsa}", "+ putaran: Integer (urutan pengajuan)",
-    "+ waktu: Datetime", "+ pelaku_id: labfik.personel", "+ pencatat_id: labfik.personel",
-    "+ jabatan_id: labfik.jabatan", "+ alasan: Text", "+ catatan: Text", "+ file_ttd: Binary", "+ tanggal_ttd: Date",
-    "+ nama_penanda_tangan: Char"], [], 40, 520, 280, "new")
-p.cls("pln", cm("labfik.plan", "Rencana", "controlled, approval, period, criteria"), ["<i>(atribut: DCD 3/3)</i>"],
-      ["# _jenis_dokumen() «override»", "# _cek_kelengkapan() «override»", "# _cek_k1() … _cek_k4() «override»",
-       "# _setelah_disahkan() «override»", "+ action_buat_revisi()", "+ action_terbitkan()"], 360, 960, 300)
-p.cls("asg", cm("labfik.assignment", "SK Penetapan Pengelola", "controlled, approval, period, criteria"), ["<i>(atribut: DCD 2/3)</i>"],
-      ["# _jenis_dokumen() «override»", "# _cek_kelengkapan() «override»", "# _cek_k1() … _cek_k4() «override»",
-       "# _setelah_disahkan() «override»", "+ action_terbitkan()"], 700, 960, 300)
-p.cls("ver", cm("labfik.document.version", "Versi Dokumen SOP/IK", "controlled, approval"), ["<i>(atribut: DCD 2/3)</i>"],
-      ["# _jenis_dokumen() «override»", "# _cek_kelengkapan() «override»", "# _setelah_disahkan() «override»"], 1040, 960, 300)
-ev = [("rea", "labfik.realisasi", "Realisasi"), ("mee", "labfik.meeting", "Rapat Koordinasi"), ("oev", "labfik.org.evaluation", "Evaluasi Struktur"),
-      ("dis", "labfik.document.distribution", "Distribusi"), ("soc", "labfik.document.socialization", "Sosialisasi"),
-      ("rev", "labfik.document.review", "Tinjau Ulang"), ("tin", "labfik.tinjauan", "Tinjauan Rencana")]
-for i, (cid, name, label) in enumerate(ev):
-    p.cls(cid, cm(name, label, "evidence"), ["<i>(atribut: DCD 2/3 atau 3/3)</i>"], [], 1380 + (i % 2) * 300, 520 + (i // 2) * 120, 280)
-p.cls("ps", "<b>labfik.personel</b>", ["<i>(DCD 2/3) [KONFIRMASI]</i>"], [], 40, 860, 220, "stub")
-p.cls("jb", "<b>labfik.jabatan</b>", ["<i>(DCD 2/3)</i>"], [], 40, 960, 220, "stub")
-p.e("g-apv-mt", "apv", "mt", GEN, exit=(0.45, 0), entry=(0.5, 1))
-p.e("g-apv-ma", "apv", "ma", GEN, exit=(0.75, 0), entry=(0.5, 1))
-for c, parents in {"pln": ["ctl", "apv", "prd", "cri"], "asg": ["ctl", "apv", "prd", "cri"], "ver": ["ctl", "apv"]}.items():
-    for par in parents:
-        p.e(f"g-{c}-{par}", c, par, GEN)
-for cid, _, _ in ev:
-    p.e(f"g-{cid}-evi", cid, "evi", GEN)
-p.e("c-apv-log", "apv", "log", COMP, "1", "log_ids 0..*", exit=(0, 0.85), entry=(1, 0.1))
-p.e("n-log-ps", "log", "ps", NAV, "*", "pelaku_id, pencatat_id 0..1", exit=(0.3, 1), entry=(0.5, 0))
-p.e("n-log-jb", "log", "jb", NAV, "*", "jabatan_id 0..1", exit=(0.8, 1), entry=(1, 0.3))
-p.v("n1", LEG, NOTE, 40, 1180, 760, 140)
-p.v("n2", "<b>Dari conceptual model ke desain</b> (§13.6: struktur boleh berubah)<br>"
-    "• Generalisasi <i>DokumenTerkendali</i> (CM-1) → <code>controlled.mixin</code> + <code>approval.mixin</code>.<br>"
-    "• Tujuh konsep riwayat (Pengajuan, Penarikan, Pemeriksaan, Pengembalian, BerkasTTD, Pengesahan, Pencabutan) → "
-    "<b>satu</b> <code>labfik.approval.log</code> dengan field <code>kejadian</code> dan <code>putaran</code>. "
-    "Field ringkas di mixin menyimpan keadaan terakhir untuk tampilan cepat.<br>"
-    "• Peran asosiasi (penyusun, pengesah, pencatat, …) → field Many2one dengan nama yang sama.", NOTE, 820, 1180, 560, 140)
-p.v("n3", "<b>Template Method</b>: <code>action_sahkan()</code> di mixin selalu menjalankan urutan tetap: cek wewenang (AB-02) → "
-    "cek berkas TTD (AB-03) → cek pemeriksaan (AB-09) → ubah status → catat log → panggil <code>_setelah_disahkan()</code>. "
-    "Model turunan hanya mengisi hook itu:<br>• Versi: versi lama → diganti, jadwal tinjau (AB-04, AB-08)<br>"
-    "• SK: SK lama → diganti, penugasan berlaku<br>• Rencana: rencana sejenis periode sama → diganti (AB-14)", NOTE, 1400, 1180, 560, 140)
-p.v("n4", SRC, NOTE, 40, 1340, 1300, 30)
-pages.append((p, 2020, 1400))
+def odoo(name, label, ext=False):
+    t = f"«Odoo»<br><b>{name}</b><br><font style='font-size:10px'>{label}</font>"
+    if ext:
+        t += f"<br><font style='font-size:10px'>{{_inherit: {name}}} di labfik_core</font>"
+    return t
 
 
-# =================================================================== DCD-2 / DCD-3 helpers
-def stack(page, columns, specs, top=110, gap=50):
+def core(name, label):
+    return f"«Core»<br><b>{name}</b><br><font style='font-size:10px'>{label}</font>"
+
+
+def stack(page, columns, specs, top=60, gap=46):
     bottoms = {}
     for x, ids in columns:
         y = top
@@ -181,148 +123,230 @@ def stack(page, columns, specs, top=110, gap=50):
             t, a, m, w, kind = specs[cid]
             y += page.cls(cid, t, a, m, x, y, w, kind) + gap
         bottoms[x] = y
-    return bottoms
+    return max(bottoms.values())
 
+
+LEG = ("<b>Notasi</b> (Wazlawick 2024, §13.6; UML)<br>"
+       "• «AbstractModel» (nama miring) = <i>mixin</i> tanpa tabel; segitiga kosong = <code>_inherit = [mixin, …]</code>.<br>"
+       "• «Odoo» = model bawaan; bila diberi <code>{_inherit: …}</code>, model itu diperluas tanpa <code>_name</code> baru. "
+       "«Core» = master bersama di labfik_core. Model tanpa stereotype = model baru modul ini. Semua kotak polos hitam-putih.<br>"
+       "• Panah terbuka = Many2one/Many2many berarah, label = nama field. Belah ketupat hitam = One2many + Many2one (anak ikut terhapus). "
+       "Putus-putus = field <code>compute</code>.<br>"
+       "• Atribut bertipe hanya untuk model bawaan Odoo (hr.employee, res.users, res.currency, ir.attachment). Field warisan mixin tidak ditulis ulang.<br>"
+       "• <code>+</code> publik (<code>action_*</code>, <code>get_*</code>), <code>#</code> internal (<code>_…</code>), @model, «override», {abstract}, {hook}.")
+SRC = ("Design class diagram (masuk proposal Bab II 2.3). Diturunkan dari conceptual model CM-1–4, katalog operasi SSD, dan AB-01–25. "
+       "Rincian: design-class-tata-kelola.md · Draf 14 Nov 2026 · Febriyan")
+pages = []
+
+# =================================================================== DCD-1
+p = Page(1, "DCD TO-BE (1-4) - Mixin dan Pengesahan", "DCD 1/4 · Mixin bersama (labfik_core) dan mekanisme pengesahan")
+p.cls("mt", odoo("mail.thread", "pelacakan perubahan dan chatter"), ["+ message_ids: mail.message [*]"], ["+ message_post()"], 640, 50, 260, "odoo")
+S = {}
+S["apv"] = (am("labfik.approval.mixin"), [
+    "+ state: Selection {draf, diajukan, disahkan,", "&nbsp;&nbsp;&nbsp;diganti, dicabut, kedaluwarsa} = draf",
+    "+ penyusun_id: hr.employee", "+ tanggal_ajukan: Datetime (readonly)", "+ berkas_ttd: Binary [0..1]",
+    "+ pengesah_id: hr.employee [0..1] (readonly)", "+ pencatat_id: res.users [0..1] (readonly)", "+ tanggal_sah: Date [0..1] (readonly)",
+    "+ log_ids: labfik.approval.log [*] {compute}"],
+    ["+ action_ajukan()", "+ action_unggah_ttd(berkas)", "+ action_kembalikan(alasan)", "+ action_sahkan(pengesah, tanggal_sah)",
+     "+ action_cabut(alasan)", "+ action_terbitkan(): report", "+ get_kelengkapan(): list", "+ get_pengesah_berwenang(): hr.employee",
+     "+ unlink() «override»", "# _jenis_dokumen(): str {abstract}", "# _cek_kelengkapan(): list {abstract}", "# _cek_wewenang(pengesah)",
+     "# _sebelum_ajukan() {hook}", "# _sebelum_disahkan() {hook}", "# _dokumen_diganti(): recordset {hook}",
+     "# _setelah_disahkan() {hook}", "# _ubah_status(status_baru, kejadian, alasan, berkas)"], 420, "mixin")
+S["log"] = ("<b>labfik.approval.log</b><br><font style='font-size:10px'>Riwayat Pengesahan [T]</font>", [
+    "+ res_model: Char", "+ res_id: Integer", "+ kejadian: Selection {diajukan, dikembalikan,",
+    "&nbsp;&nbsp;&nbsp;berkas_diunggah, disahkan, diganti, dicabut, kedaluwarsa}", "+ waktu: Datetime",
+    "+ pelaku_id: res.users [0..1]", "+ pengesah_id: hr.employee [0..1]", "+ alasan: Text [0..1]", "+ berkas: Binary [0..1]"],
+    ["+ write() «override» (ditolak)", "+ unlink() «override» (ditolak)"], 320, "new")
+S["prd"] = (am("labfik.period.mixin"), ["+ tanggal_mulai: Date {related}", "+ tanggal_selesai: Date {related}", "+ is_berlaku: Boolean {compute}"],
+            ["+ berlaku_pada(tanggal): bool", "@model # _cron_kedaluwarsakan() (O)"], 300, "mixin")
+S["per"] = (core("labfik.periode", "Periode [M]"), ["+ name: Char", "+ jenis: Selection", "+ tanggal_mulai: Date", "+ tanggal_selesai: Date"], [], 300, "core")
+S["cri"] = (am("labfik.criteria.mixin"), ["+ kriteria_tertinggi: Integer {compute}"],
+            ["+ get_kriteria(tanggal_acuan): dict", "# _compute_kriteria_tertinggi()", "# _cek_k1(tanggal) … _cek_k4(tanggal) {abstract}"], 320, "mixin")
+S["evi"] = (am("labfik.evidence.mixin"), ["+ tanggal: Date", "+ pelapor_id: hr.employee", "+ bukti_ids: ir.attachment [*]", "+ keterangan: Text [0..1]"],
+            ["+ action_koreksi(nilai, alasan)", "+ unlink() «override» (ditolak)", "# _boleh_dikoreksi(): bool {hook}"], 320, "mixin")
+bottom = stack(p, [(40, ["apv"]), (500, ["log", "prd", "per"]), (860, ["cri", "evi"])], S, top=200)
+p.e("g-apv-mt", "apv", "mt", GEN, exit=(0.6, 0), entry=(0, 0.5))
+p.e("g-evi-mt", "evi", "mt", GEN, exit=(0.5, 0), entry=(1, 0.5))
+p.e("c-apv-log", "apv", "log", DER, "1", "log_ids *", exit=(1, 0.1), entry=(0, 0.2))
+p.e("n-prd-per", "prd", "per", NAV, "*", "periode_id 1", exit=(0.5, 1), entry=(0.5, 0))
+# turunan
+sub = [("ren", cm("labfik.renstra", "Renstra", "approval, period"), ["apv", "prd"]),
+       ("pln", cm("labfik.plan", "Rencana", "approval, period, criteria"), ["apv", "prd", "cri"]),
+       ("asg", cm("labfik.assignment", "SK Penetapan", "approval, period, criteria"), ["apv", "prd", "cri"]),
+       ("ver", cm("labfik.document.version", "Versi SOP/IK", "approval"), ["apv"])]
+for i, (cid, t, pars) in enumerate(sub):
+    p.cls(cid, t, ["<i>(rincian: DCD 2–4)</i>"], [], 40 + i * 230, bottom + 40, 210)
+    for par in pars:
+        p.e(f"g-{cid}-{par}", cid, par, GEN, exit=(0.5, 0))
+ev = [("mee", "labfik.meeting", "Rapat Koordinasi"), ("oev", "labfik.org.evaluation", "Evaluasi Struktur"),
+      ("dis", "labfik.document.distribution", "Distribusi"), ("soc", "labfik.document.socialization", "Sosialisasi"),
+      ("rev", "labfik.document.review", "Tinjau Ulang"), ("rea", "labfik.realisasi", "Realisasi"), ("tin", "labfik.tinjauan", "Tinjauan Rencana")]
+for i, (cid, name, label) in enumerate(ev):
+    p.cls(cid, cm(name, label, "evidence"), ["<i>(rincian: DCD 2–4)</i>"], [], 980 + (i % 2) * 250, 560 + (i // 2) * 110, 230)
+    p.e(f"g-{cid}-evi", cid, "evi", GEN, exit=(0.5, 0), entry=(0.5, 1))
+ny = max(bottom + 160, 560 + 4 * 110) + 20
+p.notes.append(("<b>Template Method</b> <code>action_sahkan(pengesah, tanggal_sah)</code> — urutan tetap di mixin, tidak di-<i>override</i>:<br>"
+    "1. state harus <i>diajukan</i> · 2. berkas_ttd ada (AB-04) · 3. <code>_cek_wewenang(pengesah)</code> (AB-05) · "
+    "4. <code>_sebelum_disahkan()</code> {hook} · 5. tulis pengesah, pencatat = pengguna, tanggal_sah, state = disahkan · "
+    "6. <code>_dokumen_diganti()</code> {hook} → state = diganti + log (AB-08) · 7. log <i>disahkan</i> (AB-09) · "
+    "8. <code>_setelah_disahkan()</code> {hook}.<br>Model turunan hanya mengisi <i>hook</i>. Hanya grup KaLab yang boleh memanggilnya (AB-06). "
+    "<code>action_ajukan()</code> berpola sama: cek draf → <code>_cek_kelengkapan()</code> → <code>_sebelum_ajukan()</code> → ubah status.", 150))
+p.notes.append(("<b>Dari CM ke desain</b> (§13.6)<br>• DokumenDisahkan → <code>approval.mixin</code>; Pengesahan (0..1) → field readonly di mixin; "
+    "KejadianPengesahan → <code>approval.log</code> generik (res_model, res_id) untuk semua dokumen.<br>"
+    "• RekamanBukti → <code>evidence.mixin</code>. Periode → <code>period.mixin</code>. /kriteria_tertinggi → <code>criteria.mixin</code>.<br>"
+    "• <code>revisi_dari_id</code> ditulis di tiap model (Many2one ke model itu sendiri) karena mixin tidak bisa merujuk dirinya.<br>"
+    "• <code>labfik.controlled.mixin</code> tidak dipakai (lihat dokumen).", 150))
+p.notes.append((SRC, 50))
+pages.append(p)
 
 # =================================================================== DCD-2
-p = Page(2, "DCD (2-3) Struktur dan Dokumen", "DCD 2/3 · Design class diagram: struktur organisasi (PKG-03) dan pengendalian dokumen (PKG-02)")
+p = Page(2, "DCD TO-BE (2-4) - Struktur Organisasi", "DCD 2/4 · Struktur organisasi (PKG-03)")
 S = {}
-S["per"] = (cm("labfik.personel", "Personel [M] [KONFIRMASI]"), ["+ name: Char", "+ jenis: Selection", "+ user_id: res.users [0..1]",
-                                                                  "+ active: Boolean = True"], [], 260, "c")
-S["asl"] = (cm("labfik.assignment.line", "Baris Penetapan"), ["+ tanggal_mulai: Date", "+ tanggal_selesai: Date"], [], 240, "c")
-S["mee"] = (cm("labfik.meeting", "Rapat Koordinasi [T]", "evidence"), ["+ agenda: Text", "+ keputusan: Html", "+ notulen: Html"], [], 260, "c")
-S["jab"] = (cm("labfik.jabatan", "Jabatan [M]"), ["+ kode: Char «unique»", "+ name: Char", "+ unit: Selection {lab_fik, prodi_if,",
-                                                 "&nbsp;&nbsp;&nbsp;prodi_si, fakultas}", "+ is_eksternal: Boolean", "+ syarat_kompetensi: Text"],
-            ["+ get_pemegang_aktif(tanggal): labfik.personel", "+ punya_wewenang(tindakan, jenis): bool",
-             "@model + cari_pemegang_berwenang(tindakan, jenis)", "# _compute_pemegang_aktif()"], 320, "c")
-S["asg"] = (cm("labfik.assignment", "SK Penetapan Pengelola [T]", "controlled, approval, period, criteria"),
-            ["+ nomor_sk: Char «unique»", "+ name: Char", "+ menimbang: Html", "+ mengingat: Html", "+ diktum: Html", "+ tembusan: Text"],
-            ["# _setelah_disahkan() «override»", "+ action_terbitkan()", "(+ override lain: DCD 1/3)"], 320, "c")
+S["emp"] = (odoo("hr.employee", "Personel [M]", True), ["+ jenis_personel: Selection {dosen, laboran_plp,", "&nbsp;&nbsp;&nbsp;teknisi, asisten, petugas_k3}",
+                                                         "+ unit: Selection", "<i>bawaan dipakai: name, job_id, user_id</i>"], ["+ unlink() «override» (AB-23)"], 300, "odoo")
+S["asl"] = (cm("labfik.assignment.line", "Baris Penetapan [T]"), ["+ employee_id: hr.employee", "+ tanggal_mulai: Date", "+ tanggal_selesai: Date"], [], 300, "c")
+S["job"] = (odoo("hr.job", "Jabatan [M]", True), ["+ unit: Selection {lab_fik, prodi_if, prodi_si, fakultas}", "+ is_eksternal: Boolean",
+                                                 "+ syarat_kompetensi: Text [0..1]", "+ is_lengkap: Boolean {compute}"],
+            ["+ punya_wewenang(tindakan, jenis): bool", "@model + cari_pemegang_berwenang(tindakan, jenis): hr.employee",
+             "# _compute_is_lengkap()", "# _cek_atasan() @constrains (tanpa siklus)", "+ unlink() «override» (AB-23)"], 340, "odoo")
+S["tgs"] = (cm("labfik.jabatan.tugas", "Tugas Jabatan [M]"), ["+ urutan: Integer", "+ uraian: Text"], [], 260, "c")
+S["wwn"] = (cm("labfik.jabatan.wewenang", "Wewenang Jabatan [M]"), ["+ tindakan: Selection {menyusun, mengesahkan}", "+ jenis_dokumen: Selection",
+                                                                  "<i>_sql_constraints: unique(jabatan_id, tindakan, jenis_dokumen)</i>"], [], 340, "c")
+S["asg"] = (cm("labfik.assignment", "SK Penetapan Pengelola [T]", "approval, period, criteria"),
+            ["+ nomor_sk: Char «unique»", "+ judul: Char", "+ menimbang: Html", "+ mengingat: Html"],
+            ["# _jenis_dokumen() «override»", "# _cek_kelengkapan() «override»", "# _dokumen_diganti() «override»",
+             "# _cek_k1() … _cek_k4() «override»"], 320, "c")
+S["mee"] = (cm("labfik.meeting", "Rapat Koordinasi [T]", "evidence"), ["+ agenda: Text", "+ keputusan: Text", "+ notulen: Binary",
+                                                                        "+ peserta_ids: hr.employee [*]"], [], 320, "c")
 S["oev"] = (cm("labfik.org.evaluation", "Evaluasi Struktur [T]", "evidence"), ["+ temuan_beban_kerja: Text", "+ efektivitas_koordinasi: Text",
-                                                                               "+ keputusan: Html"], [], 300, "c")
-S["tug"] = (cm("labfik.jabatan.tugas", "Tugas"), ["+ urutan: Integer", "+ uraian: Text"], [], 220, "c")
-S["wew"] = (cm("labfik.jabatan.wewenang", "Wewenang"), ["+ tindakan: Selection {menyusun,", "&nbsp;&nbsp;&nbsp;memeriksa, mengesahkan}",
-                                                        "+ jenis_dokumen: Selection"], [], 240, "c")
-S["rng"] = (cm("labfik.ruang", "Ruang Lab [M] «Core»"), ["+ kode: Char «unique»", "+ name: Char", "+ fungsi: Text", "+ kapasitas: Integer"], [], 220, "core")
-S["doc"] = (cm("labfik.document", "Dokumen Induk [M]"), ["+ kode: Char «unique»", "+ name: Char", "+ jenis: Selection", "+ kategori: Selection",
-                                                       "+ asal: Selection", "+ is_wajib: Boolean", "+ dasar_kebutuhan: Text",
-                                                       "+ rekaman_dihasilkan: Text", "+ is_memenuhi: Boolean {compute}"],
-            ["+ action_buat_versi(dto_versi_baru)", "+ get_info_versi(): dict", "@model + persentase_memenuhi(): float",
-             "# _compute_versi_berlaku()", "# _compute_memenuhi()"], 320, "c")
-S["rev"] = (cm("labfik.document.review", "Tinjau Ulang [T]", "evidence"), ["+ hasil: Selection {tetap_berlaku,", "&nbsp;&nbsp;&nbsp;perlu_revisi, tidak_diperlukan}"],
-            ["# _perbarui_tanggal_tinjau()"], 280, "c")
-S["ver"] = (cm("labfik.document.version", "Versi Dokumen [T]", "controlled, approval"),
-            ["+ file: Binary", "+ tanggal_revisi: Date", "+ bagian_diubah: Char", "+ ringkasan_perubahan: Text", "+ alasan_revisi: Selection",
-             "+ periode_tinjau_bulan: Integer", "+ tanggal_tinjau_berikutnya: Date {compute, store}",
-             "+ status_kemutakhiran: Selection {compute}"],
-            ["# _setelah_disahkan() «override»", "# _compute_tanggal_tinjau()", "# _compute_status_kemutakhiran()",
-             "# _check_satu_versi_diproses() (AB-13)", "@model + daftar_jadwal_tinjau(user)", "@model # _cron_kirim_pengingat_tinjau()"], 340, "c")
-S["dis"] = (cm("labfik.document.distribution", "Distribusi [T]", "evidence"), ["+ lokasi_lain: Char"], [], 260, "c")
-S["soc"] = (cm("labfik.document.socialization", "Sosialisasi [T]", "evidence"), ["+ metode: Selection"], [], 260, "c")
-cols = [(40, ["per", "asl", "mee"]), (360, ["jab", "asg", "oev"]), (740, ["tug", "wew", "rng"]), (1060, ["doc", "rev"]), (1460, ["ver", "dis", "soc"])]
-b = stack(p, cols, S)
-p.e("c-jt", "jab", "tug", COMP, "1", "tugas_ids 1..*")
-p.e("c-jw", "jab", "wew", COMP, "1", "wewenang_ids *")
-p.e("n-ja", "jab", "jab", NAV, None, "atasan_id 0..1")
-p.e("n-jp", "jab", "jab", NAV, None, "pengganti_id 0..1")
-p.e("n-jk", "jab", "jab", NAV, None, "koordinasi_ids *")
-p.e("d-jper", "jab", "per", DER, None, "pemegang_aktif_ids * {compute}")
-p.e("n-jd", "jab", "doc", NAV, None, "dasar_dokumen_id 0..1")
-p.e("c-sl", "asg", "asl", COMP, "1", "line_ids 1..*")
-p.e("n-lp", "asl", "per", NAV, "*", "personel_id 1")
-p.e("n-lj", "asl", "jab", NAV, "*", "jabatan_id 1")
-p.e("n-lr", "asl", "rng", NAV, "*", "ruang_ids *")
-p.e("n-ad", "asg", "doc", NAV, "*", "dasar_hukum_ids *")
-p.e("n-ar", "asg", "asg", NAV, None, "revisi_dari_id 0..1")
-p.e("n-ma", "mee", "asg", NAV, "*", "assignment_id 1")
-p.e("n-mp", "mee", "per", NAV, "*", "peserta_ids 1..*")
-p.e("n-oa", "oev", "asg", NAV, "*", "assignment_id 1")
-p.e("n-ob", "oev", "asg", NAV, "0..1", "assignment_baru_id 0..1")
-p.e("n-oj", "oev", "jab", NAV, "*", "jabatan_direvisi_ids *")
-p.e("c-dv", "doc", "ver", COMP, "1", "version_ids 1..*")
-p.e("d-dv", "doc", "ver", DER, None, "versi_berlaku_id 0..1 {compute}")
-p.e("n-dr", "doc", "rng", NAV, "*", "lokasi_penggunaan_ids *")
-p.e("n-dd", "doc", "doc", NAV, None, "dokumen_terkait_ids *")
-p.e("n-vv", "ver", "ver", NAV, None, "revisi_dari_id 0..1")
-p.e("c-vd", "ver", "dis", COMP, "1", "distribution_ids *")
-p.e("c-vs", "ver", "soc", COMP, "1", "socialization_ids *")
-p.e("c-vr", "ver", "rev", COMP, "1", "review_ids *")
-p.e("n-dsr", "dis", "rng", NAV, "*", "lokasi_id 0..1")
-p.e("n-sp", "soc", "per", NAV, "*", "peserta_ids 1..*")
-ny = max(b.values()) + 10
-p.v("n1", LEG, NOTE, 40, ny, 760, 140)
-p.v("n2", "<b>Field warisan tidak ditulis ulang</b>: lihat DCD 1/3 (mis. <code>state</code>, <code>pengesah_id</code>, <code>tanggal</code>, "
-    "<code>pelapor_id</code>, <code>bukti_ids</code>).<br><b>Aturan bisnis sebagai constraint</b>: AB-04 satu versi berlaku "
-    "(<code>_setelah_disahkan</code>), AB-13 satu versi diproses (<code>@api.constrains</code>), «unique» = <code>_sql_constraints</code>.<br>"
-    "<b>[KONFIRMASI]</b> <code>labfik.personel</code> vs <code>hr.employee</code> vs model Rafika (kontrak kelompok).",
-    NOTE, 820, ny, 560, 140)
-p.v("n3", SRC, NOTE, 40, ny + 160, 1300, 30)
-pages.append((p, 1860, ny + 220))
+                                                                               "+ keputusan: Text", "+ struktur_diubah: Boolean"],
+            ["+ action_tautkan_revisi(sk, jabatan)"], 320, "c")
+S["rng"] = (core("labfik.ruang", "Ruang Lab [M]"), ["+ kode: Char", "+ name: Char", "+ kapasitas: Integer"], [], 220, "core")
+bottom = stack(p, [(40, ["emp", "asl", "rng"]), (420, ["job", "tgs", "wwn"]), (840, ["asg", "mee", "oev"])], S)
+p.e("n-emp-job", "emp", "job", NAV, "*", "job_id 0..1 (bawaan)", exit=(1, 0.3), entry=(0, 0.3))
+p.e("n-job-atas", "job", "job", NAV, "bawahan *", "atasan_id 0..1", exit=(1, 0.15), entry=(1, 0.05))
+p.e("n-job-ganti", "job", "job", NAV, "*", "pengganti_id 0..1", exit=(1, 0.45), entry=(1, 0.35))
+p.e("c-job-tgs", "job", "tgs", COMP, "1", "tugas_ids *", exit=(0.5, 1), entry=(0.5, 0))
+p.e("c-job-wwn", "job", "wwn", COMP, "1", "wewenang_ids *", exit=(0.1, 1), entry=(0.1, 0))
+p.e("c-asg-asl", "asg", "asl", COMP, "1", "baris_ids 1..*", exit=(0, 0.5), entry=(1, 0.3))
+p.e("n-asl-job", "asl", "job", NAV, "*", "jabatan_id 1", exit=(1, 0.8), entry=(0, 0.8))
+p.e("n-asl-rng", "asl", "rng", NAV, "*", "ruang_ids *", exit=(0.5, 1), entry=(0.5, 0))
+p.e("n-asg-self", "asg", "asg", NAV, "pengganti 0..1", "revisi_dari_id 0..1", exit=(1, 0.2), entry=(1, 0.1))
+p.e("n-oev-asg", "oev", "asg", NAV, "*", "sk_id 1", exit=(1, 0.2), entry=(1, 0.6))
+p.e("n-oev-asg2", "oev", "asg", NAV, "0..1", "sk_revisi_id 0..1", exit=(1, 0.5), entry=(1, 0.85))
+p.e("n-oev-job", "oev", "job", NAV, "*", "jabatan_direvisi_ids *", exit=(0, 0.5), entry=(1, 0.8))
+p.notes.append(("<b>Kunci</b><br>• Personel dan Jabatan <b>memperluas</b> model bawaan <code>hr</code> (is-a), sedangkan Tugas dan Wewenang adalah "
+    "<b>model anak baru</b> (has-a) (keputusan 14 Nov 2026).<br>"
+    "• AB-05: <code>approval.mixin._cek_wewenang(pengesah)</code> memanggil <code>pengesah.job_id.punya_wewenang('mengesahkan', self._jenis_dokumen())</code> "
+    "(delegasi, §13.5). Matriks kewenangan (UC-13) dibaca dari <code>wewenang_ids</code>.<br>"
+    "• Pejabat fakultas = hr.employee tanpa <code>user_id</code>; jabatannya <code>is_eksternal</code>.", 150))
+p.notes.append((SRC, 50))
+pages.append(p)
 
 # =================================================================== DCD-3
-p = Page(3, "DCD (3-3) Perencanaan", "DCD 3/3 · Design class diagram: perencanaan (PKG-01, PKG-13)")
+p = Page(3, "DCD TO-BE (3-4) - Pengendalian Dokumen", "DCD 3/4 · Pengendalian dokumen SOP/IK (PKG-02)")
 S = {}
-S["sas"] = (cm("labfik.plan.sasaran", "Sasaran Strategis"), ["+ kode: Char", "+ sasaran: Text", "+ target_akhir: Char"], [], 240, "c")
-S["prg"] = (cm("labfik.plan.program", "Program Strategis"), ["+ kode: Char", "+ name: Char", "+ kegiatan_utama: Text", "+ luaran: Text",
-                                                            "+ tahapan: Text"], [], 240, "c")
-S["bas"] = (cm("labfik.plan.baseline", "Baseline"), ["+ data: Char", "+ nilai_awal: Char", "+ sumber: Char"], [], 240, "c")
-S["pln"] = (cm("labfik.plan", "Rencana [T]", "controlled, approval, period, criteria"),
-            ["+ name: Char", "+ jenis: Selection {strategis, tahunan,", "&nbsp;&nbsp;&nbsp;iku, pengembangan}",
-             "+ ringkasan, latar_belakang, tujuan,", "&nbsp;&nbsp;&nbsp;ruang_lingkup, referensi, landasan,", "&nbsp;&nbsp;&nbsp;visi, misi, penutup: Html"],
-            ["+ action_buat_revisi()", "+ action_terbitkan()", "+ get_status_item(): list", "+ get_status_gap(): dict",
-             "# _setelah_disahkan() «override»", "(+ override lain: DCD 1/3)"], 320, "c")
-S["gap"] = (cm("labfik.plan.gap", "Temuan Gap (PKG-13)"), ["+ aspek: Selection {tridharma,", "&nbsp;&nbsp;&nbsp;kompetensi, sarana, layanan}",
-                                                         "+ kondisi_saat_ini: Text", "+ kebutuhan: Text", "+ sumber_data: Char",
-                                                         "+ uraian_gap: Text", "+ lampiran_ids: ir.attachment [0..*]"], [], 280, "c")
-S["lin"] = (cm("labfik.plan.line", "Item Rencana"), ["+ kegiatan: Text", "+ baseline: Float", "+ target: Float", "+ satuan: Char",
-                                                    "+ jadwal_mulai: Date", "+ jadwal_selesai: Date", "+ bukti_diharapkan: Text",
-                                                    "+ anggaran: Monetary", "+ currency_id: res.currency", "+ komponen_anggaran: Selection",
-                                                    "+ nilai_risiko: Integer", "+ nilai_manfaat: Integer", "+ prioritas: Selection {compute}"],
-            ["+ get_capaian(periode_lapor): dict", "@model + daftar_item_pic(user, periode_lapor)", "# _compute_prioritas()",
-             "@model # _cron_kirim_pengingat_realisasi()"], 330, "c")
-S["rea"] = (cm("labfik.realisasi", "Realisasi [T]", "evidence"), ["+ periode_lapor: Char", "+ capaian: Float", "+ anggaran_terpakai: Monetary",
-                                                                 "+ status_capaian: Selection", "+ alasan_tidak_relevan: Text",
-                                                                 "+ analisis_tindakan: Text", "+ tenggat: Date", "+ persen_capaian: Float {compute}"],
-            ["# _check_alasan() (AB-10)", "# _check_bukti() (AB-12)", "# _check_pic() (AB-11)", "# _compute_persen_capaian()"], 300, "c")
-S["kpi"] = (cm("labfik.kpi", "KPI [M]"), ["+ kode: Char «unique»", "+ name: Char", "+ sasaran_kerja: Char", "+ rumus: Text", "+ pembilang: Char",
-                                         "+ penyebut: Char", "+ satuan: Char", "+ frekuensi: Selection", "+ sumber_bukti: Text", "+ acuan_iso: Char"], [], 260, "c")
-S["sre"] = (cm("labfik.sasaran.renstra", "Sasaran Renstra [M]"), ["+ kode: Char «unique»", "+ uraian: Text", "+ tingkat: Selection"], [], 240, "c")
-S["tin"] = (cm("labfik.tinjauan", "Tinjauan Rencana [T]", "evidence"), ["+ ringkasan: Html", "+ keputusan: Html"], [], 260, "c")
-S["man"] = (cm("labfik.tinjauan.manfaat", "Ukuran Manfaat (PKG-13)"), ["+ indikator_manfaat: Char", "+ nilai_sebelum: Float",
-                                                                     "+ nilai_sesudah: Float", "+ sumber: Char"], [], 250, "c")
-S["prd"] = (cm("labfik.periode", "Periode [M] «Core»"), ["+ name: Char", "+ jenis: Selection", "+ tanggal_mulai: Date", "+ tanggal_selesai: Date"], [], 230, "core")
-S["per"] = ("<b>labfik.personel</b>", ["<i>(DCD 2/3)</i>"], [], 200, "stub")
-S["jab"] = ("<b>labfik.jabatan</b>", ["<i>(DCD 2/3)</i>"], [], 200, "stub")
-cols = [(40, ["sas", "prg", "bas"]), (360, ["pln", "gap"]), (760, ["lin", "rea"]), (1170, ["kpi", "sre"]), (1500, ["tin", "man", "prd", "per", "jab"])]
-b = stack(p, cols, S)
-for c, lbl in [("sas", "sasaran_ids *"), ("prg", "program_ids *"), ("bas", "baseline_ids *"), ("gap", "gap_ids *"), ("lin", "line_ids *")]:
-    p.e(f"c-p{c}", "pln", c, COMP, "1", lbl)
-p.e("n-pp", "pln", "pln", NAV, None, "parent_id 0..1")
-p.e("n-pr", "pln", "pln", NAV, None, "revisi_dari_id 0..1")
-p.e("n-pprd", "pln", "prd", NAV, "*", "periode_id 1 (period.mixin)")
-p.e("n-sk", "sas", "kpi", NAV, "*", "kpi_id 0..1")
-p.e("n-bp", "bas", "per", NAV, "*", "pic_id 1")
-p.e("n-lk", "lin", "kpi", NAV, "*", "kpi_id 0..1")
-p.e("n-lp", "lin", "per", NAV, "*", "pic_id 1")
-p.e("n-ls", "lin", "sas", NAV, "*", "sasaran_id 0..1")
-p.e("n-lpg", "lin", "prg", NAV, "*", "program_id 0..1")
-p.e("n-lsr", "lin", "sre", NAV, "*", "sasaran_renstra_ids *")
-p.e("n-lg", "lin", "gap", NAV, "*", "gap_ids *")
-p.e("b-lr", "lin", "rea", BI, "line_id 1", "realisasi_ids *")
-p.e("n-rp", "rea", "per", NAV, "*", "pic_tindak_lanjut_id 0..1")
-p.e("b-pt", "pln", "tin", BI, "plan_id 1", "tinjauan_ids *")
-p.e("n-tb", "tin", "pln", NAV, "*", "rencana_berikut_id 0..1")
-p.e("n-tp", "tin", "per", NAV, "*", "peserta_ids 1..*")
-p.e("c-tm", "tin", "man", COMP, "1", "manfaat_ids *")
-p.e("n-ml", "man", "lin", NAV, "*", "line_id 1")
-p.e("n-kj", "kpi", "jab", NAV, "*", "jabatan_pic_id 1")
-ny = max(b.values()) + 10
-p.v("n1", LEG, NOTE, 40, ny, 760, 140)
-p.v("n2", "<b>Field warisan tidak ditulis ulang</b>: lihat DCD 1/3. <code>periode_id</code> berasal dari <code>period.mixin</code>.<br>"
-    "<b>Query dari SSD</b> (katalog operasi) menjadi method <code>get_*</code> / <code>daftar_*</code>; "
-    "<b>command</b> menjadi <code>action_*</code>. Constraint AB-10–12 sebagai <code>@api.constrains</code> (<code>_check_*</code>).",
-    NOTE, 820, ny, 560, 140)
-p.v("n3", SRC, NOTE, 40, ny + 160, 1300, 30)
-pages.append((p, 1800, ny + 220))
+S["doc"] = (cm("labfik.document", "Dokumen Induk [M]", "mail.thread"), [
+    "+ kode: Char «unique»", "+ judul: Char", "+ jenis: Selection {sop, ik, formulir, eksternal}", "+ kategori: Selection",
+    "+ asal: Selection {lab, fakultas, universitas}", "+ is_wajib: Boolean", "+ dasar_kebutuhan: Text", "+ tanggal_ditetapkan_wajib: Date",
+    "+ siklus_tinjau_bulan: Integer", "+ active: Boolean = True", "+ memenuhi: Boolean {compute}"],
+    ["+ get_info_versi(): dict", "+ cek_monev(tanggal_tutup): dict (S1–S5)", "@model + hitung_persentase(tanggal_tutup): dict",
+     "# _compute_versi_berlaku()", "+ unlink() «override» (AB-23)"], 360, "c")
+S["rng"] = (core("labfik.ruang", "Ruang Lab [M]"), ["+ kode: Char", "+ name: Char", "+ kapasitas: Integer"], [], 220, "core")
+S["ver"] = (cm("labfik.document.version", "Versi Dokumen SOP/IK [T]", "approval, mail.thread"), [
+    "+ revisi: Char", "+ berkas: Binary", "+ tanggal_efektif: Date", "+ bagian_diubah: Text [0..1]", "+ ringkasan_perubahan: Text [0..1]",
+    "+ alasan_revisi: Text [0..1]", "+ tanggal_tinjau_berikutnya: Date {compute, store}", "+ perlu_ditinjau: Boolean {compute, search}",
+    "<i>_sql_constraints: unique(document_id, revisi)</i>"],
+    ["+ baca_berkas(): Binary (O)", "# _jenis_dokumen() «override»", "# _cek_kelengkapan() «override»",
+     "# _sebelum_ajukan() «override» (AB-12, O)", "# _dokumen_diganti() «override»", "# _compute_tanggal_tinjau()", "# _search_perlu_ditinjau()"], 380, "c")
+S["dis"] = (cm("labfik.document.distribution", "Distribusi [T]", "evidence"), ["<i>(atribut dari evidence.mixin)</i>"],
+            ["# _cek_versi_dan_lokasi() @constrains"], 300, "c")
+S["soc"] = (cm("labfik.document.socialization", "Sosialisasi [T]", "evidence"), ["+ metode: Selection", "+ peserta_ids: hr.employee [*]",
+                                                                                    "+ jumlah_peserta: Integer"],
+            ["# _cek_versi_dan_peserta() @constrains"], 300, "c")
+S["rev"] = (cm("labfik.document.review", "Tinjau Ulang [T]", "evidence"), ["+ hasil: Selection {tetap_berlaku, perlu_revisi}", "+ catatan: Text"],
+            ["# _cek_versi() @constrains", "# _boleh_dikoreksi() «override» (False)"], 300, "c")
+bottom = stack(p, [(40, ["doc", "rng"]), (480, ["ver"]), (940, ["dis", "soc", "rev"])], S)
+p.e("c-doc-ver", "doc", "ver", COMP, "1", "versi_ids *", exit=(1, 0.15), entry=(0, 0.15))
+p.e("d-doc-ver", "doc", "ver", DER, "0..1", "versi_berlaku_id 0..1 {compute}", exit=(1, 0.35), entry=(0, 0.4))
+p.e("n-doc-rng", "doc", "rng", NAV, "*", "lokasi_ids *", exit=(0.5, 1), entry=(0.5, 0))
+p.e("n-dis-ver", "dis", "ver", NAV, "*", "version_id 1", exit=(0, 0.5), entry=(1, 0.15))
+p.e("n-dis-rng", "dis", "rng", NAV, "*", "ruang_id 1", exit=(0.5, 1), entry=(1, 0.5))
+p.e("n-soc-ver", "soc", "ver", NAV, "*", "version_id 1", exit=(0, 0.5), entry=(1, 0.45))
+p.e("n-rev-ver", "rev", "ver", NAV, "*", "version_id 1", exit=(0, 0.5), entry=(1, 0.75))
+p.notes.append(("<b>Kunci</b><br>• AB-13 <code>_sql_constraints</code>; AB-12 (O) di hook <code>_sebelum_ajukan()</code>; "
+    "AB-14 <code>_compute_tanggal_tinjau()</code> dari tanggal_sah / tinjau ulang terakhir + siklus.<br>"
+    "• AB-15, AB-16 <code>@api.constrains</code> di Distribusi, Sosialisasi, Tinjau Ulang. AB-17 (O) <i>record rule</i> grup Pengguna Lab: "
+    "<code>state = 'disahkan'</code>.<br>• AB-24 <code>cek_monev()</code> per dokumen + <code>hitung_persentase()</code>.", 150))
+p.notes.append((SRC, 50))
+pages.append(p)
 
-open(OUT, "w").write('<mxfile host="app.diagrams.net">' + "".join(pg.xml(w, h) for pg, w, h in pages) + "</mxfile>")
+# =================================================================== DCD-4
+p = Page(4, "DCD TO-BE (4-4) - Rencana dan Status Monev", "DCD 4/4 · Renstra, rencana (PKG-01, PKG-13), dan status monev")
+S = {}
+S["ren"] = (cm("labfik.renstra", "Renstra [T]", "approval, period"), ["+ judul: Char", "+ berkas: Binary"],
+            ["# _jenis_dokumen() «override»", "# _cek_kelengkapan() «override»", "# _dokumen_diganti() «override»"], 300, "c")
+S["kpi"] = (cm("labfik.kpi", "KPI [M]"), ["+ kode: Char «unique»", "+ nama: Char", "+ definisi: Text", "+ rumus_pembilang: Text",
+                                          "+ rumus_penyebut: Text", "+ satuan: Char", "+ frekuensi: Selection", "+ sumber_data: Text",
+                                          "+ active: Boolean = True"], ["+ unlink() «override» (AB-23)"], 300, "c")
+S["pln"] = (cm("labfik.plan", "Rencana [T]", "approval, period, criteria"), ["+ jenis: Selection {tahunan, pengembangan}", "+ judul: Char",
+                                                                             "+ narasi: Html [0..1] (O)"],
+            ["+ action_buat_revisi() (O)", "# _jenis_dokumen() «override»", "# _cek_kelengkapan() «override»",
+             "# _sebelum_disahkan() «override» (AB-11, O)", "# _dokumen_diganti() «override»", "# _cek_k1() … _cek_k4() «override»"], 340, "c")
+S["lin"] = (cm("labfik.plan.line", "Item Rencana [T]"), ["+ kegiatan: Text", "+ target: Float", "+ satuan: Char", "+ pic_id: hr.employee",
+                                                          "+ jadwal_mulai: Date", "+ jadwal_selesai: Date", "+ anggaran: Monetary",
+                                                          "+ currency_id: res.currency", "+ rujukan_renstra: Text",
+                                                          "+ nilai_risiko: Selection {1, 2, 3}", "+ nilai_manfaat: Selection {1, 2, 3}",
+                                                          "+ prioritas: Selection {compute} (O)"],
+            ["+ get_capaian(): dict", "# _compute_prioritas() (O)"], 340, "c")
+S["gap"] = (cm("labfik.plan.gap", "Temuan Gap [T]"), ["+ aspek: Selection {tridharma, kompetensi,", "&nbsp;&nbsp;&nbsp;sarana, layanan}",
+                                                      "+ kondisi_saat_ini: Text", "+ kebutuhan: Text", "+ sumber_data: Text", "+ uraian_gap: Text",
+                                                      "+ lampiran: Binary [0..1]", "+ tidak_ada_gap: Boolean", "+ alasan_tidak_ada_gap: Text [0..1]"], [], 300, "c")
+S["rea"] = (cm("labfik.realisasi", "Realisasi [T]", "evidence"), ["+ periode_lapor: Char", "+ capaian: Float", "+ biaya_terpakai: Monetary",
+                                                                   "+ status_capaian: Selection", "+ tindak_lanjut: Text",
+                                                                   "<i>_sql_constraints: unique(line_id, periode_lapor)</i>"],
+            ["# _cek_realisasi() @constrains (AB-18)"], 320, "c")
+S["tin"] = (cm("labfik.tinjauan", "Tinjauan Rencana [T]", "evidence"), ["+ ringkasan_capaian: Text", "+ keputusan: Text",
+                                                                         "+ peserta_ids: hr.employee [*]"],
+            ["+ action_tautkan_rencana_berikutnya(rencana)", "# _cek_tinjauan() @constrains (AB-19, AB-20)"], 320, "c")
+S["mnf"] = (cm("labfik.tinjauan.manfaat", "Ukuran Manfaat [T]"), ["+ indikator: Text", "+ nilai_sebelum: Float", "+ nilai_sesudah: Float",
+                                                                  "+ sumber: Text"], [], 300, "c")
+S["mon"] = ("«AbstractModel»<br><b>labfik.org.monev</b><br><font style='font-size:10px'>Status Monev [R] (layanan, tanpa tabel)</font>",
+            ["<i>(tidak menyimpan data)</i>"],
+            ["@model + get_status(tanggal_acuan): dict", "@model # _status_pkg02(tanggal)", "@model # _status_kriteria(model, tanggal)"], 320, "new")
+bottom = stack(p, [(40, ["ren", "kpi"]), (400, ["pln", "lin"]), (800, ["gap", "rea"]), (1180, ["tin", "mnf", "mon"])], S)
+p.e("n-pln-self", "pln", "pln", NAV, "pengganti 0..1", "revisi_dari_id 0..1", exit=(1, 0.1), entry=(1, 0.02))
+p.e("n-ren-self", "ren", "ren", NAV, "", "revisi_dari_id 0..1", exit=(1, 0.2), entry=(1, 0.05))
+p.e("c-pln-lin", "pln", "lin", COMP, "1", "line_ids 1..*", exit=(0.5, 1), entry=(0.5, 0))
+p.e("c-pln-gap", "pln", "gap", COMP, "1", "gap_ids *", exit=(1, 0.4), entry=(0, 0.15))
+p.e("n-lin-kpi", "lin", "kpi", NAV, "*", "kpi_id 0..1", exit=(0, 0.2), entry=(1, 0.3))
+p.e("n-lin-gap", "lin", "gap", NAV, "*", "gap_ids *", exit=(1, 0.2), entry=(0, 0.7))
+p.e("n-rea-lin", "rea", "lin", NAV, "realisasi_ids *", "line_id 1", exit=(0, 0.4), entry=(1, 0.7))
+p.e("n-tin-pln", "tin", "pln", NAV, "*", "plan_id 1", exit=(0, 0.2), entry=(1, 0.5))
+p.e("n-tin-pln2", "tin", "pln", NAV, "0..1", "rencana_berikut_id 0..1", exit=(0, 0.5), entry=(1, 0.8))
+p.e("c-tin-mnf", "tin", "mnf", COMP, "1", "manfaat_ids *", exit=(0.5, 1), entry=(0.5, 0))
+p.e("n-mnf-lin", "mnf", "lin", NAV, "*", "line_id 1", exit=(0, 0.5), entry=(1, 0.4))
+p.notes.append(("<b>Kunci</b><br>• Satu model <code>labfik.plan</code> untuk rencana tahunan dan pengembangan: <code>_jenis_dokumen()</code>, "
+    "<code>_cek_kelengkapan()</code> (AB-02), dan <code>_cek_k1()–_cek_k4()</code> (AB-25) bercabang menurut <code>jenis</code>.<br>"
+    "• <code>labfik.org.monev.get_status()</code> mendelegasikan perhitungan ke <code>labfik.document.hitung_persentase()</code> (AB-24) "
+    "dan ke <code>get_kriteria()</code> di Rencana dan SK (AB-25). Tidak menyimpan data.<br>"
+    "• Biaya rencana pengembangan = <code>anggaran</code>.", 150))
+p.notes.append((SRC, 50))
+pages.append(p)
+
+# =================================================================== halaman catatan (bahan kerja, tidak disisipkan ke naskah)
+c = Page("-notes", "Catatan DCD TO-BE (bahan kerja)", "")
+c.P = "tk-dcd-notes-"
+c.v("title", "Catatan design class diagram (bahan kerja, tidak disisipkan ke naskah)", TITLE, 40, 10, 1300, 34)
+c.v("legend", LEG, NOTE, 40, 56, 1300, 130)
+y = 206
+for i, pg in enumerate(pages):
+    c.v(f"h{i}", f"<b>{pg.title}</b>", "text;html=1;fontSize=12;align=left;verticalAlign=top;whiteSpace=wrap;", 40, y, 1300, 24)
+    y += 30
+    for j, (txt, h) in enumerate(pg.notes):
+        c.v(f"n{i}-{j}", txt, NOTE, 40, y, 1300, h)
+        y += h + 10
+    y += 10
+pages.append(c)
+
+open(OUT, "w").write('<mxfile host="app.diagrams.net">' + "".join(pg.xml() for pg in pages) + "</mxfile>")
