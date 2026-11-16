@@ -1,3 +1,12 @@
+"""Design class diagram modul Tata Kelola (langkah 10), 4 halaman + halaman catatan.
+
+Gaya polos hitam-putih (sama dengan activity_state.py). Jenis kelas dibedakan hanya lewat stereotype:
+«AbstractModel» (nama miring) = mixin, «Odoo» = model bawaan, «Core» = master bersama labfik_core.
+Garis putus-putus hanya untuk field turunan {compute}. Halaman diagram hanya berisi diagram;
+judul, legenda, dan catatan dikumpulkan di halaman catatan terakhir.
+
+Pemakaian: python3 -I design_class.py projek-fiklab/rancangan/class-tata-kelola.drawio
+"""
 import sys
 from xml.sax.saxutils import escape
 
@@ -9,18 +18,18 @@ def esc(s):
     return escape(s, {'"': "&quot;"})
 
 
-FILL = {"c": "fillColor=#FFFFFF;strokeColor=#333333;", "mixin": "fillColor=#E1D5E7;strokeColor=#9673A6;",
-        "odoo": "fillColor=#F5F5F5;strokeColor=#666666;", "core": "fillColor=#F5F5F5;strokeColor=#666666;dashed=1;",
-        "stub": "fillColor=#FAFAFA;strokeColor=#999999;dashed=1;", "new": "fillColor=#FFFFFF;strokeColor=#9B2C44;strokeWidth=2;"}
+FONT = "fontFamily=Times New Roman;"
+PLAIN = "fillColor=#FFFFFF;strokeColor=#000000;swimlaneFillColor=#FFFFFF;" + FONT
+FILL = {k: PLAIN for k in ("c", "mixin", "odoo", "core", "stub", "new")}  # jenis kelas dibedakan lewat stereotype, bukan warna
 TXT = ("text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;"
-       "rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=11;")
+       "rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=11;" + FONT)
 SEP = ("line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;"
        "rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;html=1;")
-GEN = "endArrow=block;endFill=0;endSize=14;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#6C4A87;"
-COMP = "endArrow=none;startArrow=diamondThin;startFill=1;startSize=16;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#333333;fontSize=10;"
-NAV = "endArrow=open;endFill=0;endSize=10;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#555555;fontSize=10;"
-DER = "endArrow=open;endFill=0;endSize=10;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#555555;dashed=1;fontSize=10;"
-BI = "endArrow=none;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#555555;fontSize=10;"
+GEN = "endArrow=block;endFill=0;endSize=14;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#000000;"
+COMP = "endArrow=none;startArrow=diamondThin;startFill=1;startSize=16;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#000000;fontSize=10;" + FONT
+NAV = "endArrow=open;endFill=0;endSize=10;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#000000;fontSize=10;" + FONT
+DER = "endArrow=open;endFill=0;endSize=10;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#000000;dashed=1;fontSize=10;" + FONT
+BI = "endArrow=none;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#000000;fontSize=10;" + FONT
 NOTE = ("shape=note;whiteSpace=wrap;html=1;size=14;align=left;verticalAlign=top;spacingLeft=6;spacingTop=4;"
         "fontSize=11;fillColor=#FFF2CC;strokeColor=#D6B656;")
 FRAME = ("rounded=1;arcSize=1;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingLeft=10;spacingTop=6;"
@@ -36,9 +45,11 @@ def height(title, attrs, methods):
 class Page:
     def __init__(self, n, name, title):
         self.P, self.n, self.name, self.cells, self.geo = f"tk-dcd{n}-", n, name, [], {}
-        self.v("title", title, TITLE, 40, 10, 1700, 34)
+        self.title, self.notes, self.maxx, self.maxy = title, [], 0, 0
 
     def v(self, id, val, style, x, y, w, h, parent="1"):
+        if parent == "1":
+            self.maxx, self.maxy = max(self.maxx, x + w), max(self.maxy, y + h)
         par = "1" if parent == "1" else self.P + parent
         self.cells.append(f'<mxCell id="{self.P}{id}" value="{esc(val)}" style="{style}" vertex="1" parent="{par}">'
                           f'<mxGeometry x="{x:.0f}" y="{y:.0f}" width="{w:.0f}" height="{h:.0f}" as="geometry"/></mxCell>')
@@ -71,10 +82,11 @@ class Page:
             if lbl:
                 self.cells.append(
                     f'<mxCell id="{eid}-l{k}" value="{esc(lbl)}" style="edgeLabel;resizable=0;html=1;align={align};verticalAlign=bottom;'
-                    f'fontSize=10;labelBackgroundColor=#FFFFFF;" connectable="0" vertex="1" parent="{eid}"><mxGeometry x="{xpos}" '
+                    f'fontSize=10;labelBackgroundColor=#FFFFFF;{FONT}" connectable="0" vertex="1" parent="{eid}"><mxGeometry x="{xpos}" '
                     f'relative="1" as="geometry"><mxPoint x="{8 if xpos < 0 else -8}" y="-2" as="offset"/></mxGeometry></mxCell>')
 
-    def xml(self, w, h):
+    def xml(self, w=None, h=None):
+        w, h = w or self.maxx + 40, h or self.maxy + 40
         return (f'<diagram id="tk-dcd{self.n}" name="{esc(self.name)}"><mxGraphModel dx="1600" dy="900" grid="1" gridSize="10" '
                 f'guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="{w:.0f}" pageHeight="{h:.0f}" '
                 'math="0" shadow="0"><root><mxCell id="0"/><mxCell id="1" parent="0"/>' + "".join(self.cells) + "</root></mxGraphModel></diagram>")
@@ -87,7 +99,7 @@ def am(name):
 def cm(name, label, inherit=None):
     t = f"<b>{name}</b><br><font style='font-size:10px'>{label}</font>"
     if inherit:
-        t += f"<br><font style='font-size:10px' color='#6C4A87'>{{inherit: {inherit}}}</font>"
+        t += f"<br><font style='font-size:10px'>{{inherit: {inherit}}}</font>"
     return t
 
 
@@ -95,7 +107,7 @@ def cm(name, label, inherit=None):
 def odoo(name, label, ext=False):
     t = f"«Odoo»<br><b>{name}</b><br><font style='font-size:10px'>{label}</font>"
     if ext:
-        t += f"<br><font style='font-size:10px' color='#6C4A87'>{{_inherit: {name}}} di labfik_core</font>"
+        t += f"<br><font style='font-size:10px'>{{_inherit: {name}}} di labfik_core</font>"
     return t
 
 
@@ -115,9 +127,9 @@ def stack(page, columns, specs, top=60, gap=46):
 
 
 LEG = ("<b>Notasi</b> (Wazlawick 2024, §13.6; UML)<br>"
-       "• Ungu «AbstractModel» (nama miring) = <i>mixin</i> tanpa tabel; segitiga kosong ungu = <code>_inherit = [mixin, …]</code>.<br>"
-       "• «Odoo» abu-abu = model bawaan; bila diberi <code>{_inherit: …}</code>, model itu diperluas tanpa <code>_name</code> baru. "
-       "«Core» abu-abu putus-putus = master bersama di labfik_core. Tepi merah = model hasil desain yang tidak ada padanannya 1:1 di CM.<br>"
+       "• «AbstractModel» (nama miring) = <i>mixin</i> tanpa tabel; segitiga kosong = <code>_inherit = [mixin, …]</code>.<br>"
+       "• «Odoo» = model bawaan; bila diberi <code>{_inherit: …}</code>, model itu diperluas tanpa <code>_name</code> baru. "
+       "«Core» = master bersama di labfik_core. Model tanpa stereotype = model baru modul ini. Semua kotak polos hitam-putih.<br>"
        "• Panah terbuka = Many2one/Many2many berarah, label = nama field. Belah ketupat hitam = One2many + Many2one (anak ikut terhapus). "
        "Putus-putus = field <code>compute</code>.<br>"
        "• Atribut bertipe hanya untuk model bawaan Odoo (hr.employee, res.users, res.currency, ir.attachment). Field warisan mixin tidak ditulis ulang.<br>"
@@ -173,20 +185,19 @@ for i, (cid, name, label) in enumerate(ev):
     p.cls(cid, cm(name, label, "evidence"), ["<i>(rincian: DCD 2–4)</i>"], [], 980 + (i % 2) * 250, 560 + (i // 2) * 110, 230)
     p.e(f"g-{cid}-evi", cid, "evi", GEN, exit=(0.5, 0), entry=(0.5, 1))
 ny = max(bottom + 160, 560 + 4 * 110) + 20
-p.v("n0", LEG, NOTE, 40, ny, 760, 150)
-p.v("n1", "<b>Template Method</b> <code>action_sahkan(pengesah, tanggal_sah)</code> — urutan tetap di mixin, tidak di-<i>override</i>:<br>"
+p.notes.append(("<b>Template Method</b> <code>action_sahkan(pengesah, tanggal_sah)</code> — urutan tetap di mixin, tidak di-<i>override</i>:<br>"
     "1. state harus <i>diajukan</i> · 2. berkas_ttd ada (AB-04) · 3. <code>_cek_wewenang(pengesah)</code> (AB-05) · "
     "4. <code>_sebelum_disahkan()</code> {hook} · 5. tulis pengesah, pencatat = pengguna, tanggal_sah, state = disahkan · "
     "6. <code>_dokumen_diganti()</code> {hook} → state = diganti + log (AB-08) · 7. log <i>disahkan</i> (AB-09) · "
     "8. <code>_setelah_disahkan()</code> {hook}.<br>Model turunan hanya mengisi <i>hook</i>. Hanya grup KaLab yang boleh memanggilnya (AB-06). "
-    "<code>action_ajukan()</code> berpola sama: cek draf → <code>_cek_kelengkapan()</code> → <code>_sebelum_ajukan()</code> → ubah status.", NOTE, 820, ny, 640, 150)
-p.v("n2", "<b>Dari CM ke desain</b> (§13.6)<br>• DokumenDisahkan → <code>approval.mixin</code>; Pengesahan (0..1) → field readonly di mixin; "
+    "<code>action_ajukan()</code> berpola sama: cek draf → <code>_cek_kelengkapan()</code> → <code>_sebelum_ajukan()</code> → ubah status.", 150))
+p.notes.append(("<b>Dari CM ke desain</b> (§13.6)<br>• DokumenDisahkan → <code>approval.mixin</code>; Pengesahan (0..1) → field readonly di mixin; "
     "KejadianPengesahan → <code>approval.log</code> generik (res_model, res_id) untuk semua dokumen.<br>"
     "• RekamanBukti → <code>evidence.mixin</code>. Periode → <code>period.mixin</code>. /kriteria_tertinggi → <code>criteria.mixin</code>.<br>"
     "• <code>revisi_dari_id</code> ditulis di tiap model (Many2one ke model itu sendiri) karena mixin tidak bisa merujuk dirinya.<br>"
-    "• <code>labfik.controlled.mixin</code> tidak dipakai (lihat dokumen).", NOTE, 1480, ny, 480, 150)
-p.v("n3", SRC, NOTE, 40, ny + 170, 1420, 30)
-pages.append((p, 2000, ny + 240))
+    "• <code>labfik.controlled.mixin</code> tidak dipakai (lihat dokumen).", 150))
+p.notes.append((SRC, 50))
+pages.append(p)
 
 # =================================================================== DCD-2
 p = Page(2, "DCD TO-BE (2-4) - Struktur Organisasi", "DCD 2/4 · Struktur organisasi (PKG-03)")
@@ -224,14 +235,13 @@ p.e("n-asg-self", "asg", "asg", NAV, "pengganti 0..1", "revisi_dari_id 0..1", ex
 p.e("n-oev-asg", "oev", "asg", NAV, "*", "sk_id 1", exit=(1, 0.2), entry=(1, 0.6))
 p.e("n-oev-asg2", "oev", "asg", NAV, "0..1", "sk_revisi_id 0..1", exit=(1, 0.5), entry=(1, 0.85))
 p.e("n-oev-job", "oev", "job", NAV, "*", "jabatan_direvisi_ids *", exit=(0, 0.5), entry=(1, 0.8))
-p.v("n0", LEG, NOTE, 40, bottom + 20, 760, 150)
-p.v("n1", "<b>Kunci</b><br>• Personel dan Jabatan <b>memperluas</b> model bawaan <code>hr</code> (is-a), sedangkan Tugas dan Wewenang adalah "
+p.notes.append(("<b>Kunci</b><br>• Personel dan Jabatan <b>memperluas</b> model bawaan <code>hr</code> (is-a), sedangkan Tugas dan Wewenang adalah "
     "<b>model anak baru</b> (has-a) (keputusan 14 Nov 2026).<br>"
     "• AB-05: <code>approval.mixin._cek_wewenang(pengesah)</code> memanggil <code>pengesah.job_id.punya_wewenang('mengesahkan', self._jenis_dokumen())</code> "
     "(delegasi, §13.5). Matriks kewenangan (UC-13) dibaca dari <code>wewenang_ids</code>.<br>"
-    "• Pejabat fakultas = hr.employee tanpa <code>user_id</code>; jabatannya <code>is_eksternal</code>.", NOTE, 820, bottom + 20, 640, 150)
-p.v("n2", SRC, NOTE, 40, bottom + 190, 1420, 30)
-pages.append((p, 1560, bottom + 260))
+    "• Pejabat fakultas = hr.employee tanpa <code>user_id</code>; jabatannya <code>is_eksternal</code>.", 150))
+p.notes.append((SRC, 50))
+pages.append(p)
 
 # =================================================================== DCD-3
 p = Page(3, "DCD TO-BE (3-4) - Pengendalian Dokumen", "DCD 3/4 · Pengendalian dokumen SOP/IK (PKG-02)")
@@ -264,13 +274,12 @@ p.e("n-dis-ver", "dis", "ver", NAV, "*", "version_id 1", exit=(0, 0.5), entry=(1
 p.e("n-dis-rng", "dis", "rng", NAV, "*", "ruang_id 1", exit=(0.5, 1), entry=(1, 0.5))
 p.e("n-soc-ver", "soc", "ver", NAV, "*", "version_id 1", exit=(0, 0.5), entry=(1, 0.45))
 p.e("n-rev-ver", "rev", "ver", NAV, "*", "version_id 1", exit=(0, 0.5), entry=(1, 0.75))
-p.v("n0", LEG, NOTE, 40, bottom + 20, 760, 150)
-p.v("n1", "<b>Kunci</b><br>• AB-13 <code>_sql_constraints</code>; AB-12 (O) di hook <code>_sebelum_ajukan()</code>; "
+p.notes.append(("<b>Kunci</b><br>• AB-13 <code>_sql_constraints</code>; AB-12 (O) di hook <code>_sebelum_ajukan()</code>; "
     "AB-14 <code>_compute_tanggal_tinjau()</code> dari tanggal_sah / tinjau ulang terakhir + siklus.<br>"
     "• AB-15, AB-16 <code>@api.constrains</code> di Distribusi, Sosialisasi, Tinjau Ulang. AB-17 (O) <i>record rule</i> grup Pengguna Lab: "
-    "<code>state = 'disahkan'</code>.<br>• AB-24 <code>cek_monev()</code> per dokumen + <code>hitung_persentase()</code>.", NOTE, 820, bottom + 20, 600, 150)
-p.v("n2", SRC, NOTE, 40, bottom + 190, 1380, 30)
-pages.append((p, 1500, bottom + 260))
+    "<code>state = 'disahkan'</code>.<br>• AB-24 <code>cek_monev()</code> per dokumen + <code>hitung_persentase()</code>.", 150))
+p.notes.append((SRC, 50))
+pages.append(p)
 
 # =================================================================== DCD-4
 p = Page(4, "DCD TO-BE (4-4) - Rencana dan Status Monev", "DCD 4/4 · Renstra, rencana (PKG-01, PKG-13), dan status monev")
@@ -317,13 +326,27 @@ p.e("n-tin-pln", "tin", "pln", NAV, "*", "plan_id 1", exit=(0, 0.2), entry=(1, 0
 p.e("n-tin-pln2", "tin", "pln", NAV, "0..1", "rencana_berikut_id 0..1", exit=(0, 0.5), entry=(1, 0.8))
 p.e("c-tin-mnf", "tin", "mnf", COMP, "1", "manfaat_ids *", exit=(0.5, 1), entry=(0.5, 0))
 p.e("n-mnf-lin", "mnf", "lin", NAV, "*", "line_id 1", exit=(0, 0.5), entry=(1, 0.4))
-p.v("n0", LEG, NOTE, 40, bottom + 20, 760, 150)
-p.v("n1", "<b>Kunci</b><br>• Satu model <code>labfik.plan</code> untuk rencana tahunan dan pengembangan: <code>_jenis_dokumen()</code>, "
+p.notes.append(("<b>Kunci</b><br>• Satu model <code>labfik.plan</code> untuk rencana tahunan dan pengembangan: <code>_jenis_dokumen()</code>, "
     "<code>_cek_kelengkapan()</code> (AB-02), dan <code>_cek_k1()–_cek_k4()</code> (AB-25) bercabang menurut <code>jenis</code>.<br>"
     "• <code>labfik.org.monev.get_status()</code> mendelegasikan perhitungan ke <code>labfik.document.hitung_persentase()</code> (AB-24) "
     "dan ke <code>get_kriteria()</code> di Rencana dan SK (AB-25). Tidak menyimpan data.<br>"
-    "• Biaya rencana pengembangan = <code>anggaran</code>.", NOTE, 820, bottom + 20, 720, 150)
-p.v("n2", SRC, NOTE, 40, bottom + 190, 1500, 30)
-pages.append((p, 1600, bottom + 260))
+    "• Biaya rencana pengembangan = <code>anggaran</code>.", 150))
+p.notes.append((SRC, 50))
+pages.append(p)
 
-open(OUT, "w").write('<mxfile host="app.diagrams.net">' + "".join(pg.xml(w, h) for pg, w, h in pages) + "</mxfile>")
+# =================================================================== halaman catatan (bahan kerja, tidak disisipkan ke naskah)
+c = Page("-notes", "Catatan DCD TO-BE (bahan kerja)", "")
+c.P = "tk-dcd-notes-"
+c.v("title", "Catatan design class diagram (bahan kerja, tidak disisipkan ke naskah)", TITLE, 40, 10, 1300, 34)
+c.v("legend", LEG, NOTE, 40, 56, 1300, 130)
+y = 206
+for i, pg in enumerate(pages):
+    c.v(f"h{i}", f"<b>{pg.title}</b>", "text;html=1;fontSize=12;align=left;verticalAlign=top;whiteSpace=wrap;", 40, y, 1300, 24)
+    y += 30
+    for j, (txt, h) in enumerate(pg.notes):
+        c.v(f"n{i}-{j}", txt, NOTE, 40, y, 1300, h)
+        y += h + 10
+    y += 10
+pages.append(c)
+
+open(OUT, "w").write('<mxfile host="app.diagrams.net">' + "".join(pg.xml() for pg in pages) + "</mxfile>")

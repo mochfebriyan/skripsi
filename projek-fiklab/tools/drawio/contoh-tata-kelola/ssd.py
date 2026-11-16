@@ -1,3 +1,10 @@
+"""System sequence diagram modul Tata Kelola (langkah 8), satu halaman per SSD.
+
+Gaya polos hitam-putih (sama dengan activity_state.py). Garis putus-putus hanya untuk return (notasi UML).
+Halaman SSD hanya berisi diagram; judul, prakondisi, dan legenda dikumpulkan di halaman catatan terakhir.
+
+Pemakaian: python3 -I ssd.py projek-fiklab/rancangan/ssd-tata-kelola.drawio
+"""
 import sys
 from xml.sax.saxutils import escape
 
@@ -8,15 +15,16 @@ def esc(s):
     return escape(s, {'"': "&quot;"})
 
 
+FONT = "fontFamily=Times New Roman;"
 LIFE = ("shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;collapsible=0;"
-        "recursiveResize=0;outlineConnect=0;fontSize=12;fontStyle=1;size={size};")
+        "recursiveResize=0;outlineConnect=0;fontSize=12;fontStyle=1;fillColor=#FFFFFF;strokeColor=#000000;size={size};" + FONT)
 PART = {"actor": "participant=umlActor;", "boundary": "participant=umlBoundary;", "control": "participant=umlControl;"}
-EV = "html=1;endArrow=open;endSize=9;strokeColor=#333333;fontSize=11;verticalAlign=bottom;labelBackgroundColor=none;"
-RET = "html=1;endArrow=open;endSize=9;dashed=1;strokeColor=#333333;fontSize=11;verticalAlign=bottom;labelBackgroundColor=none;"
-CALL = "html=1;endArrow=block;endFill=1;endSize=9;strokeColor=#6C4A87;fontColor=#6C4A87;fontSize=11;verticalAlign=bottom;labelBackgroundColor=none;"
-FRAME = "shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;width=54;height=22;fontSize=11;fontStyle=1;fillColor=none;"
-GUARD = "text;html=1;fontSize=11;align=left;verticalAlign=middle;fontStyle=2;"
-TXT = "text;html=1;fontSize=10;align=left;verticalAlign=middle;fontStyle=2;fontColor=#555555;"
+EV = "html=1;endArrow=open;endSize=9;strokeColor=#000000;fontSize=11;verticalAlign=bottom;labelBackgroundColor=none;" + FONT
+RET = "html=1;endArrow=open;endSize=9;dashed=1;strokeColor=#000000;fontSize=11;verticalAlign=bottom;labelBackgroundColor=none;" + FONT
+CALL = "html=1;endArrow=block;endFill=1;endSize=9;strokeColor=#000000;fontSize=11;verticalAlign=bottom;labelBackgroundColor=none;" + FONT
+FRAME = "shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;width=54;height=22;fontSize=11;fontStyle=1;fillColor=none;strokeColor=#000000;" + FONT
+GUARD = "text;html=1;fontSize=11;align=left;verticalAlign=middle;fontStyle=2;" + FONT
+TXT = "text;html=1;fontSize=11;align=left;verticalAlign=middle;fontStyle=2;" + FONT
 NOTE = ("shape=note;whiteSpace=wrap;html=1;size=14;align=left;verticalAlign=top;spacingLeft=6;spacingTop=4;"
         "fontSize=11;fillColor=#FFF2CC;strokeColor=#D6B656;")
 TITLE = "text;html=1;fontSize=17;fontStyle=1;align=left;verticalAlign=middle;"
@@ -25,7 +33,7 @@ ROW = {"ev": 34, "ret": 34, "q": 34, "c": 34, "txt": 24, "ref": 48}
 LEGEND = ("<b>Notasi</b> (Wazlawick 2024, Bab 7)<br>"
           "• Panah hitam penuh: <i>system event</i> (aktor → antarmuka)<br>"
           "• Panah hitam putus-putus: <i>system return</i> (antarmuka → aktor)<br>"
-          "• Panah ungu, kepala segitiga: operasi sistem ke kontroler. "
+          "• Panah kepala segitiga penuh: operasi sistem ke kontroler. "
           "<b>Command</b> <code>op(args)</code> mengubah data tanpa nilai balik; "
           "<b>query</b> <code>dto = op(args)</code> hanya membaca (CQS, §7.1)<br>"
           "• <code>dto_x</code> = data majemuk (lihat kamus DTO), <code>*</code> = koleksi, <i>terpilih</i> = pilihan dari daftar (§7.3)<br>"
@@ -45,7 +53,7 @@ class SSD:
                           f'<mxGeometry x="{x:.0f}" y="{y:.0f}" width="{w:.0f}" height="{h:.0f}" as="geometry"/></mxCell>')
 
     def build(self):
-        LY, HEAD = 120, 60
+        LY, HEAD = 20, 60
         lanes = [("a0", ":" + self.actors[0], "actor", 40, 130),
                  ("ui", ":Antarmuka", "boundary", 360, 130),
                  ("ct", ":Kontroler", "control", 720, 130)]
@@ -59,8 +67,6 @@ class SSD:
             total += 50 + sum(ROW[e[0]] for e in ents) + 16
         lh = HEAD + total + 30
         self.LY, self.lh = LY, lh
-        self.v("title", f"SSD-{self.n} · {self.uc} {self.title}", TITLE, 40, 14, 1100, 32)
-        self.v("pre", "<b>Prakondisi</b>: " + self.pre, NOTE, 40, 52, right - 40, 52)
         for k, label, part, x, w in lanes:
             self.v(k, label, LIFE.format(size=HEAD) + PART[part], x, LY, w, lh)
         y = LY + HEAD + 40
@@ -78,9 +84,8 @@ class SSD:
             self.v(f"fr{i}", kind, FRAME, 20, top, right - 20, h)
             self.v(f"gd{i}", f"{stereo} {guard}", GUARD, 82, top, right - 110, 22)
             y += 6
-        self.width = right + 380
-        self.v("legend", LEGEND, NOTE, right + 30, LY, 330, 270)
-        self.height = LY + lh + 40
+        self.width = right + 30
+        self.height = LY + lh + 20
 
     def msg(self, src, dst, label, style, y):
         self.k += 1
@@ -106,7 +111,7 @@ class SSD:
             self.k += 1
             x0 = self.cx["a0"] - 30
             self.v(f"r{self.k}", "ref", FRAME.replace("width=54", "width=40"), x0, y - 18, self.cx["ct"] - x0 + 30, 38)
-            self.v(f"rt{self.k}", text, "text;html=1;fontSize=11;align=center;verticalAlign=middle;", x0 + 40,
+            self.v(f"rt{self.k}", text, "text;html=1;fontSize=11;align=center;verticalAlign=middle;" + FONT, x0 + 40,
                    y - 14, self.cx["ct"] - x0 - 20, 30)
         return y + ROW[kind]
 
@@ -217,4 +222,23 @@ def name_of(d):
     return f"SSD TO-BE ({d.n}-{N_SSD}) - {d.uc} {d.title}"
 
 
-open(OUT, "w").write('<mxfile host="app.diagrams.net">' + "".join(d.xml() for d in D) + "</mxfile>")
+def notes_page():
+    """Halaman catatan (bahan kerja, tidak disisipkan ke naskah): judul, prakondisi, dan legenda setiap SSD."""
+    P, cells, y = "tk-ssd-notes-", [], 66
+
+    def v(id, val, style, x, y, w, h):
+        cells.append(f'<mxCell id="{P}{id}" value="{esc(val)}" style="{style}" vertex="1" parent="1">'
+                     f'<mxGeometry x="{x}" y="{y}" width="{w}" height="{h}" as="geometry"/></mxCell>')
+    v("title", "Catatan system sequence diagram (bahan kerja, tidak disisipkan ke naskah)", TITLE, 40, 14, 1100, 36)
+    v("legend", LEGEND, NOTE, 40, y, 1100, 150)
+    y += 170
+    for d in D:
+        v(f"pre{d.n}", f"<b>SSD-{d.n} · {d.uc} {d.title}</b><br><b>Prakondisi</b>: {d.pre}", NOTE, 40, y, 1100, 50)
+        y += 60
+    return (f'<diagram id="tk-ssd-notes" name="Catatan SSD TO-BE (bahan kerja)"><mxGraphModel dx="1600" dy="900" grid="1" '
+            f'gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1180" '
+            f'pageHeight="{y + 30}" math="0" shadow="0"><root><mxCell id="0"/><mxCell id="1" parent="0"/>'
+            + "".join(cells) + "</root></mxGraphModel></diagram>")
+
+
+open(OUT, "w").write('<mxfile host="app.diagrams.net">' + "".join(d.xml() for d in D) + notes_page() + "</mxfile>")

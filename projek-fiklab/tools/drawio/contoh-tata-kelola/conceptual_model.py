@@ -1,3 +1,11 @@
+"""Conceptual model modul Tata Kelola (langkah 9, bahan kerja), 4 halaman + halaman catatan.
+
+Gaya polos hitam-putih (sama dengan activity_state.py). Konsep abstrak = nama miring + «abstract»;
+enumerasi = «enumeration»; konsep yang dirinci di halaman lain = atribut 'rincian: CM-n' (tanpa garis putus-putus).
+Halaman diagram hanya berisi diagram; judul, legenda, dan catatan dikumpulkan di halaman catatan terakhir.
+
+Pemakaian: python3 -I conceptual_model.py projek-fiklab/rancangan/conceptual-model-tata-kelola.drawio
+"""
 import sys
 from xml.sax.saxutils import escape
 
@@ -9,13 +17,14 @@ def esc(s):
     return escape(s, {'"': "&quot;"})
 
 
-FILL = {"c": "fillColor=#FFFFFF;strokeColor=#333333;", "abs": "fillColor=#F5F0FF;strokeColor=#6C4A87;",
-        "enum": "fillColor=#F5F5F5;strokeColor=#666666;", "stub": "fillColor=#FAFAFA;strokeColor=#999999;dashed=1;"}
+FONT = "fontFamily=Times New Roman;"
+PLAIN = "fillColor=#FFFFFF;strokeColor=#000000;swimlaneFillColor=#FFFFFF;" + FONT
+FILL = {k: PLAIN for k in ("c", "abs", "enum", "stub")}  # jenis konsep dibedakan lewat stereotype/nama miring, bukan warna
 TXT = ("text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;"
-       "rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=11;")
-ASSOC = "endArrow=none;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#444444;fontSize=10;"
-COMP = "endArrow=none;startArrow=diamondThin;startFill=1;startSize=16;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#333333;fontSize=10;"
-GEN = "endArrow=block;endFill=0;endSize=14;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#6C4A87;"
+       "rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=11;" + FONT)
+ASSOC = "endArrow=none;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#000000;fontSize=10;" + FONT
+COMP = "endArrow=none;startArrow=diamondThin;startFill=1;startSize=16;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#000000;fontSize=10;" + FONT
+GEN = "endArrow=block;endFill=0;endSize=14;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#000000;"
 NOTE = ("shape=note;whiteSpace=wrap;html=1;size=14;align=left;verticalAlign=top;spacingLeft=6;spacingTop=4;"
         "fontSize=11;fillColor=#FFF2CC;strokeColor=#D6B656;")
 TITLE = "text;html=1;fontSize=17;fontStyle=1;align=left;verticalAlign=middle;"
@@ -24,9 +33,11 @@ TITLE = "text;html=1;fontSize=17;fontStyle=1;align=left;verticalAlign=middle;"
 class Page:
     def __init__(self, n, name, title):
         self.P, self.n, self.name, self.cells = f"tk-cm{n}-", n, name, []
-        self.v("title", title, TITLE, 40, 10, 1500, 34)
+        self.title, self.notes, self.maxx, self.maxy = title, [], 0, 0
 
     def v(self, id, val, style, x, y, w, h, parent="1"):
+        if parent == "1":
+            self.maxx, self.maxy = max(self.maxx, x + w), max(self.maxy, y + h)
         par = "1" if parent == "1" else self.P + parent
         self.cells.append(f'<mxCell id="{self.P}{id}" value="{esc(val)}" style="{style}" vertex="1" parent="{par}">'
                           f'<mxGeometry x="{x:.0f}" y="{y:.0f}" width="{w:.0f}" height="{h:.0f}" as="geometry"/></mxCell>')
@@ -61,10 +72,11 @@ class Page:
             if lbl:
                 self.cells.append(
                     f'<mxCell id="{eid}-l{k}" value="{esc(lbl)}" style="edgeLabel;resizable=0;html=1;align={align};verticalAlign=bottom;'
-                    f'fontSize=10;labelBackgroundColor=#FFFFFF;" connectable="0" vertex="1" parent="{eid}"><mxGeometry x="{xpos}" '
+                    f'fontSize=10;labelBackgroundColor=#FFFFFF;{FONT}" connectable="0" vertex="1" parent="{eid}"><mxGeometry x="{xpos}" '
                     f'relative="1" as="geometry"><mxPoint x="{8 if xpos < 0 else -8}" y="-2" as="offset"/></mxGeometry></mxCell>')
 
-    def xml(self, w, h):
+    def xml(self, w=None, h=None):
+        w, h = w or self.maxx + 40, h or self.maxy + 40
         return (f'<diagram id="tk-cm{self.n}" name="{esc(self.name)}"><mxGraphModel dx="1600" dy="900" grid="1" gridSize="10" '
                 f'guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="{w}" pageHeight="{h}" '
                 'math="0" shadow="0"><root><mxCell id="0"/><mxCell id="1" parent="0"/>' + "".join(self.cells) + "</root></mxGraphModel></diagram>")
@@ -75,9 +87,9 @@ class Page:
 LEG = ("<b>Notasi</b> (Wazlawick 2024, Bab 8–9)<br>"
        "• Hanya konsep, atribut primitif, dan asosiasi: <b>tanpa method, tanpa detail Odoo</b>.<br>"
        "• Garis polos = asosiasi; label di ujung = <i>peran</i> dan multiplisitas. Belah ketupat hitam = komposisi (bagian–keseluruhan).<br>"
-       "• Segitiga kosong ungu = generalisasi. Nama miring = konsep abstrak. <code>{DokumenDisahkan}</code> di atas nama = turunan konsep itu (CM-1).<br>"
+       "• Segitiga kosong = generalisasi. Nama miring = konsep abstrak. <code>{DokumenDisahkan}</code> di atas nama = turunan konsep itu (CM-1).<br>"
        "• <code>/nama</code> = atribut atau asosiasi turunan (dihitung). «unique» = nilai tidak boleh kembar. <code>[0..1]</code> = boleh kosong.<br>"
-       "• Kotak abu-abu putus-putus = konsep yang dirinci di halaman lain.")
+       "• Kotak bertuliskan <i>rincian: CM-n</i> = konsep yang dirinci di halaman lain. Semua kotak polos hitam-putih.")
 SRC = ("Bahan kerja (tidak masuk proposal). Sumber: kamus DTO (ssd-tata-kelola.md), AB-01–25. "
        "Rincian: conceptual-model-tata-kelola.md · Draf 14 Nov 2026 · Febriyan")
 DD = "{DokumenDisahkan}"
@@ -123,14 +135,13 @@ for sid, name, pg, x, y in subs:
 p.cls("e1", "StatusDokumen", ["draf", "diajukan", "disahkan", "diganti", "dicabut", "kedaluwarsa"], 40, 620, 180, "enum", "«enumeration»")
 p.cls("e2", "JenisKejadian", ["diajukan", "dikembalikan", "berkas_diunggah", "disahkan", "diganti", "dicabut", "kedaluwarsa"], 250, 620, 180, "enum", "«enumeration»")
 p.cls("e3", "JenisDokumen", ["sop_ik", "renstra", "rencana_tahunan", "rencana_pengembangan", "sk_penetapan"], 460, 620, 200, "enum", "«enumeration»")
-p.v("n0", LEG, NOTE, 700, 620, 560, 120)
-p.v("n1", "<b>Kunci</b><br>• Data yang muncul saat status berubah (pengesah, tanggal sah, alasan, berkas) disimpan sebagai "
+p.notes.append(("<b>Kunci</b><br>• Data yang muncul saat status berubah (pengesah, tanggal sah, alasan, berkas) disimpan sebagai "
     "<b>konsep kejadian</b> (Pengesahan, KejadianPengesahan), bukan atribut opsional (§9.3.2).<br>"
     "• <i>revisi_dari</i> = pola <i>superseding</i> (§11.9.2): dokumen lama tetap tersimpan sebagai Diganti.<br>"
     "• <i>/pengesah_berwenang</i> = Personel yang jabatannya punya Wewenang (mengesahkan, jenis_dokumen) (AB-05).<br>"
-    "• RekamanBukti: tidak dihapus, hanya dikoreksi (AB-22).", NOTE, 1290, 620, 420, 150)
-p.v("n2", SRC, NOTE, 700, 760, 560, 46)
-pages.append((p, 1760, 840))
+    "• RekamanBukti: tidak dihapus, hanya dikoreksi (AB-22).", 150))
+p.notes.append((SRC, 46))
+pages.append(p)
 
 # ======================================================== CM-2
 p = Page(2, "CM TO-BE (2-4) - Struktur Organisasi", "CM-2 · Struktur organisasi (PKG-03)")
@@ -164,13 +175,12 @@ p.e("evs-jab", "evs", "jab", ASSOC, src="*", tgt="jabatan_direvisi *", pts=[(106
 p.cls("e1", "JenisPersonel", ["dosen", "laboran_plp", "teknisi", "asisten", "petugas_k3"], 40, 760, 180, "enum", "«enumeration»")
 p.cls("e2", "Unit", ["lab_fik", "prodi_informatika", "prodi_sistem_informasi", "fakultas"], 250, 760, 200, "enum", "«enumeration»")
 p.cls("e3", "Tindakan", ["menyusun", "mengesahkan"], 480, 760, 160, "enum", "«enumeration»")
-p.v("n0", LEG, NOTE, 680, 760, 560, 120)
-p.v("n1", "<b>Kunci</b><br>• Jabatan memakai pola <i>organizational hierarchy</i> (§11.8): atasan sebagai asosiasi refleksif, bukan kelas per tingkat.<br>"
+p.notes.append(("<b>Kunci</b><br>• Jabatan memakai pola <i>organizational hierarchy</i> (§11.8): atasan sebagai asosiasi refleksif, bukan kelas per tingkat.<br>"
     "• Tugas dan Wewenang adalah <b>bagian</b> dari Jabatan (komposisi, <i>has-a</i>), bukan turunannya (keputusan 14 Nov 2026).<br>"
     "• Jabatan seseorang (asosiasi Personel–Jabatan) dipakai untuk cek wewenang pengesah (AB-05); "
-    "BarisPenetapan mencatat penugasan resmi di SK.<br>• Pihak eksternal tidak dicatat sebagai Personel.", NOTE, 1260, 760, 440, 150)
-p.v("n2", SRC, NOTE, 680, 900, 560, 46)
-pages.append((p, 1760, 980))
+    "BarisPenetapan mencatat penugasan resmi di SK.<br>• Pihak eksternal tidak dicatat sebagai Personel.", 150))
+p.notes.append((SRC, 46))
+pages.append(p)
 
 # ======================================================== CM-3
 p = Page(3, "CM TO-BE (3-4) - Pengendalian Dokumen", "CM-3 · Pengendalian dokumen SOP/IK (PKG-02)")
@@ -199,12 +209,11 @@ p.cls("e2", "KategoriSOP", ["tata_tertib", "praktikum", "operasional", "k3", "al
 p.cls("e3", "AsalDokumen", ["lab", "fakultas", "universitas"], 430, 620, 160, "enum", "«enumeration»")
 p.cls("e4", "MetodeSosialisasi", ["tatap_muka", "daring", "pengumuman"], 610, 620, 170, "enum", "«enumeration»")
 p.cls("e5", "HasilTinjau", ["tetap_berlaku", "perlu_revisi"], 800, 620, 160, "enum", "«enumeration»")
-p.v("n0", LEG, NOTE, 1000, 620, 560, 120)
-p.v("n1", "<b>Kunci</b><br>• Kemutakhiran (S2) dihitung: <i>/tanggal_tinjau_berikutnya</i> dan <i>/perlu_ditinjau</i>, bukan status tersimpan (§9.3.1).<br>"
+p.notes.append(("<b>Kunci</b><br>• Kemutakhiran (S2) dihitung: <i>/tanggal_tinjau_berikutnya</i> dan <i>/perlu_ditinjau</i>, bukan status tersimpan (§9.3.1).<br>"
     "• Lokasi penggunaan = Ruang dari Core (keputusan 14 Nov 2026). S4 lolos bila setiap lokasi punya Distribusi untuk versi berlaku.<br>"
-    "• Peserta sosialisasi: Personel yang tercatat + <i>jumlah_peserta</i>, karena mahasiswa bukan Personel <b>[ASUMSI]</b>.", NOTE, 1000, 760, 560, 110)
-p.v("n2", SRC, NOTE, 1000, 890, 560, 46)
-pages.append((p, 1620, 960))
+    "• Peserta sosialisasi: Personel yang tercatat + <i>jumlah_peserta</i>, karena mahasiswa bukan Personel <b>[ASUMSI]</b>.", 110))
+p.notes.append((SRC, 46))
+pages.append(p)
 
 # ======================================================== CM-4
 p = Page(4, "CM TO-BE (4-4) - Rencana", "CM-4 · Renstra, rencana tahunan, dan rencana pengembangan (PKG-01, PKG-13)")
@@ -244,12 +253,26 @@ p.cls("e2", "AspekGap", ["tridharma", "kompetensi", "sarana", "layanan"], 220, 8
 p.cls("e3", "StatusCapaian", ["tercapai", "perlu_perhatian", "tidak_tercapai", "belum_tersedia"], 400, 820, 180, "enum", "«enumeration»")
 p.cls("e4", "Frekuensi", ["bulanan", "triwulan", "semester", "tahunan"], 600, 820, 160, "enum", "«enumeration»")
 p.cls("e5", "Prioritas", ["tinggi", "sedang", "rendah"], 780, 820, 150, "enum", "«enumeration»")
-p.v("n0", LEG, NOTE, 960, 820, 560, 120)
-p.v("n1", "<b>Kunci</b><br>• Satu konsep Rencana untuk tahunan dan pengembangan, dibedakan <i>jenis</i> (brief, pola bersama). "
+p.notes.append(("<b>Kunci</b><br>• Satu konsep Rencana untuk tahunan dan pengembangan, dibedakan <i>jenis</i> (brief, pola bersama). "
     "TemuanGap, nilai risiko/manfaat, dan UkuranManfaat hanya terisi untuk jenis pengembangan (AB-02, AB-20).<br>"
     "• Rujukan Renstra institusi berupa teks (keputusan 14 Nov 2026), jadi tidak ada asosiasi ke Renstra.<br>"
-    "• Revisi rencana memakai <i>revisi_dari</i> di CM-1.", NOTE, 960, 960, 560, 110)
-p.v("n2", SRC, NOTE, 40, 960, 880, 46)
-pages.append((p, 1580, 1100))
+    "• Revisi rencana memakai <i>revisi_dari</i> di CM-1.", 110))
+p.notes.append((SRC, 46))
+pages.append(p)
 
-open(OUT, "w").write('<mxfile host="app.diagrams.net">' + "".join(pg.xml(w, h) for pg, w, h in pages) + "</mxfile>")
+# ======================================================== halaman catatan (bahan kerja)
+c = Page("-notes", "Catatan CM TO-BE (bahan kerja)", "")
+c.P = "tk-cm-notes-"
+c.v("title", "Catatan conceptual model (bahan kerja)", TITLE, 40, 10, 1300, 34)
+c.v("legend", LEG, NOTE, 40, 56, 1300, 110)
+y = 186
+for i, pg in enumerate(pages):
+    c.v(f"h{i}", f"<b>{pg.title}</b>", "text;html=1;fontSize=12;align=left;verticalAlign=top;whiteSpace=wrap;", 40, y, 1300, 24)
+    y += 30
+    for j, (txt, h) in enumerate(pg.notes):
+        c.v(f"n{i}-{j}", txt, NOTE, 40, y, 1300, h)
+        y += h + 10
+    y += 10
+pages.append(c)
+
+open(OUT, "w").write('<mxfile host="app.diagrams.net">' + "".join(pg.xml() for pg in pages) + "</mxfile>")

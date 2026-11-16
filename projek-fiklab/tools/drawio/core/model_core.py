@@ -6,6 +6,10 @@ Pemakaian:
 
 Sumber isi: projek-fiklab/rancangan/kontrak-core.md (15 November 2026; master aset dari kelompok Aset & Safety
 digabung 16 November 2026).
+
+Gaya polos hitam-putih (sama dengan diagram rancangan modul): jenis model dibedakan lewat stereotype
+«AbstractModel» / «Odoo» / «Core», bukan warna. Halaman 1 hanya berisi model; legenda dan aturan pakai
+dikumpulkan di halaman 2 (catatan).
 """
 import sys
 from xml.sax.saxutils import escape
@@ -24,22 +28,21 @@ def esc(s):
     return escape(s, {'"': "&quot;"})
 
 
-FILL = {
-    "mixin": "fillColor=#E1D5E7;strokeColor=#9673A6;",
-    "odoo": "fillColor=#F5F5F5;strokeColor=#666666;",
-    "baru": "fillColor=#FFFFFF;strokeColor=#666666;",
-}
+FONT = "fontFamily=Times New Roman;"
+PLAIN = "fillColor=#FFFFFF;strokeColor=#000000;swimlaneFillColor=#FFFFFF;" + FONT
+FILL = {k: PLAIN for k in ("mixin", "odoo", "baru")}  # jenis model dibedakan lewat stereotype, bukan warna
 TXT = ("text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;"
-       "rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=11;")
+       "rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=11;" + FONT)
 SEP = ("line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;"
        "rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;html=1;")
 NOTE = ("shape=note;whiteSpace=wrap;html=1;size=14;align=left;verticalAlign=top;spacingLeft=6;spacingTop=4;"
         "fontSize=11;fillColor=#FFF2CC;strokeColor=#D6B656;")
 FRAME = ("rounded=1;arcSize=1;whiteSpace=wrap;html=1;verticalAlign=top;align=center;spacingTop=10;"
-         "fontSize=22;fontStyle=1;fillColor=#F2F2F2;strokeColor=#666666;strokeWidth=2;")
-ROWLBL = "text;html=1;fontSize=12;fontStyle=3;align=left;verticalAlign=middle;fontColor=#555555;"
+         "fontSize=20;fontStyle=1;fillColor=#FFFFFF;strokeColor=#000000;" + FONT)
+ROWLBL = "text;html=1;fontSize=12;fontStyle=3;align=left;verticalAlign=middle;" + FONT
 
 cells = []
+notes = []   # halaman 2 (catatan)
 
 
 def v(id, val, style, x, y, w, h, parent=None):
@@ -51,7 +54,7 @@ def v(id, val, style, x, y, w, h, parent=None):
 def header(stereo, name, label, asal, inherit):
     t = (f"<font style='font-size:10px'>{stereo}</font><br><b>{name}</b><br>"
          f"<font style='font-size:10px'>{label} · dirancang {asal}</font>")
-    t += f"<br><font style='font-size:10px' color='#6C4A87'><b>{inherit}</b></font>"
+    t += f"<br><font style='font-size:10px'><b>{inherit}</b></font>"
     return t
 
 
@@ -211,21 +214,16 @@ for r, (lbl, boxes) in enumerate(ROWS):
     v(f"row{r + 1}", lbl, ROWLBL, X0, y, grid_w, 24)
     y += 30
     h = max(size(a, m)[3] for _, _, _, a, m in boxes)
-    if len(boxes) < 4:
-        h = max(h, 330)  # beri ruang untuk catatan aturan pakai
     for c, (id, kind, title, attrs, methods) in enumerate(boxes):
         cls(id, title, attrs, methods, X0 + c * (W + GX), y, h, kind)
-    if len(boxes) < 4:  # sisa kolom baris transaksi diisi catatan aturan pakai
-        x = X0 + len(boxes) * (W + GX)
-        v("sesi-aturan", SESI, NOTE, x, y, X0 + grid_w - x, h)
     y += h + GY
 
 LEG = ("<b>Notasi</b> (UML class diagram, Wazlawick 2024 §13.6)<br>"
-       "• Ungu, nama miring «AbstractModel» = mixin; tidak punya tabel sendiri. Model lain memakainya dengan "
+       "• «AbstractModel» (nama miring) = mixin; tidak punya tabel sendiri. Model lain memakainya dengan "
        "<code>_inherit = ['labfik.approval.mixin', …]</code> dan mewarisi field serta method-nya.<br>"
-       "• Abu-abu «Odoo» diperluas = model bawaan Odoo yang ditambah field dengan <code>_inherit</code> tanpa <code>_name</code>; "
+       "• «Odoo» diperluas = model bawaan Odoo yang ditambah field dengan <code>_inherit</code> tanpa <code>_name</code>; "
        "nama model tetap <code>hr.employee</code> / <code>hr.job</code>.<br>"
-       "• Putih «Core» model baru = model dengan <code>_name</code> sendiri di <code>labfik_core</code>.<br>"
+       "• «Core» model baru = model dengan <code>_name</code> sendiri di <code>labfik_core</code>.<br>"
        "• Relasi ditulis sebagai field: <code>nama_id: model</code> = Many2one; <code>[*]</code> = One2many/Many2many; "
        "<code>[0..1]</code> = boleh kosong.<br>"
        "• <code>+</code> publik, <code>#</code> internal. {abstract} = wajib diisi model turunan; {hook} = boleh diisi; "
@@ -268,23 +266,37 @@ SRC = ("<b>Sumber</b>: rancangan/kontrak-core.md (rangkuman branch febriyan-, he
        "<b>[KONFIRMASI kelompok]</b> penempatan semua model ini di <code>labfik_core</code>. "
        "Tampilan belum dicek di draw.io; struktur lolos validate.py.")
 
-nw = (grid_w - 3 * GX) / 4
-nh = 360
-for k, (id, txt) in enumerate([("leg", LEG), ("use", USE), ("grp", GRP), ("aset-aturan", ASET)]):
-    v(id, txt, NOTE, X0 + k * (nw + GX), y, nw, nh)
-y += nh + GY
-v("src", SRC, NOTE, X0, y, grid_w, 80)
-y += 80 + 40
-
+y += 10
 v("frame", "MODEL CORE · labfik_core (mixin, master, master aset, dan transaksi)", FRAME, X0 - 30, 20, grid_w + 60, y - 20)
 cells.insert(0, cells.pop())  # bingkai digambar paling belakang
 
 page_w, page_h = grid_w + 2 * X0 + 20, y + 40
+model_cells = cells
+
+# ---------- halaman 2: catatan (legenda, cara pakai, grup akses, aturan pakai bersama, sumber)
+cells = []
+P = "core-cat-"
+nw, ny = (grid_w - GX) / 2, 40
+for k, (id, txt, nh) in enumerate([("leg", LEG, 300), ("use", USE, 300), ("grp", GRP, 300), ("aset-aturan", ASET, 300),
+                                   ("sesi-aturan", SESI, 330)]):
+    v(id, txt, NOTE, X0 + (k % 2) * (nw + GX), ny + (k // 2) * 360, nw, nh)
+cy = ny + 3 * 360
+v("src", SRC, NOTE, X0, cy, grid_w, 80)
+cat_h = cy + 120
+
+
+def diagram(did, name, w, h, cs):
+    return (f'<diagram id="{did}" name="{name}"><mxGraphModel dx="1600" dy="900" grid="1" '
+            'gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" '
+            f'pageWidth="{w:.0f}" pageHeight="{h:.0f}" math="0" shadow="0"><root><mxCell id="0"/>'
+            '<mxCell id="1" parent="0"/>' + "".join(cs) + "</root></mxGraphModel></diagram>")
+
+
 xml = ('<mxfile host="app.diagrams.net" type="device">'
-       f'<diagram id="{P}1" name="Model Core (1-1) - Mixin, Master, Aset, dan Transaksi"><mxGraphModel dx="1600" dy="900" grid="1" '
-       'gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" '
-       f'pageWidth="{page_w:.0f}" pageHeight="{page_h:.0f}" math="0" shadow="0"><root><mxCell id="0"/>'
-       '<mxCell id="1" parent="0"/>' + "".join(cells) + "</root></mxGraphModel></diagram></mxfile>")
+       + diagram("core-mdl-1", "Model Core (1-2) - Mixin, Master, Aset, dan Transaksi", page_w, page_h, model_cells)
+       + diagram("core-cat-1", "Model Core (2-2) - Catatan dan Aturan Pakai", page_w, cat_h, cells)
+       + "</mxfile>")
+cells = model_cells + cells
 with open(OUT, "w", encoding="utf-8") as f:
     f.write(xml)
 print(f"{OUT}: {len(cells)} sel, halaman {page_w:.0f}×{page_h:.0f}")
