@@ -72,14 +72,14 @@ Kolom:
 
 ### B. Pengesahan dokumen SDM (memakai mekanisme Core)
 
-Satu jalur yang sama dengan Tata Kelola: **ajukan → kembalikan atau sahkan → cabut**, dari `labfik.approval.mixin`. Dipakai Surat Tugas, Otorisasi, dan Rencana Pelatihan.
+Satu jalur pengesahan untuk semua dokumen SDM: **ajukan → kembalikan atau sahkan → cabut**. Dipakai Surat Tugas, Otorisasi, dan Rencana Pelatihan. Mekanisme teknisnya `labfik.approval.mixin` dari Core.
 
 | ID | Kebutuhan | Aktor | Model (usulan) | Kriteria/bukti | Jenis | Prio |
 |---|---|---|---|---|---|---|
 | KF-SDM-06 | Pengelola lab dapat **mengajukan** dokumen SDM dan **mengunggah PDF bertanda tangan**; KaLab dapat **mengembalikan** dengan alasan, **mengesahkan** dengan mencatat pengesah dan tanggal sah, dan **mencabut** dokumen yang berlaku. Setiap kejadian tercatat di riwayat pengesahan | KaLab, Laboran | `labfik.approval.mixin`, `labfik.approval.log` (Core) | PKG-04 S2, PKG-10 S2, PKG-14 K1 | E | W |
 | KF-SDM-43 | Sistem **menolak pengesahan** dokumen SDM bila pengesah tidak memegang jabatan yang berwenang mengesahkan jenis dokumen itu (`penugasan_petugas`, `otorisasi`, `rencana_pelatihan`) | Sistem | `hr.job.punya_wewenang()` (Core) + `selection_add` | PKG-04 S2 ("penugasan sah"), PKG-10 S2 | H | W |
 
-KF-SDM-06 dan KF-SDM-43 adalah **penerapan** KF-01–KF-08 Tata Kelola pada jenis dokumen SDM. Tidak ada perilaku pengesahan baru.
+KF-SDM-06 dan KF-SDM-43 adalah kebutuhan pengesahan milik modul SDM untuk tiga jenis dokumen SDM. Perilakunya diwarisi dari `labfik.approval.mixin` (Core); modul SDM hanya mengisi pemeriksaan kelengkapan dan penggantian dokumen per jenis ([kontrak-core-sdm.md](kontrak-core-sdm.md) bagian 5). Prosesnya digambar di activity A4 dan state machine S1/S4 ([proses-bisnis-sdm.md](proses-bisnis-sdm.md)).
 
 ### C. Penugasan petugas sesuai kompetensi (PKG-04)
 
@@ -156,7 +156,7 @@ Kebutuhan nonfungsional **logis** (aturan bisnis, mis. "supervisor harus berotor
 | KNF-SDM-03 | Penugasan, Kompetensi, dan Bukti Kompetensi dapat dibaca modul lain (Praktikum PKG-18, opsional Tata Kelola PKG-13) tanpa disalin | Pemeliharaan: *reusability* | KF-SDM-03, 10 |
 | KNF-SDM-04 | Hak akses memakai grup Core: Laboran mencatat; hanya KaLab yang menetapkan master, syarat, kebutuhan, pelaksana, dan mengesahkan/mengembalikan/mencabut. Berkas KHS dan nilai MK hanya terlihat oleh KaLab dan Laboran | Keamanan: kerahasiaan, integritas | KF-SDM-06, 07 |
 | KNF-SDM-05 | Rekaman bukti (seleksi, bukti kompetensi, asesmen, evaluasi, realisasi) **tidak dapat dihapus**; koreksi tercatat dengan alasan (`evidence.mixin`). Perubahan field penting terlacak dengan `mail.thread` | Keamanan: akuntabilitas, *non-repudiation* | KF-SDM-03, 07, 20, 25, 33, 34 |
-| KNF-SDM-06 | **Tanpa tanda tangan digital.** Keabsahan dibuktikan dengan PDF bertanda tangan manual, pengesah tercatat, dan pencatat (sama dengan Tata Kelola) | Keamanan: autentisitas | KF-SDM-06 |
+| KNF-SDM-06 | **Tanpa tanda tangan digital.** Keabsahan dibuktikan dengan PDF bertanda tangan manual, pengesah tercatat, dan pencatat | Keamanan: autentisitas | KF-SDM-06 |
 | KNF-SDM-07 | **Data pribadi minimum:** nomor HP, email pribadi, dan NIK tidak disimpan modul SDM; dari KHS hanya nilai MK yang dipersyaratkan yang diketik (bedah dokumen bagian 8) | Keamanan: kerahasiaan; kebebasan dari risiko | KF-SDM-07 |
 | KNF-SDM-08 | **Tanpa integrasi** dengan SIAKAD, sistem kepegawaian, maupun Google Form/Sheets yang dipakai sekarang. Data awal pilot (asisten, kelas) boleh dimasukkan lewat fitur impor standar Odoo, tanpa kode khusus | Kompatibilitas: interoperabilitas; Portabilitas: instalabilitas | Seluruh modul |
 | KNF-SDM-09 | Surat Tugas, Rencana Pelatihan, dan laporan bukti diterbitkan sebagai **PDF (QWeb report)** | Portabilitas: *replaceability* | KF-SDM-17, 39, 42 |
@@ -244,7 +244,7 @@ Dibandingkan dengan [kebutuhan-tata-kelola.md](https://github.com/mochfebriyan/s
 | Struktur | Aturan, aktor, KF per area, KNF ISO 25010, keterlacakan (masalah, kriteria, cakupan), tidak ditulis, perubahan, temuan, isu | Sama. Tidak ada bagian "perubahan dibanding versi sebelumnya" karena ini versi pertama |
 | Kode | KF-01–45, KNF-01–11 | **KF-SDM-01–43**, **KNF-SDM-01–13** (prefiks wajib, CLAUDE.md bagian 2) |
 | Aktor | KaLab, Laboran/PLP, Pengguna Lab, Penjadwal | KaLab, Laboran/PLP saja. Tidak ada Penjadwal (semua status dihitung) dan tidak ada Pengguna Lab (asisten bukan aktor) |
-| Pengesahan | KF-01–09 mendefinisikan mekanismenya | Hanya **menerapkan** mekanisme Core (KF-SDM-06, 43); tidak ada perilaku pengesahan baru |
+| Pengesahan | KF-01–09 mendefinisikan mekanismenya | KF-SDM-06, 43 untuk dokumen SDM sendiri; perilakunya diwarisi dari mekanisme Core (`approval.mixin`) |
 | Jenis skor | 1 persentase (PKG-02), 3 kriteria berurutan | 2 persentase (PKG-04, 10), 1 kriteria berurutan (PKG-14) → lebih banyak KF *hidden* untuk menghitung unit |
 | Ciri khas | Banyak KF penerbitan dokumen (SK, rencana) | Banyak KF yang **membuat rekaman otomatis** dari rekaman lain (asesmen → bukti kompetensi, evaluasi → bukti kompetensi, matriks → kebutuhan) |
 | Rasio W/O | 36/9 | 35/8 |
@@ -255,7 +255,7 @@ Dibandingkan dengan [kebutuhan-tata-kelola.md](https://github.com/mochfebriyan/s
 
 ### 7.1 Temuan untuk langkah berikutnya
 
-- **Langkah 5 (proses bisnis).** Activity nontrivial: (a) seleksi asisten → Surat Tugas → pengesahan (multi-aktor, tanda tangan di luar sistem; pengesahan dipanggil sebagai «call behavior» dari activity Tata Kelola); (b) siklus otorisasi: asesmen → otorisasi → pengesahan → evaluasi ulang → otorisasi baru/dicabut; (c) siklus pelatihan: rencana (kebutuhan dari matriks) → pengesahan → realisasi → evaluasi → bukti kompetensi. State machine: **Otorisasi** (draf → diajukan → disahkan → diganti/dicabut, plus status turunan *berlaku/tidak berlaku*), **Evaluasi Ulang** (terbuka → diputuskan), **Item Pelatihan** (rencana → terlaksana/batal). Surat Tugas dan Rencana Pelatihan memakai state machine pengesahan Core.
+- **Langkah 5 (proses bisnis).** Activity nontrivial: (a) seleksi asisten → Surat Tugas → pengesahan (multi-aktor, tanda tangan di luar sistem; pengesahan digambar sekali sebagai activity pengesahan dokumen SDM dan dipanggil dengan «call behavior»; revisi 17 November 2026); (b) siklus otorisasi: asesmen → otorisasi → pengesahan → evaluasi ulang → otorisasi baru/dicabut; (c) siklus pelatihan: rencana (kebutuhan dari matriks) → pengesahan → realisasi → evaluasi → bukti kompetensi. State machine: **Otorisasi** (draf → diajukan → disahkan → diganti/dicabut, plus status turunan *berlaku/tidak berlaku*), **Evaluasi Ulang** (terbuka → diputuskan), **Item Pelatihan** (rencana → terlaksana/batal). Surat Tugas dan Rencana Pelatihan: state machine pengesahan dokumen SDM (status dari `approval.mixin` Core).
 - **Langkah 6 (use case).** Kandidat «CRUDL»: Kompetensi, Tugas/Alat (termasuk pelaksana), Kebutuhan Petugas, Bukti Kompetensi. Kandidat «report»: KF-SDM-05, 13, 27, 38, 40. "Terbitkan" (KF-SDM-17, 39, 42) dinilai *essential*-nya (§4.3.4).
 - **Langkah 7 (aturan bisnis).** Kandidat AB dari KF *hidden*: KF-SDM-43, 08, 11, 12, 23, 24, 26, 32, 37 (alasan wajib). KF-SDM-21, 30, 35 adalah perilaku sistem (membuat rekaman), bukan aturan.
 

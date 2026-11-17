@@ -1,8 +1,8 @@
 # Kontrak Core untuk Modul SDM & Kompetensi
 
-15 November 2026 · Zahir · PKG-04, PKG-10, PKG-14
+15 November 2026, diperbarui 17 November 2026 · Zahir · PKG-04, PKG-10, PKG-14
 
-**Status: DRAF, versi 2.** Langkah 3 alur rancangan TO-BE ([CLAUDE.md](../../CLAUDE.md) bagian 4). Bahan kerja: dipakai di Langkah 9–10 (conceptual model dan DCD), dan diteruskan ke pemilik Core (Febriyan), pemilik Mata Kuliah/Kelas/Sesi (Herrens), serta kelompok lain yang ingin tahu model SDM. Tidak ada diagram di dokumen ini.
+**Status: DRAF, versi 3.** Langkah 3 alur rancangan TO-BE ([CLAUDE.md](../../CLAUDE.md) bagian 4). Bahan kerja: dipakai di Langkah 9–10 (conceptual model dan DCD), dan diteruskan ke pemilik Core (Febriyan), pemilik Mata Kuliah/Kelas/Sesi (Herrens), serta kelompok lain yang ingin tahu model SDM. Tidak ada diagram di dokumen ini.
 
 **Isi dokumen:**
 1. Model Core yang **dipakai** SDM, lengkap dengan atributnya (bagian 2).
@@ -17,7 +17,22 @@ Lalu isu kontrak, yang disediakan SDM ke modul lain, dan dependensi addon (bagia
 
 ---
 
-## 0. Perubahan dibanding versi 1
+## 0. Perubahan
+
+### 0.1 Versi 3 (17 November 2026) dibanding versi 2
+
+Sumber pembaruan: [kontrak-core.md](kontrak-core.md) bersama (Febriyan, 15–16 November 2026, sudah di `main`), keputusan I-1–I-16, dan arahan Zahir (17 November 2026) agar rancangan SDM hanya berisi scope SDM.
+
+| Versi 2 | Versi 3 | Alasan |
+|---|---|---|
+| Status Sesi mengikuti S1 Praktikum (6 status) | {terjadwal, terlaksana, batal} | Keputusan I-1 pemilik Core; versi 1 SDM sudah memakai nilai ini |
+| Arah `labfik_praktikum` → `labfik_sdm` opsional | Praktikum → SDM (wajib); SDM tetap hanya `depends: ['labfik_core']` | Keputusan I-7 |
+| KC-1, KC-3, KC-4, KC-5, KC-8 terbuka | Terjawab oleh I-2, I-5, I-1, I-8, I-7 | Keputusan pemilik Core |
+| K-2: Praktikum mengusulkan tindakan `menyetujui`/`menetapkan` | Tindakan tetap {menyusun, mengesahkan}; modul hanya menambah `jenis_dokumen` | Keputusan I-4 |
+| *Hook* SDM dijalankan di dalam *use case* pengesahan modul Tata Kelola (UC-01, UC-05) | Dijalankan di *use case* SDM sendiri: UC-SDM-23 Ajukan dan UC-SDM-27 Sahkan Dokumen SDM | Use case SDM tidak lagi memakai *use case* modul lain ([use-case-sdm.md](use-case-sdm.md) bagian 0) |
+| Atribut Core disalin lengkap dari DCD Tata Kelola | Hanya atribut yang dipakai SDM; atribut lengkap merujuk [kontrak-core.md](kontrak-core.md) | Satu sumber untuk atribut Core |
+
+### 0.2 Versi 2 (15 November 2026) dibanding versi 1
 
 Versi 1: 14 November 2026, commit `6a99fc5`, hanya peta mixin dan isu K-1–K-6.
 
@@ -30,7 +45,7 @@ Versi 1: 14 November 2026, commit `6a99fc5`, hanya peta mixin dan isu K-1–K-6.
 | Tidak ada model Orientasi | `labfik.sdm.orientasi` (Pelengkap) | Terlewat di versi 1 (kebutuhan bagian 7.4) |
 | Keputusan evaluasi ulang tanpa *tetap berlaku* | Ditambah `tetap_berlaku` **[KONFIRMASI KP-1]** | Temuan tabel status × transisi S2 (proses bisnis bagian 4.2) |
 | Dependensi `labfik_praktikum` → `labfik_sdm` wajib | Opsional; Herrens mengusulkan `labfik_praktikum` cukup `depends: ['labfik_core', 'survey']` | Brief Praktikum bagian "Dampak ke rencana addon" |
-| — | Pemetaan *hook* SDM yang dijalankan di dalam *use case* pengesahan Tata Kelola (bagian 5) | Temuan langkah 6 (KU-4) |
+| — | Pemetaan *hook* SDM yang dijalankan saat pengesahan (bagian 5) | Temuan langkah 6 |
 
 ---
 
@@ -53,10 +68,7 @@ Versi 1: 14 November 2026, commit `6a99fc5`, hanya peta mixin dan isu K-1–K-6.
 
 ## 2. Model Core yang dipakai SDM
 
-Sumber atribut:
-- `hr.*`, ruang, periode, *mixin*, grup: DCD Tata Kelola (`origin/febriyan-skripsi`, `design-class-tata-kelola.md` dan `design_class.py`, 14 Nov 2026).
-- Mata Kuliah, Kelas, Sesi: brief Praktikum bagian "Kontrak Core" butir d (`origin/herrens-skripsi`, 14 Nov 2026).
-- `kapasitas` Ruang: usulan Herrens **[KONFIRMASI kelompok]**.
+Sumber atribut: [kontrak-core.md](kontrak-core.md) bersama (pemilik Core: Febriyan; Mata Kuliah, Kelas, Sesi: Herrens), versi `main` 16 November 2026. Bagian ini hanya memuat model dan atribut yang **dipakai SDM**. Atribut Core lain (mis. tambahan untuk aset di `hr.employee` dan `labfik.ruang`, master aset C-10–C-13) tidak dipakai SDM dan tidak disalin di sini.
 
 Semua model di bagian ini ada di addon `labfik_core` (`depends: ['hr', 'mail']`).
 
@@ -121,16 +133,16 @@ Mata Kuliah dan Kelas diisi modul Praktikum (impor alokasi). SDM hanya membaca.
 | `moda` | Selection {luring, daring} | — |
 | `tanggal`, `jam_mulai`, `jam_selesai` | Date, Float, Float | Tanggal acuan S2–S3 (penugasan dan kompetensi berlaku pada tanggal sesi) |
 | `ruang_id` | M2O `labfik.ruang` | Mencari laboran (baris penugasan per ruang) |
-| `state` | Selection {rencana, terpublikasi, ditunda, terlaksana, diganti, dibatalkan} (S1 Praktikum) | **Penyebut PKG-04 = sesi `terlaksana`** |
+| `state` | Selection {terjadwal, terlaksana, batal} (keputusan I-1) | **Penyebut PKG-04 = sesi `terlaksana`** |
 | `sesi_asal_id` | M2O `labfik.sesi` [0..1] | — |
 
-**Aturan pakai bersama dari Herrens** (diikuti SDM): modul lain **tidak menambah field** ke `labfik.sesi`; hanya Praktikum yang mengubah statusnya. SDM tidak menulis ke Sesi. Bila `state` belum diisi PKG-18 saat implementasi, sesi `terpublikasi` yang tanggalnya sudah lewat dianggap terlaksana **[ASUMSI]** (kebutuhan KF-SDM-12).
+**Aturan pakai bersama dari Herrens** (diikuti SDM): modul lain **tidak menambah field** ke `labfik.sesi`; hanya Praktikum yang mengubah statusnya. SDM tidak menulis ke Sesi. Bila `state` belum diisi PKG-18 saat implementasi, sesi `terjadwal` yang tanggalnya sudah lewat dianggap terlaksana **[ASUMSI]** (kebutuhan KF-SDM-12). Status lain di S1 Praktikum (terpublikasi, ditunda, diganti) adalah atribut hitung milik Praktikum dan tidak dibaca SDM.
 
 ### 2.4 Mixin dan riwayat pengesahan
 
 Model SDM yang mewarisi *mixin* mendapat semua atribut dan method di bawah tanpa menulisnya ulang.
 
-**`labfik.approval.mixin`** · AbstractModel · siklus pengesahan (S1 Tata Kelola)
+**`labfik.approval.mixin`** · AbstractModel (`_inherit = 'mail.thread'`) · siklus pengesahan; di SDM digambar sebagai S1 (Otorisasi) dan S4 (Surat Tugas, Rencana Pelatihan)
 
 | Atribut | Tipe |
 |---|---|
@@ -332,7 +344,7 @@ Field warisan: semua field `approval.mixin` (`state`, `penyusun_id`, `berkas_ttd
 | `ruang_id` | M2O `labfik.ruang` [0..1] | Wajib bila `peran = laboran` |
 | `berlaku_mulai`, `berlaku_sampai` | Date | Rentang berlaku (A6: tidak selalu mulai pertemuan 1) |
 | `is_sah` | Boolean {compute} | `surat_tugas_id.state = 'disahkan'` |
-| `berlaku_pada(tanggal)` | → bool | `is_sah` dan tanggal di dalam rentang. Dipakai S2 PKG-04 dan modul Praktikum (opsional) |
+| `berlaku_pada(tanggal)` | → bool | `is_sah` dan tanggal di dalam rentang. Dipakai S2 PKG-04; juga dibaca Praktikum untuk mencocokkan presensi petugas (I-7) |
 
 **`labfik.sdm.orientasi`** · Orientasi Petugas [T] · `_inherit = ['labfik.evidence.mixin']` · KF-SDM-16 (Pelengkap, bukti 7 PKG-04)
 
@@ -508,7 +520,7 @@ Field warisan: `tanggal`, `pelapor_id`, `bukti_ids`, `keterangan`.
 
 ## 5. Hook dan method abstrak yang diisi model SDM
 
-Urutan Template Method `action_ajukan()` dan `action_sahkan()` milik Core **tidak di-override**. Model SDM hanya mengisi method di tabel ini. Karena UC-01 Ajukan dan UC-05 Sahkan adalah *use case* Tata Kelola, isi *hook* inilah cara KF *hidden* SDM berjalan di dalam *use case* modul lain ([use-case-sdm.md](use-case-sdm.md) bagian 7.1).
+Urutan Template Method `action_ajukan()` dan `action_sahkan()` milik Core **tidak di-override**. Model SDM hanya mengisi method di tabel ini. Isi *hook* inilah yang dijalankan saat UC-SDM-23 Ajukan Dokumen SDM (`_cek_kelengkapan()`, `_sebelum_ajukan()`) dan UC-SDM-27 Sahkan Dokumen SDM (`_dokumen_diganti()`) ([use-case-sdm.md](use-case-sdm.md) bagian 7.1; activity A4 di [proses-bisnis-sdm.md](proses-bisnis-sdm.md)).
 
 | Model | `_jenis_dokumen()` | `_cek_kelengkapan()` | `_sebelum_ajukan()` | `_dokumen_diganti()` | `_cek_k1()`–`_cek_k4()` |
 |---|---|---|---|---|---|
@@ -535,13 +547,13 @@ Pada model `evidence.mixin`, `_boleh_dikoreksi()` tidak diisi (semua rekaman SDM
 | `syarat_kompetensi` (Text) | Core | Uraian naratif untuk dokumen struktur/SK (PKG-03) | Tata Kelola |
 | `syarat_kompetensi_ids` (M2M) | SDM | Daftar Kompetensi yang wajib dimiliki; dasar perhitungan | SDM |
 
-Risiko: dua field bernama mirip bisa tidak selaras. Mitigasi: label dibedakan ("Uraian syarat kompetensi" dan "Kompetensi wajib"); form SDM hanya menampilkan field terstruktur. **[KONFIRMASI Febriyan, KC-1]**
+Risiko: dua field bernama mirip bisa tidak selaras. Mitigasi: label dibedakan ("Uraian syarat kompetensi" dan "Kompetensi wajib"); form SDM hanya menampilkan field terstruktur. **Disetujui** pemilik Core (I-2, 15 November 2026).
 
 ### K-2 Jenis dokumen SDM belum terdaftar
 
 **Masalah.** `_cek_wewenang()` memanggil `punya_wewenang('mengesahkan', self._jenis_dokumen())`, sedangkan pilihan `jenis_dokumen` baru berisi jenis dokumen Tata Kelola.
 
-**Keputusan.** `selection_add` di `labfik_sdm` (bagian 3). Ini mekanisme standar Odoo untuk memperluas *Selection* dari addon lain. **[KONFIRMASI Febriyan, KC-2]**: `jenis_dokumen` memang `fields.Selection` dan tidak di-*hardcode* di method lain. Herrens juga mengusulkan jenis baru (`jadwal_praktikum`, `pemakaian_lab`, `perubahan_sesi`, `survei_kepuasan`) dan tindakan baru (`menyetujui`, `menetapkan`). Sebaiknya kedua modul memakai cara yang sama, yaitu `selection_add` dari addon masing-masing.
+**Keputusan.** `selection_add` di `labfik_sdm` (bagian 3). Ini mekanisme standar Odoo untuk memperluas *Selection* dari addon lain. **Sesuai** kontrak Core bersama: `jenis_dokumen` adalah `Selection` dengan nilai dasar dari Core, dan setiap modul menambah nilainya sendiri lewat `selection_add` (kontrak-core.md bagian 4). Pilihan `tindakan` tetap {menyusun, mengesahkan} (I-4); SDM hanya memakai `mengesahkan`.
 
 ### K-3 `period.mixin` tidak cocok untuk masa berlaku perorangan
 
@@ -556,16 +568,15 @@ Risiko: dua field bernama mirip bisa tidak selaras. Mitigasi: label dibedakan ("
 
 **Masalah.** Grup didefinisikan di DCD Tata Kelola, tetapi tabel kontrak Core di CLAUDE.md tidak menyebutnya. `action_sahkan()` di Core memeriksa `labfik_kalab`, jadi grup itu harus ada di Core.
 
-**Keputusan.** SDM mengasumsikan `labfik_pengguna`, `labfik_laboran`, `labfik_kalab` ada di `labfik_core` **[ASUMSI; KONFIRMASI Febriyan, KC-3]**. SDM tidak membuat grup sendiri.
+**Keputusan.** SDM mengasumsikan `labfik_pengguna`, `labfik_laboran`, `labfik_kalab` ada di `labfik_core` **Disetujui** pemilik Core (I-5): ketiga grup ada di `labfik_core`. SDM tidak membuat grup sendiri dan tidak memakai `labfik_dosen`/`labfik_asisten` (milik `labfik_praktikum`).
 
 ### K-5 Kelas, Mata Kuliah, dan Sesi di Core
 
-**Status (15 Nov 2026): terjawab sebagian.** Herrens sudah menulis kontrak ketiganya (bagian 2.2–2.3). CLAUDE.md bagian 6 mencatatnya sebagai keputusan Herrens, 14 November 2026.
+**Status (17 Nov 2026): terjawab.** Kontraknya ada di [kontrak-core.md](kontrak-core.md) C-7–C-9 (perancang Herrens), dengan keputusan pemilik Core:
+- `labfik.sesi.state` = {terjadwal, terlaksana, batal} (I-1). SDM membaca `terlaksana` untuk penyebut PKG-04.
+- Petugas hadir di Jurnal Sesi (PKG-18) wajib `employee_id` → `hr.employee`, bukan teks (I-8). Dengan begitu Praktikum bisa mencocokkannya dengan baris Penugasan SDM (temuan A18).
 
-Yang masih perlu disepakati:
-- Nama model `labfik.mata.kuliah`, `labfik.kelas`, `labfik.sesi` masih [USULAN PENULIS] di CLAUDE.md.
-- SDM membaca `state = 'terlaksana'`, nilai yang dipakai S1 Praktikum. Bila Herrens mengganti nama status, `labfik.sdm.monev.status_sesi()` ikut berubah **[KONFIRMASI Herrens, KC-4]**.
-- Petugas hadir di Jurnal Sesi (PKG-18) sebaiknya merujuk `hr.employee` yang sama dengan baris Penugasan, bukan teks nama (temuan A18) **[KONFIRMASI Herrens, KC-5]**.
+Yang masih terbuka: nama model `labfik.mata.kuliah`, `labfik.kelas`, `labfik.sesi` masih [USULAN PENULIS], dan pemetaan 6 status S1 Praktikum ke 3 status menunggu persetujuan Herrens (kontrak-core.md bagian 7 no. 1).
 
 ### K-6 Surat Tugas bergaris
 
@@ -577,7 +588,7 @@ Yang masih perlu disepakati:
 
 | Data / method | Dipakai oleh | Sifat | Arah addon |
 |---|---|---|---|
-| `labfik.sdm.penugasan.berlaku_pada(tanggal)`, baris per kelas/ruang | PKG-18 (cocokkan petugas hadir), PKG-08 kelompok Aset (jumlah petugas per sesi) | Opsional | Modul pemakai `depends` ke `labfik_sdm`, atau modul jembatan |
+| `labfik.sdm.penugasan.berlaku_pada(tanggal)`, baris per kelas/ruang | PKG-18 (Praktikum mencocokkan petugas hadir dengan penugasan, I-7); PKG-08 kelompok Aset (jumlah petugas per sesi) | Praktikum: dipakai; Aset: opsional | `labfik_praktikum` → `labfik_sdm` (I-7); Aset lewat `depends` atau modul jembatan |
 | `hr.employee.punya_kompetensi()`, `kompetensi_kurang()`, Matriks Kompetensi | Opsional PKG-13 (gap aspek kompetensi); peluang PKG-06/11 Safety (kompetensi K3) | Opsional | `labfik_org` → `labfik_sdm`, atau modul jembatan |
 | `labfik.sdm.kompetensi` | Modul lain yang butuh daftar kompetensi (mis. petugas K3) | Opsional | Sama |
 | `labfik.sdm.otorisasi.berlaku_pada()` (operator sah per tugas/alat) | Peluang untuk Aset/Praktikum | Tidak dirancang sekarang | — |
@@ -594,12 +605,11 @@ hr, mail
                         mata.kuliah, kelas, sesi, 4 mixin, approval.log, grup
         ├── labfik_org         Tata Kelola       (depends: labfik_core)
         ├── labfik_sdm         SDM & Kompetensi  (depends: labfik_core)
-        ├── labfik_praktikum   Praktikum         (depends: labfik_core, survey;
-        │                                         + labfik_sdm bila pencocokan petugas dipakai)
+        │     └── labfik_praktikum   Praktikum   (depends: labfik_core, labfik_sdm, survey)
         └── kelompok Aset, Safety (+ modul jembatan bila perlu)
 ```
 
-`labfik_sdm` hanya bergantung ke `labfik_core`, tanpa rujukan ke `labfik_org` maupun `labfik_praktikum`. Arah Praktikum → SDM sekarang opsional (usulan Herrens) **[KONFIRMASI kelompok]**.
+`labfik_sdm` hanya bergantung ke `labfik_core`, tanpa rujukan ke `labfik_org` maupun `labfik_praktikum`. Arah Praktikum → SDM sesuai keputusan pemilik Core (I-7): SDM menugaskan petugas cukup dengan merujuk `labfik.kelas`/`labfik.ruang` di Core, dan pencocokan dengan presensi dilakukan di Praktikum.
 
 ---
 
@@ -612,7 +622,9 @@ hr, mail
 | Setiap KF yang menyebut model punya model atau field di bagian 3–4 | ✓ KF-SDM-01–43. Laporan (05, 13, 27, 38, 42) tanpa model sendiri |
 | Setiap konsep di matriks CRUDL langkah 6 punya model | ✓ 15 konsep → 16 model (Rencana Pelatihan dipecah menjadi induk + 2 anak) |
 | Setiap kriteria punya field sumber | ✓ PKG-04 S1 `kebutuhan.petugas`, S2 `penugasan` + `surat.tugas.state`, S3 `bukti.kompetensi` + `hr.job.syarat_kompetensi_ids`, S4 `seleksi`; PKG-10 penyebut `tugas.khusus.pelaksana_ids`, S1–S4 `asesmen`/`bukti`, `otorisasi`, `supervisor_id`, `evaluasi.otorisasi.status`; PKG-14 K1–K4 `rencana`/`kebutuhan`/`item`/`realisasi`/`evaluasi.pelatihan` |
-| Status sama dengan state machine langkah 5 | ✓ S1 Otorisasi = `approval.mixin.state` + `is_berlaku`; S2 = `status` {terbuka, diputuskan}; S3 = `item.status` {rencana, terlaksana, batal} + `status_evaluasi` |
+| Status sama dengan state machine langkah 5 | ✓ S1 Otorisasi = `approval.mixin.state` + `is_berlaku`; S2 = `status` {terbuka, diputuskan}; S3 = `item.status` {rencana, terlaksana, batal} + `status_evaluasi`; S4 Surat Tugas/Rencana = `approval.mixin.state` tanpa `kedaluwarsa` |
+| Hook dijalankan di *use case* SDM sendiri | ✓ UC-SDM-23 (`_cek_kelengkapan()`, `_sebelum_ajukan()`), UC-SDM-27 (`_dokumen_diganti()`); tidak ada *use case* modul lain |
+| Selaras dengan [kontrak-core.md](kontrak-core.md) bersama | ✓ I-1 (status Sesi), I-2 (syarat kompetensi), I-4 (tindakan), I-5 (grup), I-6 (masa berlaku perorangan), I-7 (arah addon), I-8 (petugas `hr.employee`). Satu tambahan yang belum tercatat di sana: `hr.employee.memenuhi_syarat_jabatan(tanggal)` (bagian 3) |
 | Nama model tidak bentrok dengan Tata Kelola | ✓ semua berawalan `labfik.sdm.` |
 | Field warisan tidak ditulis ulang | ✓ |
 | Data pribadi | ✓ Tidak ada nama orang, NIM, atau nomor HP; `nilai_mk` hanya nilai huruf MK yang dipersyaratkan (KNF-SDM-07) |
@@ -621,33 +633,27 @@ hr, mail
 
 | No | Pertanyaan | Ke siapa |
 |---|---|---|
-| KC-1 | `syarat_kompetensi` (Text, Core) dan `syarat_kompetensi_ids` (M2M, SDM) boleh berdampingan? (K-1) | Febriyan |
-| KC-2 | `jenis_dokumen` adalah `Selection` yang boleh diperluas `selection_add`? (K-2) | Febriyan |
-| KC-3 | Grup `labfik_pengguna/laboran/kalab` didefinisikan di `labfik_core`? (K-4) | Febriyan |
-| KC-4 | Nama model dan nama status `labfik.sesi` (khususnya `terlaksana`) sudah final? (K-5) | Herrens |
-| KC-5 | Petugas hadir di PKG-18 merujuk `hr.employee`? (K-5, A18) | Herrens |
-| KC-8 | `labfik_praktikum` tanpa `depends` wajib ke `labfik_sdm`? (bagian 8) | Herrens, kelompok |
+| KC-9 | Tambahkan `hr.employee.memenuhi_syarat_jabatan(tanggal)` ke daftar perluasan SDM di kontrak-core.md bagian 4 | Febriyan |
 | KP-1, KB-1, KB-3, KU-2, KU-3 | Lihat [use-case-sdm.md](use-case-sdm.md) bagian 9.2; tercermin di field `keputusan`, `pelaksana_ids`, `_cek_kelengkapan()` Surat Tugas, `_dokumen_diganti()` Rencana, `action_laporan_bukti()` | Zahir |
 | Lama | K7 (pengesah Surat Tugas), K10 (pengesah Rencana Pelatihan) menentukan baris wewenang awal | KaLab |
 
-KC-6 (merge ke `main`) dan KC-7 (Surat Tugas bergaris) sudah diputuskan Zahir di versi 1.
+**Sudah terjawab** (kontrak-core.md bagian 6): KC-1 → I-2 (disetujui), KC-2 → bagian 4 (`selection_add`), KC-3 → I-5, KC-4 → I-1 (nama model masih [USULAN PENULIS]), KC-5 → I-8, KC-8 → I-7 (Praktikum → SDM). KC-6 (merge ke `main`) dan KC-7 (Surat Tugas bergaris) sudah diputuskan Zahir di versi 1.
 
 ### 9.3 Dokumen lain yang perlu ikut berubah
 
 | Dokumen | Perubahan |
 |---|---|
-| [brief-sdm.md](../brief/brief-sdm.md) "Kontrak dengan modul lain" | Rujuk bagian 7 dokumen ini; arah Praktikum → SDM menjadi opsional |
+| [brief-sdm.md](../brief/brief-sdm.md) "Kontrak dengan modul lain" | Rujuk bagian 7 dokumen ini dan [kontrak-core.md](kontrak-core.md) |
 | [analisis-data-pengelolaan-4.md](../analisis/analisis-data-pengelolaan-4.md) | `memenuhi_syarat_nilai` di Seleksi dihapus (sudah dicatat di kebutuhan 7.5) |
 | [kebutuhan-sdm.md](kebutuhan-sdm.md) kolom "Model (usulan)" KF-SDM-29, 31 | Nama anak Rencana: `labfik.sdm.kebutuhan.pelatihan`, `labfik.sdm.item.pelatihan` |
-| `CLAUDE.md` bagian 6 (file bersama) | Tidak diubah. Usulan untuk kelompok: tambahkan baris "Grup akses `labfik_pengguna/laboran/kalab`" ke tabel kontrak Core (K-4) |
-| Pemilik Core (Febriyan) dan Praktikum (Herrens) | Kirim bagian 3 (perluasan), bagian 5 (hook), dan KC-1–KC-5, KC-8 |
+| [kontrak-core.md](kontrak-core.md) bagian 4 (file bersama, milik Febriyan) | Tidak diubah sendiri; diajukan lewat KC-9 |
 
 ### 9.4 Kesalahan sendiri yang ditemukan
 
 | Di mana | Kesalahan | Koreksi |
 |---|---|---|
-| Versi 1, K-5 | Status Sesi ditulis {terjadwal, terlaksana, batal} tanpa mengecek kontrak Herrens | Mengikuti S1 Praktikum (bagian 2.3) |
+| Versi 2, K-5 dan bagian 8 | Status Sesi diubah ke 6 status Praktikum dan arah Praktikum → SDM dibuat opsional, tanpa membaca `kontrak-core.md` bersama, yang sudah memutuskan sebaliknya (I-1, I-7) | Versi 3 kembali ke {terjadwal, terlaksana, batal} dan Praktikum → SDM |
+| Versi 2, bagian 5 | Menulis bahwa KF *hidden* SDM berjalan di dalam *use case* modul Tata Kelola | Versi 3: UC-SDM-23 dan 27 |
 | Versi 1, peta mixin | `labfik.sdm.seleksi` masih punya `memenuhi_syarat_nilai` {compute}, padahal ambang nilai sudah diputuskan tidak dirancang di langkah 4 | Dihapus |
 | Versi 1, peta mixin | `labfik.sdm.orientasi` terlewat | Ditambah (bagian 4.3) |
-| Versi 1, bagian 5 | Dependensi `labfik_praktikum` → `labfik_sdm` ditulis wajib; analisis Herrens menunjukkan semua kaitan ke SDM opsional | Bagian 8 |
 | Langkah 6 | Keputusan *tetap berlaku* dan pemecahan evaluasi ulang belum punya tempat di model | Field `keputusan` dan `status` di `labfik.sdm.evaluasi.otorisasi` |
