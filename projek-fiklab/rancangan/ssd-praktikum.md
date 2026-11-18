@@ -4,7 +4,7 @@
 
 **Status: DRAF.** Langkah 8 alur rancangan TO-BE ([CLAUDE.md](../../CLAUDE.md) bagian 4). **Masuk proposal** Bab II 2.3 ("sequence diagram"). Katalog operasi dan kamus DTO adalah bahan kerja untuk conceptual model (langkah 9) dan design class diagram (langkah 10).
 
-Diagram: [ssd-praktikum.drawio](ssd-praktikum.drawio), 5 halaman (SSD-1 s.d. SSD-5). Skrip pembuatnya: [tools/drawio/praktikum/ssd.py](../tools/drawio/praktikum/ssd.py) (mesin gambar dari `contoh-tata-kelola/ssd.py`; prefiks `prk-ssd`, lebar lajur, dan data diganti). `validate.py` dengan prefiks `prk-`: **OK** di kelima halaman. Tampilan dicek lewat ekspor PNG draw.io desktop (16 Nov 2026).
+Diagram: [ssd-praktikum.drawio](ssd-praktikum.drawio), 5 halaman (SSD-1 s.d. SSD-5). Skrip pembuatnya: [tools/drawio/praktikum/ssd.py](../tools/drawio/praktikum/ssd.py) (mesin gambar dari `contoh-tata-kelola/ssd.py`; prefiks `prk-ssd`, lebar lajur, dan data diganti). `validate.py` dengan prefiks `prk-`: **OK** di kelima halaman. Tampilan dicek lewat ekspor PNG draw.io desktop (16 Nov 2026). **Gaya diubah ke polos hitam-putih** (17 Nov 2026, CLAUDE.md bagian 5): tanpa warna, huruf Times New Roman, judul dan catatan dipindah ke halaman `Catatan … (bahan kerja)` di akhir file. `validate.py` dan cek tampilan **belum diulang** setelah perubahan gaya ini.
 
 Sumber: [expanded-use-case-praktikum.md](expanded-use-case-praktikum.md) (alur lengkap UC-PRK-03, 11, 13, 15, 23; AB-PRK-01–34; pola «CRUDL» dan «report»; calon operasi di bagian 7).
 
@@ -16,7 +16,7 @@ Sumber: [expanded-use-case-praktikum.md](expanded-use-case-praktikum.md) (alur l
 |---|---|---|
 | Lifeline `:Aktor`, `:Antarmuka` (*boundary*), `:Kontroler` (*façade controller*). Aktor hanya berkomunikasi dengan antarmuka | §7.2, §7.4 | Semua SSD |
 | *System event* (aktor → antarmuka) dan *system return* (antarmuka → aktor) berupa informasi, bukan pemanggilan operasi | §7.3 | Panah hitam penuh dan putus-putus |
-| **Command** `op(args)` mengubah data dan tidak mengembalikan nilai; **query** `dto = op(args)` hanya membaca (CQS) | §7.1, §7.4 | Panah ungu; kolom "Jenis" di katalog |
+| **Command** `op(args)` mengubah data dan tidak mengembalikan nilai; **query** `dto = op(args)` hanya membaca (CQS) | §7.1, §7.4 | Panah kepala segitiga penuh; kolom "Jenis" di katalog |
 | Data majemuk lebih dari tiga elemen ditulis `dto_x` dan didefinisikan di kamus; `*` = koleksi; *terpilih* = pilihan dari daftar | §7.3 | Bagian 4 |
 | **Stateless**: kontroler tidak mengingat apa pun di antara operasi; `user_id` dan rekaman terpilih dikirim ulang ke setiap operasi | §7.5 | Semua operasi yang butuh identitas pengguna |
 | Alur alternatif sebagai `opt «exception»` / `opt «variant»`; use case lain sebagai `ref` | §7.6 | Fragmen di setiap SSD |

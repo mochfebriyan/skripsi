@@ -2,6 +2,9 @@
 
 Mesin gambar disalin dari contoh-tata-kelola/design_class.py (branch febriyan-skripsi); prefiks (prk-dcd), nama halaman,
 penempatan label ujung garis (di luar kotak, menurut sisi keluar/masuk), titik belok, dan data diganti.
+Gaya polos hitam-putih (CLAUDE.md bagian 5, 17 Nov 2026): jenis kelas dibedakan lewat stereotype «AbstractModel» (nama miring),
+«Odoo», «Core»/«SDM»; model baru milik modul tanpa stereotype. Garis putus-putus hanya untuk field turunan {compute}.
+Halaman diagram hanya berisi diagram; judul, legenda, dan catatan dikumpulkan di halaman catatan terakhir.
 Pemakaian: python -X utf8 -I design_class.py projek-fiklab/rancangan/class-praktikum.drawio
 """
 import sys
@@ -16,19 +19,19 @@ def esc(s):
     return escape(s, {'"': "&quot;"})
 
 
-FILL = {"c": "fillColor=#FFFFFF;strokeColor=#333333;", "mixin": "fillColor=#E1D5E7;strokeColor=#9673A6;",
-        "odoo": "fillColor=#F5F5F5;strokeColor=#666666;", "core": "fillColor=#F5F5F5;strokeColor=#666666;dashed=1;",
-        "new": "fillColor=#FFFFFF;strokeColor=#9B2C44;strokeWidth=2;"}
+FONT = "fontFamily=Times New Roman;"
+PLAIN = "fillColor=#FFFFFF;strokeColor=#000000;swimlaneFillColor=#FFFFFF;" + FONT
+FILL = {k: PLAIN for k in ("c", "mixin", "odoo", "core", "new")}  # jenis kelas dibedakan lewat stereotype, bukan warna
 TXT = ("text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;"
-       "rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=11;")
+       "rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=11;" + FONT)
 SEP = ("line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;"
        "rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;html=1;")
-GEN = "endArrow=block;endFill=0;endSize=14;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#6C4A87;"
-EXT = "endArrow=block;endFill=0;endSize=14;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#9B2C44;dashed=1;fontSize=10;"
+GEN = "endArrow=block;endFill=0;endSize=14;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#000000;"
+EXT = "endArrow=block;endFill=0;endSize=14;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#000000;fontSize=10;" + FONT
 COMP = ("endArrow=none;startArrow=diamondThin;startFill=1;startSize=16;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;"
-        "strokeColor=#333333;fontSize=10;")
-NAV = "endArrow=open;endFill=0;endSize=10;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#555555;fontSize=10;"
-DER = "endArrow=open;endFill=0;endSize=10;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#555555;dashed=1;fontSize=10;"
+        "strokeColor=#000000;fontSize=10;" + FONT)
+NAV = "endArrow=open;endFill=0;endSize=10;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#000000;fontSize=10;" + FONT
+DER = "endArrow=open;endFill=0;endSize=10;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#000000;dashed=1;fontSize=10;" + FONT
 NOTE = ("shape=note;whiteSpace=wrap;html=1;size=14;align=left;verticalAlign=top;spacingLeft=6;spacingTop=4;"
         "fontSize=11;fillColor=#FFF2CC;strokeColor=#D6B656;")
 TITLE = "text;html=1;fontSize=17;fontStyle=1;align=left;verticalAlign=middle;"
@@ -43,9 +46,11 @@ class Page:
     def __init__(self, n, isi, title):
         self.P, self.n, self.cells, self.geo = f"prk-dcd{n}-", n, [], {}
         self.name = f"DCD TO-BE ({n}-{NPAGE}) - {isi}"
-        self.v("title", title, TITLE, 40, 6, 1700, 30)
+        self.title, self.notes, self.maxx, self.maxy = title, [], 0, 0
 
     def v(self, id, val, style, x, y, w, h, parent="1"):
+        if parent == "1":
+            self.maxx, self.maxy = max(self.maxx, x + w), max(self.maxy, y + h)
         par = "1" if parent == "1" else self.P + parent
         self.cells.append(f'<mxCell id="{self.P}{id}" value="{esc(val)}" style="{style}" vertex="1" parent="{par}">'
                           f'<mxGeometry x="{x:.0f}" y="{y:.0f}" width="{w:.0f}" height="{h:.0f}" as="geometry"/></mxCell>')
@@ -92,11 +97,12 @@ class Page:
                 side, ("left", "bottom", 8, -2) if xpos < 0 else ("right", "bottom", -8, -2))
             self.cells.append(
                 f'<mxCell id="{eid}-l{k}" value="{esc(lbl)}" style="edgeLabel;resizable=0;html=1;align={align};'
-                f'verticalAlign={valign};fontSize=10;labelBackgroundColor=#FFFFFF;" connectable="0" vertex="1" '
+                f'verticalAlign={valign};fontSize=10;labelBackgroundColor=#FFFFFF;{FONT}" connectable="0" vertex="1" '
                 f'parent="{eid}"><mxGeometry x="{xpos}" relative="1" as="geometry"><mxPoint x="{dx}" y="{dy}" '
                 f'as="offset"/></mxGeometry></mxCell>')
 
-    def xml(self, w, h):
+    def xml(self, w=None, h=None):
+        w, h = w or self.maxx + 40, h or self.maxy + 40
         return (f'<diagram id="prk-dcd{self.n}" name="{esc(self.name)}"><mxGraphModel dx="1600" dy="900" grid="1" '
                 f'gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" '
                 f'pageWidth="{w:.0f}" pageHeight="{h:.0f}" math="0" shadow="0"><root><mxCell id="0"/>'
@@ -115,14 +121,14 @@ def am(name, label=None):
 def cm(name, label, inherit=None, stereo=None):
     t = (f"{stereo}<br>" if stereo else "") + f"<b>{name}</b><br>{f10(label)}"
     if inherit:
-        t += "<br>" + f10(f"{{inherit: {inherit}}}", "#6C4A87")
+        t += "<br>" + f10(f"{{inherit: {inherit}}}")
     return t
 
 
 def odoo(name, label, ext=None):
     t = f"«Odoo»<br><b>{name}</b><br>{f10(label)}"
     if ext:
-        t += "<br>" + f10(ext, "#6C4A87")
+        t += "<br>" + f10(ext)
     return t
 
 
@@ -142,15 +148,14 @@ def stack(page, columns, specs, top=60, gap=50):
 
 
 LEG = ("<b>Notasi</b> (Wazlawick 2024, §13.6; CLAUDE.md bagian 5)<br>"
-       "• Ungu «AbstractModel» (nama miring) = <i>mixin</i> tanpa tabel; segitiga kosong ungu = <code>_inherit = [mixin, …]</code>.<br>"
-       "• «Odoo» abu-abu = model bawaan; «Core» / «SDM» abu-abu putus-putus = model addon lain yang dipakai. "
-       "Tepi merah = model hasil desain tanpa padanan 1:1 di CM. Segitiga merah putus-putus = <code>_inherit</code> tanpa "
-       "<code>_name</code> baru (perluasan model milik addon lain).<br>"
+       "• «AbstractModel» (nama miring) = <i>mixin</i> tanpa tabel; segitiga kosong = <code>_inherit = [mixin, …]</code>.<br>"
+       "• «Odoo» = model bawaan; «Core» / «SDM» = model addon lain yang dipakai; kelas tanpa stereotype = model baru milik modul. "
+       "Segitiga kosong berlabel «_inherit» = <code>_inherit</code> tanpa <code>_name</code> baru (perluasan model milik addon lain).<br>"
        "• Panah terbuka = Many2one/Many2many berarah, label = nama field + multiplisitas. Belah ketupat hitam = One2many + "
        "Many2one (anak ikut terhapus). Putus-putus = field/rujukan <code>compute</code> atau pemanggilan method.<br>"
        "• Atribut bertipe hanya untuk model bawaan Odoo (hr.employee, ir.attachment, survey.*). Field warisan mixin tidak ditulis ulang.<br>"
        "• <code>+</code> publik (<code>action_*</code>, <code>get_*</code>), <code>#</code> internal (<code>_…</code>), @model, "
-       "@constrains, «override», {abstract}, {hook}. (O) = lapis Pelengkap.")
+       "@constrains, «override», {abstract}, {hook}. (O) = lapis Pelengkap. Semua kotak polos hitam-putih.")
 SRC = ("Design class diagram (masuk proposal Bab II 2.3). Diturunkan dari conceptual model CM-1–4, katalog operasi SSD, "
        "AB-PRK-01–34, kontrak Core 16 Nov 2026. Rincian: rancangan/design-class-praktikum.md · Draf 16 Nov 2026 · Herrens")
 pages = []
@@ -184,7 +189,7 @@ S = {
             ["# _cek_jam() @constrains (AB-PRK-18)", "# _cek_pertemuan_unik() @constrains (AB-PRK-02)",
              "# _compute_is_diganti()"], 340, "core"),
     "rng": (core("labfik.ruang", "Ruang Lab [M]"), ["+ kode, name: Char", "+ kapasitas: Integer"], [], 240, "core"),
-    "sesx": (cm("labfik.sesi", "Sesi diperluas [T]", stereo=f10("{_inherit: labfik.sesi} di labfik_praktikum", "#9B2C44")),
+    "sesx": (cm("labfik.sesi", "Sesi diperluas [T]", stereo=f10("{_inherit: labfik.sesi} di labfik_praktikum")),
              ["+ is_terpublikasi: Boolean {compute, search}", "+ is_ditunda: Boolean {compute}",
               "+ is_terlewat: Boolean {compute, search}", "+ berasisten: Boolean {compute}",
               "+ melebihi_kapasitas: Boolean {compute}", "+ memenuhi_pkg15 … pkg18: Boolean {compute}"],
@@ -223,9 +228,7 @@ p.e("jdw-per", "jdw", "per", NAV, "*", "periode_id 1", pts=[(p.pt("jdw", 0.3, 1)
 p.e("imp-impb", "imp", "impb", COMP, "1", "baris_ids *", exit=(0.5, 1), entry=(0.5, 0))
 p.e("imp-per", "imp", "per", NAV, "*", "periode_id 1", pts=[(p.pt("imp", 0.97, 0)[0], 40), (1240, 40), (1240, xb + 15),
                                                              (p.pt("per", 0.35, 1)[0], xb + 15)], exit=(0.97, 0), entry=(0.35, 1))
-ny = bottom + 30
-p.v("n0", LEG, NOTE, 40, ny, 760, 170)
-p.v("n1", "<b>Kunci</b><br>• <b>Core vs Praktikum.</b> Field yang tersimpan di <code>labfik.sesi</code> ada di <code>labfik_core</code> "
+p.notes.append(("<b>Kunci</b><br>• <b>Core vs Praktikum.</b> Field yang tersimpan di <code>labfik.sesi</code> ada di <code>labfik_core</code> "
     "(kontrak C-9). Field hitung yang membutuhkan Penetapan Jadwal, Perubahan, Jurnal, dan penugasan SDM ditambahkan "
     "<code>labfik_praktikum</code> lewat <code>_inherit</code>, karena Core tidak bergantung ke modul fungsional. "
     "Hanya <code>is_diganti</code> yang dihitung di Core.<br>"
@@ -233,9 +236,8 @@ p.v("n1", "<b>Kunci</b><br>• <b>Core vs Praktikum.</b> Field yang tersimpan di
     "• <code>is_terpublikasi</code> = Penetapan Jadwal periode kelas berstatus disahkan; tidak memakai <i>hook</i> "
     "<code>_setelah_disahkan()</code>.<br>"
     "• Impor = <i>wizard</i>: <code>action_pratinjau()</code> mengisi status per baris tanpa membuat Sesi (query SSD); "
-    "<code>action_impor()</code> membangkitkan 16 Sesi per kelas yang berstatus siap.", NOTE, 820, ny, 760, 170)
-p.v("n2", SRC, NOTE, 40, ny + 190, 1540, 34)
-pages.append((p, 2080, ny + 250))
+    "<code>action_impor()</code> membangkitkan 16 Sesi per kelas yang berstatus siap.", 170))
+pages.append(p)
 
 # ===================================================================== DCD-2
 p = Page(2, "Pengajuan", "DCD 2/5 · Pengajuan: pemakaian lab dan perubahan sesi (PKG-15, PKG-18) · labfik_praktikum")
@@ -289,19 +291,15 @@ p.e("job-wwn", "job", "wwn", COMP, "1", "wewenang_ids *", exit=(0.5, 1), entry=(
 p.e("pgm-job", "pgm", "job", DER, None, "pemutus.job_id.punya_wewenang()",
     pts=[(p.pt("pgm", 1, 0.06)[0] + 40, p.pt("pgm", 1, 0.06)[1]), (p.pt("pgm", 1, 0.06)[0] + 40, 40),
          (p.pt("job", 0.5, 0)[0], 40)], exit=(1, 0.06), entry=(0.5, 0))
-ny = bottom + 10
-p.v("n0", LEG, NOTE, 40, ny, 760, 170)
-p.v("n1", "<b>Template Method</b> <code>action_putuskan(hasil, alasan, karena_bentrok, pengganti)</code>, urutan tetap di mixin:<br>"
+p.notes.append(("<b>Template Method</b> <code>action_putuskan(hasil, alasan, karena_bentrok, pengganti)</code>, urutan tetap di mixin:<br>"
     "1. state harus <i>diajukan</i> · 2. <code>_cek_wewenang(pemutus)</code> → <code>pemutus.job_id.punya_wewenang('mengesahkan', "
     "self._jenis_pengajuan())</code> (AB-PRK-10) · 3. bila ditolak: alasan wajib (AB-PRK-10), tulis state, pemutus, tanggal, "
     "<code>karena_bentrok</code>, selesai · 4. bila disetujui: <code>_sebelum_disetujui(pengganti)</code> {hook} (cek bentrok, "
     "AB-PRK-01; Sesi masih terjadwal, AB-PRK-12) · 5. tulis state, pemutus, tanggal · 6. <code>_efek_disetujui(pengganti)</code> "
     "{hook} · 7. <code>_beri_tahu()</code> (O).<br>"
     "Efek Perubahan Sesi: <i>pindah</i> → <code>sesi._ganti(…)</code> membuat Sesi pengganti (sesi_asal_id) dan Sesi asal batal; "
-    "<i>daring</i> → moda daring; <i>batal</i> → Sesi batal. Efek Pemakaian Lab: tidak ada (masuk jadwal terpadu lewat state).",
-    NOTE, 820, ny, 800, 170)
-p.v("n2", SRC, NOTE, 40, ny + 190, 1580, 34)
-pages.append((p, 1740, ny + 250))
+    "<i>daring</i> → moda daring; <i>batal</i> → Sesi batal. Efek Pemakaian Lab: tidak ada (masuk jadwal terpadu lewat state).", 170))
+pages.append(p)
 
 # ===================================================================== DCD-3
 p = Page(3, "Versi Modul dan Kesiapan", "DCD 3/5 · Versi modul dan pemeriksaan kesiapan (PKG-15 C4, PKG-16, PKG-17) · labfik_praktikum")
@@ -364,9 +362,7 @@ p.e("mod-mk", "mod", "mk", NAV, "*", "mata_kuliah_id 1", exit=(1, 0.15), entry=(
 p.e("mod-per", "mod", "per", NAV, "*", "periode_id 1", exit=(1, 0.5), entry=(0, 0.5))
 p.e("mbh-bhn", "mbh", "bhn", NAV, "*", "bahan_id 1", pts=[(1300, p.pt("mbh", 1, 0.5)[1]), (1300, p.pt("bhn", 0, 0.7)[1])],
     exit=(1, 0.5), entry=(0, 0.7))
-ny = bottom + 10
-p.v("n0", LEG, NOTE, 40, ny, 760, 210)
-p.v("n1", "<b>Kunci</b><br>• <b>Butir: satu model, bukan empat subkelas.</b> Generalisasi CM (ButirUtilitas, StasiunKerja, "
+p.notes.append(("<b>Kunci</b><br>• <b>Butir: satu model, bukan empat subkelas.</b> Generalisasi CM (ButirUtilitas, StasiunKerja, "
     "Software, Bahan) diwujudkan dengan <code>kategori</code> + <code>_cek_isian_kategori()</code> (field wajib per kategori) "
     "dan tampilan per kategori. Subkelas Odoo (<code>_inherits</code>) akan membuat lima tabel untuk satu daftar butir.<br>"
     "• SubstitusiBahan dan PersetujuanSubstitusi (kejadian 0..1) menjadi field di butir; "
@@ -376,10 +372,8 @@ p.v("n1", "<b>Kunci</b><br>• <b>Butir: satu model, bukan empat subkelas.</b> G
     "• (O, KF-PRK-52) <code>_compute_ketersediaan_alat()</code> membaca alat di <code>sesi_id.ruang_id</code> dan memanggil "
     "<code>check_ketersediaan_sesi()</code> Core: yang salah → <code>alat_tidak_tersedia_ids</code> (peringatan pada butir "
     "kategori padanannya); PC yang benar → <code>jumlah_pc_tersedia</code> (isian awal <code>jumlah_berfungsi</code>). "
-    "Hanya membaca; status alat tidak diubah (I-13), hasil tetap dari laboran (AB-PRK-14).",
-    NOTE, 820, ny, 760, 210)
-p.v("n2", SRC, NOTE, 40, ny + 230, 1540, 34)
-pages.append((p, 1640, ny + 290))
+    "Hanya membaca; status alat tidak diubah (I-13), hasil tetap dari laboran (AB-PRK-14).", 210))
+pages.append(p)
 
 # ===================================================================== DCD-4
 p = Page(4, "Jurnal, Penilaian, Pengaturan", "DCD 4/5 · Jurnal sesi (PKG-18), penilaian kelas (PKG-19), pengaturan · labfik_praktikum")
@@ -426,18 +420,15 @@ p.e("jur-lgb", "jur", "lgb", COMP, "1", "logbook_ids 1..*", pts=[(890, p.pt("jur
     exit=(1, 0.8), entry=(0, 0.5))
 p.e("pnl-kls", "pnl", "kls", NAV, "0..1", "kelas_id 1", exit=(0, 0.3), entry=(1, 0.5))
 p.e("pnl-bn", "pnl", "bn", COMP, "1", "baris_ids *", exit=(1, 0.7), entry=(0, 0.5))
-ny = bottom + 10
-p.v("n0", LEG, NOTE, 40, ny, 760, 170)
-p.v("n1", "<b>Template Method</b> <code>action_kirim()</code>: 1. Sesi terjadwal, <code>is_terpublikasi</code>, tanggal ≤ hari ini, "
+p.notes.append(("<b>Template Method</b> <code>action_kirim()</code>: 1. Sesi terjadwal, <code>is_terpublikasi</code>, tanggal ≤ hari ini, "
     "belum ada jurnal terkirim (AB-PRK-17) · 2. <code>get_kekurangan()</code> kosong: presensi dosen dan laboran, asisten bila "
     "<code>sesi.berasisten</code>, jumlah_hadir, modul_id, ≥ 1 log book (AB-PRK-19) · 3. tulis state = terkirim, waktu_kirim, "
     "pengirim_id · 4. <code>sesi._tandai_terlaksana()</code> (hanya Praktikum yang mengubah state Sesi).<br>"
     "• <code>sesuai_penugasan</code> membaca <code>sesi.get_petugas_ditugaskan()</code> (asisten lewat kelas, laboran lewat ruang, "
     "Surat Tugas disahkan dan berlaku pada tanggal sesi). Hanya penanda (AB-PRK-20).<br>"
     "• <code>terlambat</code>, <code>durasi_memenuhi</code>, <code>lengkap</code> membaca pengaturan dari "
-    "<code>ir.config_parameter</code>. BerkasNilai CM → <code>berkas_nilai_ids</code> (riwayat lampiran).", NOTE, 820, ny, 760, 170)
-p.v("n2", SRC, NOTE, 40, ny + 190, 1540, 34)
-pages.append((p, 1640, ny + 250))
+    "<code>ir.config_parameter</code>. BerkasNilai CM → <code>berkas_nilai_ids</code> (riwayat lampiran).", 170))
+pages.append(p)
 
 # ===================================================================== DCD-5
 p = Page(5, "Survei dan Status Monev", "DCD 5/5 · Survei kepuasan (PKG-20) dan status monev praktikum · labfik_praktikum")
@@ -494,18 +485,30 @@ p.e("evs-rtl", "evs", "rtl", COMP, "1", "rtl_ids 1..*", pts=[(p.pt("evs", 1, 0.8
                                                            (p.pt("evs", 1, 0.8)[0] + 30, p.pt("rtl", 1, 0.1)[1])],
     exit=(1, 0.8), entry=(1, 0.1))
 p.e("mon-srv", "mon", "srv", DER, None, "get_kriteria()", exit=(1, 0.3), entry=(0, 0.85))
-ny = bottom + 10
-p.v("n0", LEG, NOTE, 40, ny, 760, 170)
-p.v("n1", "<b>Kunci</b><br>• Survei <b>memperluas</b> addon <code>survey</code> (LGPL-3), tidak membuat model survei sendiri: "
+p.notes.append(("<b>Kunci</b><br>• Survei <b>memperluas</b> addon <code>survey</code> (LGPL-3), tidak membuat model survei sendiri: "
     "Respons dan Jawaban CM = <code>survey.user_input</code> dan <code>.line</code> bawaan; jumlah responden = "
     "<code>answer_done_count</code> bawaan. Anonim lewat <code>access_mode</code> publik (AB-PRK-28).<br>"
     "• PenetapanSurvei (kejadian) → <code>penetap_id</code>, <code>tanggal_tetap</code>; wewenang dicek "
     "<code>penetap.job_id.punya_wewenang('mengesahkan', 'survei_kepuasan')</code>. <code>status_lab</code> tersimpan supaya bisa "
     "dipakai filter; nilainya dihitung dari penetapan, evaluasi, dan RTL (§9.3.2 CM).<br>"
     "• <code>labfik.praktikum.monev.get_status()</code> mendelegasikan ke <code>sesi.get_cek_monev(pkg)</code>, "
-    "<code>penilaian.berbukti</code>, dan <code>survey.get_kriteria()</code> (delegasi, §13.5).", NOTE, 820, ny, 760, 170)
-p.v("n2", SRC, NOTE, 40, ny + 190, 1540, 34)
-pages.append((p, 1800, ny + 250))
+    "<code>penilaian.berbukti</code>, dan <code>survey.get_kriteria()</code> (delegasi, §13.5).", 170))
+pages.append(p)
+
+# ============================================================ halaman catatan (bahan kerja)
+c = Page("-notes", "", "")
+c.name, c.P = "Catatan DCD TO-BE (bahan kerja)", "prk-dcd-notes-"
+c.v("title", "Catatan design class diagram (bahan kerja, tidak disisipkan ke naskah)", TITLE, 40, 10, 1300, 34)
+c.v("legend", LEG + "<br>" + SRC, NOTE, 40, 56, 1300, 180)
+y = 256
+for i, pg in enumerate(pages):
+    c.v(f"h{i}", f"<b>{pg.title}</b>", "text;html=1;fontSize=12;align=left;verticalAlign=top;whiteSpace=wrap;", 40, y, 1300, 24)
+    y += 30
+    for j, (txt, h) in enumerate(pg.notes):
+        c.v(f"n{i}-{j}", txt, NOTE, 40, y, 1300, h)
+        y += h + 10
+    y += 10
+pages.append(c)
 
 with open(OUT, "w", encoding="utf-8") as f:
-    f.write('<mxfile host="app.diagrams.net">' + "".join(pg.xml(w, h) for pg, w, h in pages) + "</mxfile>")
+    f.write('<mxfile host="app.diagrams.net">' + "".join(pg.xml() for pg in pages) + "</mxfile>")

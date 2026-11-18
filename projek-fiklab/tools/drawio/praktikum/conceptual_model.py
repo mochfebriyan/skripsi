@@ -1,7 +1,9 @@
 """Conceptual model modul Pelaksanaan Praktikum (langkah 9), 4 halaman.
 
-Mesin gambar disalin dari contoh-tata-kelola/conceptual_model.py; prefiks (prk-cm), warna modul,
-nama halaman, stereotype, dan data diganti.
+Mesin gambar disalin dari contoh-tata-kelola/conceptual_model.py; prefiks (prk-cm),
+nama halaman, stereotype, dan data diganti. Gaya polos hitam-putih (CLAUDE.md bagian 5, 17 Nov 2026):
+konsep abstrak = nama miring + «abstract»; enumerasi = «enumeration»; konsep yang dirinci di tempat lain = atribut miring
+berisi rinciannya (tanpa garis putus-putus). Judul, legenda, dan catatan dikumpulkan di halaman catatan terakhir.
 Pemakaian: python -X utf8 -I conceptual_model.py projek-fiklab/rancangan/conceptual-model-praktikum.drawio
 Catatan: tulis '<' dan '>' di nama tipe sebagai &lt; &gt; (label memakai HTML).
 """
@@ -16,18 +18,16 @@ def esc(s):
     return escape(s, {'"': "&quot;"})
 
 
-FILL = {"c": "fillColor=#FFFFFF;strokeColor=#333333;",
-        "abs": "fillColor=#EEF6FF;strokeColor=#6C8EBF;",
-        "enum": "fillColor=#F5F5F5;strokeColor=#666666;",
-        "prim": "fillColor=#F5F5F5;strokeColor=#666666;",
-        "stub": "fillColor=#FAFAFA;strokeColor=#999999;dashed=1;"}
+FONT = "fontFamily=Times New Roman;"
+PLAIN = "fillColor=#FFFFFF;strokeColor=#000000;swimlaneFillColor=#FFFFFF;" + FONT
+FILL = {k: PLAIN for k in ("c", "abs", "enum", "prim", "stub")}  # jenis konsep dibedakan lewat stereotype/nama miring, bukan warna
 TXT = ("text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;"
-       "rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=11;")
-ASSOC = "endArrow=none;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#444444;fontSize=10;"
-DER = "endArrow=open;endSize=10;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#444444;fontSize=10;"
+       "rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=11;" + FONT)
+ASSOC = "endArrow=none;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#000000;fontSize=10;" + FONT
+DER = "endArrow=open;endSize=10;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#000000;fontSize=10;" + FONT
 COMP = ("endArrow=none;startArrow=diamondThin;startFill=1;startSize=16;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;"
-        "strokeColor=#333333;fontSize=10;")
-GEN = "endArrow=block;endFill=0;endSize=14;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#6C8EBF;"
+        "strokeColor=#000000;fontSize=10;" + FONT)
+GEN = "endArrow=block;endFill=0;endSize=14;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#000000;"
 NOTE = ("shape=note;whiteSpace=wrap;html=1;size=14;align=left;verticalAlign=top;spacingLeft=6;spacingTop=4;"
         "fontSize=11;fillColor=#FFF2CC;strokeColor=#D6B656;")
 TITLE = "text;html=1;fontSize=17;fontStyle=1;align=left;verticalAlign=middle;"
@@ -37,9 +37,11 @@ NPAGE = 4
 class Page:
     def __init__(self, n, name, title):
         self.P, self.n, self.name, self.cells = f"prk-cm{n}-", n, name, []
-        self.v("title", title, TITLE, 40, 4, 1500, 30)
+        self.title, self.notes, self.maxx, self.maxy = title, [], 0, 0
 
     def v(self, id, val, style, x, y, w, h, parent="1"):
+        if parent == "1":
+            self.maxx, self.maxy = max(self.maxx, x + w), max(self.maxy, y + h)
         par = "1" if parent == "1" else self.P + parent
         self.cells.append(f'<mxCell id="{self.P}{id}" value="{esc(val)}" style="{style}" vertex="1" parent="{par}">'
                           f'<mxGeometry x="{x:.0f}" y="{y:.0f}" width="{w:.0f}" height="{h:.0f}" as="geometry"/></mxCell>')
@@ -86,11 +88,12 @@ class Page:
                 side, ("left", "bottom", 8, -2) if xpos < 0 else ("right", "bottom", -8, -2))
             self.cells.append(
                 f'<mxCell id="{eid}-l{k}" value="{esc(lbl)}" style="edgeLabel;resizable=0;html=1;align={align};'
-                f'verticalAlign={valign};fontSize=10;labelBackgroundColor=#FFFFFF;" connectable="0" vertex="1" '
+                f'verticalAlign={valign};fontSize=10;labelBackgroundColor=#FFFFFF;{FONT}" connectable="0" vertex="1" '
                 f'parent="{eid}"><mxGeometry x="{xpos}" relative="1" as="geometry"><mxPoint x="{dx}" '
                 f'y="{dy}" as="offset"/></mxGeometry></mxCell>')
 
-    def xml(self, w, h):
+    def xml(self, w=None, h=None):
+        w, h = w or self.maxx + 40, h or self.maxy + 40
         return (f'<diagram id="prk-cm{self.n}" name="{esc(self.name)}"><mxGraphModel dx="1600" dy="900" grid="1" '
                 f'gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" '
                 f'pageWidth="{w}" pageHeight="{h}" math="0" shadow="0"><root><mxCell id="0"/><mxCell id="1" parent="0"/>'
@@ -104,9 +107,9 @@ def pname(n, isi):
 LEG = ("<b>Notasi</b> (Wazlawick 2024, Bab 8–11)<br>"
        "• Hanya konsep, atribut primitif, dan asosiasi: <b>tanpa method, tanpa detail Odoo</b>, tanpa atribut <code>*_id</code>.<br>"
        "• Garis polos = asosiasi; label di ujung = <i>peran</i> + multiplisitas. Belah ketupat hitam = komposisi (bagian–keseluruhan).<br>"
-       "• Segitiga kosong biru = generalisasi; nama miring «abstract» = konsep abstrak.<br>"
+       "• Segitiga kosong = generalisasi; nama miring «abstract» = konsep abstrak.<br>"
        "• <code>/nama</code> = atribut/asosiasi turunan (dihitung, hanya dibaca); panah terbuka = asosiasi turunan satu arah.<br>"
-       "• Kotak abu-abu putus-putus = konsep yang dirinci di halaman/dokumen lain. (O) = lapis Pelengkap.<br>"
+       "• Kotak berisi atribut miring = konsep yang dirinci di halaman/dokumen lain. Semua kotak polos hitam-putih. (O) = lapis Pelengkap.<br>"
        "• Tipe primitif: Date, DateTime, Jam, Natural, Real, Persen, Boolean, String, Text, URL, Berkas, Interval&lt;T&gt; (CM-1).")
 SRC = ("Bahan kerja (tidak masuk proposal). Sumber: kamus DTO dan katalog operasi ssd-praktikum.md; AB-PRK-01–34 "
        "expanded-use-case-praktikum.md; kontrak-core.md (16 Nov 2026). Rincian: rancangan/conceptual-model-praktikum.md · "
@@ -166,9 +169,7 @@ p.e("pbs-ses", "pbs", "ses", ASSOC, "*", "1 sesi", pts=[(1239, 625), (720, 625),
 p.e("pbs-usl", "pbs", "usl", COMP, "1", "0..1 usulan", exit=(0.5, 1), entry=(0.5, 0))
 p.e("usl-rng", "usl", "rng", ASSOC, "*", "1 ruang", pts=[(1100, 852), (1100, 840)], exit=(0, 0.5), entry=(1, 0.8))
 
-ny = 1230
-p.v("n1", LEG, NOTE, 40, ny, 640, 125)
-p.v("n2", "<b>Atribut dan asosiasi turunan</b><br>"
+p.notes.append(("<b>Atribut dan asosiasi turunan</b><br>"
     "• <code>/is_terpublikasi</code> = PenetapanJadwal periode kelasnya berstatus disahkan (AB-PRK-06); "
     "<code>/tanggal_publikasi</code> = tanggal sah.<br>"
     "• <code>/is_ditunda</code> = ada PerubahanSesi atas sesi ini dengan /status = diajukan.<br>"
@@ -178,20 +179,18 @@ p.v("n2", "<b>Atribut dan asosiasi turunan</b><br>"
     "• <code>/melebihi_kapasitas</code> = kelas.jumlah_mahasiswa &gt; ruang.kapasitas (AB-PRK-03). "
     "<code>/berasisten</code>: CM-3. <code>/memenuhi_pkg15…18</code> = cek C/S/B per sesi (AB-PRK-32).<br>"
     "• <code>/status</code> Pengajuan = ditarik bila ada Penarikan; hasil Keputusan bila ada; selain itu diajukan "
-    "(kejadian sebagai konsep, §9.3.2).", NOTE, 700, ny, 620, 160)
-p.v("n3", "<b>Invarian</b><br>"
+    "(kejadian sebagai konsep, §9.3.2).", 160))
+p.notes.append(("<b>Invarian</b><br>"
     "• Kelas unik per (mata kuliah, periode, nama).<br>"
     "• Satu sesi asli per (kelas, pertemuan_ke); pertemuan 8 = uts, 16 = uas (AB-PRK-02).<br>"
     "• Dua Sesi terjadwal, atau Sesi dan PemakaianLab disetujui, di ruang sama tidak beririsan waktu (AB-PRK-01).<br>"
     "• Paling banyak satu PenetapanJadwal yang tidak dicabut per Periode (AB-PRK-05).<br>"
     "• Hasil ditolak ⇒ alasan terisi (AB-PRK-10). Keputusan dan Penarikan tidak keduanya ada.<br>"
-    "• UsulanPengganti ada ⇔ jenis = pindah; sesi_pengganti ada ⇔ disetujui ∧ pindah (AB-PRK-12).",
-    NOTE, 1340, ny, 500, 160)
-p.v("n4", "<b>Pengaju</b> PemakaianLab = laboran yang mencatat; pemohon (tanpa akun) hanya nama dan unit. "
+    "• UsulanPengganti ada ⇔ jenis = pindah; sesi_pengganti ada ⇔ disetujui ∧ pindah (AB-PRK-12).", 160))
+p.notes.append(("<b>Pengaju</b> PemakaianLab = laboran yang mencatat; pemohon (tanpa akun) hanya nama dan unit. "
     "<b>Rekaman konflik</b> (PKG-15 bukti 5, KF-PRK-11) bukan konsep: laporan dari Keputusan ditolak karena_bentrok dan PerubahanSesi disetujui. "
-    "Jam = jam dalam hari.", NOTE, 40, 1370, 640, 64)
-p.v("n5", SRC, NOTE, 700, 1405, 1140, 42)
-pages.append((p, 1880, 1470))
+    "Jam = jam dalam hari.", 64))
+pages.append(p)
 
 # ============================================================ CM-2
 p = Page(2, pname(2, "Versi Modul dan Kesiapan Sesi"),
@@ -246,17 +245,15 @@ p.e("vm-ksw", "vm", "ksw", COMP, "1", "* software", exit=(0.3, 1), entry=(0.38, 
 p.e("vm-kbh", "vm", "kbh", COMP, "1", "* bahan", pts=[(888, 220), (1210, 220)], exit=(0.6, 1), entry=(0.5, 0))
 p.e("kbh-bhn", "kbh", "bhn", ASSOC, "*", "1 bahan", exit=(1, 0.5), entry=(0, 0.4))
 
-ny = 880
-p.v("n1", LEG, NOTE, 40, ny, 640, 125)
-p.v("n2", "<b>Keputusan pemodelan</b><br>"
+p.notes.append(("<b>Keputusan pemodelan</b><br>"
     "• <b>Generalisasi butir</b> (§9.2.1): tiap jenis butir punya atribut sendiri, dan butir tidak berganti jenis. "
     "Tanpa subkelas, atribut seperti <code>lisensi_sah</code> atau <code>berlabel</code> menjadi opsional bergantung kategori (§11.2).<br>"
     "• <b>SubstitusiBahan</b> dan <b>PersetujuanSubstitusi</b> = kejadian (§9.3.2); <code>/status_persetujuan</code> "
     "= disetujui bila ada persetujuan.<br>"
     "• <b>KebutuhanBahan → Bahan</b> = <i>specification class</i> (§11.3): nama dan satuan diambil dari master Bahan Core.<br>"
     "• <code>/versi_berlaku [periode]</code> = versi berstatus berlaku untuk periode itu; diganti oleh versi baru "
-    "(<i>superseding</i>, §11.9.2; AB-PRK-07).", NOTE, 700, ny, 560, 150)
-p.v("n3", "<b>Turunan dan invarian</b><br>"
+    "(<i>superseding</i>, §11.9.2; AB-PRK-07).", 150))
+p.notes.append(("<b>Turunan dan invarian</b><br>"
     "• <code>/tepat_waktu</code> = waktu_periksa &lt; sesi.tanggal + sesi.jam.awal (AB-PRK-13, PKG-16 S1).<br>"
     "• ButirStasiunKerja <code>/jumlah_dibutuhkan</code> = sesi.kelas.jumlah_mahasiswa; ButirBahan = "
     "kebutuhan.jumlah_per_mahasiswa × jumlah mahasiswa.<br>"
@@ -266,10 +263,8 @@ p.v("n3", "<b>Turunan dan invarian</b><br>"
     "• penyetuju = dosen kelas sesi itu; penerbit = dosen pengampu MK (AB-PRK-09, 16).<br>"
     "• (O) Sesi <code>/alat_tidak_tersedia</code> = alat di ruang sesi yang tidak tersedia untuk sesi itu menurut master Alat Core; "
     "<code>/jumlah_pc_tersedia</code> = jumlah PC di ruang sesi yang tersedia. Hanya peringatan dan isian awal "
-    "<code>jumlah_berfungsi</code>; hasil butir tetap dari laboran, status alat tidak diubah (AB-PRK-14, KF-PRK-52).",
-    NOTE, 1280, ny, 420, 260)
-p.v("n4", SRC, NOTE, 40, 1085, 1220, 42)
-pages.append((p, 1720, 1170))
+    "<code>jumlah_berfungsi</code>; hasil butir tetap dari laboran, status alat tidak diubah (AB-PRK-14, KF-PRK-52).", 260))
+pages.append(p)
 
 # ============================================================ CM-3
 p = Page(3, pname(3, "Pelaksanaan Sesi dan Penilaian"),
@@ -316,17 +311,14 @@ p.e("pnk-rb", "pnk", "rb", GEN, pts=[(1100, 610), (1100, 87)], exit=(1, 0.2), en
 p.e("pnk-bn", "pnk", "bn", COMP, "1", "* baris", exit=(0.5, 1), entry=(0.5, 0))
 p.e("pnk-bk", "pnk", "bk", COMP, "1", "{ordered} * berkas", pts=[(920, 654)], exit=(1, 0.8), entry=(0.5, 0))
 
-ny = 920
-p.v("n1", LEG, NOTE, 40, ny, 640, 125)
-p.v("n2", "<b>Keputusan pemodelan</b><br>"
+p.notes.append(("<b>Keputusan pemodelan</b><br>"
     "• <b>PengirimanJurnal</b> = kejadian (§9.3.2): jurnal draf belum punya waktu kirim dan pengirim. "
     "<code>/status</code> = terkirim bila ada pengiriman.<br>"
     "• Foto kegiatan = <code>bukti</code> warisan RekamanBukti. Presensi petugas merujuk Personel (kontrak Core I-8).<br>"
     "• <b>BerkasNilai {ordered}</b> = riwayat impor (pola <i>history</i>, §11.12.2): baris nilai diganti saat impor "
     "ulang, berkas lama tetap ada (AB-PRK-24). NIM tanpa nama.<br>"
-    "• <b>PengaturanPraktikum</b> = variabel sistem satu rekaman (§8.2.2), dibaca oleh atribut turunan; tidak berasosiasi.",
-    NOTE, 700, ny, 560, 150)
-p.v("n3", "<b>Turunan dan invarian</b><br>"
+    "• <b>PengaturanPraktikum</b> = variabel sistem satu rekaman (§8.2.2), dibaca oleh atribut turunan; tidak berasosiasi.", 150))
+p.notes.append(("<b>Turunan dan invarian</b><br>"
     "• <code>/petugas_ditugaskan</code> (Sesi) = personel pada BarisPenugasan dari Surat Tugas disahkan yang berlaku "
     "pada sesi.tanggal: asisten lewat sesi.kelas, laboran lewat sesi.ruang (SDM KF-SDM-10, 12).<br>"
     "• <code>/berasisten</code> (Sesi) = ada asisten di /petugas_ditugaskan. Dosen dibaca dari Kelas.dosen.<br>"
@@ -337,10 +329,8 @@ p.v("n3", "<b>Turunan dan invarian</b><br>"
     "≥ 1 log book (AB-PRK-19).<br>"
     "• <code>/ada_rubrik</code> = /versi_berlaku MK kelas punya rubrik; <code>/berbukti</code> = tautan_leads ∧ "
     "/ada_rubrik (AB-PRK-33).<br>"
-    "• <code>/lengkap</code> = P1–P4 dengan batas_lulus (AB-PRK-25). nim unik per penilaian.",
-    NOTE, 1280, ny, 440, 260)
-p.v("n4", SRC, NOTE, 40, 1150, 1220, 42)
-pages.append((p, 1760, 1240))
+    "• <code>/lengkap</code> = P1–P4 dengan batas_lulus (AB-PRK-25). nim unik per penilaian.", 260))
+pages.append(p)
 
 # ============================================================ CM-4
 p = Page(4, pname(4, "Survei Kepuasan Pengguna"),
@@ -390,25 +380,37 @@ p.e("rtl-pe", "rtl", "pe", COMP, "1", "0..1 penilaian", exit=(0.7, 1), entry=(0.
 p.e("rtl-psl", "rtl", "psl", ASSOC, "*", "1 pic", pts=[(920, 880)], exit=(0.2, 1), entry=(1, 0.4))
 p.e("pe-psl", "pe", "psl", ASSOC, "*", "1 penilai", pts=[(1130, 902)], exit=(0.5, 1), entry=(1, 0.85))
 
-ny = 950
-p.v("n1", LEG, NOTE, 40, ny, 640, 125)
-p.v("n2", "<b>Keputusan pemodelan</b><br>"
+p.notes.append(("<b>Keputusan pemodelan</b><br>"
     "• <b>Respons tanpa asosiasi ke Personel</b>: anonim (AB-PRK-28, KNF-PRK-04).<br>"
     "• <b>Jawaban</b> abstrak menggeneralisasi asosiasi ke ButirSurvei; skala dan terbuka punya atribut berbeda (§9.2.1).<br>"
     "• <b>PenetapanSurvei</b>, <b>EvaluasiSurvei</b>, <b>PenilaianEfektivitas</b> = kejadian (§9.3.2). "
     "<code>/status</code> Survei = siklus_selesai bila setiap RTL dinilai; dievaluasi bila ada evaluasi; ditetapkan bila "
     "ada penetapan; selain itu draf. Pembatalan penetapan (O) menghapus PenetapanSurvei.<br>"
-    "• <code>/status_buka</code> dari masa_buka dan hari ini (§9.3.1).", NOTE, 700, ny, 560, 150)
-p.v("n3", "<b>Turunan dan invarian</b><br>"
+    "• <code>/status_buka</code> dari masa_buka dan hari ini (§9.3.1).", 150))
+p.notes.append(("<b>Turunan dan invarian</b><br>"
     "• <code>/response_rate</code> = /jumlah_responden ÷ populasi; <code>/rerata</code> = rerata JawabanSkala butir itu.<br>"
     "• <code>/survei_berikutnya</code> = survei periode sesudahnya dengan jenis_responden sama.<br>"
     "• RTL <code>/rerata_sebelum</code>/<code>/rerata_sesudah</code> = rerata aspek RTL di survei ini / survei berikutnya (AB-PRK-30).<br>"
     "• Penetapan: tiap aspek ≥ 1 butir skala, ≥ 1 butir terbuka, populasi &gt; 0, target terisi, "
     "penetapan.tanggal &lt; masa_buka.awal, penetap berwenang (AB-PRK-26).<br>"
     "• Respons hanya dalam masa_buka (AB-PRK-28). Evaluasi setelah masa_buka.akhir (AB-PRK-29).<br>"
-    "• <code>/kriteria_tertinggi</code> = K1–K4 berurutan (AB-PRK-34).", NOTE, 1280, ny, 460, 200)
-p.v("n4", SRC, NOTE, 40, 1165, 1220, 42)
-pages.append((p, 1780, 1230))
+    "• <code>/kriteria_tertinggi</code> = K1–K4 berurutan (AB-PRK-34).", 200))
+pages.append(p)
+
+# ============================================================ halaman catatan (bahan kerja)
+c = Page("-notes", "Catatan CM TO-BE (bahan kerja)", "")
+c.P = "prk-cm-notes-"
+c.v("title", "Catatan conceptual model (bahan kerja)", TITLE, 40, 10, 1300, 34)
+c.v("legend", LEG + "<br>" + SRC, NOTE, 40, 56, 1300, 140)
+y = 216
+for i, pg in enumerate(pages):
+    c.v(f"h{i}", f"<b>{pg.title}</b>", "text;html=1;fontSize=12;align=left;verticalAlign=top;whiteSpace=wrap;", 40, y, 1300, 24)
+    y += 30
+    for j, (txt, h) in enumerate(pg.notes):
+        c.v(f"n{i}-{j}", txt, NOTE, 40, y, 1300, h)
+        y += h + 10
+    y += 10
+pages.append(c)
 
 with open(OUT, "w", encoding="utf-8") as f:
-    f.write('<mxfile host="app.diagrams.net">' + "".join(pg.xml(w, h) for pg, w, h in pages) + "</mxfile>")
+    f.write('<mxfile host="app.diagrams.net">' + "".join(pg.xml() for pg in pages) + "</mxfile>")

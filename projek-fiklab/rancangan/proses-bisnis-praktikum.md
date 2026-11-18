@@ -4,7 +4,7 @@
 
 **Status: DRAF. Diagram ini masuk proposal (Bab II 2.3).** Langkah 5 rancangan TO-BE.
 
-Diagram: [activity-state-praktikum.drawio](activity-state-praktikum.drawio), 8 halaman. Skrip pembuatnya: [tools/drawio/praktikum/activity_state.py](../tools/drawio/praktikum/activity_state.py) (salinan pola dari `contoh-tata-kelola/`, data diganti; dijalankan ulang bila isi berubah). `validate.py` dengan prefiks `prk-`: **OK** di kedelapan halaman. Pemeriksaan tampilan [cek_tampilan.py](../tools/drawio/praktikum/cek_tampilan.py) (garis yang menembus kotak lain): **0 temuan** (16 Nov 2026). Tampilan sudah dicek lewat ekspor PNG draw.io desktop (16 Nov 2026); label yang tertimpa dan garis yang menyilang sudah dirapikan.
+Diagram: [activity-state-praktikum.drawio](activity-state-praktikum.drawio), 8 halaman. Skrip pembuatnya: [tools/drawio/praktikum/activity_state.py](../tools/drawio/praktikum/activity_state.py) (salinan pola dari `contoh-tata-kelola/`, data diganti; dijalankan ulang bila isi berubah). `validate.py` dengan prefiks `prk-`: **OK** di kedelapan halaman. Pemeriksaan tampilan [cek_tampilan.py](../tools/drawio/praktikum/cek_tampilan.py) (garis yang menembus kotak lain): **0 temuan** (16 Nov 2026). Tampilan sudah dicek lewat ekspor PNG draw.io desktop (16 Nov 2026); label yang tertimpa dan garis yang menyilang sudah dirapikan. **Gaya diubah ke polos hitam-putih** (17 Nov 2026, CLAUDE.md bagian 5): tanpa warna, huruf Times New Roman, judul dan catatan dipindah ke halaman `Catatan … (bahan kerja)` di akhir file. Tata letak dirapatkan: baris activity yang hanya berisi keputusan, gabungan, awal, akhir, ⧗, atau fork/join dibuat lebih pendek; state machine tidak lagi menyisakan ruang bekas judul. `validate.py` dan cek tampilan **belum diulang** setelah perubahan gaya ini.
 
 ## Posisi dalam metode
 
@@ -14,11 +14,11 @@ Input: [kebutuhan-praktikum.md](kebutuhan-praktikum.md) (KF-PRK-01 s.d. 44), [br
 
 | Aturan | Penerapan |
 |---|---|
-| §3.2.1 Jenis tugas: *user*, *service*, *manual* | «user» putih = aktor memakai sistem; «service» abu-abu = sistem; «manual» krem putus-putus = di luar sistem (hanya *Laksanakan praktikum*); «call behavior» ungu = memanggil activity lain |
+| §3.2.1 Jenis tugas: *user*, *service*, *manual* | Dibedakan hanya lewat stereotype: «user» = aktor memakai sistem; «service» = sistem; «manual» = di luar sistem (hanya *Laksanakan praktikum*); «call behavior» + simbol garpu = memanggil activity lain |
 | §3.2.2 Gerbang keputusan tidak melakukan tugas; kondisi di panah | ◇ tanpa nama, `[guard]` di panah; tugas yang menghasilkan keputusan ditaruh sebelum ◇ |
 | §3.2.3 *Pool* dan *lane* per aktor | Swimlane per aktor + lajur Sistem. Aktor abstrak *Pengisi Jurnal* dan *Pengaju* menjadi satu lajur |
 | §3.2.4 Nama tugas = kata kerja kuat + objek domain, tanpa "dan/atau" | Semua tugas memakai pola ini (mis. *Periksa bentrok ruang*, bukan "Pemeriksaan konflik dan kapasitas") |
-| §3.3 State machine: `event [guard] / efek`; Tabel 3–1 status × transisi untuk menemukan transisi yang terlewat | S1–S3 + bagian 3. Transisi baru ditandai merah |
+| §3.3 State machine: `event [guard] / efek`; Tabel 3–1 status × transisi untuk menemukan transisi yang terlewat | S1–S3 + bagian 3. Transisi baru ditandai **\*** di akhir label |
 | §3.4 Hanya elemen kunci yang digambar; konsep yang hanya dikelola tidak perlu diagram | Data Mata Kuliah, Kelas, impor alokasi, Versi Modul (status sederhana), Jurnal (dua status), Pemeriksaan Kesiapan (tanpa siklus status) **tidak** digambar; cukup tabel di bagian 3.4 |
 | §9.3.1 *Stable transition*: status yang bisa dihitung dari data tidak perlu disimpan | *Terlewat* (Sesi) dan *Dibuka/Ditutup* (Survei) menjadi status turunan, bukan state |
 | CLAUDE.md: bagian proses yang dipakai banyak proses digambar sekali, dipanggil dengan «call behavior» | Pengesahan jadwal memanggil **A1 Pengesahan Dokumen milik Tata Kelola**; keputusan tunda di A3 memanggil **A4 Perubahan Sesi** |
@@ -46,7 +46,7 @@ Input: [kebutuhan-praktikum.md](kebutuhan-praktikum.md) (KF-PRK-01 s.d. 44), [br
 
 ## 3. Tabel status × transisi
 
-Baris = status asal, kolom = status tujuan. Setiap sel kosong ditanyakan: "apakah transisi ini mungkin terjadi?" (§3.3, Tabel 3–1). **Cetak tebal** = transisi yang baru ditemukan lewat tabel ini (garis merah di diagram). **?** = pertanyaan untuk KaLab **[KONFIRMASI]**.
+Baris = status asal, kolom = status tujuan. Setiap sel kosong ditanyakan: "apakah transisi ini mungkin terjadi?" (§3.3, Tabel 3–1). **Cetak tebal** = transisi yang baru ditemukan lewat tabel ini (label bertanda * di diagram). **?** = pertanyaan untuk KaLab **[KONFIRMASI]**.
 
 ### 3.1 S1 Sesi
 
@@ -75,7 +75,7 @@ Ditambah transisi *hapus* dari Terjadwal (hanya lewat impor ulang, bila jadwal p
 | Batal → Terjadwal | Bisakah keputusan perubahan dibatalkan? | Tidak. Buat perubahan baru untuk Sesi pengganti |
 | Terjadwal (belum terpublikasi) → Terlaksana | Bolehkah sesi yang jadwalnya belum disahkan dilaporkan? | Tidak; guard `is_terpublikasi` |
 
-Transisi merah versi 14 November (jadwal dicabut → Rencana; perubahan ditolak → Terpublikasi) **tidak lagi berupa transisi**: keduanya otomatis terbaca dari `is_terpublikasi` dan `is_ditunda` (KF-PRK-45, 46 menjadi perilaku hitung).
+Transisi baru versi 14 November (jadwal dicabut → Rencana; perubahan ditolak → Terpublikasi) **tidak lagi berupa transisi**: keduanya otomatis terbaca dari `is_terpublikasi` dan `is_ditunda` (KF-PRK-45, 46 menjadi perilaku hitung).
 
 ### 3.2 S2 Pengajuan dengan persetujuan sederhana
 

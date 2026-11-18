@@ -1,6 +1,8 @@
 """System sequence diagram modul Pelaksanaan Praktikum (langkah 8), 5 halaman.
 
 Mesin gambar disalin dari contoh-tata-kelola/ssd.py; prefiks, lebar lajur, nama halaman, dan data diganti.
+Gaya polos hitam-putih (CLAUDE.md bagian 5, 17 Nov 2026). Garis putus-putus hanya untuk return (notasi UML).
+Halaman SSD hanya berisi diagram; judul, prakondisi, legenda, dan catatan dikumpulkan di halaman catatan terakhir.
 Pemakaian: python -X utf8 -I ssd.py projek-fiklab/rancangan/ssd-praktikum.drawio
 """
 import sys
@@ -13,15 +15,16 @@ def esc(s):
     return escape(s, {'"': "&quot;"})
 
 
+FONT = "fontFamily=Times New Roman;"
 LIFE = ("shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;collapsible=0;"
-        "recursiveResize=0;outlineConnect=0;fontSize=12;fontStyle=1;size={size};")
+        "recursiveResize=0;outlineConnect=0;fontSize=12;fontStyle=1;fillColor=#FFFFFF;strokeColor=#000000;size={size};" + FONT)
 PART = {"actor": "participant=umlActor;verticalLabelPosition=top;verticalAlign=bottom;", "boundary": "participant=umlBoundary;", "control": "participant=umlControl;"}
-EV = "html=1;endArrow=open;endSize=9;strokeColor=#333333;fontSize=11;verticalAlign=bottom;labelBackgroundColor=none;"
-RET = "html=1;endArrow=open;endSize=9;dashed=1;strokeColor=#333333;fontSize=11;verticalAlign=bottom;labelBackgroundColor=none;"
-CALL = "html=1;endArrow=block;endFill=1;endSize=9;strokeColor=#6C4A87;fontColor=#6C4A87;fontSize=11;verticalAlign=bottom;labelBackgroundColor=none;"
-FRAME = "shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;width=54;height=22;fontSize=11;fontStyle=1;fillColor=none;"
-GUARD = "text;html=1;fontSize=11;align=left;verticalAlign=middle;fontStyle=2;"
-TXT = "text;html=1;fontSize=10;align=left;verticalAlign=middle;fontStyle=2;fontColor=#555555;"
+EV = "html=1;endArrow=open;endSize=9;strokeColor=#000000;fontSize=11;verticalAlign=bottom;labelBackgroundColor=none;" + FONT
+RET = "html=1;endArrow=open;endSize=9;dashed=1;strokeColor=#000000;fontSize=11;verticalAlign=bottom;labelBackgroundColor=none;" + FONT
+CALL = "html=1;endArrow=block;endFill=1;endSize=9;strokeColor=#000000;fontSize=11;verticalAlign=bottom;labelBackgroundColor=none;" + FONT
+FRAME = "shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;width=54;height=22;fontSize=11;fontStyle=1;fillColor=none;strokeColor=#000000;" + FONT
+GUARD = "text;html=1;fontSize=11;align=left;verticalAlign=middle;fontStyle=2;" + FONT
+TXT = "text;html=1;fontSize=11;align=left;verticalAlign=middle;fontStyle=2;" + FONT
 NOTE = ("shape=note;whiteSpace=wrap;html=1;size=14;align=left;verticalAlign=top;spacingLeft=6;spacingTop=4;"
         "fontSize=11;fillColor=#FFF2CC;strokeColor=#D6B656;")
 TITLE = "text;html=1;fontSize=17;fontStyle=1;align=left;verticalAlign=middle;"
@@ -30,7 +33,7 @@ ROW = {"ev": 34, "ret": 34, "q": 34, "c": 34, "txt": 24, "ref": 48}
 LEGEND = ("<b>Notasi</b> (Wazlawick 2024, Bab 7)<br>"
           "• Panah hitam penuh: <i>system event</i> (aktor → antarmuka)<br>"
           "• Panah hitam putus-putus: <i>system return</i> (antarmuka → aktor)<br>"
-          "• Panah ungu, kepala segitiga: operasi sistem ke kontroler. "
+          "• Panah kepala segitiga penuh: operasi sistem ke kontroler. "
           "<b>Command</b> <code>op(args)</code> mengubah data tanpa nilai balik; "
           "<b>query</b> <code>dto = op(args)</code> hanya membaca (CQS, §7.1)<br>"
           "• <code>dto_x</code> = data majemuk (lihat kamus DTO), <code>*</code> = koleksi, <i>terpilih</i> = pilihan dari daftar (§7.3)<br>"
@@ -49,7 +52,7 @@ class SSD:
                           f'<mxGeometry x="{x:.0f}" y="{y:.0f}" width="{w:.0f}" height="{h:.0f}" as="geometry"/></mxCell>')
 
     def build(self):
-        LY, HEAD = 150, 60
+        LY, HEAD = 40, 60
         lanes = [("a0", ":" + self.actors[0], "actor", 50, 60),
                  ("ui", ":Antarmuka", "boundary", 400, 130),
                  ("ct", ":Kontroler", "control", 900, 130)]
@@ -63,8 +66,6 @@ class SSD:
             total += 66 + sum(ROW[e[0]] for e in ents) + 16
         lh = HEAD + total + 30
         self.LY, self.lh = LY, lh
-        self.v("title", f"SSD-{self.n} · {self.uc} {self.title}", TITLE, 40, 14, 1100, 32)
-        self.v("pre", "<b>Prakondisi</b>: " + self.pre, NOTE, 40, 52, right - 40, 52)
         for k, label, part, x, w in lanes:
             self.v(k, label, LIFE.format(size=HEAD) + PART[part], x, LY, w, lh)
         y = LY + HEAD + 40
@@ -82,10 +83,8 @@ class SSD:
             self.v(f"fr{i}", kind, FRAME, 20, top, right - 20, h)
             self.v(f"gd{i}", f"{stereo} {guard}", GUARD, 82, top, right - 110, 22)
             y += 6
-        self.width = right + 380
-        self.v("legend", LEGEND, NOTE, right + 30, LY, 330, 230)
-        self.v("src", (self.note + "<br><br>" if self.note else "") + SRC, NOTE, right + 30, LY + 250, 330, 150)
-        self.height = LY + lh + 40
+        self.width = right + 30
+        self.height = LY + lh + 20
 
     def msg(self, src, dst, label, style, y):
         self.k += 1
@@ -111,7 +110,7 @@ class SSD:
             self.k += 1
             x0 = self.cx["a0"] - 30
             self.v(f"r{self.k}", "ref", FRAME.replace("width=54", "width=40"), x0, y - 18, self.cx["ct"] - x0 + 30, 38)
-            self.v(f"rt{self.k}", text, "text;html=1;fontSize=11;align=center;verticalAlign=middle;", x0 + 40,
+            self.v(f"rt{self.k}", text, "text;html=1;fontSize=11;align=center;verticalAlign=middle;" + FONT, x0 + 40,
                    y - 14, self.cx["ct"] - x0 - 20, 30)
         return y + ROW[kind]
 
@@ -126,7 +125,7 @@ class SSD:
 
 SRC = ("Sumber: expanded-use-case-praktikum.md (alur lengkap, AB-PRK-01–34). Katalog operasi dan kamus DTO: ssd-praktikum.md. "
        "Draf 16 Nov 2026 · Herrens")
-LOGIN = "pengguna sudah login dan <code>user_id</code> diketahui antarmuka. "
+LOGIN = "pengguna sudah teridentifikasi dan <code>user_id</code> diketahui antarmuka. "
 D = [
     SSD(1, "UC-PRK-03", "Impor Jadwal Kelas", ["Laboran"],
         LOGIN + "Periode, Ruang Lab, dan Personel dosen terdaftar. Berkas jadwal dari tim jadwal fakultas <b>[ASUMSI: impor berkas, tanpa API]</b>.",
@@ -244,4 +243,27 @@ D = [
         "K4 baru lengkap setelah UC-PRK-24 pada periode berikutnya."),
 ]
 
-open(OUT, "w", encoding="utf-8").write('<mxfile host="app.diagrams.net">' + "".join(d.xml() for d in D) + "</mxfile>")
+
+
+def notes_page():
+    """Halaman catatan (bahan kerja, tidak disisipkan ke naskah): legenda, judul, prakondisi, dan catatan setiap SSD."""
+    P, cells, y = "prk-ssd-notes-", [], 66
+
+    def v(id, val, style, x, y, w, h):
+        cells.append(f'<mxCell id="{P}{id}" value="{esc(val)}" style="{style}" vertex="1" parent="1">'
+                     f'<mxGeometry x="{x}" y="{y}" width="{w}" height="{h}" as="geometry"/></mxCell>')
+    v("title", "Catatan system sequence diagram (bahan kerja, tidak disisipkan ke naskah)", TITLE, 40, 14, 1100, 36)
+    v("legend", LEGEND + "<br>" + SRC, NOTE, 40, y, 1100, 160)
+    y += 180
+    for d in D:
+        txt = f"<b>SSD-{d.n} · {d.uc} {d.title}</b><br><b>Prakondisi</b>: {d.pre}" + (f"<br>{d.note}" if d.note else "")
+        h = 50 + (36 if d.note else 0)
+        v(f"pre{d.n}", txt, NOTE, 40, y, 1100, h)
+        y += h + 10
+    return (f'<diagram id="prk-ssd-notes" name="Catatan SSD TO-BE (bahan kerja)"><mxGraphModel dx="1600" dy="900" grid="1" '
+            f'gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1180" '
+            f'pageHeight="{y + 30}" math="0" shadow="0"><root><mxCell id="0"/><mxCell id="1" parent="0"/>'
+            + "".join(cells) + "</root></mxGraphModel></diagram>")
+
+
+open(OUT, "w", encoding="utf-8").write('<mxfile host="app.diagrams.net">' + "".join(d.xml() for d in D) + notes_page() + "</mxfile>")

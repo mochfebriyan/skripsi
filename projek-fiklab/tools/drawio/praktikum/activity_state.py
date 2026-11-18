@@ -8,37 +8,48 @@ def esc(s):
     return escape(s, {'"': "&quot;"})
 
 
+# Gaya polos hitam-putih (CLAUDE.md bagian 5, mengikuti contoh-tata-kelola/activity_state.py; 17 Nov 2026):
+# tanpa warna isi dan tanpa garis putus-putus. Jenis tugas dibedakan hanya lewat stereotype («user», «service»,
+# «manual», «call behavior» + simbol garpu). Halaman diagram tidak memuat judul dan catatan; semuanya
+# dikumpulkan di halaman catatan terakhir.
+FONT = "fontFamily=Times New Roman;"
+TASK = "rounded=1;arcSize=40;whiteSpace=wrap;html=1;fontSize=12;fillColor=#FFFFFF;strokeColor=#000000;" + FONT
 ST = {
-    "user": "rounded=1;arcSize=40;whiteSpace=wrap;html=1;fontSize=11;fillColor=#FFFFFF;strokeColor=#333333;",
-    "service": "rounded=1;arcSize=40;whiteSpace=wrap;html=1;fontSize=11;fillColor=#EEEEEE;strokeColor=#333333;",
-    "manual": "rounded=1;arcSize=40;whiteSpace=wrap;html=1;fontSize=11;fillColor=#FFF8E7;strokeColor=#333333;dashed=1;",
-    "call": "rounded=1;arcSize=40;whiteSpace=wrap;html=1;fontSize=11;fillColor=#F5F0FF;strokeColor=#6C4A87;strokeWidth=2;",
-    "dec": "rhombus;html=1;fillColor=#FFFFFF;strokeColor=#333333;",
-    "merge": "rhombus;html=1;fillColor=#FFFFFF;strokeColor=#333333;",
+    "user": TASK, "service": TASK, "manual": TASK, "call": TASK,
+    "dec": "rhombus;html=1;fillColor=#FFFFFF;strokeColor=#000000;",
+    "merge": "rhombus;html=1;fillColor=#FFFFFF;strokeColor=#000000;",
     "start": "ellipse;html=1;fillColor=#000000;strokeColor=#000000;",
     "final": "ellipse;html=1;shape=endState;fillColor=#000000;strokeColor=#000000;",
     "fork": "html=1;fillColor=#000000;strokeColor=none;",
-    "time": "shape=collate;html=1;fillColor=#FFFFFF;strokeColor=#333333;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=6;fontSize=11;",
-    "time_l": "shape=collate;html=1;fillColor=#FFFFFF;strokeColor=#333333;labelPosition=left;verticalLabelPosition=middle;align=right;verticalAlign=middle;spacingRight=6;fontSize=11;",
+    "time": ("shape=collate;html=1;fillColor=#FFFFFF;strokeColor=#000000;labelPosition=right;verticalLabelPosition=middle;"
+             "align=left;verticalAlign=middle;spacingLeft=6;fontSize=12;" + FONT),
+    "time_l": ("shape=collate;html=1;fillColor=#FFFFFF;strokeColor=#000000;labelPosition=left;verticalLabelPosition=middle;"
+               "align=right;verticalAlign=middle;spacingRight=6;fontSize=12;" + FONT),
 }
 SIZE = {"user": (200, 46), "service": (200, 46), "manual": (200, 46), "call": (200, 50), "dec": (34, 34),
         "merge": (34, 34), "start": (24, 24), "final": (28, 28), "time": (22, 28), "time_l": (22, 28)}
 STEREO = {"user": "«user»", "service": "«service»", "manual": "«manual»", "call": "«call behavior»"}
-EDGE = ("endArrow=open;endSize=9;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;fontSize=10;"
-        "labelBackgroundColor=#FFFFFF;strokeColor=#333333;")
-LANE = ("swimlane;html=1;startSize=34;fillColor=#EEF6FF;strokeColor=#6C8EBF;fontStyle=1;fontSize=13;"
-        "swimlaneFillColor=#FFFFFF;collapsible=0;container=0;whiteSpace=wrap;")
+EDGE = ("endArrow=open;endSize=9;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;fontSize=11;"
+        "labelBackgroundColor=#FFFFFF;strokeColor=#000000;" + FONT)
+LANE = ("swimlane;html=1;startSize=30;fillColor=#FFFFFF;strokeColor=#000000;fontStyle=1;fontSize=12;"
+        "swimlaneFillColor=#FFFFFF;collapsible=0;container=0;whiteSpace=wrap;" + FONT)
 NOTE = ("shape=note;whiteSpace=wrap;html=1;size=14;align=left;verticalAlign=top;spacingLeft=6;spacingTop=4;"
         "fontSize=11;fillColor=#FFF2CC;strokeColor=#D6B656;")
-TITLE = "text;html=1;fontSize=18;fontStyle=1;align=left;verticalAlign=middle;"
+TITLE = "text;html=1;fontSize=16;fontStyle=1;align=left;verticalAlign=middle;"
+
+TASK_H, SMALL_H = 64, 42  # tinggi baris tugas dan baris kecil
+# baris kecil per activity (keputusan, gabungan, awal, akhir, ⧗, fork/join, atau kosong)
+SMALL = {'prk-act-a1': [0, 1, 2, 8, 13, 14], 'prk-act-a2': [0, 3, 8, 12, 15], 'prk-act-a3': [0, 4, 6, 8, 14, 19], 'prk-act-a4': [0, 4, 6, 7, 11, 13, 15], 'prk-act-a5': [0, 2, 6, 8, 13, 16]}
 
 
 class Page:
     def __init__(self, pid, name, prefix):
         self.pid, self.name, self.P = pid, name, prefix
         self.cells, self.w, self.h = [], 1600, 1200
+        self.maxx = self.maxy = 0
 
     def v(self, id, val, style, x, y, w, h):
+        self.maxx, self.maxy = max(self.maxx, x + w), max(self.maxy, y + h)
         self.cells.append(f'<mxCell id="{self.P}{id}" value="{esc(val)}" style="{style}" vertex="1" parent="1">'
                           f'<mxGeometry x="{x:.0f}" y="{y:.0f}" width="{w:.0f}" height="{h:.0f}" as="geometry"/></mxCell>')
 
@@ -55,6 +66,17 @@ class Page:
         self.cells.append(f'<mxCell id="{self.P}{id}" value="{esc(val)}" style="{st}" edge="1" parent="1" '
                           f'source="{self.P}{s}" target="{self.P}{t}">{geo}</mxCell>')
 
+    def rapatkan(self, top=40):
+        """Geser seluruh isi halaman ke atas sehingga elemen teratas berada di y = top (tanpa ruang bekas judul)."""
+        import re
+        ys = [float(m) for c in self.cells for m in re.findall(r'(?:<mxGeometry x="[^"]*" |<mxPoint x="[^"]*" )y="([-0-9.]+)"', c)]
+        dy = min(ys) - top
+        if dy <= 0:
+            return
+        sub = lambda m: f'{m.group(1)}y="{float(m.group(2)) - dy:.0f}"'
+        self.cells = [re.sub(r'((?:<mxGeometry x="[^"]*" |<mxPoint x="[^"]*" ))y="([-0-9.]+)"', sub, c) for c in self.cells]
+        self.maxy -= dy
+
     def xml(self):
         return (f'<diagram id="{self.pid}" name="{esc(self.name)}"><mxGraphModel dx="1600" dy="900" grid="1" gridSize="10" '
                 f'guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="{self.w:.0f}" '
@@ -63,7 +85,9 @@ class Page:
 
 
 class Activity(Page):
-    ROWH, LANE_Y, HEAD = 74, 70, 34
+    """Tinggi baris mengikuti isinya: baris tugas TASK_H, baris kecil (keputusan, gabungan, awal, akhir, ⧗,
+    fork/join, atau kosong) SMALL_H, supaya tata letak rapat (CLAUDE.md bagian 5)."""
+    LANE_Y, HEAD = 20, 30
 
     def __init__(self, pid, name, prefix, title, lanes):
         super().__init__(pid, name, prefix)
@@ -73,11 +97,18 @@ class Activity(Page):
             self.lanes[key] = (x, w, cols, label)
             x += w
         self.total_w = x - 40
-        self.v("title", title, TITLE, 40, 16, 1100, 40)
+        self.title = title
         self.nodes = {}
+        small = SMALL.get(pid, ())
+        self.top, y = [], self.LANE_Y + self.HEAD + 10
+        for r in range(40):
+            h = SMALL_H if r in small else TASK_H
+            self.top.append((y, h))
+            y += h
 
     def cy(self, row):
-        return self.LANE_Y + self.HEAD + 34 + row * self.ROWH
+        y, h = self.top[int(row)]
+        return y + h / 2 + (row - int(row)) * h
 
     def cx(self, lane, col):
         lx, lw, cols, _ = self.lanes[lane]
@@ -94,7 +125,8 @@ class Activity(Page):
             ww, hh = SIZE[kind]
         val = label
         if kind in STEREO:
-            val = f"<font style='font-size:9px' color='#6C4A87'>{STEREO[kind]}</font><br>{label}"
+            mark = " &#8916;" if kind == "call" else ""
+            val = f"<font style='font-size:10px'>{STEREO[kind]}</font><br>{label}{mark}"
         self.v(id, val, ST[kind], cx - ww / 2, cy - hh / 2, ww, hh)
         self.nodes[id] = (cx, cy, ww, hh)
 
@@ -106,29 +138,21 @@ class Activity(Page):
         return lx + lw - off
 
     def finish(self, rows, notes):
-        h = self.HEAD + 34 + rows * self.ROWH + 20
+        h = self.top[rows - 1][0] + self.top[rows - 1][1] + 10 - self.LANE_Y
         lane_cells = []
         for key, (lx, lw, cols, label) in self.lanes.items():
             lane_cells.append(f'<mxCell id="{self.P}lane-{key}" value="{esc(label)}" style="{LANE}" vertex="1" parent="1">'
                               f'<mxGeometry x="{lx:.0f}" y="{self.LANE_Y}" width="{lw:.0f}" height="{h:.0f}" as="geometry"/></mxCell>')
         self.cells = lane_cells + self.cells  # lanes behind everything
-        nx = 40 + self.total_w + 40
-        ny = self.LANE_Y
-        for i, (txt, nh) in enumerate(notes):
-            self.v(f"note{i}", txt, NOTE, nx, ny, 320, nh)
-            ny += nh + 16
-        self.w = nx + 360
-        self.h = max(self.LANE_Y + h, ny) + 60
+        NOTES.append((self.title, notes))  # catatan pindah ke halaman catatan
+        self.w = 40 + self.total_w + 40
+        self.h = self.LANE_Y + h + 20
 
 
-LEGEND = ("<b>Notasi</b> (Wazlawick 2024, §3.2)<br>"
-          "• Putih «user» = aktor memakai sistem<br>"
-          "• Abu-abu «service» = dikerjakan sistem otomatis<br>"
-          "• Krem putus-putus «manual» = di luar sistem<br>"
-          "• Ungu «call behavior» = memanggil diagram lain<br>"
-          "• ◇ keputusan/gabungan; kondisi ditulis [guard] di panah<br>"
-          "• ⧗ = menunggu waktu tertentu<br>"
-          "• Bar hitam = jalur paralel (fork/join)")
+LEGEND = ("<b>Notasi</b> (Wazlawick 2024, §3.2): «user» = aktor memakai sistem; «service» = dikerjakan sistem otomatis; "
+          "«manual» = di luar sistem; «call behavior» (simbol garpu ⋔) = memanggil activity lain; ◇ = keputusan/gabungan, "
+          "kondisi ditulis [guard] di panah; ⧗ = menunggu waktu; bar hitam = fork/join. Gaya polos hitam-putih (CLAUDE.md bagian 5).")
+NOTES = []
 
 pages = []
 SRC = "Draf 14 Nov 2026 · Herrens · sumber: analisis PKG-15–20, studi dokumen (POB 2025), kebutuhan KF-PRK"
@@ -413,20 +437,20 @@ e.finish(17, [
 pages.append(e)
 
 # ------------------------------------------------------------------ state machines
-STATE = "rounded=1;arcSize=30;whiteSpace=wrap;html=1;fontSize=12;fontStyle=1;fillColor=#FFFFFF;strokeColor=#333333;"
-STATE_T = "rounded=1;arcSize=30;whiteSpace=wrap;html=1;fontSize=12;fontStyle=1;fillColor=#EEEEEE;strokeColor=#333333;"
-TR = ("endArrow=open;endSize=9;html=1;rounded=1;fontSize=10;labelBackgroundColor=#FFFFFF;strokeColor=#333333;"
-      "edgeStyle=orthogonalEdgeStyle;")
-TRN = ("endArrow=open;endSize=9;html=1;fontSize=10;labelBackgroundColor=#FFFFFF;strokeColor=#9B2C44;"
-       "edgeStyle=orthogonalEdgeStyle;rounded=1;")
-STNOTE = ("<b>Notasi</b> (Wazlawick 2024, §3.3): <code>event [guard] / efek</code>. Abu-abu = status akhir. "
-          "<font color='#9B2C44'><b>Garis merah</b></font> = transisi yang <b>baru ditemukan</b> lewat tabel status × transisi "
+STATE = "rounded=1;arcSize=30;whiteSpace=wrap;html=1;fontSize=12;fontStyle=1;fillColor=#FFFFFF;strokeColor=#000000;" + FONT
+STATE_T = STATE  # status akhir terlihat dari panahnya ke simpul akhir, bukan dari warna
+TR = ("endArrow=open;endSize=9;html=1;rounded=1;fontSize=11;labelBackgroundColor=#FFFFFF;strokeColor=#000000;"
+      "edgeStyle=orthogonalEdgeStyle;" + FONT)
+TRN = TR  # transisi baru ditandai * di akhir label, bukan warna
+KET = "* transisi yang ditemukan melalui tabel status × transisi"
+STNOTE = ("<b>Notasi</b> (Wazlawick 2024, §3.3): <code>event [guard] / efek</code>. Status akhir = status dengan panah ke simpul akhir ◉. "
+          "Tanda <b>*</b> di akhir label = transisi yang <b>baru ditemukan</b> lewat tabel status × transisi "
           "(proses-bisnis-praktikum.md bagian 3) dan belum ada di analisis maupun kebutuhan.")
 
 # S1 Sesi
+s1_notes = []
 s1 = Page("prk-stm-s1", "State Machine TO-BE (1-3) - Sesi", "prk-stm-s1-")
-s1.v("title", "S1 · State machine Sesi praktikum (<code>labfik.sesi.state</code>, Core: terjadwal / terlaksana / batal)",
-     TITLE, 40, 16, 1500, 40)
+s1_title = "S1 · State machine Sesi praktikum (<code>labfik.sesi.state</code>, Core: terjadwal / terlaksana / batal)"
 s1.v("init", "", ST["start"], 50, 238, 24, 24)
 s1.v("init2", "", ST["start"], 323, 80, 24, 24)
 s1.v("jad", "Terjadwal<br><font style='font-size:10px;font-weight:normal'>/is_terpublikasi, /is_ditunda, /is_terlewat</font>", STATE, 230, 220, 210, 60)
@@ -444,23 +468,28 @@ s1.e("t4", "jad", "jad", "perubahan disetujui [daring]<br>/ ubah moda", [(470, 2
 s1.e("t5", "jad", "f0", "hapus [jadwal periode tidak diajukan/disahkan ∧ belum ada jurnal]", [(260, 485)], style=TR, exit=(0.15, 1), entry=(0, 0.5))
 s1.e("tf1", "lak", "f1", style=TR)
 s1.e("tf2", "bat", "f2", style=TR)
-s1.v("n1", "<b>Notasi</b> (Wazlawick 2024, §3.3): <code>event [guard] / efek</code>. Abu-abu = status akhir. "
-     "<code>/nama</code> = atribut turunan {compute}, bukan state.", NOTE, 40, 560, 560, 60)
-s1.v("n2", "<b>Atribut hitung, bukan state</b> (Wazlawick §9.3.1; kontrak Core C-9, keputusan I-1, 15 Nov 2026):<br>"
+s1_notes.append(("<b>Notasi</b> (Wazlawick 2024, §3.3): <code>event [guard] / efek</code>. "
+     "<code>/nama</code> = atribut turunan {compute}, bukan state.", 60))
+s1_notes.append(("<b>Atribut hitung, bukan state</b> (Wazlawick §9.3.1; kontrak Core C-9, keputusan I-1, 15 Nov 2026):<br>"
      "• <i>is_terpublikasi</i> = Penetapan Jadwal periode itu disahkan (dulu Rencana/Terpublikasi)<br>"
      "• <i>is_ditunda</i> = ada Perubahan Sesi yang masih diajukan<br>"
      "• <i>is_terlewat</i> = tanggal lewat, belum ada jurnal<br>"
-     "• <i>is_diganti</i> = ada sesi lain dengan sesi_asal_id = sesi ini", NOTE, 620, 560, 520, 120)
-s1.v("n3", "<b>Akibatnya</b>: jadwal dicabut (KF-PRK-45) dan perubahan ditolak (KF-PRK-46) tidak lagi mengubah state; "
+     "• <i>is_diganti</i> = ada sesi lain dengan sesi_asal_id = sesi ini", 120))
+s1_notes.append(("<b>Akibatnya</b>: jadwal dicabut (KF-PRK-45) dan perubahan ditolak (KF-PRK-46) tidak lagi mengubah state; "
      "keduanya terbaca otomatis dari <i>is_terpublikasi</i> dan <i>is_ditunda</i>. "
-     "Status disamakan dengan modul SDM; hanya Praktikum yang mengubah state.", NOTE, 40, 640, 560, 80)
-s1.v("n4", "Pemetaan 6 status → 3 status diterima Herrens, 16 Nov 2026. " + SRC, NOTE, 620, 700, 520, 50)
-s1.w, s1.h = 1250, 790
+     "Status disamakan dengan modul SDM; hanya Praktikum yang mengubah state.", 80))
+s1_notes.append(("Pemetaan 6 status → 3 status diterima Herrens, 16 Nov 2026. " + SRC, 50))
+s1.rapatkan()
+if any(" *" in c for c in s1.cells):
+    s1.v("ket", KET, "text;html=1;fontSize=11;align=left;" + FONT, 40, s1.maxy + 20, 420, 24)
+s1.w, s1.h = s1.maxx + 40, s1.maxy + 30
+NOTES.append((s1_title, s1_notes))
 pages.append(s1)
 
 # S2 Persetujuan sederhana
+s2_notes = []
 s2 = Page("prk-stm-s2", "State Machine TO-BE (2-3) - Pengajuan Pemakaian dan Perubahan", "prk-stm-s2-")
-s2.v("title", "S2 · State machine pengajuan dengan persetujuan sederhana: Pemakaian Lab dan Perubahan Sesi", TITLE, 40, 16, 1400, 40)
+s2_title = "S2 · State machine pengajuan dengan persetujuan sederhana: Pemakaian Lab dan Perubahan Sesi"
 s2.v("init", "", ST["start"], 50, 238, 24, 24)
 s2.v("aju", "Diajukan", STATE, 230, 225, 150, 50)
 s2.v("set", "Disetujui", STATE_T, 620, 110, 150, 50)
@@ -472,22 +501,25 @@ s2.v("f3", "", ST["final"], 880, 381, 28, 28)
 s2.e("t0", "init", "aju", "ajukan [tidak bentrok]", style=TR)
 s2.e("t1", "aju", "set", "setujui [jabatan berwenang: KaLab ∧ tidak bentrok]<br>/ perbarui jadwal terpadu atau ubah Sesi (S1)", [(305, 135)], style=TR, exit=(0.5, 0), entry=(0, 0.5))
 s2.e("t2", "aju", "tol", "tolak [alasan terisi] / catat alasan", style=TR, exit=(1, 0.5), entry=(0, 0.5))
-s2.e("t3", "aju", "tar", "tarik kembali [oleh pengaju]", [(305, 395)], style=TRN, exit=(0.5, 1), entry=(0, 0.5))
+s2.e("t3", "aju", "tar", "tarik kembali [oleh pengaju] *", [(305, 395)], style=TRN, exit=(0.5, 1), entry=(0, 0.5))
 for i, src in enumerate(["set", "tol", "tar"], 1):
     s2.e(f"tf{i}", src, f"f{i}", style=TR)
-s2.v("n1", STNOTE, NOTE, 40, 460, 560, 70)
-s2.v("n2", "<b>Dipakai oleh</b> dua objek dengan pola sama: <code>labfik.praktikum.pemakaian</code> (A2) dan "
+s2_notes.append(("<b>Dipakai oleh</b> dua objek dengan pola sama: <code>labfik.praktikum.pemakaian</code> (A2) dan "
      "<code>labfik.praktikum.perubahan</code> (A4). Guard <i>tidak bentrok</i> saat <i>ajukan</i> hanya untuk pemakaian lab; "
      "saat <i>setujui</i> berlaku untuk pemakaian dan perubahan berpengganti (AB-PRK-01, diperiksa ulang karena pengajuan lain bisa disetujui lebih dulu). "
-     "Tanpa PDF bertanda tangan (kontrak Core b).", NOTE, 620, 460, 520, 100)
-s2.v("n3", "<b>[KONFIRMASI]</b> Pemakaian yang sudah disetujui lalu batal dipakai: perlu status <i>Dibatalkan</i>? " + SRC, NOTE, 40, 580, 560, 70)
-s2.w, s2.h = 1200, 690
+     "Tanpa PDF bertanda tangan (kontrak Core b).", 100))
+s2_notes.append(("<b>[KONFIRMASI]</b> Pemakaian yang sudah disetujui lalu batal dipakai: perlu status <i>Dibatalkan</i>? " + SRC, 70))
+s2.rapatkan()
+if any(" *" in c for c in s2.cells):
+    s2.v("ket", KET, "text;html=1;fontSize=11;align=left;" + FONT, 40, s2.maxy + 20, 420, 24)
+s2.w, s2.h = s2.maxx + 40, s2.maxy + 30
+NOTES.append((s2_title, s2_notes))
 pages.append(s2)
 
 # S3 Survei
+s3_notes = []
 s3 = Page("prk-stm-s3", "State Machine TO-BE (3-3) - Survei Kepuasan", "prk-stm-s3-")
-s3.v("title", "S3 · State machine Survei kepuasan per periode (perluasan <code>survey.survey</code>) dan kaitannya dengan K1–K4",
-     TITLE, 40, 16, 1400, 40)
+s3_title = "S3 · State machine Survei kepuasan per periode (perluasan <code>survey.survey</code>) dan kaitannya dengan K1–K4"
 s3.v("init", "", ST["start"], 50, 238, 24, 24)
 s3.v("dra", "Draf", STATE, 130, 225, 150, 50)
 s3.v("tet", "Ditetapkan<br><font style='font-size:10px;font-weight:normal'>(K1–K2 lengkap)</font>", STATE, 470, 225, 160, 50)
@@ -496,16 +528,40 @@ s3.v("sel", "Siklus Selesai<br><font style='font-size:10px;font-weight:normal'>(
 s3.v("f1", "", ST["final"], 1256, 380, 28, 28)
 s3.e("t0", "init", "dra", "buat", style=TR)
 s3.e("t1", "dra", "tet", "tetapkan [enam aspek ∧ butir terbuka<br>∧ target respons ∧ jabatan berwenang]", [(205, 170), (550, 170)], style=TR, exit=(0.5, 0), entry=(0.5, 0))
-s3.e("t2", "tet", "dra", "batalkan penetapan<br>[sebelum tanggal buka]", [(550, 330), (205, 330)], style=TRN, exit=(0.5, 1), entry=(0.5, 1))
+s3.e("t2", "tet", "dra", "batalkan penetapan<br>[sebelum tanggal buka] *", [(550, 330), (205, 330)], style=TRN, exit=(0.5, 1), entry=(0.5, 1))
 s3.e("t3", "tet", "eva", "catat evaluasi + RTL<br>[tanggal tutup terlewati]", style=TR, exit=(1, 0.5), entry=(0, 0.5))
 s3.e("t4", "eva", "sel", "nilai efektivitas semua RTL<br>[survei periode berikutnya dievaluasi]", style=TR, exit=(1, 0.5), entry=(0, 0.5))
 s3.e("t5", "sel", "f1", style=TR, exit=(0.5, 1), entry=(0.5, 0))
-s3.v("n1", STNOTE, NOTE, 40, 440, 560, 70)
-s3.v("n2", "<b>Status turunan</b> (§9.3.1): selama Ditetapkan, <i>Belum dibuka / Dibuka / Ditutup</i> dihitung dari tanggal buka–tutup, "
-     "tidak disimpan. Kriteria K1–K4 dihitung <code>labfik.criteria.mixin</code>.", NOTE, 620, 440, 520, 80)
-s3.v("n3", "<b>[KONFIRMASI]</b> Bolehkah penetapan dibatalkan setelah survei dibuka (mis. butir salah)? Asumsi: tidak; buat survei baru. "
-     + SRC, NOTE, 40, 530, 760, 60)
-s3.w, s3.h = 1450, 640
+s3_notes.append(("<b>Status turunan</b> (§9.3.1): selama Ditetapkan, <i>Belum dibuka / Dibuka / Ditutup</i> dihitung dari tanggal buka–tutup, "
+     "tidak disimpan. Kriteria K1–K4 dihitung <code>labfik.criteria.mixin</code>.", 80))
+s3_notes.append(("<b>[KONFIRMASI]</b> Bolehkah penetapan dibatalkan setelah survei dibuka (mis. butir salah)? Asumsi: tidak; buat survei baru. "
+     + SRC, 60))
+s3.rapatkan()
+if any(" *" in c for c in s3.cells):
+    s3.v("ket", KET, "text;html=1;fontSize=11;align=left;" + FONT, 40, s3.maxy + 20, 420, 24)
+s3.w, s3.h = s3.maxx + 40, s3.maxy + 30
+NOTES.append((s3_title, s3_notes))
 pages.append(s3)
+
+# ------------------------------------------------------------------ halaman catatan (bahan kerja, tidak masuk naskah)
+cat = Page("prk-act-notes", "Catatan TO-BE (bahan kerja) - Activity dan State Machine", "prk-act-notes-")
+cat.v("title", "Catatan diagram activity dan state machine (bahan kerja, tidak disisipkan ke naskah)", TITLE, 40, 16, 1200, 36)
+cat.v("legend", LEGEND, NOTE, 40, 60, 1260, 60)
+cat.v("legend2", STNOTE, NOTE, 40, 130, 1260, 50)
+col_w, x0, y = 410, 40, 200
+for r in range(0, len(NOTES), 3):
+    row_h = 0
+    for i in range(r, min(r + 3, len(NOTES))):
+        head, items = NOTES[i]
+        x = x0 + (i % 3) * (col_w + 15)
+        cat.v(f"h{i}", f"<b>{head}</b>", "text;html=1;fontSize=12;align=left;verticalAlign=top;whiteSpace=wrap;", x, y, col_w, 40)
+        yy = y + 46
+        for j, (txt, h) in enumerate(items):
+            cat.v(f"n{i}-{j}", txt, NOTE, x, yy, col_w, h)
+            yy += h + 10
+        row_h = max(row_h, yy - y)
+    y += row_h + 20
+cat.w, cat.h = 1340, y + 20
+pages.append(cat)
 
 open(OUT, "w", encoding="utf-8").write('<mxfile host="app.diagrams.net">' + "".join(p.xml() for p in pages) + "</mxfile>")
