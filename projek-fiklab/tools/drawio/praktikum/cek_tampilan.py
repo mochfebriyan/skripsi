@@ -45,8 +45,12 @@ def main(path):
             if c.getAttribute("vertex") != "1":
                 continue
             st = c.getAttribute("style")
-            if any(k in st for k in ("swimlane", "shape=folder", "verticalAlign=top;fontStyle=1;fontSize=15", "text;html=1", "wadah=1")):
-                continue  # lajur, paket, batas sistem, judul: wadah, boleh dilewati
+            if any(k in st for k in ("swimlane", "shape=folder", "verticalAlign=top;fontStyle=1;fontSize=15",
+                                     "verticalAlign=top;fontStyle=1;fontSize=14", "text;html=1", "wadah=1",
+                                     "shape=umlFrame", "shape=umlLifeline")):
+                # lajur, paket, batas sistem (gaya lama fontSize=15, gaya polos fontSize=14), judul, wadah,
+                # fragmen opt/ref, dan lifeline SSD (pesan memang melintasinya): boleh dilewati
+                continue
             g = c.getElementsByTagName("mxGeometry")[0]
             box[c.getAttribute("id")] = tuple(float(g.getAttribute(k) or 0) for k in ("x", "y", "width", "height"))
             label[c.getAttribute("id")] = re.sub("<[^>]+>", " ", c.getAttribute("value"))[:40]
