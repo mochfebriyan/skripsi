@@ -56,13 +56,13 @@ class Page:
         self.cells.append(f'<mxCell id="{self.P}{id}" value="{esc(val)}" style="{style}" vertex="1" parent="1">'
                           f'<mxGeometry x="{x:.0f}" y="{y:.0f}" width="{w:.0f}" height="{h:.0f}" as="geometry"/></mxCell>')
 
-    def e(self, id, s, t, val="", pts=None, style=EDGE, exit=None, entry=None):
+    def e(self, id, s, t, val="", pts=None, style=EDGE, exit=None, entry=None, lx=None):
         st = style
         if exit:
             st += f"exitX={exit[0]};exitY={exit[1]};exitDx=0;exitDy=0;"
         if entry:
             st += f"entryX={entry[0]};entryY={entry[1]};entryDx=0;entryDy=0;"
-        geo = '<mxGeometry relative="1" as="geometry">'
+        geo = f'<mxGeometry{" x=\"%s\"" % lx if lx is not None else ""} relative="1" as="geometry">'
         if pts:
             geo += '<Array as="points">' + "".join(f'<mxPoint x="{x:.0f}" y="{y:.0f}"/>' for x, y in pts) + "</Array>"
         geo += "</mxGeometry>"
@@ -215,7 +215,7 @@ b.e("1", "st", "tp")
 b.e("2", "tp", "d1", "", [(b.cx("k", None), b.cy(2))], exit=(0.5, 1), entry=(0, 0.5))
 b.e("3", "d1", "m0", "[belum ada bukti berlaku]")
 b.e("4", "d1", "m1", "[bukti kompetensi berlaku ada]", [(b.lane_right("l", 10), b.cy(2)), (b.lane_right("l", 10), b.cy(8) - 6)],
-    exit=(1, 0.5), entry=(1, 0.3))
+    exit=(1, 0.5), entry=(1, 0.3), lx=-0.75)
 b.e("5", "m0", "uj"); b.e("6", "uj", "ca"); b.e("7", "ca", "d2")
 b.e("8", "d2", "pg", "[belum layak]", exit=(1, 0.5), entry=(0, 0.5))
 b.e("9", "pg", "m0", "", [(b.cx("l", 1), b.cy(3))], exit=(0.5, 0), entry=(1, 0.5))
@@ -227,7 +227,7 @@ b.e("15", "m2", "te")
 b.e("16", "te", "ce", "", [(b.cx("s", None), b.cy(13))], exit=(0.5, 1), entry=(1, 0.5))
 b.e("17", "ce", "d3")
 b.e("18", "d3", "m1", "[diperpanjang / dibatasi / naik level]", [(b.lane_left("k", 12), b.cy(14)), (b.lane_left("k", 12), b.cy(8))],
-    exit=(0, 0.5), entry=(0, 0.5))
+    exit=(0, 0.5), entry=(0, 0.5), lx=-0.6)
 b.e("19", "d3", "m2", "[tetap berlaku]", [(b.cx("l", 1), b.cy(14)), (b.cx("l", 1), b.cy(11) + 6)], exit=(1, 0.5), entry=(0, 0.7))
 b.e("20", "d3", "cb", "[dicabut]", [(b.cx("l", 0), b.cy(15))], exit=(0.5, 1), entry=(1, 0.5))
 b.e("21", "cb", "en")
@@ -345,8 +345,8 @@ d.e("6", "lk", "m0", "", [(d.lane_left("p", 12), d.cy(3)), (d.lane_left("p", 12)
 d.e("7", "d1", "cp", "[lengkap]"); d.e("8", "cp", "d2")
 d.e("9", "d2", "tr", "[surat tugas / rencana pelatihan]", [(cp_, d.cy(5))], exit=(0, 0.5), entry=(0.5, 0))
 d.e("10", "tr", "hp", exit=(1, 0.5), entry=(0, 0.5))
-d.e("11", "hp", "m2", "", [(cs_, d.cy(7))], exit=(0.5, 1), entry=(1, 0.5))
-d.e("12", "d2", "m2", "[otorisasi]", [(d.lane_right("s", 12), d.cy(5)), (d.lane_right("s", 12), d.cy(7.45)), (cp_, d.cy(7.45))],
+d.e("11", "hp", "m2", "", [(cs_, d.cy(6.85)), (cp_, d.cy(6.85))], exit=(0.5, 1), entry=(0.5, 0))
+d.e("12", "d2", "m2", "[otorisasi]", [(d.lane_right("s", 12), d.cy(5)), (d.lane_right("s", 12), d.cy(7))],
     exit=(1, 0.5), entry=(0.5, 1))
 d.e("13", "m2", "ct")
 d.e("14", "ct", "td", exit=(1, 0.5), entry=(0, 0.5)); d.e("15", "td", "d3")
@@ -360,7 +360,7 @@ d.e("22", "m3", "ug")
 d.e("23", "ug", "sh", exit=(1, 0.5), entry=(0, 0.5))
 d.e("24", "sh", "vl", "", [(d.cx("k", None), d.cy(13))], exit=(0.5, 1), entry=(1, 0.5))
 d.e("25", "vl", "d4")
-d.e("26", "d4", "m3", "[berkas belum ada /<br>pengesah tidak berwenang]", [(d.lane_left("s", 8), d.cy(14)), (d.lane_left("s", 8), d.cy(11))],
+d.e("26", "d4", "m3", "[tidak valid]", [(d.lane_left("s", 8), d.cy(14)), (d.lane_left("s", 8), d.cy(11))],
     exit=(0, 0.5), entry=(1, 0.5))
 d.e("27", "d4", "us", "[valid]"); d.e("28", "us", "gv"); d.e("29", "gv", "cr"); d.e("30", "cr", "en")
 d.finish()
@@ -396,15 +396,15 @@ s1 = Page("sdm-stm-s1", "State Machine TO-BE (1-4) - Otorisasi", "sdm-stm-s1-")
 s1.v("init", "", ST["start"], 30, 228, 22, 22)
 s1.v("draf", "Draf", STATE, 100, 214, 140, 50)
 s1.v("aju", "Diajukan", STATE, 440, 214, 140, 50)
-s1.v("sah", "Disahkan", COMP, 760, 100, 400, 280)
-s1.v("ini2", "", ST["start"], 790, 240, 22, 22)
-s1.v("brl", "Berlaku", STATE, 860, 226, 120, 50)
-s1.v("lwt", "Lewat masa berlaku", STATE, 1000, 316, 140, 50)
-s1.v("gnt", "Diganti", STATE, 1270, 110, 140, 50)
-s1.v("cbt", "Dicabut", STATE, 1270, 320, 140, 50)
+s1.v("sah", "Disahkan", COMP, 880, 100, 400, 280)
+s1.v("ini2", "", ST["start"], 910, 240, 22, 22)
+s1.v("brl", "Berlaku", STATE, 980, 226, 120, 50)
+s1.v("lwt", "Lewat masa berlaku", STATE, 1120, 316, 140, 50)
+s1.v("gnt", "Diganti", STATE, 1500, 110, 140, 50)
+s1.v("cbt", "Dicabut", STATE, 1500, 320, 140, 50)
 s1.v("f0", "", ST["final"], 157, 380, 26, 26)
-s1.v("f1", "", ST["final"], 1460, 122, 26, 26)
-s1.v("f2", "", ST["final"], 1460, 332, 26, 26)
+s1.v("f1", "", ST["final"], 1690, 122, 26, 26)
+s1.v("f2", "", ST["final"], 1690, 332, 26, 26)
 s1.e("t0", "init", "draf", "buat", style=TR)
 s1.e("t1", "draf", "aju", "ajukan [kompetensi terbukti ∧ lingkup terisi<br>∧ supervisor berwenang bila terbimbing]<br>/ catat riwayat",
      style=TR, exit=(1, 0.3), entry=(0, 0.3))
@@ -414,13 +414,13 @@ s1.e("t2b", "aju", "aju", "unggah berkas bertanda tangan / catat riwayat", [(475
 s1.e("t3", "aju", "sah", "sahkan [berkas ada ∧ pengesah berwenang]<br>/ catat pengesah; otorisasi lama<br>pasangan sama → Diganti",
      style=TR, exit=(1, 0.5), entry=(0, 0.48))
 s1.e("t4", "ini2", "brl", "", style=TR)
-s1.e("t5", "brl", "lwt", "when(hari ini &gt; berlaku_sampai) *", [(920, 341)], style=TR, exit=(0.5, 1), entry=(0, 0.5))
-s1.e("t6", "sah", "gnt", "otorisasi baru pasangan sama disahkan", style=TR, exit=(1, 0.05), entry=(0, 0.5))
+s1.e("t5", "brl", "lwt", "when(hari ini &gt; berlaku_sampai) *", [(1040, 341)], style=TR, exit=(0.5, 1), entry=(0, 0.5))
+s1.e("t6", "sah", "gnt", "otorisasi baru pasangan sama disahkan", style=TR, exit=(1, 0.2), entry=(0, 0.5))
 s1.e("t7", "sah", "cbt", "cabut [evaluasi ulang: dicabut]<br>/ catat alasan", style=TR, exit=(1, 0.79), entry=(0, 0.5))
 s1.e("t8", "draf", "f0", "hapus [belum pernah diajukan]", style=TR, exit=(0.5, 1), entry=(0.5, 0))
 s1.e("tf1", "gnt", "f1", style=TR); s1.e("tf2", "cbt", "f2", style=TR)
 s1.v("ket", STAR, KET, 30, 420, 600, 24)
-s1.w, s1.h = 1520, 460
+s1.w, s1.h = 1760, 460
 pages.append(s1)
 notes.append(("S1 · Otorisasi Personel (labfik.sdm.otorisasi): approval.mixin + masa berlaku sendiri", [
     (SM_NOTE, 60),

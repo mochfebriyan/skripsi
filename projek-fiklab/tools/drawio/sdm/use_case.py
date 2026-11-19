@@ -25,7 +25,7 @@ PKG = ("shape=folder;tabWidth=300;tabHeight=22;tabPosition=left;html=1;whiteSpac
 ELL = "ellipse;whiteSpace=wrap;html=1;fontSize=12;fillColor=#FFFFFF;strokeColor=#000000;" + FONT
 ACT = "shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=12;fillColor=#FFFFFF;strokeColor=#000000;" + FONT
 ACT_ABS = ACT + "fontStyle=2;"   # aktor abstrak: nama miring (notasi UML)
-ASSOC = "endArrow=none;html=1;strokeColor=#000000;"
+ASSOC = "endArrow=none;html=1;strokeColor=#000000;entryX=0;entryY=0.5;entryDx=0;entryDy=0;"  # masuk ke ujung kiri elips
 GEN = "endArrow=block;endFill=0;endSize=14;html=1;strokeColor=#000000;"
 NOTE = ("shape=note;whiteSpace=wrap;html=1;size=14;align=left;verticalAlign=top;spacingLeft=6;spacingTop=4;"
         "fontSize=11;fillColor=#FFF2CC;strokeColor=#D6B656;")
@@ -125,12 +125,12 @@ judul = "Use case TO-BE 1/4 · Kompetensi (dipakai PKG-04, 10, 14), pengesahan d
 y = p.pkg("p1", "Kompetensi (PKG-04, PKG-10, PKG-14)", PX, 60, PW, [3, 1, 2, 4])
 y = p.pkg("p2", "Pengesahan Dokumen SDM", PX, y + 20, PW, [23, 24, 25, 26, 27, 28])
 p.boundary(y)
-p.actor("pnl", "Pengelola Lab", 180, 300, abstract=True)
-p.actor("lab", "Laboran/PLP", 40, 440)
-p.actor("kal", "KaLab", 180, 580)
+p.actor("pnl", "Pengelola Lab", 150, 300, abstract=True)
+p.actor("lab", "Laboran/PLP", 40, 500)
+p.actor("kal", "KaLab", 240, 500)
 p.links({"pnl": [3, 23, 24, 25], "kal": [1, 2, 4, 26, 27, 28]})
-p.e("g-lab-pnl", "lab", "pnl", GEN)
-p.e("g-kal-pnl", "kal", "pnl", GEN)
+p.e("g-lab-pnl", "lab", "pnl", GEN + "exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0;entryY=0.6;entryDx=0;entryDy=0;")
+p.e("g-kal-pnl", "kal", "pnl", GEN + "exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=1;entryY=0.6;entryDx=0;entryDy=0;")
 _n.append("<b>Cara baca</b><br>• <i>Pengelola Lab</i> = peran pencatat: KaLab atau Laboran/PLP. Semua use case <i>Pengelola Lab</i> "
           "juga bisa dilakukan KaLab dan Laboran.<br>"
           "• Kelola master Kompetensi dan syarat jabatan hanya oleh <b>KaLab</b>; bukti kompetensi dicatat keduanya.<br>"
