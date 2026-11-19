@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net" pages="5">
   <diagram id="tk-dcd1" name="DCD TO-BE (1-4) - Mixin dan Pengesahan">
-    <mxGraphModel dx="1371" dy="836" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1500" pageHeight="1008" math="0" shadow="0">
+    <mxGraphModel dx="1018" dy="621" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1500" pageHeight="1008" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -259,11 +259,11 @@
         <mxCell id="tk-dcd1-dis-a" parent="tk-dcd1-dis" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=11;fontFamily=Times New Roman;" value="&lt;i&gt;(rincian: DCD 2–4)&lt;/i&gt;" vertex="1">
           <mxGeometry height="23" width="230" y="55" as="geometry" />
         </mxCell>
-        <mxCell id="tk-dcd1-g-dis-evi" edge="1" parent="1" source="tk-dcd1-dis" style="endArrow=block;endFill=0;endSize=14;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#000000;exitX=0.5;exitY=0;exitDx=0;exitDy=0;labelBackgroundColor=#FFFFFF;" value="">
+        <mxCell id="tk-dcd1-g-dis-evi" edge="1" parent="1" source="tk-dcd1-dis" style="endArrow=block;endFill=0;endSize=14;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#000000;exitX=0.5;exitY=0;exitDx=0;exitDy=0;labelBackgroundColor=#FFFFFF;entryX=0.342;entryY=1.009;entryDx=0;entryDy=0;entryPerimeter=0;" target="tk-dcd1-evi-m" value="">
           <mxGeometry relative="1" x="0.1547" as="geometry">
             <Array as="points">
               <mxPoint x="1095" y="650" />
-              <mxPoint x="970" y="650" />
+              <mxPoint x="969.4" y="650" />
             </Array>
             <mxPoint x="970" y="530" as="targetPoint" />
           </mxGeometry>
@@ -319,13 +319,13 @@
         <mxCell id="tk-dcd1-tin-a" parent="tk-dcd1-tin" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=11;fontFamily=Times New Roman;" value="&lt;i&gt;(rincian: DCD 2–4)&lt;/i&gt;" vertex="1">
           <mxGeometry height="23" width="230" y="55" as="geometry" />
         </mxCell>
-        <mxCell id="tk-dcd1-g-tin-evi" edge="1" parent="1" source="tk-dcd1-tin" style="endArrow=block;endFill=0;endSize=14;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#000000;exitX=0.5;exitY=0;exitDx=0;exitDy=0;labelBackgroundColor=#FFFFFF;" value="">
+        <mxCell id="tk-dcd1-g-tin-evi" edge="1" parent="1" source="tk-dcd1-tin" style="endArrow=block;endFill=0;endSize=14;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#000000;exitX=0.5;exitY=0;exitDx=0;exitDy=0;labelBackgroundColor=#FFFFFF;entryX=0.061;entryY=1.003;entryDx=0;entryDy=0;entryPerimeter=0;" target="tk-dcd1-evi-m" value="">
           <mxGeometry relative="1" x="-0.0157" as="geometry">
             <Array as="points">
               <mxPoint x="1095" y="870" />
               <mxPoint x="960" y="870" />
               <mxPoint x="960" y="830" />
-              <mxPoint x="880" y="830" />
+              <mxPoint x="879.5" y="830" />
             </Array>
             <mxPoint x="880" y="530" as="targetPoint" />
           </mxGeometry>
@@ -334,7 +334,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="tk-dcd2" name="DCD TO-BE (2-4) - Struktur Organisasi">
-    <mxGraphModel dx="1195" dy="729" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="668" math="0" shadow="0">
+    <mxGraphModel grid="1" page="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" pageScale="1" pageWidth="1200" pageHeight="668" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
