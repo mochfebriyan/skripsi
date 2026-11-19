@@ -1,0 +1,51 @@
+<mxfile host="app.diagrams.net" pages="2">
+  <diagram id="tk-pkg1" name="Package TO-BE (1-1) - Addon Modul Tata Kelola dan Dokumen">
+    <mxGraphModel dx="1048" dy="613" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="800" pageHeight="630" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="tk-pkg1-org" parent="1" style="shape=folder;tabWidth=110;tabHeight=18;tabPosition=left;html=1;whiteSpace=wrap;verticalAlign=top;align=left;spacingLeft=10;spacingTop=20;spacingRight=8;fontSize=12;fillColor=#FFFFFF;strokeColor=#000000;fontFamily=Times New Roman;" value="&lt;b&gt;labfik_org&lt;/b&gt;&lt;br&gt;Tata Kelola dan Dokumen (PKG-01, 02, 03, 13)&lt;br&gt;• Dokumen Induk dan versi SOP/IK&lt;br&gt;• Distribusi, sosialisasi, tinjau ulang&lt;br&gt;• Renstra, rencana, item, temuan gap&lt;br&gt;• SK penetapan, rapat, evaluasi struktur&lt;br&gt;• Realisasi, tinjauan, KPI&lt;br&gt;• Status monev" vertex="1">
+          <mxGeometry height="180" width="330" x="235" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="tk-pkg1-core" parent="1" style="shape=folder;tabWidth=110;tabHeight=18;tabPosition=left;html=1;whiteSpace=wrap;verticalAlign=top;align=left;spacingLeft=10;spacingTop=20;spacingRight=8;fontSize=12;fillColor=#FFFFFF;strokeColor=#000000;fontFamily=Times New Roman;" value="«Core»&lt;br&gt;&lt;b&gt;labfik_core&lt;/b&gt;&lt;br&gt;• Master bersama: personel (hr.employee), jabatan (hr.job), ruang, periode, mata kuliah, kelas, sesi&lt;br&gt;• Mixin: approval, period, criteria, evidence&lt;br&gt;• Riwayat pengesahan (approval.log)" vertex="1">
+          <mxGeometry height="130" width="520" x="140" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="tk-pkg1-hr" parent="1" style="shape=folder;tabWidth=110;tabHeight=18;tabPosition=left;html=1;whiteSpace=wrap;verticalAlign=top;align=left;spacingLeft=10;spacingTop=20;spacingRight=8;fontSize=12;fillColor=#FFFFFF;strokeColor=#000000;fontFamily=Times New Roman;" value="«Odoo»&lt;br&gt;&lt;b&gt;hr&lt;/b&gt;&lt;br&gt;Karyawan dan jabatan" vertex="1">
+          <mxGeometry height="80" width="170" x="200" y="440" as="geometry" />
+        </mxCell>
+        <mxCell id="tk-pkg1-mail" parent="1" style="shape=folder;tabWidth=110;tabHeight=18;tabPosition=left;html=1;whiteSpace=wrap;verticalAlign=top;align=left;spacingLeft=10;spacingTop=20;spacingRight=8;fontSize=12;fillColor=#FFFFFF;strokeColor=#000000;fontFamily=Times New Roman;" value="«Odoo»&lt;br&gt;&lt;b&gt;mail&lt;/b&gt;&lt;br&gt;Riwayat perubahan dan aktivitas" vertex="1">
+          <mxGeometry height="80" width="170" x="430" y="440" as="geometry" />
+        </mxCell>
+        <mxCell id="tk-pkg1-d1" edge="1" parent="1" source="tk-pkg1-org" style="endArrow=open;endSize=12;dashed=1;html=1;strokeColor=#000000;fontSize=11;labelBackgroundColor=#FFFFFF;edgeStyle=orthogonalEdgeStyle;rounded=0;fontFamily=Times New Roman;" target="tk-pkg1-core" value="«depends»">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="tk-pkg1-d3" edge="1" parent="1" source="tk-pkg1-core" style="endArrow=open;endSize=12;dashed=1;html=1;strokeColor=#000000;fontSize=11;labelBackgroundColor=#FFFFFF;edgeStyle=orthogonalEdgeStyle;rounded=0;fontFamily=Times New Roman;" target="tk-pkg1-hr" value="«depends»">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="tk-pkg1-d4" edge="1" parent="1" source="tk-pkg1-core" style="endArrow=open;endSize=12;dashed=1;html=1;strokeColor=#000000;fontSize=11;labelBackgroundColor=#FFFFFF;edgeStyle=orthogonalEdgeStyle;rounded=0;fontFamily=Times New Roman;" target="tk-pkg1-mail" value="«depends»">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="tk-pkg-notes" name="Catatan Package TO-BE (bahan kerja)">
+    <mxGraphModel dx="1600" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="980" pageHeight="364" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="tk-pkg-notes-title" value="Catatan package diagram (bahan kerja, tidak disisipkan ke naskah)" style="text;html=1;fontSize=16;fontStyle=1;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="40" y="10" width="900" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="tk-pkg-notes-legend" value="&lt;b&gt;Notasi&lt;/b&gt; (UML package diagram)&lt;br&gt;• Folder = package (addon Odoo). «Odoo» = addon bawaan Odoo 17 CE (LGPL-3); «Core» = master dan mixin bersama proyek; tanpa stereotype = addon milik modul.&lt;br&gt;• Panah putus-putus berkepala terbuka «depends» = dependency, sama dengan isi &lt;code&gt;depends&lt;/code&gt; pada manifest addon." style="shape=note;whiteSpace=wrap;html=1;size=14;align=left;verticalAlign=top;spacingLeft=6;spacingTop=4;fontSize=11;fillColor=#FFF2CC;strokeColor=#D6B656;" vertex="1" parent="1">
+          <mxGeometry x="40" y="56" width="900" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="tk-pkg-notes-src" value="&lt;b&gt;Sumber&lt;/b&gt;&lt;br&gt;• CLAUDE.md §6 (kontrak Core), brief-tata-kelola-dokumen.md (Platform dan addon), kontrak-core.md · Draf 18 Nov 2026 · Febriyan&lt;br&gt;• Gambar 2.1 naskah Bab II (subbab 2.2.1)." style="shape=note;whiteSpace=wrap;html=1;size=14;align=left;verticalAlign=top;spacingLeft=6;spacingTop=4;fontSize=11;fillColor=#FFF2CC;strokeColor=#D6B656;" vertex="1" parent="1">
+          <mxGeometry x="40" y="150" width="900" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="tk-pkg-notes-konf" value="&lt;b&gt;Isu terbuka&lt;/b&gt;&lt;br&gt;• Penempatan Core di addon terpisah &lt;code&gt;labfik_core&lt;/code&gt; masih [KONFIRMASI kelompok].&lt;br&gt;• Nama addon Aset dan Safety belum ditetapkan kelompok lain, jadi ditulis sebagai nama modul.&lt;br&gt;• Modul lain yang perlu Dokumen Induk atau KPI memakai modul jembatan yang bergantung pada addonnya dan &lt;code&gt;labfik_org&lt;/code&gt; (mis. &lt;code&gt;labfik_safety_org&lt;/code&gt;); tidak digambar agar diagram tetap ringkas." style="shape=note;whiteSpace=wrap;html=1;size=14;align=left;verticalAlign=top;spacingLeft=6;spacingTop=4;fontSize=11;fillColor=#FFF2CC;strokeColor=#D6B656;" vertex="1" parent="1">
+          <mxGeometry x="40" y="234" width="900" height="100" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

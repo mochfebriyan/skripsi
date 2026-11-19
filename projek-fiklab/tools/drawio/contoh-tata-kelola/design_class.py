@@ -76,8 +76,17 @@ class Page:
         if entry:
             st += f"entryX={entry[0]};entryY={entry[1]};entryDx=0;entryDy=0;"
         eid = f"{self.P}{id}"
+        pts = ""
+        if s == t and exit and entry and exit[0] == 1 and entry[0] == 1:
+            # asosiasi ke diri sendiri (refleksif): beri titik belok di kanan kelas agar tergambar sebagai lengkung keluar
+            x, y, w, h = self.geo[s]
+            self.loops = getattr(self, "loops", {})
+            k = self.loops[s] = self.loops.get(s, -1) + 1
+            xr = x + w + 30 + 22 * k
+            pts = (f'<Array as="points"><mxPoint x="{xr:.0f}" y="{y + h * exit[1]:.0f}"/>'
+                   f'<mxPoint x="{xr:.0f}" y="{y + h * entry[1]:.0f}"/></Array>')
         self.cells.append(f'<mxCell id="{eid}" value="{esc(mid or "")}" style="{st}labelBackgroundColor=#FFFFFF;" edge="1" '
-                          f'parent="1" source="{self.P}{s}" target="{self.P}{t}"><mxGeometry relative="1" as="geometry"/></mxCell>')
+                          f'parent="1" source="{self.P}{s}" target="{self.P}{t}"><mxGeometry relative="1" as="geometry">{pts}</mxGeometry></mxCell>')
         for k, (lbl, xpos, align) in enumerate([(src, -1, "left"), (tgt, 1, "right")]):
             if lbl:
                 self.cells.append(

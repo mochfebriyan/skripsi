@@ -1,0 +1,83 @@
+<mxfile host="app.diagrams.net" pages="2">
+  <diagram id="tk-met1" name="Metode TO-BE (1-1) - Alur Metode Perancangan">
+    <mxGraphModel dx="1028" dy="601" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="968" pageHeight="346" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="tk-met1-in" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontSize=12;fillColor=#FFFFFF;strokeColor=#000000;fontFamily=Times New Roman;" value="Instrumen Monev, ISO/IEC 17025,&lt;br&gt;dan dokumen lab" vertex="1">
+          <mxGeometry height="50" width="180" x="80" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="tk-met1-start" parent="1" style="ellipse;html=1;fillColor=#000000;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="22" width="22" x="30" y="142" as="geometry" />
+        </mxCell>
+        <mxCell id="tk-met1-a1" parent="1" style="rounded=1;arcSize=30;whiteSpace=wrap;html=1;fontSize=12;fillColor=#FFFFFF;strokeColor=#000000;fontFamily=Times New Roman;" value="&lt;b&gt;Analisis kebutuhan&lt;/b&gt;" vertex="1">
+          <mxGeometry height="66" width="180" x="80" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="tk-met1-a2" parent="1" style="rounded=1;arcSize=30;whiteSpace=wrap;html=1;fontSize=12;fillColor=#FFFFFF;strokeColor=#000000;fontFamily=Times New Roman;" value="&lt;b&gt;Memodelkan proses bisnis &lt;i&gt;to-be&lt;/i&gt;&lt;/b&gt;" vertex="1">
+          <mxGeometry height="66" width="180" x="306" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="tk-met1-a3" parent="1" style="rounded=1;arcSize=30;whiteSpace=wrap;html=1;fontSize=12;fillColor=#FFFFFF;strokeColor=#000000;fontFamily=Times New Roman;" value="&lt;b&gt;Menurunkan &lt;i&gt;use case&lt;/i&gt;&lt;/b&gt;" vertex="1">
+          <mxGeometry height="66" width="180" x="532" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="tk-met1-a4" parent="1" style="rounded=1;arcSize=30;whiteSpace=wrap;html=1;fontSize=12;fillColor=#FFFFFF;strokeColor=#000000;fontFamily=Times New Roman;" value="&lt;b&gt;Memperluas &lt;i&gt;use case&lt;/i&gt;&lt;/b&gt;" vertex="1">
+          <mxGeometry height="66" width="180" x="758" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="tk-met1-a6" parent="1" style="rounded=1;arcSize=30;whiteSpace=wrap;html=1;fontSize=12;fillColor=#FFFFFF;strokeColor=#000000;fontFamily=Times New Roman;" value="«bahan kerja»&lt;br&gt;&lt;b&gt;Menyusun &lt;i&gt;conceptual model&lt;/i&gt;&lt;/b&gt;&lt;br&gt;(konsep dan asosiasi)" vertex="1">
+          <mxGeometry height="66" width="180" x="758" y="250" as="geometry" />
+        </mxCell>
+        <mxCell id="tk-met1-a7" parent="1" style="rounded=1;arcSize=30;whiteSpace=wrap;html=1;fontSize=12;fillColor=#FFFFFF;strokeColor=#000000;fontFamily=Times New Roman;" value="&lt;b&gt;Menyusun &lt;i&gt;design class diagram&lt;/i&gt;&lt;/b&gt;&lt;br&gt;(kelas Odoo, &lt;i&gt;method&lt;/i&gt;, &lt;i&gt;inheritance&lt;/i&gt;)" vertex="1">
+          <mxGeometry height="66" width="180" x="532" y="250" as="geometry" />
+        </mxCell>
+        <mxCell id="tk-met1-final" parent="1" style="ellipse;html=1;shape=endState;fillColor=#000000;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="26" width="26" x="470" y="270" as="geometry" />
+        </mxCell>
+        <mxCell id="tk-met1-f0" edge="1" parent="1" source="tk-met1-start" style="endArrow=open;endSize=8;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;fontSize=11;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontFamily=Times New Roman;" target="tk-met1-a1" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="tk-met1-fin" edge="1" parent="1" source="tk-met1-in" style="endArrow=open;endSize=8;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;fontSize=11;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontFamily=Times New Roman;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="tk-met1-a1" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="tk-met1-f1" edge="1" parent="1" source="tk-met1-a1" style="endArrow=open;endSize=8;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;fontSize=11;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontFamily=Times New Roman;" target="tk-met1-a2" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="tk-met1-f2" edge="1" parent="1" source="tk-met1-a2" style="endArrow=open;endSize=8;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;fontSize=11;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontFamily=Times New Roman;" target="tk-met1-a3" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="tk-met1-f3" edge="1" parent="1" source="tk-met1-a3" style="endArrow=open;endSize=8;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;fontSize=11;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontFamily=Times New Roman;" target="tk-met1-a4" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="tk-met1-f4" edge="1" parent="1" source="tk-met1-a4" style="endArrow=open;endSize=8;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;fontSize=11;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontFamily=Times New Roman;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="tk-met1-a6" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="848" y="250" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="tk-met1-f6" edge="1" parent="1" source="tk-met1-a6" style="endArrow=open;endSize=8;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;fontSize=11;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontFamily=Times New Roman;" target="tk-met1-a7" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="tk-met1-f7" edge="1" parent="1" source="tk-met1-a7" style="endArrow=open;endSize=8;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;fontSize=11;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontFamily=Times New Roman;" target="tk-met1-final" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="tk-met-notes" name="Catatan Metode TO-BE (bahan kerja)">
+    <mxGraphModel dx="1600" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="970" pageHeight="314" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="tk-met-notes-title" value="Catatan alur metode perancangan (bahan kerja, tidak disisipkan ke naskah)" style="text;html=1;fontSize=16;fontStyle=1;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="40" y="10" width="900" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="tk-met-notes-legend" value="&lt;b&gt;Notasi&lt;/b&gt; (UML activity diagram)&lt;br&gt;• Kotak sudut bulat = aksi (tahap metode); teks dalam kurung = hasil tahap.&lt;br&gt;• Kotak sudut siku = object node (masukan).&lt;br&gt;• «bahan kerja» = hasil tahap tidak dimuat di subbab 2.3, hanya dipakai untuk menurunkan method dan kelas." style="shape=note;whiteSpace=wrap;html=1;size=14;align=left;verticalAlign=top;spacingLeft=6;spacingTop=4;fontSize=11;fillColor=#FFF2CC;strokeColor=#D6B656;" vertex="1" parent="1">
+          <mxGeometry x="40" y="56" width="900" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="tk-met-notes-src" value="&lt;b&gt;Sumber&lt;/b&gt;&lt;br&gt;• Wazlawick (2024), bab 3–4, 6–9, 13; CLAUDE.md bagian 4 (langkah 4–10). Draf 18 Nov 2026 · Febriyan&lt;br&gt;• Gambar 2.3 naskah Bab II (subbab 2.2.4)." style="shape=note;whiteSpace=wrap;html=1;size=14;align=left;verticalAlign=top;spacingLeft=6;spacingTop=4;fontSize=11;fillColor=#FFF2CC;strokeColor=#D6B656;" vertex="1" parent="1">
+          <mxGeometry x="40" y="150" width="900" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="tk-met-notes-konf" value="&lt;b&gt;Isu terbuka&lt;/b&gt;&lt;br&gt;• Iterasi antar-tahap (kembali ke tahap sebelumnya saat menemukan transisi atau aturan baru) tidak digambar agar ringkas; dijelaskan di paragraf naskah bila perlu." style="shape=note;whiteSpace=wrap;html=1;size=14;align=left;verticalAlign=top;spacingLeft=6;spacingTop=4;fontSize=11;fillColor=#FFF2CC;strokeColor=#D6B656;" vertex="1" parent="1">
+          <mxGeometry x="40" y="224" width="900" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

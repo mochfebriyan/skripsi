@@ -125,7 +125,7 @@ Bila jawaban wawancara bertentangan dengan temuan studi dokumen, ubah dulu brief
 ## 4. Gaya yang dipakai (dari pola skripsi terdahulu)
 
 - Setiap gambar: kalimat pengantar → gambar → paragraf "Berdasarkan Gambar 2.n, …" (0,5–1 hal).
-- Setiap teknik dibuka dengan definisi singkat bersitasi (Wazlawick 2024 sebagai rujukan utama; ISO/IEC 17025 untuk pengendalian dokumen).
+- Sitasi hanya di kalimat definisi pembuka setiap teknik: **satu sitasi per teknik** (Wazlawick 2024 sebagai rujukan utama; ISO/IEC 17025 untuk pengendalian dokumen). Penjelasan diagram dan keputusan rancangan ditulis sebagai keputusan penulis, tanpa sitasi berulang (pola skripsi referensi FIK).
 - Subjek "penulis", kalimat formal; istilah asing dicetak miring.
 - Nomor gambar dan tabel per bab (Gambar 2.1, Tabel 2.1).
 - Narasumber disebut dengan jabatan, tanpa nama dari dokumen nyata (CLAUDE.md §3).
