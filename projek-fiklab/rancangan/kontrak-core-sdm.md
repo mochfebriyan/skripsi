@@ -418,7 +418,7 @@ Field warisan: `tanggal` (= tanggal pemicu), `pelapor_id`, `bukti_ids`, `keteran
 |---|---|---|
 | `otorisasi_id` | M2O `labfik.sdm.otorisasi` | Wajib |
 | `pemicu` | Selection {masa_berlaku_habis, alat_berubah, insiden, lama_tidak_aktif, lainnya} | Diisi saat Catat Pemicu (UC-SDM-14) |
-| `status` | Selection {terbuka, diputuskan} = terbuka | S2 SDM; *Terbuka* membuat S4 gagal |
+| `status` | Selection {terbuka, diputuskan} {compute, store} | Dihitung dari ada-tidaknya `keputusan` (S2 SDM); *Terbuka* membuat S4 gagal |
 | `penilai_id` | M2O `hr.employee` [0..1] | Diisi saat Putuskan (UC-SDM-15) |
 | `hasil` | Text [0..1] | — |
 | `keputusan` | Selection {diperpanjang, dibatasi, naik_level, dicabut, tetap_berlaku} [0..1] | `tetap_berlaku` **[KONFIRMASI KP-1]** |
@@ -512,7 +512,7 @@ Field warisan: `tanggal`, `pelapor_id`, `bukti_ids`, `keterangan`.
 | `get_status(tanggal_acuan)` → dict | Ringkasan tiga indikator untuk UC-SDM-22 |
 | `@model status_sesi(periode)` → list | PKG-04: untuk setiap `labfik.sesi` `terlaksana`, cek S1 (kebutuhan kelas ada), S2 (`penugasan.berlaku_pada(tanggal sesi)` memenuhi jumlah minimal; asisten lewat kelas, laboran lewat ruang), S3 (`hr.employee.memenuhi_syarat_jabatan(tanggal sesi)`), S4 (seleksi lulus untuk MK kelas) |
 | `@model status_pasangan(tanggal)` → list | PKG-10: untuk setiap pasangan `tugas.khusus.pelaksana_ids`, cek S1 (bukti kompetensi berlaku), S2 (`otorisasi.berlaku_pada()`), S3 (supervisor berwenang bila terbimbing), S4 (tidak ada evaluasi `terbuka`) |
-| `@model hitung_persentase(unit)` → float | Persentase unit memenuhi |
+| `@model hitung_skor(persentase)` → int | Skor 1–4 menurut ambang instrumen; persentase sudah dihasilkan `status_sesi()`/`status_pasangan()` |
 | PKG-14 | Didelegasikan ke `labfik.sdm.rencana.pelatihan.get_kriteria()` (`criteria.mixin`) |
 | `action_laporan_bukti()` | QWeb PDF tiga indikator + rekaman pendukung (orientasi, pembatasan akses) **[KONFIRMASI KU-3]** |
 
@@ -528,7 +528,7 @@ Urutan Template Method `action_ajukan()` dan `action_sahkan()` milik Core **tida
 | `labfik.sdm.otorisasi` | `otorisasi` | Kompetensi tugas/alat terbukti (asesmen *layak* atau bukti berlaku); `lingkup` terisi; bila `terbimbing`, supervisor ada dan punya otorisasi `mandiri` berlaku untuk tugas/alat yang sama (KF-SDM-23); `berlaku_sampai ≥ hari ini` (kandidat AB dari S1) | — | Otorisasi `disahkan` lain untuk pasangan (employee, tugas/alat) yang sama (KF-SDM-24, *superseding*) | — |
 | `labfik.sdm.rencana.pelatihan` | `rencana_pelatihan` | Setiap PLP/laboran dan teknisi aktif tercantum di kebutuhan; setiap item lengkap; kompetensi sasaran item termasuk kebutuhan pesertanya (KF-SDM-32) | **Bekukan kebutuhan** (`kebutuhan_dibekukan = True`) | Kosong (revisi tidak dirancang, KU-2) | K1 rencana disahkan + kebutuhan lengkap; K2 item lengkap sesuai gap; K3 setiap item tidak batal punya realisasi; K4 setiap realisasi punya evaluasi |
 
-`_sebelum_disahkan()` dan `_setelah_disahkan()` tidak diisi model SDM.
+`_sebelum_disahkan()` diisi Rencana Pelatihan: pengesahan ditolak bila sudah ada rencana Disahkan untuk periode yang sama (AB-SDM-12, ditemukan di langkah 7). `_setelah_disahkan()` tidak diisi model SDM. Rincian akhir ada di [design-class-sdm.md](design-class-sdm.md), yang berlaku bila berbeda dengan dokumen ini.
 
 Pada model `evidence.mixin`, `_boleh_dikoreksi()` tidak diisi (semua rekaman SDM boleh dikoreksi dengan alasan). Satu pengecualian: `keputusan` di Evaluasi Ulang hanya ditulis lewat `action_putuskan()`.
 
