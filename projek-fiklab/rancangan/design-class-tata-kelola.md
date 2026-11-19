@@ -17,7 +17,7 @@ Sumber: [conceptual-model-tata-kelola.md](conceptual-model-tata-kelola.md) (CM-1
 | DCD dimulai dari salinan conceptual model, lalu: tambah method, beri arah asosiasi, rinci tipe, ubah struktur bila perlu | Wazlawick §13.6 | Bagian 3 (dari CM ke desain) |
 | Tanggung jawab dibagi ke objek yang memegang datanya (*delegation*), bukan dikumpulkan di kontroler (*concentration*) | §13.2, §13.5 | Operasi SSD menjadi method model, bukan method satu kontroler. Contoh: cek wewenang didelegasikan ke `hr.job.punya_wewenang()` |
 | Pembagian method: *get/set* atribut, *add/remove* tautan, dan method delegasi | §13.2, Tabel 13–1 | Method *get/set* dasar disediakan ORM Odoo dan tidak digambar; yang digambar hanya method delegasi, *compute*, *constraint*, dan *hook* |
-| Arah asosiasi mengikuti arah pesan | §13.6 | Many2one berarah dari anak ke induk atau dari perujuk ke yang dirujuk; komposisi = One2many + Many2one |
+| Arah asosiasi mengikuti arah pesan | §13.6 | Many2one berarah dari anak ke induk atau dari perujuk ke yang dirujuk; komposisi = One2many + Many2one `cascade`; agregasi = Many2many atau Many2one tanpa `cascade` (bagian 3.3) |
 | Perilaku bersama sebagai *mixin* `AbstractModel`; model turunan memakai `_inherit` | Arahan Pak Widi 13 Nov 2026; CLAUDE.md langkah 10 | Empat mixin di `labfik_core` |
 | Urutan baku yang tidak boleh terlewat ditulis sebagai **Template Method** dengan **hook** | CLAUDE.md bagian 8 ("override `action_sahkan()` langsung" adalah kesalahan) | `action_ajukan()` dan `action_sahkan()` |
 | Model bawaan diperluas, bukan disalin | Keputusan 14 Nov 2026 | `hr.employee`, `hr.job` dengan `_inherit` tanpa `_name` baru |
@@ -107,6 +107,32 @@ Daftar model di [bedah-dokumen-tata-kelola.md](../analisis/bedah-dokumen-tata-ke
 | `labfik.realisasi` | `alasan_tidak_relevan` (status *tidak relevan*) | Tidak diambil; status capaian tinggal empat nilai | Tidak dibutuhkan K3 |
 | `labfik.assignment` | `dasar_hukum_ids`, `diktum`, `tembusan` | Tidak diambil | Dasar hukum cukup ditulis di `mengingat`; diktum dibangkitkan dari baris penetapan saat SK diterbitkan (KF-26, Pelengkap) |
 | `labfik.org.evaluation` | `assignment_baru_id` | `sk_revisi_id` | Ganti nama |
+
+### 3.2 Jenis pewarisan Odoo dan penempatannya
+
+Ditambahkan untuk menjawab catatan bimbingan November 2026 ("penempatan class untuk inheritance"). Odoo punya tiga cara pewarisan; modul ini memakai dua.
+
+| Jenis | Sintaks | Arti | Di modul ini | Cara digambar |
+|---|---|---|---|---|
+| **Mixin** (abstrak) | `_inherit = ['labfik.approval.mixin', …]` pada model dengan `_name` baru | Field dan method bersama ditulis sekali di `AbstractModel` (tanpa tabel); model turunan mewarisinya dan mengisi method `{abstract}`/`{hook}` (polimorfisme, bagian 4) | 4 mixin di `labfik_core`; 11 model turunan di `labfik_org` | «AbstractModel» bernama miring; segitiga kosong dari turunan ke mixin. Di DCD-1 mixin diletakkan di **atas** dan turunan di **bawah**, sehingga arah pewarisan terbaca dari bawah ke atas. Di DCD-2–4 cukup `{inherit: …}` di header; field warisan tidak ditulis ulang |
+| **Ekstensi** (*classical*) | `_inherit = 'hr.employee'` **tanpa** `_name` baru | Menambah field dan method ke model bawaan; tabelnya tetap tabel model bawaan | `hr.employee` (Personel), `hr.job` (Jabatan), diperluas di `labfik_core` | «Odoo» + `{_inherit: hr.employee} di labfik_core` di header kelas (DCD-2). Tidak digambar sebagai generalisasi, karena tidak ada kelas baru |
+| **Delegasi** | `_inherits = {'res.partner': 'partner_id'}` | Model baru dengan tabel sendiri yang tertaut ke tabel induk | Tidak dipakai | — |
+
+Kedua mixin pencatat (`approval.mixin`, `evidence.mixin`) sendiri mewarisi `mail.thread` (bawaan Odoo) untuk riwayat perubahan; ini digambar sebagai generalisasi ke kelas «Odoo» `mail.thread` di DCD-1.
+
+### 3.3 Jenis relasi antarkelas
+
+Ditambahkan untuk menjawab catatan bimbingan November 2026 (asosiasi, komposisi, agregasi, generalisasi). Dasar: Wazlawick §8.4.5 dan catatan kaki pola *Composite* di §11: bagian yang bisa dimiliki lebih dari satu keseluruhan memakai *shared aggregation* (belah ketupat putih), bagian yang eksklusif memakai *composite aggregation* (belah ketupat hitam).
+
+| Relasi | Notasi | Wujud di Odoo | Contoh di modul ini |
+|---|---|---|---|
+| Asosiasi berarah | Garis dengan panah terbuka; label = nama field + multiplisitas | Many2one atau Many2many | `labfik.plan.line.kpi_id` → KPI; `labfik.realisasi.line_id` → Item Rencana; `labfik.document.review.version_id` → Versi |
+| **Komposisi** (master–detail kuat) | Belah ketupat **hitam** di sisi master | One2many di master + Many2one `ondelete='cascade'` di detail; detail ikut terhapus | Rencana → Item Rencana, Temuan Gap; SK → Baris Penetapan; Jabatan → Tugas, Wewenang; Dokumen Induk → Versi; Tinjauan → Ukuran Manfaat |
+| **Agregasi** (master–detail lemah) | Belah ketupat **putih** di sisi master | Many2many, atau Many2one dengan `ondelete='set null'`/`'restrict'`; detail tetap ada bila master dihapus dan boleh dimiliki banyak master | `hr.job` ◇— `hr.employee` (`job_id` / `employee_ids`, bawaan); `labfik.document` ◇— `labfik.ruang` (`lokasi_ids`); `labfik.meeting` ◇— `hr.employee` (`peserta_ids`) |
+| Generalisasi | Segitiga kosong ke induk | `_inherit` ke mixin (bagian 3.2) | Rencana, SK, Renstra, Versi → `approval.mixin`; Rapat, Distribusi, Realisasi, … → `evidence.mixin` |
+| Turunan | Garis putus-putus `{compute}` | Field `compute` | `approval.mixin.log_ids`; `labfik.document.versi_berlaku_id` |
+
+Agregasi hanya digambar untuk tiga relasi di atas, karena di sana makna "menghimpun tanpa memiliki" jelas: personel tetap ada walaupun jabatannya dihapus, ruang dipakai banyak dokumen, dan peserta rapat adalah personel yang sama di banyak rapat. Rujukan lain ke `hr.employee` (`peserta_ids` Sosialisasi dan Tinjauan, `pic_id`, `pelapor_id`) tetap ditulis sebagai atribut bertipe, karena halaman DCD-3 dan DCD-4 tidak memuat kelas `hr.employee` dan model bawaan Odoo boleh ditulis begitu (CLAUDE.md bagian 5).
 
 ## 4. Template Method dan hook
 
@@ -288,6 +314,7 @@ Versi sebelumnya ada di tag `rancangan-tatkel-v1` (DCD 1/3–3/3).
 | `mail.activity.mixin`, pengingat | Tidak dipakai | Prinsip "hitung, bukan jadwalkan" |
 | `labfik.plan` jenis strategis dan IKU | `labfik.renstra` terpisah (unggahan); IKU dihapus | Keputusan 14 Nov 2026 |
 | — | `labfik.org.monev` (layanan status monev), `labfik.tinjauan.manfaat`, `labfik.plan.gap` dirinci | Langkah 7–9 |
+| Semua relasi bagian–keseluruhan digambar sebagai komposisi atau asosiasi biasa; `peserta_ids` Rapat hanya berupa atribut | **Agregasi** (belah ketupat putih) untuk `hr.job`–`hr.employee`, `labfik.document`–`labfik.ruang` (`lokasi_ids`), dan `labfik.meeting`–`hr.employee` (`peserta_ids`, kini digambar sebagai garis di DCD-2); legenda notasi ditambah; subbagian 3.2 (jenis pewarisan) dan 3.3 (jenis relasi) | Catatan bimbingan Pak Widi (November 2026). Diagram diedit langsung agar rapian manual tidak tertimpa; skrip arsip ikut diperbarui |
 
 **Penyesuaian dengan kontrak Core bersama (15 November 2026):** `labfik.ruang` + `kapasitas` (I-3); grup akses ditempatkan di `labfik_core` (I-5); catatan `syarat_kompetensi_ids` dari SDM (I-2) dan `tindakan` wewenang tetap dua pilihan (I-4). Diagram DCD-2 dan DCD-3 dibuat ulang.
 
@@ -313,3 +340,5 @@ Versi sebelumnya ada di tag `rancangan-tatkel-v1` (DCD 1/3–3/3).
 - [ ] Dokumen Induk/Versi (PKG-09) dan KPI (PKG-21) dipakai modul lain? Bila ya, pakai modul jembatan (mis. `labfik_safety_org`) atau pindahkan ke `labfik_core` **[KONFIRMASI kelompok]**
 - [x] Asisten lab sebagai `hr.employee` dengan jenis personel *asisten* dan jabatan (`hr.job`) **Asisten Praktikum** (keputusan 14 November 2026)
 - [ ] Tampilan diagram belum dicek di draw.io **[VALIDASI]**
+- [ ] `validate.py` melaporkan tiga garis yang ujungnya tidak menempel ke kelas, sisa penyuntingan manual sebelum 19 November 2026: `tk-dcd1-g-dis-evi` dan `tk-dcd1-g-tin-evi` (generalisasi Distribusi dan Tinjauan Rencana ke `evidence.mixin`) serta `tk-dcd3-d-doc-ver` (`versi_berlaku_id {compute}`). Sambungkan ulang di draw.io **[VALIDASI]**
+- [ ] Class untuk view (catatan bimbingan November 2026) menunggu matriks model × jenis view

@@ -27,6 +27,8 @@ SEP = ("line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacin
        "rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;html=1;")
 GEN = "endArrow=block;endFill=0;endSize=14;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#000000;"
 COMP = "endArrow=none;startArrow=diamondThin;startFill=1;startSize=16;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#000000;fontSize=10;" + FONT
+AGG = "endArrow=none;startArrow=diamondThin;startFill=0;startSize=16;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#000000;fontSize=10;" + FONT
+AGG_REV = "startArrow=none;endArrow=diamondThin;endFill=0;endSize=16;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#000000;fontSize=10;" + FONT
 NAV = "endArrow=open;endFill=0;endSize=10;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#000000;fontSize=10;" + FONT
 DER = "endArrow=open;endFill=0;endSize=10;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#000000;dashed=1;fontSize=10;" + FONT
 BI = "endArrow=none;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#000000;fontSize=10;" + FONT
@@ -140,6 +142,7 @@ LEG = ("<b>Notasi</b> (Wazlawick 2024, §13.6; UML)<br>"
        "• «Odoo» = model bawaan; bila diberi <code>{_inherit: …}</code>, model itu diperluas tanpa <code>_name</code> baru. "
        "«Core» = master bersama di labfik_core. Model tanpa stereotype = model baru modul ini. Semua kotak polos hitam-putih.<br>"
        "• Panah terbuka = Many2one/Many2many berarah, label = nama field. Belah ketupat hitam = One2many + Many2one (anak ikut terhapus). "
+       "Belah ketupat putih = agregasi: Many2many, atau Many2one tanpa <code>cascade</code> (bagian tetap ada bila keseluruhan dihapus). "
        "Putus-putus = field <code>compute</code>.<br>"
        "• Atribut bertipe hanya untuk model bawaan Odoo (hr.employee, res.users, res.currency, ir.attachment). Field warisan mixin tidak ditulis ulang.<br>"
        "• <code>+</code> publik (<code>action_*</code>, <code>get_*</code>), <code>#</code> internal (<code>_…</code>), @model, «override», {abstract}, {hook}.")
@@ -225,14 +228,14 @@ S["asg"] = (cm("labfik.assignment", "SK Penetapan Pengelola [T]", "approval, per
             ["+ nomor_sk: Char «unique»", "+ judul: Char", "+ menimbang: Html", "+ mengingat: Html"],
             ["# _jenis_dokumen() «override»", "# _cek_kelengkapan() «override»", "# _dokumen_diganti() «override»",
              "# _cek_k1() … _cek_k4() «override»"], 320, "c")
-S["mee"] = (cm("labfik.meeting", "Rapat Koordinasi [T]", "evidence"), ["+ agenda: Text", "+ keputusan: Text", "+ notulen: Binary",
-                                                                        "+ peserta_ids: hr.employee [*]"], [], 320, "c")
+S["mee"] = (cm("labfik.meeting", "Rapat Koordinasi [T]", "evidence"), ["+ agenda: Text", "+ keputusan: Text", "+ notulen: Binary"], [], 320, "c")
 S["oev"] = (cm("labfik.org.evaluation", "Evaluasi Struktur [T]", "evidence"), ["+ temuan_beban_kerja: Text", "+ efektivitas_koordinasi: Text",
                                                                                "+ keputusan: Text", "+ struktur_diubah: Boolean"],
             ["+ action_tautkan_revisi(sk, jabatan)"], 320, "c")
 S["rng"] = (core("labfik.ruang", "Ruang Lab [M]"), ["+ kode: Char", "+ name: Char", "+ kapasitas: Integer"], [], 220, "core")
 bottom = stack(p, [(40, ["emp", "asl", "rng"]), (420, ["job", "tgs", "wwn"]), (840, ["asg", "mee", "oev"])], S)
-p.e("n-emp-job", "emp", "job", NAV, "*", "job_id 0..1 (bawaan)", exit=(1, 0.3), entry=(0, 0.3))
+p.e("n-emp-job", "emp", "job", AGG_REV, "employee_ids * (bawaan)", "job_id 0..1 (bawaan)", exit=(1, 0.3), entry=(0, 0.3))  # agregasi: jabatan menghimpun pemegang
+p.e("a-mee-emp", "mee", "emp", AGG, "*", "peserta_ids *", exit=(0.1, 1), entry=(0.5, 1))  # agregasi: rapat menghimpun peserta
 p.e("n-job-atas", "job", "job", NAV, "bawahan *", "atasan_id 0..1", exit=(1, 0.15), entry=(1, 0.05))
 p.e("n-job-ganti", "job", "job", NAV, "*", "pengganti_id 0..1", exit=(1, 0.45), entry=(1, 0.35))
 p.e("c-job-tgs", "job", "tgs", COMP, "1", "tugas_ids *", exit=(0.5, 1), entry=(0.5, 0))
@@ -278,7 +281,7 @@ S["rev"] = (cm("labfik.document.review", "Tinjau Ulang [T]", "evidence"), ["+ ha
 bottom = stack(p, [(40, ["doc", "rng"]), (480, ["ver"]), (940, ["dis", "soc", "rev"])], S)
 p.e("c-doc-ver", "doc", "ver", COMP, "1", "versi_ids *", exit=(1, 0.15), entry=(0, 0.15))
 p.e("d-doc-ver", "doc", "ver", DER, "0..1", "versi_berlaku_id 0..1 {compute}", exit=(1, 0.35), entry=(0, 0.4))
-p.e("n-doc-rng", "doc", "rng", NAV, "*", "lokasi_ids *", exit=(0.5, 1), entry=(0.5, 0))
+p.e("n-doc-rng", "doc", "rng", AGG, "*", "lokasi_ids *", exit=(0.5, 1), entry=(0.5, 0))
 p.e("n-dis-ver", "dis", "ver", NAV, "*", "version_id 1", exit=(0, 0.5), entry=(1, 0.15))
 p.e("n-dis-rng", "dis", "rng", NAV, "*", "ruang_id 1", exit=(0.5, 1), entry=(1, 0.5))
 p.e("n-soc-ver", "soc", "ver", NAV, "*", "version_id 1", exit=(0, 0.5), entry=(1, 0.45))
