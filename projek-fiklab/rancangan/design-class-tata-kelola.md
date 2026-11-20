@@ -4,7 +4,7 @@
 
 **Status: DRAF.** Langkah 10 (terakhir) alur rancangan TO-BE ([CLAUDE.md](../../CLAUDE.md) bagian 4). **Masuk proposal** Bab II 2.3 (class diagram). Dasar implementasi addon `labfik_core` dan `labfik_org` di Odoo 17 Community.
 
-Diagram: [class-tata-kelola.drawio](class-tata-kelola.drawio), 4 halaman (DCD-1 s.d. DCD-4). Dibuat dengan skrip [design_class.py](../tools/drawio/contoh-tata-kelola/design_class.py) dan lolos `validate.py` dengan prefiks `tk-`. **Tampilan visual belum dicek di draw.io.**
+Diagram: [class-tata-kelola.drawio](class-tata-kelola.drawio), 4 halaman (DCD-1 s.d. DCD-4), termasuk kelas view inti (bagian 11). Awalnya dibuat dengan skrip [design_class.py](../tools/drawio/contoh-tata-kelola/design_class.py); sejak 19 November 2026 diagram disunting langsung, sehingga skrip itu tinggal arsip. Lolos `validate.py` dengan prefiks `tk-`. **Tampilan visual belum dicek di draw.io.**
 
 Sumber: [conceptual-model-tata-kelola.md](conceptual-model-tata-kelola.md) (CM-1–4), katalog operasi di [ssd-tata-kelola.md](ssd-tata-kelola.md), AB-01–25 di [expanded-use-case-tata-kelola.md](expanded-use-case-tata-kelola.md), kontrak Core di CLAUDE.md bagian 6.
 
@@ -315,6 +315,8 @@ Versi sebelumnya ada di tag `rancangan-tatkel-v1` (DCD 1/3–3/3).
 | `labfik.plan` jenis strategis dan IKU | `labfik.renstra` terpisah (unggahan); IKU dihapus | Keputusan 14 Nov 2026 |
 | — | `labfik.org.monev` (layanan status monev), `labfik.tinjauan.manfaat`, `labfik.plan.gap` dirinci | Langkah 7–9 |
 | Semua relasi bagian–keseluruhan digambar sebagai komposisi atau asosiasi biasa; `peserta_ids` Rapat hanya berupa atribut | **Agregasi** (belah ketupat putih) untuk `hr.job`–`hr.employee`, `labfik.document`–`labfik.ruang` (`lokasi_ids`), dan `labfik.meeting`–`hr.employee` (`peserta_ids`, kini digambar sebagai garis di DCD-2); legenda notasi ditambah; subbagian 3.2 (jenis pewarisan) dan 3.3 (jenis relasi) | Catatan bimbingan Pak Widi (November 2026). Diagram diedit langsung agar rapian manual tidak tertimpa; skrip arsip ikut diperbarui |
+| DCD hanya berisi model | **Kelas view inti** di DCD-2 (`hr_job_view_hierarchy`), DCD-3 (`document_version_view_kanban`, `document_version_view_form`), DCD-4 (`plan_view_form`, `plan_line_view_calendar`, `realisasi_view_pivot`); catatan notasi view di halaman catatan; bagian 11 | Catatan bimbingan Pak Widi 19 November 2026 (kelas view, kanban/pivot/tree/Gantt). Skrip arsip **tidak** diperbarui |
+| `labfik.realisasi` tanpa target | `+ target: Float {related: line_id.target, store}`, `group_operator='max'` | Pivot dan graph target vs capaian (bagian 11.3). Nilai tetap milik Item Rencana; tidak ada perubahan CM, UC, atau AB |
 
 **Penyesuaian dengan kontrak Core bersama (15 November 2026):** `labfik.ruang` + `kapasitas` (I-3); grup akses ditempatkan di `labfik_core` (I-5); catatan `syarat_kompetensi_ids` dari SDM (I-2) dan `tindakan` wewenang tetap dua pilihan (I-4). Diagram DCD-2 dan DCD-3 dibuat ulang.
 
@@ -333,6 +335,8 @@ Versi sebelumnya ada di tag `rancangan-tatkel-v1` (DCD 1/3–3/3).
 | Field warisan tidak ditulis ulang | Ya; model turunan hanya menulis field sendiri dan «override» |
 | Kriteria instrumen | K1 → `approval.mixin` + `period.mixin`; K2–K4 dan S1–S5 → `_cek_k*()` dan `cek_monev()` |
 | Data pribadi | Tidak ada nama orang, NIM, atau nomor HP di rancangan |
+| Setiap UC punya layar | Ya (bagian 11.2): UC-01–06 lewat tombol header form turunan `approval.mixin`; UC-07 tanpa layar (`ir.cron`); UC-13, 20, 27, 28 lewat laporan QWeb (UC-27 juga pivot); sisanya list/form |
+| Field dan atribut view ada | Ya: semua field di kelas view ada di model; atribut arsitektur view diperiksa di kode sumber Odoo 17 (image `odoo:17`, 20 November 2026) |
 
 ## 10. Isu terbuka
 
@@ -340,5 +344,90 @@ Versi sebelumnya ada di tag `rancangan-tatkel-v1` (DCD 1/3–3/3).
 - [ ] Dokumen Induk/Versi (PKG-09) dan KPI (PKG-21) dipakai modul lain? Bila ya, pakai modul jembatan (mis. `labfik_safety_org`) atau pindahkan ke `labfik_core` **[KONFIRMASI kelompok]**
 - [x] Asisten lab sebagai `hr.employee` dengan jenis personel *asisten* dan jabatan (`hr.job`) **Asisten Praktikum** (keputusan 14 November 2026)
 - [ ] Tampilan diagram belum dicek di draw.io **[VALIDASI]**
-- [ ] `validate.py` melaporkan tiga garis yang ujungnya tidak menempel ke kelas, sisa penyuntingan manual sebelum 19 November 2026: `tk-dcd1-g-dis-evi` dan `tk-dcd1-g-tin-evi` (generalisasi Distribusi dan Tinjauan Rencana ke `evidence.mixin`) serta `tk-dcd3-d-doc-ver` (`versi_berlaku_id {compute}`). Sambungkan ulang di draw.io **[VALIDASI]**
-- [ ] Class untuk view (catatan bimbingan November 2026) menunggu matriks model × jenis view
+- [x] Garis yang ujungnya tidak menempel (`tk-dcd1-g-dis-evi`, `tk-dcd1-g-tin-evi`, `tk-dcd3-d-doc-ver`) sudah tersambung; `validate.py` bersih (20 November 2026)
+- [x] Kelas view inti (catatan bimbingan 19 November 2026) digambar di DCD-2–4 (bagian 11)
+- [x] Gantt tidak dipakai karena hanya ada di Odoo Enterprise; jadwal kegiatan memakai *calendar view* (keputusan Febriyan, 20 November 2026)
+- [ ] Wireframe untuk enam view inti (bagian 11.4) dan tempatnya di proposal
+- [ ] Kelas view dan field `target` belum masuk naskah Bab 2 (paragraf 2.3.4 dan gambar DCD-2–4 diganti setelah diekspor dari draw.io)
+
+---
+
+## 11. Lapisan antarmuka (view)
+
+Ditambahkan 20 November 2026 untuk catatan bimbingan Pak Widi 19 November 2026: class diagram memuat kelas view; antarmuka memakai view kanban, pivot, tree, dan Gantt. Bagian ini menggantikan draf `view-tata-kelola.md` (dihapus) agar semua rancangan kelas tetap di satu dokumen.
+
+### 11.1 Aturan
+
+| Aturan | Sumber | Penerapan |
+|---|---|---|
+| Antarmuka diturunkan dari use case/SSD: layar harus memungkinkan aktor menjalankan semua alur use case | Wazlawick §16.1 | Setiap view menyebut UC yang dilayaninya. View tanpa UC tidak dibuat |
+| Komponen dasar *List*, *Details*, *Form*, terikat ke kelas di DCD (*data binding*) | §16.3 | List = view `tree` Odoo ("tree" dalam arahan Pak Widi), Details + Form = view `form`. Satu view selalu milik **satu model utama**; model lain ikut tampil lewat field relasi |
+| Pola *master-detail* dan *search* | §16.5 | Form dengan tab One2many (Item Rencana di Rencana); view `search` dengan filter dan *group by* |
+| Tombol = operasi sistem | §16.6 | Operasi kelas view menunjuk method `action_*` (bagian 5), sehingga keterlacakannya UC → tombol → method → AB |
+| *Sweet spot* | CLAUDE.md bagian 1 | Kanban, calendar, pivot, hierarchy hanya bila menjawab kebutuhan atau bukti tertentu. Model «CRUDL» cukup list + form. **Kelas view hanya digambar untuk view inti** (11.4) |
+
+**Notasi kelas view** (juga di halaman catatan drawio): stereotype = jenis view («form», «kanban», «calendar», «pivot», «hierarchy»); nama = XML ID `ir.ui.view`; atribut = field yang tampil per bagian layar plus atribut arsitektur view (`default_group_by`, `date_start`, `row/col/measure`); operasi = tombol → method; garis putus-putus «view» = dependensi ke model utama.
+
+**Jenis view Odoo 17 Community** (diperiksa di kode sumber image `odoo:17`, build 17.0-20260908, 20 November 2026):
+
+| Jenis | Ada di Community | Catatan |
+|---|---|---|
+| list (`<tree>`), form, kanban, calendar, pivot, graph, search | Ya (`web`) | Kanban: `default_group_by`, `records_draggable`. Calendar: `date_start`, `date_stop`, `color`, `mode`, `quick_create` |
+| hierarchy | Ya (`web_hierarchy`, LGPL-3, `depends: ['web']`) | Atribut `parent_field` menerima Many2one ke model yang sama, jadi bisa memakai `hr.job.atasan_id` |
+| gantt | **Tidak** (`web_gantt` milik Enterprise) | Tidak dipakai. Jadwal kegiatan memakai calendar dengan rentang tanggal |
+
+### 11.2 Matriks model × jenis view
+
+✓ = disediakan; **E** = tabel anak (*embedded*) di form induk, tanpa menu sendiri; — = tidak; (O) = Pelengkap; **tebal** = view inti yang digambar sebagai kelas view.
+
+| Model | List | Form | Kanban | Calendar | Pivot / Graph | Lainnya | Laporan QWeb | UC |
+|---|---|---|---|---|---|---|---|---|
+| `hr.employee` Personel | ✓ bawaan | ✓ bawaan + field baru | ✓ bawaan | — | — | — | — | UC-08 |
+| `hr.job` Jabatan | ✓ | ✓ + tab Tugas, Wewenang | — | — | — | **Hierarchy** | Struktur organisasi | UC-09, 13 |
+| `labfik.jabatan.tugas`, `.wewenang` | E | — | — | — | — | — | — | UC-09 |
+| `labfik.ruang`, `labfik.periode` (Core) | ✓ *editable* | — | — | — | — | — | — | (master) |
+| `labfik.assignment` SK Penetapan | ✓ | ✓ + tab Baris, Riwayat | ✓ per status | — | — | — | SK resmi (UC-02) | UC-10, 01–06 |
+| `labfik.assignment.line` | E | — | — | — | — | — | — | UC-10 |
+| `labfik.meeting` Rapat | ✓ | ✓ | — | ✓ tanggal | — | — | — | UC-11 |
+| `labfik.org.evaluation` | ✓ | ✓ | — | — | — | — | — | UC-12 |
+| `labfik.document` Dokumen Induk | ✓ | ✓ + tab Versi, *chatter* | — | — | — | — | Pengendalian dokumen | UC-14, 20 |
+| `labfik.document.version` Versi SOP/IK | ✓ | **✓** + tombol rekaman, Riwayat | **✓ per status** | ✓ jadwal tinjau (O) | — | — | Dokumen resmi (UC-02) | UC-15, 01–06, 18, 19 |
+| `labfik.document.distribution` / `.socialization` / `.review` | ✓ | ✓ | — | — | — | — | — | UC-16, 17, 18 |
+| `labfik.renstra` | ✓ | ✓ | — | — | — | — | — | UC-22, 01–06 |
+| `labfik.kpi` | ✓ | ✓ | — | — | — | — | — | UC-21 |
+| `labfik.plan` Rencana | ✓ | **✓** + tab Gap, Item, Narasi, Riwayat | ✓ per status | — | — | — | Rencana resmi, laporan rencana | UC-23, 24, 27, 01–06 |
+| `labfik.plan.line` Item Rencana | ✓ ("Item saya") + E | ✓ | — | **✓ jadwal kegiatan** | ✓ anggaran, target | — | — | UC-23, 25, 27 |
+| `labfik.plan.gap` | E | — | — | — | — | — | — | UC-23 |
+| `labfik.realisasi` | ✓ | ✓ | — | — | **✓ target vs capaian** | — | — | UC-25, 27 |
+| `labfik.tinjauan` (+ `.manfaat` E) | ✓ | ✓ | — | — | — | — | — | UC-26 |
+| `labfik.approval.log` | E (tab Riwayat, *read-only*) | — | — | — | — | — | — | UC-01–06 |
+| `labfik.org.monev` | — | — | — | — | — | — | Laporan status monev (HTML) | UC-28 |
+
+`labfik.org.monev` adalah AbstractModel tanpa tabel, sehingga tidak bisa punya list atau pivot. Status monev cukup laporan HTML dari `get_status()`, tanpa model baru. Rekaman Distribusi, Sosialisasi, dan Tinjau Ulang dibuka dari *smart button* di form Versi, karena relasinya Many2one satu arah ke Versi (tidak ada One2many balik di DCD-3).
+
+### 11.3 Alasan view tambahan
+
+| View | Model | Isi | Alasan |
+|---|---|---|---|
+| Kanban per status | Versi SOP/IK, Rencana, SK | Kolom draf · diajukan · disahkan; kartu tidak bisa diseret (`records_draggable: False`) | KaLab melihat dokumen yang menunggu pengesahan (UC-04, 05). Status hanya berubah lewat tombol agar Template Method tidak terlewat (AB-01). Satu pola untuk semua turunan `approval.mixin` |
+| Calendar rentang | Item Rencana | `jadwal_mulai`–`jadwal_selesai`, warna per PIC | Rencana berjadwal (PKG-01, PKG-13); pengganti Gantt |
+| Calendar | Rapat | `tanggal` | Rapat koordinasi berkala (PKG-03) |
+| Calendar (O) | Versi SOP/IK | `tanggal_tinjau_berikutnya` | Jadwal tinjau ulang (AB-14, PKG-02 S4) |
+| Pivot + graph | Realisasi | Baris item, kolom periode lapor; ukuran target (`max`), capaian (`sum`) | Laporan rencana UC-27 (KF-33, 34). `target` di-*related* dari Item Rencana dan dijumlah dengan `max` supaya tidak berlipat di total baris |
+| Pivot | Item Rencana | Baris PIC/rencana; ukuran anggaran, target | Ringkasan anggaran rencana pengembangan (PKG-13) |
+| Hierarchy | Jabatan | Pohon dari `atasan_id` | Struktur organisasi (UC-13, PKG-03) |
+
+**Filter tersimpan utama:** *Menunggu pengesahan* (`state = diajukan`) dan *Draf saya* di semua turunan `approval.mixin` = bentuk antarmuka operasi SSD `daftar_dokumen(filter, user_id)`; *Item saya* (`pic_id.user_id = uid`, rencana disahkan) = `daftar_item_pic(user_id)`; *Perlu ditinjau* di Versi; *Belum lengkap* (`is_lengkap = False`) di Jabatan.
+
+### 11.4 View inti (digambar di DCD)
+
+| # | Kelas view | Halaman | UC kunci | Menunjukkan |
+|---|---|---|---|---|
+| V1 | `document_version_view_kanban` «kanban» | DCD-3 | UC-04, 05 | Kanban per status (pola semua turunan `approval.mixin`) |
+| V2 | `document_version_view_form` «form» | DCD-3 | UC-15, 01–06, 16–18 | Header status + tombol pengesahan, *smart button* rekaman, riwayat |
+| V3 | `plan_view_form` «form» | DCD-4 | UC-23, 24, 26 | *Master-detail*: tab Temuan Gap dan Item Rencana |
+| V4 | `plan_line_view_calendar` «calendar» | DCD-4 | UC-23, 25 | Jadwal kegiatan (pengganti Gantt) |
+| V5 | `realisasi_view_pivot` «pivot» | DCD-4 | UC-25, 27 | Target vs capaian per periode |
+| V6 | `hr_job_view_hierarchy` «hierarchy» | DCD-2 | UC-09, 13 | Struktur organisasi |
+
+Laporan status monev (UC-28) bukan view, jadi tidak digambar sebagai kelas view. Wireframe nanti dibuat untuk V1–V6 ditambah satu contoh list (Dokumen Induk) dan laporan status monev.
