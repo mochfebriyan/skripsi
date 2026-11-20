@@ -63,8 +63,33 @@ Temuan di bawah hanya berasal dari isi dokumen. Klaim tentang praktik sehari-har
 | A10 | Renstra, RKT, IKU, dan IK masih **draf berstatus "untuk validasi dan pengesahan"**. Tabel baseline dan anggarannya kosong (". . .") | D1, D2, D4 | PKG-01 K1 dan PKG-13 K1 belum terpenuhi | Fakta dokumen |
 | A11 | Draf D1–D4 ditulis untuk **"Laboratorium Informatika"** (kode FIK-LI-…), padahal sheet bernama ISO_LAB_SI dan lab dikelola dua prodi | D1–D4 | Perlu diputuskan apakah sistem melayani satu lab FIK atau per lab prodi | **[KONFIRMASI]** |
 | A12 | Status "Terverifikasi 100%" di web iso.upnvj tercantum pada semua 23 dokumen, termasuk yang masih draf | Sheet | Status di web tidak bisa dipakai sebagai bukti pengesahan | Fakta dokumen |
+| A13 | Pada draf D1, D2, dan D4, kolom **penyusun dan pengesah kosong**: tidak tercatat siapa yang menyusun, dan belum ada pejabat yang mengesahkan | D1, D2, D4 | PKG-01/13 K1 dan PKG-02 S2: asal-usul dan pengesahan tidak dapat ditelusuri (ISO 8.3.2a). Dijawab `penyusun_id`, `pengesah_id`, `approval.log` | Fakta dokumen (dicek Febriyan, 20 November 2026) |
+| A14 | **Tidak ada tempat penyimpanan resmi.** Salinan dokumen hanya ada di Google Drive akun laboratorium (folder "Paket Dokumen Monev", dibuat 21–23 Oktober 2026) dan unggahan di web iso.upnvj; tidak ada daftar induk | D1–D4 | PKG-02 S1 dan S4; ISO 8.3.2d. Dijawab Dokumen Induk dan Versi berstatus Disahkan | Fakta dokumen |
 
 **Rumusan as-is ringkas:** dokumen tata kelola LabFIK *ada*, tetapi **tidak terkendali**. SOP lama tidak bernomor dan tidak bertanggal efektif. Struktur lab tidak ditetapkan resmi. Rencana kerja dan IKU masih draf yang belum disahkan. Belum ada daftar induk maupun siklus tinjau ulang. Proses pendokumentasian formal baru mulai dibangun bersamaan dengan monev 2026 (pernyataan Pak Widi saat bimbingan, November 2026).
+
+### Temuan wawancara Kepala Laboratorium (W1–W9, ditambahkan 19 November 2026)
+
+Sumber: [Wawancara_FIKLAB_Compliance_draft_terisi.xlsx](../docs/Wawancara_FIKLAB_Compliance_draft_terisi.xlsx), diterima 19 November 2026. Kode pertanyaan: **Umum-n** dan **TK-n** (bagian Tata Kelola & Dokumen).
+
+**Sifat jawaban.** Sebagian besar jawaban bersifat normatif ("sebaiknya …", "perlu diverifikasi …"), dan file memuat sheet *Panduan Validasi* yang menyatakan bahwa jawaban berupa alur dan rekomendasi adalah **usulan tata kelola, bukan pernyataan bahwa praktiknya sudah berjalan**. Karena itu:
+- Jawaban dipakai sebagai **pendapat KaLab** tentang kendala dan sebagai masukan rancangan.
+- Kondisi as-is tetap bersumber dari temuan A1–A12 di atas.
+- Di naskah, wawancara dikutip secara naratif ("Berdasarkan wawancara dengan Kepala Laboratorium, …"), tanpa sitasi dalam kurung. Transkripnya masuk lampiran.
+
+| Kode | Pertanyaan | Isi (ringkas) | Menguatkan | Dipakai di |
+|---|---|---|---|---|
+| W1 | Umum-8 | Yang berpotensi sulit dibuktikan: konsistensi pencatatan lintas ruang, histori pemeliharaan, kompetensi dan penugasan personel, tindak lanjut keluhan, selama bukti tersebar | A5 | Bab I 1.1; Bab II 2.1.2 |
+| W2 | Umum-10 | Pencatatan oleh petugas yang menjalankan proses (laboran, sekretariat); KaLab memverifikasi. Sistem harus sederhana, berbasis formulir, tanpa input ganda | — | Bab II 2.1.2; aktor; prinsip *sweet spot* |
+| W3 | TK-5 | Kendala perencanaan: usulan kebutuhan antar-lab belum terintegrasi, data kondisi aset belum mutakhir, personel pencatat terbatas, belum ada indikator dan jadwal monitoring yang seragam | A10 | Bab II 2.1.2 |
+| W4 | TK-6 | Formulir daring tidak otomatis berarti SOP terkait sudah disahkan | A5, A12 | Bab II 2.1.2 |
+| W5 | TK-10 | Kendala dokumen: pemilik dokumen tidak jelas, belum ada pengendalian versi, sosialisasi dan pemantauan kepatuhan tidak konsisten. Usulan perbaikan: PIC dokumen, template, daftar induk, repositori resmi, bukti sosialisasi | A2, A4 | Bab I 1.1; Bab II 2.1.2. Usulannya sama dengan fitur PKG-02 |
+| W6 | TK-12, TK-13 | Delegasi menyebut tugas, batas wewenang, dan periode. Struktur ditetapkan dengan SK dan ditinjau minimal setahun sekali | A7, A8 | Bab II 2.1.2; `pengganti_id` di `hr.job`; evaluasi struktur (PKG-03 K4) |
+| W7 | TK-3, TK-16 | Kebutuhan empat aspek dihimpun setiap semester lalu dikonsolidasikan ke rencana tahunan. Apakah peninjauan rencana vs realisasi sudah rutin "perlu dikonfirmasi" | A10 | Bab II 2.1.2; PKG-13 temuan gap |
+| W8 | TK-7, TK-9 | SOP sebaiknya diperiksa pihak lain sebelum disahkan | **Bertentangan** dengan keputusan 14 Nov 2026 (pemeriksaan menyatu dengan pengesahan) | Keputusan 19 Nov 2026: pemeriksaan dilakukan **di luar sistem**. Bab I 1.3 butir 4; Bab II 2.3.1.1 |
+| W9 | TK-1 | Status SK pengelola, SOP disahkan, dan rencana kerja: "perlu diverifikasi" (tidak mengonfirmasi bahwa dokumen itu belum ada) | — | Klaim "belum memiliki" di Bab I diganti dengan rumusan berdasarkan studi dokumen (A7, A10) |
+
+Bagian SDM (SDM-1 s.d. SDM-19) dan Pelaksanaan Praktikum (PRK-1 s.d. PRK-19) di file yang sama diteruskan ke pemegang modul masing-masing (Zahir, Herrens).
 
 ---
 
