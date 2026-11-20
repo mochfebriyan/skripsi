@@ -103,6 +103,8 @@ Setiap langkah memakai hasil langkah sebelumnya. Jangan membuat use case atau cl
 | 9 | Conceptual model | `rancangan/conceptual-model-<slug>.md` + `.drawio` | 8–11 | Bahan kerja |
 | 10 | Design class diagram (Odoo + inheritance) | `rancangan/design-class-<slug>.md` + `class-<slug>.drawio` | 13 | **Ya** (2.3) |
 
+**Setelah langkah 10:** kelas view di DCD dan wireframe (screenshot Odoo 17 berisi data rekaan) mengikuti [wireframe-CLAUDE.md](wireframe-CLAUDE.md).
+
 Kontrak OCL (Bab 12) **dilewati** untuk proposal; aturan bisnis cukup ditulis sebagai AB-xx dan dipetakan ke mekanisme Odoo di langkah 10.
 
 ### Langkah 0: Prasyarat (wajib dicek sebelum langkah 1)
