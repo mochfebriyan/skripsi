@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="report_status_monev" model="ir.actions.report">
+        <field name="name">Laporan Status Monev</field>
+        <field name="model">labfik.org.monev</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">labfik_wireframe.report_status_monev_doc</field>
+        <field name="binding_model_id" ref="model_labfik_org_monev"/>
+    </record>
+    <template id="report_status_monev_doc">
+        <t t-call="web.html_container">
+            <t t-call="web.basic_layout">
+                <div class="page" style="font-family: 'Times New Roman', serif; padding: 24px;">
+                    <h3 class="text-center mb-1">Laporan Status Monev Tata Kelola Laboratorium</h3>
+                    <p class="text-center text-muted mb-4">Tanggal acuan: 30 Juni 2027 · Instrumen Monev Laboratorium UPNVJ 2026 v1.1</p>
+                    <table class="table table-bordered table-sm">
+                        <thead class="table-light">
+                            <tr><th>PKG</th><th>Indikator</th><th>Jenis skor</th><th>Status</th><th>Rincian</th><th>Sumber data</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="docs" t-as="o">
+                                <td><span t-field="o.pkg"/></td>
+                                <td><span t-field="o.indikator"/></td>
+                                <td><span t-field="o.jenis_skor"/></td>
+                                <td><strong t-field="o.status"/></td>
+                                <td><span t-field="o.rincian"/></td>
+                                <td><span t-field="o.sumber"/></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p class="small text-muted">Sistem menunjukkan kriteria tertinggi yang lengkap secara data; skor akhir ditetapkan penilai.</p>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

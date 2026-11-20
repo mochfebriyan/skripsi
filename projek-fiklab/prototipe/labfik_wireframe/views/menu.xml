@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_root" name="Tata Kelola Lab" web_icon="hr,static/description/icon.png" sequence="5"/>
+    <menuitem id="menu_org" name="Organisasi" parent="menu_root" sequence="10"/>
+    <menuitem id="menu_jabatan" name="Bagan Jabatan" parent="menu_org" action="action_jabatan" sequence="10"/>
+    <menuitem id="menu_dok" name="Dokumen" parent="menu_root" sequence="20"/>
+    <menuitem id="menu_document" name="Dokumen Induk" parent="menu_dok" action="action_document" sequence="10"/>
+    <menuitem id="menu_version" name="Versi SOP/IK" parent="menu_dok" action="action_version" sequence="20"/>
+    <menuitem id="menu_ren" name="Rencana" parent="menu_root" sequence="30"/>
+    <menuitem id="menu_plan" name="Rencana" parent="menu_ren" action="action_plan" sequence="10"/>
+    <menuitem id="menu_plan_line" name="Jadwal Kegiatan" parent="menu_ren" action="action_plan_line" sequence="20"/>
+    <menuitem id="menu_realisasi" name="Realisasi" parent="menu_ren" action="action_realisasi" sequence="30"/>
+    <menuitem id="menu_monev" name="Status Monev" parent="menu_root" action="action_org_monev" sequence="40"/>
+    <menuitem id="menu_master" name="Master" parent="menu_root" sequence="90"/>
+    <menuitem id="menu_kpi" name="KPI" parent="menu_master" action="action_kpi" sequence="10"/>
+    <menuitem id="menu_periode" name="Periode" parent="menu_master" action="action_periode" sequence="20"/>
+</odoo>

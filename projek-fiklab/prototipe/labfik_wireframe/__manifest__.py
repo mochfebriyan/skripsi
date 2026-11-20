@@ -1,0 +1,25 @@
+{
+    "name": "LabFIK Wireframe (Tata Kelola)",
+    "summary": "Tiruan tampilan modul Tata Kelola & Dokumen dengan data rekaan, untuk wireframe proposal",
+    "description": "Model tipis bernama sama dengan DCD Tata Kelola, tanpa aturan bisnis. "
+                   "Jangan dipasang bersama labfik_core/labfik_org.",
+    "version": "17.0.1.0.0",
+    "license": "LGPL-3",
+    "depends": ["hr", "mail", "web_hierarchy"],
+    "data": [
+        "security/ir.model.access.csv",
+        "views/views_core.xml",
+        "views/views_dokumen.xml",
+        "views/views_rencana.xml",
+        "views/views_monev.xml",
+        "report/report_status_monev.xml",
+        "views/menu.xml",
+        "data/data_master.xml",
+        "data/data_dokumen.xml",
+        "data/data_rencana.xml",
+        "data/data_monev.xml",
+    ],
+    "post_init_hook": "post_init",
+    "application": True,
+    "installable": True,
+}

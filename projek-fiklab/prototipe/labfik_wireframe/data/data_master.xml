@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Data rekaan untuk wireframe. Semua nama orang FIKTIF. -->
+<odoo>
+    <!-- Rupiah sebagai mata uang perusahaan, sebelum data beranggaran dibuat -->
+    <record id="base.IDR" model="res.currency"><field name="active" eval="True"/></record>
+    <record id="base.main_company" model="res.company">
+        <field name="currency_id" ref="base.IDR"/>
+        <field name="name">Laboratorium FIK (contoh)</field>
+    </record>
+    <record id="per_2027" model="labfik.periode"><field name="name">2027</field><field name="tanggal_mulai">2027-01-01</field><field name="tanggal_selesai">2027-12-31</field></record>
+    <record id="per_2027_2028" model="labfik.periode"><field name="name">2027–2028</field><field name="tanggal_mulai">2027-01-01</field><field name="tanggal_selesai">2028-12-31</field></record>
+
+    <record id="kpi_01" model="labfik.kpi"><field name="kode">KPI-01</field><field name="nama">Ketersediaan PC praktikum</field><field name="satuan">unit</field></record>
+    <record id="kpi_02" model="labfik.kpi"><field name="kode">KPI-02</field><field name="nama">SOP layanan yang ditinjau</field><field name="satuan">dokumen</field></record>
+    <record id="kpi_03" model="labfik.kpi"><field name="kode">KPI-03</field><field name="nama">Personel lab terlatih K3</field><field name="satuan">orang</field></record>
+    <record id="kpi_04" model="labfik.kpi"><field name="kode">KPI-04</field><field name="nama">Indeks kepuasan layanan lab</field><field name="satuan">skala 4</field></record>
+
+    <record id="job_dekan" model="hr.job"><field name="name">Dekan</field><field name="unit">fakultas</field><field name="is_eksternal" eval="True"/></record>
+    <record id="job_kajur" model="hr.job"><field name="name">Ketua Jurusan</field><field name="unit">fakultas</field><field name="is_eksternal" eval="True"/><field name="atasan_id" ref="job_dekan"/></record>
+    <record id="job_kalab" model="hr.job"><field name="name">Kepala Laboratorium</field><field name="unit">lab_fik</field><field name="atasan_id" ref="job_dekan"/></record>
+    <record id="job_laboran" model="hr.job"><field name="name">Laboran/PLP</field><field name="unit">lab_fik</field><field name="atasan_id" ref="job_kalab"/></record>
+    <record id="job_teknisi" model="hr.job"><field name="name">Teknisi</field><field name="unit">lab_fik</field><field name="atasan_id" ref="job_kalab"/></record>
+    <record id="job_k3" model="hr.job"><field name="name">Petugas K3</field><field name="unit">lab_fik</field><field name="atasan_id" ref="job_kalab"/><field name="is_lengkap" eval="False"/></record>
+    <record id="job_asisten" model="hr.job"><field name="name">Asisten Praktikum</field><field name="unit">lab_fik</field><field name="atasan_id" ref="job_laboran"/></record>
+
+    <record id="emp_kalab" model="hr.employee"><field name="name">Rina Kartika</field><field name="job_id" ref="job_kalab"/></record>
+    <record id="emp_laboran1" model="hr.employee"><field name="name">Budi Santoso</field><field name="job_id" ref="job_laboran"/></record>
+    <record id="emp_laboran2" model="hr.employee"><field name="name">Yoga Pratama</field><field name="job_id" ref="job_laboran"/></record>
+    <record id="emp_teknisi" model="hr.employee"><field name="name">Agus Saputra</field><field name="job_id" ref="job_teknisi"/></record>
+    <record id="emp_k3" model="hr.employee"><field name="name">Fitri Handayani</field><field name="job_id" ref="job_k3"/></record>
+    <record id="emp_dekan" model="hr.employee"><field name="name">Hendra Wijaya</field><field name="job_id" ref="job_dekan"/></record>
+</odoo>

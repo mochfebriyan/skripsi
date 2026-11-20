@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Hasil get_status() rekaan pada tanggal acuan 30 Juni 2027 (konsisten dengan data_rencana dan data_dokumen). -->
+<odoo>
+    <record id="mon_01" model="labfik.org.monev"><field name="urutan">1</field><field name="pkg">PKG-01</field><field name="indikator">Pengelolaan 1 (rencana kerja tahunan)</field><field name="jenis_skor">Kriteria K1–K4</field><field name="status">K3 lengkap</field><field name="rincian">K1 rencana disahkan: ya
+K2 item ber-KPI dan PIC: ya
+K3 realisasi tercatat: ya
+K4 tinjauan rencana: belum ada</field><field name="sumber">Rencana, Item Rencana, Realisasi</field></record>
+    <record id="mon_02" model="labfik.org.monev"><field name="urutan">2</field><field name="pkg">PKG-02</field><field name="indikator">Pengelolaan 2 (pengendalian dokumen)</field><field name="jenis_skor">Persentase dokumen wajib memenuhi S1–S5</field><field name="status">50% (2 dari 4)</field><field name="rincian">SOP-LAB-01, SOP-LAB-04 memenuhi
+SOP-LAB-02 perlu ditinjau (S4)
+SOP-LAB-03 belum disahkan (S1)</field><field name="sumber">Dokumen Induk, Versi, Distribusi, Sosialisasi, Tinjau Ulang</field></record>
+    <record id="mon_03" model="labfik.org.monev"><field name="urutan">3</field><field name="pkg">PKG-03</field><field name="indikator">Pengelolaan 3 (struktur organisasi)</field><field name="jenis_skor">Kriteria K1–K4</field><field name="status">K1 lengkap</field><field name="rincian">K1 SK penetapan berlaku: ya
+K2 uraian jabatan lengkap: belum (Petugas K3)
+K3 rapat koordinasi: -
+K4 evaluasi struktur: -</field><field name="sumber">SK Penetapan, Jabatan, Rapat, Evaluasi</field></record>
+    <record id="mon_13" model="labfik.org.monev"><field name="urutan">4</field><field name="pkg">PKG-13</field><field name="indikator">Pengembangan 13 (rencana pengembangan)</field><field name="jenis_skor">Kriteria K1–K4</field><field name="status">Belum K1</field><field name="rincian">K1 rencana pengembangan disahkan: belum (masih diajukan)</field><field name="sumber">Rencana, Temuan Gap</field></record>
+</odoo>

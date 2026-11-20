@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="org_monev_view_tree" model="ir.ui.view">
+        <field name="name">labfik.org.monev.tree</field>
+        <field name="model">labfik.org.monev</field>
+        <field name="arch" type="xml">
+            <tree create="0">
+                <field name="pkg"/><field name="indikator"/><field name="jenis_skor"/><field name="status"/><field name="sumber"/>
+            </tree>
+        </field>
+    </record>
+    <record id="action_org_monev" model="ir.actions.act_window">
+        <field name="name">Status Monev</field>
+        <field name="res_model">labfik.org.monev</field>
+        <field name="view_mode">tree</field>
+    </record>
+</odoo>

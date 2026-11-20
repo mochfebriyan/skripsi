@@ -1,0 +1,11 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_labfik_periode,labfik_periode,model_labfik_periode,base.group_user,1,1,1,1
+access_labfik_kpi,labfik_kpi,model_labfik_kpi,base.group_user,1,1,1,1
+access_labfik_approval_log,labfik_approval_log,model_labfik_approval_log,base.group_user,1,1,1,1
+access_labfik_document,labfik_document,model_labfik_document,base.group_user,1,1,1,1
+access_labfik_document_version,labfik_document_version,model_labfik_document_version,base.group_user,1,1,1,1
+access_labfik_plan,labfik_plan,model_labfik_plan,base.group_user,1,1,1,1
+access_labfik_plan_line,labfik_plan_line,model_labfik_plan_line,base.group_user,1,1,1,1
+access_labfik_plan_gap,labfik_plan_gap,model_labfik_plan_gap,base.group_user,1,1,1,1
+access_labfik_realisasi,labfik_realisasi,model_labfik_realisasi,base.group_user,1,1,1,1
+access_labfik_org_monev,labfik_org_monev,model_labfik_org_monev,base.group_user,1,1,1,1

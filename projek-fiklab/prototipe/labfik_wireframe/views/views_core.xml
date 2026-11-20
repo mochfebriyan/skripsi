@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- V6 Bagan Jabatan: hierarchy dari atasan_id -->
+    <record id="hr_job_view_hierarchy" model="ir.ui.view">
+        <field name="name">hr.job.hierarchy.labfik</field>
+        <field name="model">hr.job</field>
+        <field name="arch" type="xml">
+            <hierarchy parent_field="atasan_id" child_field="bawahan_ids" icon="fa-sitemap">
+                <field name="name"/>
+                <field name="unit"/>
+                <field name="no_of_employee"/>
+                <field name="is_lengkap"/>
+                <templates>
+                    <t t-name="hierarchy-box">
+                        <div class="o_hierarchy_node_header d-flex justify-content-center align-items-center p-2">
+                            <field name="name" class="fw-bold text-center"/>
+                        </div>
+                        <div class="o_hierarchy_node_body d-flex flex-column text-center small">
+                            <field name="unit"/>
+                            <span t-if="!record.is_lengkap.raw_value" class="badge text-bg-warning mt-1">Belum lengkap</span>
+                        </div>
+                    </t>
+                </templates>
+            </hierarchy>
+        </field>
+    </record>
+
+    <record id="hr_job_view_form_labfik" model="ir.ui.view">
+        <field name="name">hr.job.form.labfik</field>
+        <field name="model">hr.job</field>
+        <field name="inherit_id" ref="hr.view_hr_job_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <group string="Tata Kelola Lab">
+                    <group>
+                        <field name="unit"/>
+                        <field name="atasan_id"/>
+                    </group>
+                    <group>
+                        <field name="is_eksternal"/>
+                        <field name="is_lengkap"/>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_jabatan" model="ir.actions.act_window">
+        <field name="name">Bagan Jabatan</field>
+        <field name="res_model">hr.job</field>
+        <field name="view_mode">hierarchy,tree,form</field>
+        <field name="view_id" ref="hr_job_view_hierarchy"/>
+    </record>
+
+    <record id="kpi_view_tree" model="ir.ui.view">
+        <field name="name">labfik.kpi.tree</field>
+        <field name="model">labfik.kpi</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom"><field name="kode"/><field name="nama"/><field name="satuan"/></tree>
+        </field>
+    </record>
+    <record id="action_kpi" model="ir.actions.act_window">
+        <field name="name">KPI</field>
+        <field name="res_model">labfik.kpi</field>
+        <field name="view_mode">tree</field>
+    </record>
+    <record id="periode_view_tree" model="ir.ui.view">
+        <field name="name">labfik.periode.tree</field>
+        <field name="model">labfik.periode</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom"><field name="name"/><field name="tanggal_mulai"/><field name="tanggal_selesai"/></tree>
+        </field>
+    </record>
+    <record id="action_periode" model="ir.actions.act_window">
+        <field name="name">Periode</field>
+        <field name="res_model">labfik.periode</field>
+        <field name="view_mode">tree</field>
+    </record>
+</odoo>
