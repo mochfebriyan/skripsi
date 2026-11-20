@@ -1,0 +1,15 @@
+{
+  "_catatan": "Daftar layar yang di-screenshot tools/shoot.py. Placeholder: {m} = nama addon, {xid:nama} = id rekaman dari XML id, {xids:a,b} = beberapa id dipisah koma. wait = selector CSS yang ditunggu. expand = teks node hierarchy yang tombol 'Buka'-nya diklik berurutan. height = tinggi layar khusus (piksel).",
+  "shots": [
+    {"name": "01-list-dokumen-induk", "url": "/web#action={m}.action_document&view_type=list", "wait": ".o_list_renderer"},
+    {"name": "02-kanban-versi-sop", "url": "/web#action={m}.action_version&view_type=kanban", "wait": ".o_kanban_renderer"},
+    {"name": "03-form-versi-sop", "url": "/web#action={m}.action_version&model=labfik.document.version&view_type=form&id={xid:ver_sop01_r02}", "wait": ".o_form_view"},
+    {"name": "04-form-rencana", "url": "/web#action={m}.action_plan&model=labfik.plan&view_type=form&id={xid:plan_dev}", "wait": ".o_form_view"},
+    {"name": "05-kalender-item-rencana", "url": "/web#action={m}.action_plan_line&view_type=calendar", "wait": ".o_calendar_renderer"},
+    {"name": "06-pivot-realisasi", "url": "/web#action={m}.action_realisasi&view_type=pivot", "wait": ".o_pivot"},
+    {"name": "06b-grafik-realisasi", "url": "/web#action={m}.action_realisasi&view_type=graph", "wait": ".o_graph_renderer"},
+    {"name": "07-bagan-jabatan", "url": "/web#action={m}.action_jabatan&view_type=hierarchy", "wait": ".o_hierarchy_renderer",
+     "expand": ["Kepala Laboratorium", "Laboran/PLP"], "height": 1080},
+    {"name": "08-laporan-status-monev", "url": "/report/html/{m}.report_status_monev_doc/{xids:mon_01,mon_02,mon_03,mon_13}", "wait": "table"}
+  ]
+}

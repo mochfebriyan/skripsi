@@ -12,15 +12,15 @@
 
 ## Menjalankan
 
-Butuh Docker Desktop. Dari folder ini:
+Butuh Docker Desktop. Dari root repo:
 
 ```bash
-bash tools/build.sh      # bangun ulang database, jalankan Odoo, ambil screenshot
+bash projek-fiklab/tools/wireframe/build.sh labfik_wireframe labfik_wf projek-fiklab/rancangan/wireframe
 ```
 
 - Odoo: http://localhost:8069, login `admin` / `admin`.
-- Screenshot tersimpan di `../rancangan/wireframe/` (Playwright, 1440×860, skala 2×).
-- Hentikan: `docker compose down` (data tetap) atau `docker compose down -v` (hapus database).
+- Daftar layar yang di-screenshot: `labfik_wireframe/wireframe_shots.json`.
+- Alat bersama dan alur untuk modul lain: `projek-fiklab/tools/wireframe/` dan [wireframe-CLAUDE.md](../../wireframe-CLAUDE.md).
 
 ## Screenshot dan view inti
 
